@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "block",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "untamedwilds:material_fat"
+    }
+  },
+  "result": {
+    "item": "untamedwilds:block_lard",
+    "count": 1
+  }
+}

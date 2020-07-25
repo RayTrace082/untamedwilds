@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "untamedwilds:icicle_small"
+  },
+  "pattern": [
+    "A",
+    "A"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "A": {
+      "item": "untamedwilds:material_icicle"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "carpet",
+  "pattern": [
+    "xyx",
+    "# #",
+    "x#x"
+  ],
+  "key": {
+    "#": {
+      "tag": "minecraft:planks"
+    },
+    "x": {
+      "item": "minecraft:iron_bars"
+    },
+    "y": {
+      "tag": "minecraft:trapdoors"
+    }
+  },
+  "result": {
+    "item": "untamedwilds:trap_cage",
+    "count": 1
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "name": "tarantula",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:string",
+          "functions": [{
+            "function": "set_count",
+            "count": {
+              "min": 0,
+              "max": 1
+            }
+          },
+          {
+            "function": "looting_enchant",
+            "count": {
+              "min": 0,
+              "max": 1
+            }
+          }]
+        }
+      ]
+    }
+  ]
+}

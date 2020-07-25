@@ -1,0 +1,8 @@
+﻿{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "bottom": "untamedwilds:block/pearl_block",
+    "top": "untamedwilds:block/pearl_block",
+    "side": "untamedwilds:block/pearl_block"
+  }
+}

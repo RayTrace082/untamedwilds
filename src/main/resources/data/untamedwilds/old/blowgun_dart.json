@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "untamedwilds:blowgun_dart",
+	"count": 8
+  },
+  "pattern": [
+    " A",
+    "B "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "A": {
+      "ore": "stickWood",
+      "type": "forge:ore_dict"
+    },
+	"B": {
+      "ore": "feather",
+      "type": "forge:ore_dict"
+    }
+  }
+}

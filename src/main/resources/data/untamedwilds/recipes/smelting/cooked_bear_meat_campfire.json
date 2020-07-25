@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "item": "untamedwilds:food_bear_raw"
+  },
+  "result": "untamedwilds:food_bear_cooked",
+  "experience": 0.35,
+  "cookingtime": 600
+}

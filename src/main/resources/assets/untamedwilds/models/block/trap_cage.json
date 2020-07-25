@@ -1,0 +1,21 @@
+﻿{
+  "parent": "block/block",
+  "textures": {
+    "bottom": "untamedwilds:block/trap_cage_top",
+    "top": "untamedwilds:block/trap_cage_top",
+    "side": "untamedwilds:block/trap_cage"
+  },
+  "elements": [
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down":  { "texture": "#bottom"},
+                "up":    { "texture": "#top"},
+                "north": { "texture": "#side"},
+                "south": { "texture": "#side"},
+                "west":  { "texture": "#side"},
+                "east":  { "texture": "#side"}
+            }
+        }
+    ]
+}

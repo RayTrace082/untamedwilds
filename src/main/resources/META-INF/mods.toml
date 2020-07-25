@@ -1,0 +1,37 @@
+modLoader="javafml"
+loaderVersion="[26,)"
+# issueTrackerURL="http://my.issue.tracker/" #optional
+[[mods]] #mandatory
+modId="untamedwilds" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="Untamed Wilds" #mandatory
+# updateJSONURL="http://myurl.me/" #optional
+# displayURL="http://example.com/" #optional
+# logoFile="examplemod.png" #optional
+# credits="" #optional
+authors="RayTrace082" #optional
+
+# The description text for the mod (multi line!) (#mandatory)
+description='''
+Untamed Wilds aims to expand on the natural world of Minecraft by adding new high-quality mobs, while exploring the concepts of wildlife management and extinction.
+'''
+# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
+[[dependencies.untamedwilds]]
+    modId="forge"
+    mandatory=true
+    versionRange="[26,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.citadel]]
+    modId="citadel"
+    mandatory=true
+    versionRange="[26,)"
+    ordering="NONE"
+    side="BOTH"
+
+#[[dependencies.untamedwilds]]
+#    modId="minecraft"
+#    mandatory=true
+#    versionRange="[1.15.2]"
+#    ordering="NONE"
+#    side="BOTH"

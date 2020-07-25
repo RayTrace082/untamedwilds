@@ -1,0 +1,81 @@
+{
+	"pools": [{ 
+		"name": "antelope",
+		"rolls": 1,
+		"entries": [{
+			"type": "item",
+			"name": "untamedwilds:food_venison_raw",
+			"weight": 1,
+			"functions": [{
+				"function": "set_count",
+				"count": {
+					"min": 1,
+					"max": 2
+				}
+            },
+            {
+				"function": "looting_enchant",
+				"count": {
+					"min": 0,
+					"max": 2
+				}
+            },
+			{
+				"function": "furnace_smelt",
+				"conditions": [{
+					"condition": "entity_properties",
+					"entity": "this",
+					"properties": {
+						"on_fire": true
+					}
+				}]
+			}
+        ]}
+    ]},
+	{ 
+		"name": "antelope",
+		"rolls": 1,
+		"entries": [{
+			"type": "item",
+			"name": "minecraft:leather",
+			"weight": 1,
+			"functions": [{
+				"function": "set_count",
+				"count": {
+					"min": 0,
+					"max": 1
+				}
+            },
+            {
+				"function": "looting_enchant",
+				"count": {
+					"min": 0,
+					"max": 1
+				}
+            }
+        ]}
+    ]},
+	{ 
+		"name": "antelope",
+		"rolls": 1,
+		"entries": [{
+			"type": "item",
+			"name": "minecraft:bone",
+			"weight": 1,
+			"functions": [{
+				"function": "set_count",
+				"count": {
+					"min": 1,
+					"max": 2
+				}
+            },
+            {
+				"function": "looting_enchant",
+				"count": {
+					"min": 0,
+					"max": 2
+				}
+            }
+        ]}
+    ]}
+]}

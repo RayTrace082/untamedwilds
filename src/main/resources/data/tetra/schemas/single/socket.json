@@ -1,0 +1,20 @@
+{
+    "outcomes": [
+        {
+            "material": {
+                "item": "untamedwilds:material_pearl"
+            },
+            "experienceCost": 3,
+            "moduleKey": "single/socket",
+            "moduleVariant": "single_socket/pearl"
+        },
+		{
+            "material": {
+                "item": "untamedwilds:material_giant_pearl"
+            },
+            "experienceCost": 3,
+            "moduleKey": "single/socket",
+            "moduleVariant": "single_socket/pristine_pearl"
+        }
+    ]
+}

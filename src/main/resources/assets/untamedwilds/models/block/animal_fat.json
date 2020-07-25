@@ -1,0 +1,8 @@
+﻿{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "bottom": "untamedwilds:block/animal_fat_top",
+    "top": "untamedwilds:block/animal_fat_top",
+    "side": "untamedwilds:block/animal_fat_side"
+  }
+}
