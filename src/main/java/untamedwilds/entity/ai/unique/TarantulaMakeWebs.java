@@ -57,7 +57,7 @@ public class TarantulaMakeWebs extends Goal {
     public void tick() {
         if (this.targetPos != null && this.taskOwner.getNavigator().tryMoveToXYZ(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1)) {
             this.taskOwner.world.setBlockState(this.targetPos, Blocks.COBWEB.getDefaultState());
-            this.taskOwner.webProgress = this.taskOwner.getAdulthoodTime();
+            //this.taskOwner.webProgress = this.taskOwner.getAdulthoodTime();
             this.taskOwner.getNavigator().clearPath();
             this.searchCooldown--;
             this.continueTask = false;

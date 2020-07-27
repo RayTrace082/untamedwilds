@@ -5,7 +5,6 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -16,8 +15,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.registries.ForgeRegistries;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ISpecies;
@@ -38,7 +35,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
 
     public int aggroProgress;
-    public int webProgress;
+    //public int webProgress;
 
     public Tarantula(EntityType<? extends Tarantula> type, World worldIn) {
         super(type, worldIn);
@@ -66,7 +63,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
     public void livingTick() {
         super.livingTick();
         if (!this.world.isRemote) {
-            this.webProgress--;
+            //this.webProgress--;
             if (this.ticksExisted % 1000 == 0) {
                 if (this.wantsToBreed() && !this.isMale()) {
                     this.breed();
@@ -102,8 +99,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
     @Nullable
     @Override
     public AgeableEntity createChild(AgeableEntity ageableEntity) {
-        ItemEntity entityitem = this.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":egg_tarantula_" + this.getRawSpeciesName().toLowerCase()))), 0.2F);
-        entityitem.getItem().setCount(1 + this.rand.nextInt(3));
+        dropEggs("egg_tarantula_" + this.getRawSpeciesName().toLowerCase(), 4);
         return null;
     }
 
@@ -111,14 +107,8 @@ public class Tarantula extends ComplexMob implements ISpecies {
     public boolean processInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
 
-        if (!this.world.isRemote && !this.isBreedingItem(itemstack) && itemstack.isEmpty() && this.isAlive()) {
-            ItemEntity entityitem = this.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":tarantula_" + this.getRawSpeciesName().toLowerCase()))), 0.2F);
-            entityitem.setMotion((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F, this.rand.nextFloat() * 0.05F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
-            entityitem.getItem().setTag(this.writeEntityToNBT(this));
-            if (this.hasCustomName()) {
-                entityitem.getItem().setDisplayName(this.getCustomName());
-            }
-            this.remove();
+        if (!this.world.isRemote && itemstack.isEmpty() && this.isAlive()) {
+            turnEntityIntoItem("tarantula_" + this.getRawSpeciesName().toLowerCase());
             return true;
         }
         return super.processInteract(player, hand);

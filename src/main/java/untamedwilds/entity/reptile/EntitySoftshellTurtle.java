@@ -15,8 +15,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.registries.ForgeRegistries;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAmphibious;
@@ -76,7 +74,9 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         if (cause == DamageSource.ANVIL && !this.isChild()) {
             // TODO: Advancement trigger here
             ItemEntity entityitem = this.entityDropItem(new ItemStack(ModItems.FOOD_TURTLE_SOUP.get()), 0.2F);
-            entityitem.getItem().setCount(1);
+            if (entityitem != null) {
+                entityitem.getItem().setCount(1);
+            }
         }
         super.onDeath(cause);
     }
@@ -119,8 +119,7 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
     @Nullable
     @Override
     public AgeableEntity createChild(AgeableEntity ageableEntity) {
-        ItemEntity entityitem = this.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":egg_softshell_turtle_" + this.getRawSpeciesName().toLowerCase()))), 0.2F);
-        entityitem.getItem().setCount(1 + this.rand.nextInt(4));
+        dropEggs("egg_softshell_turtle_" + this.getRawSpeciesName().toLowerCase(), 5);
         return null;
     }
 
@@ -128,14 +127,8 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
     public boolean processInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
 
-        if (!this.world.isRemote && !this.isBreedingItem(itemstack) && itemstack.isEmpty() && this.isAlive()) {
-            ItemEntity entityitem = this.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":softshell_turtle_" + this.getRawSpeciesName().toLowerCase()))), 0.2F);
-            entityitem.setMotion((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F, this.rand.nextFloat() * 0.05F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
-            entityitem.getItem().setTag(this.writeEntityToNBT(this));
-            if (this.hasCustomName()) {
-                entityitem.getItem().setDisplayName(this.getCustomName());
-            }
-            this.remove();
+        if (!this.world.isRemote && itemstack.isEmpty() && this.isAlive()) {
+            turnEntityIntoItem("softshell_turtle_" + this.getRawSpeciesName().toLowerCase());
             return true;
         }
         return super.processInteract(player, hand);

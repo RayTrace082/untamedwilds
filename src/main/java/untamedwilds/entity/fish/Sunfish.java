@@ -6,12 +6,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.PanicGoal;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -19,8 +16,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.registries.ForgeRegistries;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
@@ -96,8 +91,7 @@ public class Sunfish extends ComplexMobAquatic implements ISpecies {
     @Nullable
     @Override
     public AgeableEntity createChild(AgeableEntity ageableEntity) {
-        ItemEntity entityItem = this.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":egg_sunfish_" + this.getRawSpeciesName().toLowerCase()))), 0.2F);
-        entityItem.getItem().setCount(2 + this.rand.nextInt(3));
+        dropEggs("egg_sunfish_" + this.getRawSpeciesName().toLowerCase(), 4);
         return null;
     }
 

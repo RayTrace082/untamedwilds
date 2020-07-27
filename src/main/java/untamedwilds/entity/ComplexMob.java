@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,6 +21,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
@@ -220,6 +222,27 @@ public abstract class ComplexMob extends TameableEntity {
         this.writeUnlessRemoved(entityTag); // Write the entity into NBT
         baseTag.put("EntityTag", entityTag); // Put the entity in the Tag
         return baseTag;
+    }
+
+    // This function makes the entity drop some Eggs of the given item_name, and with random stacksize between 1 and number
+    protected void dropEggs(String item_name, int number) {
+        ItemEntity entityitem = this.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase()))), 0.2F);
+        if (entityitem != null) {
+            entityitem.getItem().setCount(1 + this.rand.nextInt(number - 1));
+        }
+    }
+
+    // This function turns the entity into an item with item_name registry name, and removes the entity from the world
+    protected void turnEntityIntoItem(String item_name) {
+        ItemEntity entityitem = this.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase()))), 0.2F);
+        if (entityitem != null) {
+            entityitem.setMotion((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F, this.rand.nextFloat() * 0.05F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
+            entityitem.getItem().setTag(this.writeEntityToNBT(this));
+            if (this.hasCustomName()) {
+                entityitem.getItem().setDisplayName(this.getCustomName());
+            }
+            this.remove();
+        }
     }
 
     @Nullable

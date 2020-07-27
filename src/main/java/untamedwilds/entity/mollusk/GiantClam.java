@@ -2,7 +2,6 @@ package untamedwilds.entity.mollusk;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShovelItem;
@@ -18,8 +17,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.registries.ForgeRegistries;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ISpecies;
@@ -123,8 +120,7 @@ public class GiantClam extends ComplexMob implements ISpecies {
     @Nullable
     @Override
     public AgeableEntity createChild(AgeableEntity ageableEntity) {
-        ItemEntity entityitem = this.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":egg_giant_clam_" + this.getRawSpeciesName().toLowerCase()))), 0.2F);
-        entityitem.getItem().setCount(2 + this.rand.nextInt(3));
+        dropEggs("egg_giant_clam_" + this.getRawSpeciesName().toLowerCase(), 4);
         return null;
     }
 
@@ -134,14 +130,9 @@ public class GiantClam extends ComplexMob implements ISpecies {
 
         if (!this.world.isRemote && !this.isBreedingItem(itemstack) && itemstack.getItem() instanceof ShovelItem && this.isAlive() && hand == Hand.MAIN_HAND) {
             if (this.rand.nextInt(4) == 0) {
+                // TODO: Advancement trigger here
                 world.playSound(null, this.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.BLOCKS, 1.0F, 0.8F);
-                ItemEntity entityitem = this.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":giant_clam_" + this.getRawSpeciesName().toLowerCase()))), 0.2F);
-                entityitem.setMotion((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F, this.rand.nextFloat() * 0.05F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
-                entityitem.getItem().setTag(this.writeEntityToNBT(this));
-                if (this.hasCustomName()) {
-                    entityitem.getItem().setDisplayName(this.getCustomName());
-                }
-                this.remove();
+                turnEntityIntoItem("giant_clam_" + this.getRawSpeciesName().toLowerCase());
                 return true;
             }
             else {
