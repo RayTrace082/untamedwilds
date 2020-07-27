@@ -23,7 +23,6 @@ import untamedwilds.entity.ComplexMobAmphibious;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.AmphibiousRandomSwimGoal;
 import untamedwilds.entity.ai.AmphibiousTransition;
-import untamedwilds.entity.ai.SmartAvoidGoal;
 import untamedwilds.entity.ai.SmartMateGoal;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.init.ModItems;
@@ -57,9 +56,10 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         super.registerGoals();
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
-        this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1D, 1.1D, input -> this.getEcoLevel(input) > 4));
+        //this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1D, 1.1D, input -> this.getEcoLevel(input) > 4));
         this.goalSelector.addGoal(3, new AmphibiousTransition(this, 1D));
-        this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 120));
+        //this.goalSelector.addGoal(3, new SwimGoal(this));
+        this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 80));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 4));
     }

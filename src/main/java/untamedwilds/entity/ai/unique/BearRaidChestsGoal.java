@@ -8,6 +8,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvents;
@@ -70,10 +71,10 @@ public class BearRaidChestsGoal extends Goal {
             this.taskOwner.getNavigator().clearPath();
             this.taskOwner.setSitting(true);
             this.searchCooldown--;
-            /*if (this.taskOwner.world.getTileEntity(targetPos) instanceof ChestTileEntity) {
+            if (this.taskOwner.world.getTileEntity(targetPos) instanceof ChestTileEntity) {
                 ChestTileEntity chest = (ChestTileEntity) this.taskOwner.world.getTileEntity(targetPos);
-                chest.receiveClientEvent(1, 1); //TODO: Add animation for the chest being opened
-            }*/
+                this.taskOwner.world.addBlockEvent(this.targetPos, chest.getBlockState().getBlock(), 1, 1);
+            }
             if (this.searchCooldown == 0) {
                 this.searchCooldown = 100;
                 this.continueTask = stealItem();
@@ -83,8 +84,12 @@ public class BearRaidChestsGoal extends Goal {
     }
 
     public boolean shouldContinueExecuting() {
-        if (this.taskOwner.getHunger() > 80 || this.targetInventory.isEmpty()) {
+        if (this.taskOwner.getHunger() >= 60 || this.targetInventory.isEmpty()) {
             this.taskOwner.setSitting(false);
+            if (this.taskOwner.world.getTileEntity(targetPos) instanceof ChestTileEntity) {
+                ChestTileEntity chest = (ChestTileEntity) this.taskOwner.world.getTileEntity(targetPos);
+                this.taskOwner.world.addBlockEvent(this.targetPos, chest.getBlockState().getBlock(), 1, 0);
+            }
             return false;
         }
         return this.continueTask;
@@ -240,7 +245,6 @@ public class BearRaidChestsGoal extends Goal {
                     this.targetInventory = getInventoryAtPosition(this.taskOwner.world, blockpos);
                     return blockpos; // For some bizarre reason, the blockPos inside the array changes once it exits the loop,
                     // so yeah, returning the first inventory instead. The code remains commented just in case I ever figure this one out
-
                     //inventories.add((BlockPos)blockpos);
                 }
             }

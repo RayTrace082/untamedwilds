@@ -38,6 +38,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
 
     public int aggroProgress;
+    public int webProgress;
 
     public Tarantula(EntityType<? extends Tarantula> type, World worldIn) {
         super(type, worldIn);
@@ -56,6 +57,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.3D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 8));
+        // this.goalSelector.addGoal(3, new TarantulaMakeWebs(this, 300));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 4));
@@ -64,6 +66,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
     public void livingTick() {
         super.livingTick();
         if (!this.world.isRemote) {
+            this.webProgress--;
             if (this.ticksExisted % 1000 == 0) {
                 if (this.wantsToBreed() && !this.isMale()) {
                     this.breed();
@@ -72,11 +75,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
             if (this.world.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
             }
-            if (this.getAttackTarget() != null) {
-                this.setAngry(true);
-            } else {
-                this.setAngry(false);
-            }
+            this.setAngry(this.getAttackTarget() != null);
         }
         if (this.world.isRemote && this.isAngry() && this.aggroProgress < 40) {
             this.aggroProgress++;

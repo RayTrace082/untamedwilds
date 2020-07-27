@@ -43,12 +43,7 @@ public class SmartWanderGoal extends Goal {
         if (this.creature.isBeingRidden() || !this.creature.canMove() || !this.creature.getNavigator().noPath()) {
             return false;
         } else {
-            if (!this.mustUpdate) {
-                /*if (this.creature.getIdleTime() <= 200) { // TODO
-                    return false;
-                }*/
-                if (this.creature.getRNG().nextInt(this.executionChance) != 0) { return false; }
-            }
+            if (this.creature.getRNG().nextInt(this.executionChance) != 0) { return false; }
 
             Vec3d vec3d;
             vec3d = this.getPosition();

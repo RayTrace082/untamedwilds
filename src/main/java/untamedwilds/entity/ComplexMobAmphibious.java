@@ -3,8 +3,8 @@ package untamedwilds.entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.controller.DolphinLookController;
 import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
@@ -28,6 +28,7 @@ public abstract class ComplexMobAmphibious extends ComplexMobTerrestrial {
         super(type, worldIn);
         this.moveController = new ComplexMobAmphibious.MoveHelperController(this);
         this.setPathPriority(PathNodeType.WATER, 0.0F);
+        this.lookController = new DolphinLookController(this, 10);
         //this.waterNavigator = new SwimmerPathNavigator(this, worldIn);
         //this.groundNavigator = new GroundPathNavigator(this, worldIn);
     }
@@ -104,6 +105,7 @@ public abstract class ComplexMobAmphibious extends ComplexMobTerrestrial {
     }
 
     static class AmphibiousNavigator extends SwimmerPathNavigator {
+
         AmphibiousNavigator(ComplexMobAmphibious turtle, World p_i48815_2_) {
             super(turtle, p_i48815_2_);
         }
@@ -118,14 +120,7 @@ public abstract class ComplexMobAmphibious extends ComplexMobTerrestrial {
         }
 
         public boolean canEntityStandOnPos(BlockPos pos) {
-            if (this.entity instanceof TurtleEntity) {
-                ComplexMobAmphibious turtleentity = (ComplexMobAmphibious)this.entity;
-                /*if (turtleentity.isTravelling()) {
-                    return this.world.getBlockState(pos).getBlock() == Blocks.WATER;
-                }*/
-            }
-
-            return !this.world.getBlockState(pos.down()).isAir();
+             return !this.world.getBlockState(pos.down()).isAir();
         }
     }
 
@@ -156,9 +151,9 @@ public abstract class ComplexMobAmphibious extends ComplexMobTerrestrial {
                     this.entity.rotationPitch = this.limitAngle(this.entity.rotationPitch, f2, 5.0F);
                 }
             } else {
-                if (this.entity.getAttackTarget() == null && this.entity.getNavigator().noPath() && this.entity.isInWater()) {
+                if (this.entity.getAttackTarget() == null && this.entity.getNavigator().noPath()) {
                     //this.setMotion(this.getMotion().add(0.0D, -0.005D, 0.0D));
-                    //this.setMotion(0.0D, buoyancy - 1, 0.0D);
+                    //this.entity.setMotion(0.0D, this.entity.buoyancy - 1, 0.0D);
                     this.entity.setMotion(this.entity.getMotion().add(0.0D, this.entity.buoyancy - 1, 0.0D));
                 }
                 this.entity.setAIMoveSpeed(0.0F);

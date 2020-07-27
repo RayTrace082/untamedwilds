@@ -93,7 +93,6 @@ public class SmartFollowOwnerGoal extends Goal {
                                     }
                                 }
                             }
-
                         }
                     }
                 }

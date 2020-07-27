@@ -4,14 +4,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -23,11 +20,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.apache.logging.log4j.Level;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
-import untamedwilds.world.FaunaHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -67,16 +62,6 @@ public class ItemMobSpawn extends Item {
     public ActionResultType onItemUse(ItemUseContext useContext) {
 
         World worldIn = useContext.getWorld();
-        if (UntamedWilds.DEBUG && worldIn.isRemote()) {
-            UntamedWilds.LOGGER.log(Level.INFO, "-----Entity dump for WildWorld-----");
-            for (FaunaHandler.animalType type : FaunaHandler.animalType.values()) {
-                List<FaunaHandler.SpawnListEntry> spawns = FaunaHandler.getSpawnableList(type);
-                UntamedWilds.LOGGER.log(Level.INFO, "-----" + type.toString().toLowerCase() + "-----");
-                for (FaunaHandler.SpawnListEntry entry : spawns) {
-                    UntamedWilds.LOGGER.log(Level.INFO, entry.toString());
-                }
-            }
-        }
 
         if (worldIn.isRemote) {
             return ActionResultType.SUCCESS;
@@ -111,7 +96,7 @@ public class ItemMobSpawn extends Item {
                         worldIn.addEntity(spawn);
                         UntamedWilds.LOGGER.info("Randomizing repeated UUID");
                     }
-                    ((LivingEntity)spawn).addPotionEffect(new EffectInstance(Effects.GLOWING, 800, 0));
+                    //((LivingEntity)spawn).addPotionEffect(new EffectInstance(Effects.GLOWING, 800, 0));
                     return ActionResultType.SUCCESS;
                 }
             }

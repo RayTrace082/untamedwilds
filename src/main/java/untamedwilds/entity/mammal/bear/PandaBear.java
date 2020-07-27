@@ -14,6 +14,8 @@ import net.minecraft.world.World;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
+import untamedwilds.entity.ai.unique.PandaBreakBamboo;
+import untamedwilds.entity.ai.unique.PandaEatBamboo;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 
@@ -37,8 +39,10 @@ public class PandaBear extends AbstractBear {
     public void registerGoals() {
         this.goalSelector.addGoal(1, new SmartSwimGoal(this));
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 2.3D, false, 1));
+        this.goalSelector.addGoal(2, new PandaEatBamboo(this, 40, 16));
         this.goalSelector.addGoal(3, new SmartFollowOwnerGoal(this, 2.3D, 16.0F, 3.0F));
         this.goalSelector.addGoal(3, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 6));
+        this.goalSelector.addGoal(3, new PandaBreakBamboo(this, 40));
         this.goalSelector.addGoal(4, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D, true));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
@@ -69,7 +73,6 @@ public class PandaBear extends AbstractBear {
 
     /* Breeding conditions for the Black Bear are:
      * Warm Biome (T between than 0.7 and 1.0)
-     * 5+ Bamboo Plants nearby // TODO: Pandas don't currently need Bamboo to breed
      * No other entities nearby */
     public boolean wantsToBreed() {
         super.wantsToBreed();

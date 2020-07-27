@@ -87,7 +87,7 @@ public class AmphibiousTransition extends Goal {
 
         for (int i = 0; i < 10; ++i) {
             BlockPos blockpos1 = blockpos.add(random.nextInt(20) - 10, random.nextInt(6), random.nextInt(20) - 10);
-            if (this.world.getFluidState(blockpos1).isEmpty() && this.world.getBlockState(blockpos1).allowsMovement(this.world, blockpos1, PathType.LAND) && this.world.getBlockState(blockpos1.down()).isSolid()) {
+            if (this.world.getFluidState(blockpos1).isEmpty() && this.world.getBlockState(blockpos1).allowsMovement(this.world, blockpos1, PathType.LAND) && this.world.getBlockState(blockpos1.down()).isSolid() && this.world.getFluidState(blockpos1.down()).isEmpty()) {
                 //this.world.setBlockState(blockpos1, Blocks.TORCH.getDefaultState());
                 return new Vec3d(blockpos1.getX(), blockpos1.getY(), blockpos1.getZ());
             }

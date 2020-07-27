@@ -13,7 +13,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -37,10 +36,10 @@ public class ItemOwnershipDeed extends Item {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.hasTag()) {
-            CompoundNBT nbt = stack.getTag(); // TODO: Change into localized texts!
-            tooltip.add(new StringTextComponent("This document transfers the ownership of: " + nbt.getString("entityname")).applyTextStyle(TextFormatting.GRAY));
-            tooltip.add(new StringTextComponent("Right-click this deed to highlight the associated mob").applyTextStyle(TextFormatting.GRAY));
-            tooltip.add(new StringTextComponent("Signed by: " + nbt.getString("ownername")).applyTextStyle(TextFormatting.ITALIC).applyTextStyle(TextFormatting.GRAY));
+            CompoundNBT nbt = stack.getTag();
+            tooltip.add(new TranslationTextComponent("item.untamedwilds.ownership_deed_desc_4", nbt.getString("entityname")).applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.untamedwilds.ownership_deed_desc_5").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("item.untamedwilds.ownership_deed_desc_6",  nbt.getString("ownername")).applyTextStyle(TextFormatting.ITALIC).applyTextStyle(TextFormatting.GRAY));
         }
         else {
             tooltip.add(new TranslationTextComponent("item.untamedwilds.ownership_deed_desc_1").applyTextStyle(TextFormatting.GRAY));

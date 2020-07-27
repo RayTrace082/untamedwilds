@@ -1,4 +1,4 @@
-package untamedwilds.entity.ai;
+package untamedwilds.entity.ai.unique;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -11,32 +11,20 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 
-public class FindItemsGoal extends Goal  {
+public class PandaEatBamboo extends Goal  {
     private ComplexMobTerrestrial taskOwner;
     private final Sorter sorter;
+    private final int executionChance;
     private int distance;
     private ItemEntity targetItem;
     private Item targetItemStack;
-    private final int executionChance;
-    private boolean hyperCarnivore; // TODO; Shitty patchwork, since Minecraft does not consider fish as "Meat", move to item tags?
-    private boolean hyperHerbivore;
 
-    public FindItemsGoal(ComplexMobTerrestrial creature, int distance) {
-        this(creature, distance, 100, false, false);
-    }
-
-    public FindItemsGoal(ComplexMobTerrestrial creature, int distance, boolean hyperCarnivore) {
-        this(creature, distance, 100, hyperCarnivore, false);
-    }
-
-    public FindItemsGoal(ComplexMobTerrestrial creature, int distance, int chance, boolean hyperCarnivore, boolean hyperHerbivore) {
+    public PandaEatBamboo(ComplexMobTerrestrial creature, int chance, int distance) {
         this.taskOwner = creature;
+        this.executionChance = chance;
         this.sorter = new Sorter(creature);
         this.distance = distance;
-        this.executionChance = chance;
-        this.hyperCarnivore = hyperCarnivore;
-        this.hyperHerbivore = hyperHerbivore;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Flag.TARGET));
+        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.TARGET));
     }
 
     public boolean shouldExecute() {
@@ -47,14 +35,8 @@ public class FindItemsGoal extends Goal  {
             return false;
         }
         List<ItemEntity> list = this.taskOwner.world.getEntitiesWithinAABB(ItemEntity.class, this.getTargetableArea(distance));
-
-        list.removeIf((ItemEntity item) -> !item.getItem().isFood());
-        if (this.hyperCarnivore) {
-            list.removeIf((ItemEntity item) -> !item.getItem().getItem().getFood().isMeat());
-        }
-        else if (this.hyperHerbivore) {
-            list.removeIf((ItemEntity item) -> item.getItem().getItem().getFood().isMeat());
-        }
+        //UntamedWilds.LOGGER.info(list.get(0).getItem().getItem());
+        list.removeIf((ItemEntity item) -> item.getItem().getItem().equals("bamboo")); // Stupid way to do this
 
         if (list.isEmpty()) {
             return false;
@@ -89,13 +71,7 @@ public class FindItemsGoal extends Goal  {
     public void tick() {
         double distance = Math.sqrt(Math.pow(this.taskOwner.getPosX() - this.targetItem.getPosX(), 2.0D) + Math.pow(this.taskOwner.getPosZ() - this.targetItem.getPosZ(), 2.0D));
         if (distance < 1.5D) {
-            if (targetItemStack.isFood()) {
-                this.taskOwner.addHunger(targetItemStack.getFood().getHealing() * 10);
-            }
-            else { this.taskOwner.addHunger(10); }
-            /*if (Config.debug) {
-                WildWorld.logger.log(Level.INFO, "Added Hunger: " + this.targetItemStack.getHealAmount(targetItem.getItem()) * 10);
-            }*/
+            this.taskOwner.addHunger(10);
             this.targetItem.getItem().shrink(1);
             if (this.targetItem.getItem().getCount() == 0) {
                 this.targetItem.remove();

@@ -80,7 +80,6 @@ public class HuntMobTarget<T extends LivingEntity, target, attacked> extends Tar
     private boolean shouldRemoveTarget(LivingEntity entity) {
         if (entity instanceof CreeperEntity) {
             return false; // Hardcoded Creepers out because they will absolutely destroy wildlife if targeted
-            // TODO: Revalidate the Creeper hardcode since mobs won't hunt below 1/3 Health
         }
         if (!this.isCannibal) {
             if (entity instanceof ComplexMob) {
