@@ -12,10 +12,10 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class PandaEatBamboo extends Goal  {
-    private ComplexMobTerrestrial taskOwner;
+    private final ComplexMobTerrestrial taskOwner;
     private final Sorter sorter;
     private final int executionChance;
-    private int distance;
+    private final int distance;
     private ItemEntity targetItem;
     private Item targetItemStack;
 

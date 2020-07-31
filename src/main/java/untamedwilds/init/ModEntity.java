@@ -62,17 +62,17 @@ public class ModEntity {
     public static EntityType<SpectacledBear> SPECTACLED_BEAR = createEntity(ConfigMobControl.addBear.get(), SpectacledBear::new,  "bear_spectacled",  1.2F, 1.2F, 0x624125, 0x8E6E51, animalType.APEX_PRED, 1);
     public static EntityType<SunBear> SUN_BEAR = createEntity(ConfigMobControl.addBear.get(), SunBear::new,  "bear_sun",  0.9F, 0.9F, 0x0B0A08, 0xA27345, animalType.APEX_PRED, 1);
     // Big Cats
-    public static EntityType<BigCatJaguar> JAGUAR = createEntity(UntamedWilds.DEBUG, BigCatJaguar::new,  "bigcat_jaguar",  1.2F, 1.0F, 0xC59F45,0x383121, animalType.APEX_PRED, 1);
-    public static EntityType<BigCatLeopard> LEOPARD = createEntity(UntamedWilds.DEBUG, BigCatLeopard::new,  "bigcat_leopard",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1);
-    public static EntityType<BigCatLion> LION = createEntity(UntamedWilds.DEBUG, BigCatLion::new, "bigcat_lion", 1.2F, 1.2F, 0x346B70, 0xAD713C, animalType.APEX_PRED, 1);
-    public static EntityType<BigCatPanther> PANTHER = createEntity(UntamedWilds.DEBUG, BigCatPanther::new,  "bigcat_panther",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1);
-    public static EntityType<BigCatPuma> PUMA = createEntity(UntamedWilds.DEBUG, BigCatPuma::new,  "bigcat_puma",  1.2F, 1.0F, 0x9F6936, 0xECC38E, animalType.APEX_PRED, 1);
-    public static EntityType<BigCatSnowLeopard> SNOW_LEOPARD = createEntity(UntamedWilds.DEBUG, BigCatSnowLeopard::new,  "bigcat_snow_leopard",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1);
-    public static EntityType<BigCatTiger> TIGER = createEntity(UntamedWilds.DEBUG, BigCatTiger::new,  "bigcat_tiger",  1.2F, 1.0F, 0xD1741D, 0x1A0400, animalType.APEX_PRED, 1);
-    public static EntityType<BigCatCaveLion> CAVE_LION = createEntity(UntamedWilds.DEBUG, BigCatCaveLion::new,  "bigcat_cave_lion",  1.2F, 1.0F, 0x5B4924, 0xCCBC8F, animalType.APEX_PRED, 1);
-    public static EntityType<BigCatMarsupialLion> MARSUPIAL_LION = createEntity(UntamedWilds.DEBUG, BigCatMarsupialLion::new,  "bigcat_marsupial_lion",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1);
-    public static EntityType<BigCatSabertooth> SABERTOOTH = createEntity(UntamedWilds.DEBUG, BigCatSabertooth::new,  "bigcat_sabertooth",  1.2F, 1.0F, 0x97845A, 0x3A3026, animalType.APEX_PRED, 1);
-    public static EntityType<BigCatDireLion> DIRE_LION = createEntity(UntamedWilds.DEBUG, BigCatDireLion::new,  "bigcat_dire_lion",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1);
+    public static EntityType<JaguarBigCat> JAGUAR = createEntity(UntamedWilds.DEBUG, JaguarBigCat::new,  "bigcat_jaguar",  1.2F, 1.0F, 0xC59F45,0x383121, animalType.APEX_PRED, 1);
+    public static EntityType<LeopardBigCat> LEOPARD = createEntity(UntamedWilds.DEBUG, LeopardBigCat::new,  "bigcat_leopard",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1);
+    public static EntityType<LionBigCat> LION = createEntity(UntamedWilds.DEBUG, LionBigCat::new, "bigcat_lion", 1.2F, 1.2F, 0x346B70, 0xAD713C, animalType.APEX_PRED, 1);
+    public static EntityType<PantherBigCat> PANTHER = createEntity(UntamedWilds.DEBUG, PantherBigCat::new,  "bigcat_panther",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1);
+    public static EntityType<PumaBigCat> PUMA = createEntity(UntamedWilds.DEBUG, PumaBigCat::new,  "bigcat_puma",  1.2F, 1.0F, 0x9F6936, 0xECC38E, animalType.APEX_PRED, 1);
+    public static EntityType<SnowLeopardBigCat> SNOW_LEOPARD = createEntity(UntamedWilds.DEBUG, SnowLeopardBigCat::new,  "bigcat_snow_leopard",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1);
+    public static EntityType<TigerBigCat> TIGER = createEntity(UntamedWilds.DEBUG, TigerBigCat::new,  "bigcat_tiger",  1.2F, 1.0F, 0xD1741D, 0x1A0400, animalType.APEX_PRED, 1);
+    public static EntityType<CaveLionBigCat> CAVE_LION = createEntity(UntamedWilds.DEBUG, CaveLionBigCat::new,  "bigcat_cave_lion",  1.2F, 1.0F, 0x5B4924, 0xCCBC8F, animalType.APEX_PRED, 1);
+    public static EntityType<MarsupialLionBigCat> MARSUPIAL_LION = createEntity(UntamedWilds.DEBUG, MarsupialLionBigCat::new,  "bigcat_marsupial_lion",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1);
+    public static EntityType<SabertoothBigCat> SABERTOOTH = createEntity(UntamedWilds.DEBUG, SabertoothBigCat::new,  "bigcat_sabertooth",  1.2F, 1.0F, 0x97845A, 0x3A3026, animalType.APEX_PRED, 1);
+    public static EntityType<DireLionBigCat> DIRE_LION = createEntity(UntamedWilds.DEBUG, DireLionBigCat::new,  "bigcat_dire_lion",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1);
 
     // Fish
     public static EntityType<Sunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), Sunfish::new,  "sunfish",  1.6F, 1.6F, 0x8CA1A4, 0x2C545B, animalType.LARGE_OCEAN, 1);

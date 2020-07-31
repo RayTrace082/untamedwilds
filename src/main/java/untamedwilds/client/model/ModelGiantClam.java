@@ -4,13 +4,12 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mollusk.GiantClam;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelGiantClam extends AdvancedEntityModel {
+public class ModelGiantClam extends AdvancedEntityModel<GiantClam> {
     public AdvancedModelBox mantle;
     public AdvancedModelBox shell_2;
     public AdvancedModelBox shell_1;
@@ -44,11 +43,8 @@ public class ModelGiantClam extends AdvancedEntityModel {
         return ImmutableList.of(this.mantle, this.shell_1, this.shell_2);
     }
 
-    public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float f = ageInTicks - (float) entityIn.ticksExisted;
-        GiantClam clam = (GiantClam) entityIn;
+    public void setRotationAngles(GiantClam clam, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
-
         this.mantle.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.08F), (float) (1F + Math.sin(ageInTicks / 16) * 0.08F), 1.0F);
         walk(shell_1, 0.2f, 0.1f, true, 0.5F, 0f, ageInTicks / 20, 0.5F);
         walk(shell_2, 0.2f, 0.1f, false, 0.5F, 0f, ageInTicks / 20, 0.5F);

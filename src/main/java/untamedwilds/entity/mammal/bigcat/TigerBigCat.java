@@ -20,7 +20,7 @@ import untamedwilds.init.ModEntity;
 
 import java.util.List;
 
-public class BigCatTiger extends BigCatAbstract {
+public class TigerBigCat extends AbstractBigCat {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/tiger.png");
     private static final float SIZE = 1.1F;
@@ -29,7 +29,7 @@ public class BigCatTiger extends BigCatAbstract {
     private static final int GROWING = 11 * ConfigGamerules.cycleLength.get();
     private static final int RARITY = 3;
 
-    public BigCatTiger(EntityType<? extends BigCatAbstract> type, World worldIn) {
+    public TigerBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
         this.ecoLevel = 8;
     }
@@ -47,7 +47,7 @@ public class BigCatTiger extends BigCatAbstract {
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof BigCatTiger)));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof TigerBigCat)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 8));
     }
@@ -87,7 +87,7 @@ public class BigCatTiger extends BigCatAbstract {
 
     public void breed() {
         for (int i = 0; i <= 1 + this.rand.nextInt(2); i++) {
-            BigCatTiger child = this.createChild(this);
+            TigerBigCat child = this.createChild(this);
             if (child != null) {
                 child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
                 if (this.getOwner() != null) {
@@ -98,8 +98,8 @@ public class BigCatTiger extends BigCatAbstract {
         }
     }
 
-    public BigCatTiger createChild(AgeableEntity ageable) {
-        BigCatTiger bear = new BigCatTiger(ModEntity.TIGER, this.world);
+    public TigerBigCat createChild(AgeableEntity ageable) {
+        TigerBigCat bear = new TigerBigCat(ModEntity.TIGER, this.world);
         bear.setSpecies(this.getSpecies());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());

@@ -9,10 +9,7 @@ import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.*;
@@ -23,18 +20,18 @@ import untamedwilds.init.ModEntity;
 
 import java.util.List;
 
-public class BigCatPuma extends BigCatAbstract {
+public class JaguarBigCat extends AbstractBigCat {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/puma.png");
-    private static final float SIZE = 0.7f;
+    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/jaguar.png");
+    private static final float SIZE = 0.9f;
     private static final String BREEDING = "ALL";
-    private static final int GESTATION = 3 * ConfigGamerules.cycleLength.get();
-    private static final int GROWING = 9 * ConfigGamerules.cycleLength.get();
-    private static final int RARITY = 8;
+    private static final int GESTATION = 4 * ConfigGamerules.cycleLength.get();
+    private static final int GROWING = 10 * ConfigGamerules.cycleLength.get();
+    private static final int RARITY = 5;
 
-    public BigCatPuma(EntityType<? extends BigCatAbstract> type, World worldIn) {
+    public JaguarBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 6;
+        this.ecoLevel = 7;
     }
 
     public void registerGoals() {
@@ -50,9 +47,9 @@ public class BigCatPuma extends BigCatAbstract {
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof BigCatPuma)));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof JaguarBigCat)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 6));
+        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 5));
     }
 
     protected void registerAttributes() {
@@ -61,7 +58,7 @@ public class BigCatPuma extends BigCatAbstract {
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30D);
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.16D);
         this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.8D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(24.0D);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
     }
 
     /* Crepuscular: Active between 10:00 and 1:00 */
@@ -71,8 +68,8 @@ public class BigCatPuma extends BigCatAbstract {
         return time > 4000 && time < 19000;
     }
 
-    /* Breeding conditions for the Mountain Lion are:
-     * Temperate Biome (T between 0.2 and 0.7)
+    /* Breeding conditions for the Jaguar are:
+     * Warm Biome (T higher than 0.6)
      * No other entities nearby */
     public boolean wantsToBreed() {
         if (super.wantsToBreed()) {
@@ -80,7 +77,7 @@ public class BigCatPuma extends BigCatAbstract {
                 if (ConfigGamerules.hardcoreBreeding.get()) {
                     List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                     float i = this.world.getBiome(this.getPosition()).getTemperature(this.getPosition());
-                    return i >= 0.2 && i <= 0.7 && list.size() < 3;
+                    return i >= 0.6 && list.size() < 3;
                 }
                 return true;
             }
@@ -89,8 +86,8 @@ public class BigCatPuma extends BigCatAbstract {
     }
 
     public void breed() {
-        for (int i = 0; i <= 1 + this.rand.nextInt(4); i++) {
-            BigCatPuma child = this.createChild(this);
+        for (int i = 0; i <= 1 + this.rand.nextInt(2); i++) {
+            JaguarBigCat child = this.createChild(this);
             if (child != null) {
                 child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
                 if (this.getOwner() != null) {
@@ -101,27 +98,15 @@ public class BigCatPuma extends BigCatAbstract {
         }
     }
 
-    public BigCatPuma createChild(AgeableEntity ageable) {
-        BigCatPuma bear = new BigCatPuma(ModEntity.PUMA, this.world);
+    public JaguarBigCat createChild(AgeableEntity ageable) {
+        JaguarBigCat bear = new JaguarBigCat(ModEntity.JAGUAR, this.world);
         bear.setSpecies(this.getSpecies());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());
         return bear;
     }
 
-    protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_OCELOT_AMBIENT;
-    }
-
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ENTITY_OCELOT_HURT;
-    }
-
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_OCELOT_DEATH;
-    }
-
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.RABBIT; }
+    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.PORKCHOP; } // TODO: Replace with Capybara meat if they are ever added
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }
     public int getAdulthoodTime() { return GROWING; }

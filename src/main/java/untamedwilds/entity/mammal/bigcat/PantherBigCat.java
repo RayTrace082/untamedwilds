@@ -20,16 +20,16 @@ import untamedwilds.init.ModEntity;
 
 import java.util.List;
 
-public class BigCatSnowLeopard extends BigCatAbstract {
+public class PantherBigCat extends AbstractBigCat {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/snow_leopard.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/panther.png");
     private static final float SIZE = 0.8f;
     private static final String BREEDING = "ALL";
     private static final int GESTATION = 4 * ConfigGamerules.cycleLength.get();
     private static final int GROWING = 10 * ConfigGamerules.cycleLength.get();
-    private static final int RARITY = 5;
+    private static final int RARITY = 4;
 
-    public BigCatSnowLeopard(EntityType<? extends BigCatAbstract> type, World worldIn) {
+    public PantherBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
         this.ecoLevel = 7;
     }
@@ -47,7 +47,7 @@ public class BigCatSnowLeopard extends BigCatAbstract {
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof BigCatPanther)));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof PantherBigCat)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 5));
     }
@@ -68,8 +68,8 @@ public class BigCatSnowLeopard extends BigCatAbstract {
         return time > 13000 || time < 4000;
     }
 
-    /* Breeding conditions for the Snow Leopard are:
-     * Cold Biome (T between -1.0 and 0.4)
+    /* Breeding conditions for the Panther are:
+     * Warm Biome (T higher than 0.6)
      * No other entities nearby */
     public boolean wantsToBreed() {
         if (super.wantsToBreed()) {
@@ -77,7 +77,7 @@ public class BigCatSnowLeopard extends BigCatAbstract {
                 if (ConfigGamerules.hardcoreBreeding.get()) {
                     List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                     float i = this.world.getBiome(this.getPosition()).getTemperature(this.getPosition());
-                    return i <= 0.4 && list.size() < 3;
+                    return i >= 0.6 && list.size() < 3;
                 }
                 return true;
             }
@@ -86,8 +86,8 @@ public class BigCatSnowLeopard extends BigCatAbstract {
     }
 
     public void breed() {
-        for (int i = 0; i <= 1 + this.rand.nextInt(3); i++) {
-            BigCatSnowLeopard child = this.createChild(this);
+        for (int i = 0; i <= 1 + this.rand.nextInt(2); i++) {
+            PantherBigCat child = this.createChild(this);
             if (child != null) {
                 child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
                 if (this.getOwner() != null) {
@@ -98,8 +98,8 @@ public class BigCatSnowLeopard extends BigCatAbstract {
         }
     }
 
-    public BigCatSnowLeopard createChild(AgeableEntity ageable) {
-        BigCatSnowLeopard bear = new BigCatSnowLeopard(ModEntity.SNOW_LEOPARD, this.world);
+    public PantherBigCat createChild(AgeableEntity ageable) {
+        PantherBigCat bear = new PantherBigCat(ModEntity.PANTHER, this.world);
         bear.setSpecies(this.getSpecies());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());

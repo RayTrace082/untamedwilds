@@ -5,14 +5,13 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mammal.EntityHippo;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelHippoCalf extends AdvancedEntityModel {
+public class ModelHippoCalf extends AdvancedEntityModel<EntityHippo> {
     public AdvancedModelBox body_main;
     public AdvancedModelBox head_neck;
     public AdvancedModelBox leg_right;
@@ -118,8 +117,7 @@ public class ModelHippoCalf extends AdvancedEntityModel {
         );
     }
 
-    public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        EntityHippo gazelle = (EntityHippo) entityIn;
+    public void setRotationAngles(EntityHippo hippo, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
         this.body_main.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
@@ -130,15 +128,15 @@ public class ModelHippoCalf extends AdvancedEntityModel {
         bob(leg_left, 0.4F * 1.5f, 0.03F, false, -ageInTicks / 20, 2);
 
         // Controls the head tracking
-        if (!gazelle.isSleeping()) {
+        if (!hippo.isSleeping()) {
             this.faceTarget(netHeadYaw, headPitch, 3, head_neck);
             this.faceTarget(netHeadYaw, headPitch, 3, head_face);
         }
-        if (!gazelle.shouldRenderEyes()) {
+        if (!hippo.shouldRenderEyes()) {
             this.eye_right.setRotationPoint(-1F, -2F, -2);
             this.eye_left.setRotationPoint(1F, -2.0F, -2.0F);
         }
-        if (gazelle.canMove()) {
+        if (hippo.canMove()) {
             this.arm_right.rotateAngleX = MathHelper.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
             this.arm_left.rotateAngleX = MathHelper.cos(limbSwing * 0.5F + (float) Math.PI) * 1.4F * limbSwingAmount;
             this.leg_left.rotateAngleX = MathHelper.cos(limbSwing * 0.5F + (float) Math.PI) * 1.4F * limbSwingAmount;

@@ -32,11 +32,11 @@ public class RendererGiantClam extends MobRenderer<GiantClam, EntityModel<GiantC
 
     public ResourceLocation getEntityTexture(@Nonnull GiantClam entity) {
         switch (entity.getSpecies()) {
+            default:
             case 0: return DERASA;
             case 1: return GIGAS;
             case 2: return MAXIMA;
             case 3: return SQUAMOSA;
-            default: return GIGAS;
         }
     }
 }

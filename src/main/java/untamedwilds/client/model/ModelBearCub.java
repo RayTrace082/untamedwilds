@@ -4,27 +4,26 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mammal.bear.AbstractBear;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelBearCub extends AdvancedEntityModel
+public class ModelBearCub extends AdvancedEntityModel<AbstractBear>
 {
-    private AdvancedModelBox body_main;
-    private AdvancedModelBox body_buttocks;
-    private AdvancedModelBox head_face;
-    private AdvancedModelBox arm_right;
-    private AdvancedModelBox arm_left;
-    private AdvancedModelBox leg_left;
-    private AdvancedModelBox leg_right;
-    private AdvancedModelBox head_snout;
-    private AdvancedModelBox ear_left;
-    private AdvancedModelBox ear_right;
-    private AdvancedModelBox eye_left;
-    private AdvancedModelBox eye_right;
+    private final AdvancedModelBox body_main;
+    private final AdvancedModelBox body_buttocks;
+    private final AdvancedModelBox head_face;
+    private final AdvancedModelBox arm_right;
+    private final AdvancedModelBox arm_left;
+    private final AdvancedModelBox leg_left;
+    private final AdvancedModelBox leg_right;
+    private final AdvancedModelBox head_snout;
+    private final AdvancedModelBox ear_left;
+    private final AdvancedModelBox ear_right;
+    private final AdvancedModelBox eye_left;
+    private final AdvancedModelBox eye_right;
 
     public ModelBearCub() {
         this.textureWidth = 128;
@@ -113,8 +112,7 @@ public class ModelBearCub extends AdvancedEntityModel
         );
     }
 
-    public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        AbstractBear bear = (AbstractBear)entityIn;
+    public void setRotationAngles(AbstractBear bear, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
         this.faceTarget(netHeadYaw, headPitch, 1, head_face);

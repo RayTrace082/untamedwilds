@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ItemMobEgg extends Item {
-    private EntityType<? extends ComplexMob> entity;
+    private final EntityType<? extends ComplexMob> entity;
     public int species;
 
     public ItemMobEgg(EntityType<? extends ComplexMob> typeIn, int species, Properties properties) {
@@ -43,9 +43,7 @@ public class ItemMobEgg extends Item {
     @Override
     public ActionResultType onItemUse(ItemUseContext useContext) {
         World worldIn = useContext.getWorld();
-        if (worldIn.isRemote) {
-            return ActionResultType.SUCCESS;
-        } else {
+        if (!worldIn.isRemote) {
             ItemStack itemStack = useContext.getItem();
             BlockPos pos = useContext.getPos();
             Direction facing = useContext.getFace();
@@ -58,14 +56,16 @@ public class ItemMobEgg extends Item {
                 spawnPos = pos.offset(facing);
             }
 
-            if (!useContext.getPlayer().abilities.isCreativeMode) {
-                itemStack.shrink(1);
+            if (useContext.getPlayer() != null) {
+                if (!useContext.getPlayer().abilities.isCreativeMode) {
+                    itemStack.shrink(1);
+                }
             }
             EntityType<?> entity = this.getType(itemStack.getTag());
             Entity spawn = entity.create(worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, !Objects.equals(pos, spawnPos) && facing == Direction.UP);
             if (!itemStack.hasTag()) {
                 if (spawn instanceof ComplexMob) {
-                    ComplexMob entitySpawn = (ComplexMob)spawn;
+                    ComplexMob entitySpawn = (ComplexMob) spawn;
                     entitySpawn.setRandomMobSize();
                     entitySpawn.setGender(worldIn.rand.nextInt(2));
                     entitySpawn.setSpecies(this.species);
@@ -73,11 +73,14 @@ public class ItemMobEgg extends Item {
                     entitySpawn.setPlayerSpawned(true);
                 }
             }
-            worldIn.addEntity(spawn);
-            return ActionResultType.SUCCESS;
+            if (spawn != null) {
+                worldIn.addEntity(spawn);
+            }
         }
+        return ActionResultType.SUCCESS;
     }
 
+    // TODO: Have dropped eggs eventually hatch into baby mobs
     /*@Override
     public boolean onEntityItemUpdate(EntityItem entityItem) {
 

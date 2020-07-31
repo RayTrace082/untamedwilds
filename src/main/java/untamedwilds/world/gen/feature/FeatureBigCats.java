@@ -11,7 +11,7 @@ import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import untamedwilds.entity.mammal.bigcat.BigCatAbstract;
+import untamedwilds.entity.mammal.bigcat.AbstractBigCat;
 import untamedwilds.init.ModEntity;
 import untamedwilds.world.FaunaSpawn;
 
@@ -27,7 +27,7 @@ public class FeatureBigCats extends Feature<NoFeatureConfig> {
     public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         if (rand.nextFloat() > 0.85) {
             Biome biome = world.getBiome(pos);
-            EntityType type = BigCatAbstract.SpeciesBigCat.getSpeciesByBiome(biome);
+            EntityType type = AbstractBigCat.SpeciesBigCat.getSpeciesByBiome(biome);
             int groupSize = 1;
             if (type == ModEntity.LION || type == ModEntity.CAVE_LION) {
                 groupSize += 1 + rand.nextInt(4);

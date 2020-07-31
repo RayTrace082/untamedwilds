@@ -47,10 +47,10 @@ public class ItemOwnershipDeed extends Item {
     }
 
     @Nonnull
-    public ActionResult onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
 
-        if (itemstack.hasTag()) {
+        if (itemstack.hasTag() ) {
             CompoundNBT nbt = itemstack.getTag();
             if (!nbt.getString("entityid").isEmpty()) {
                 List<LivingEntity> list = worldIn.getEntitiesWithinAABB(LivingEntity.class, playerIn.getBoundingBox().grow(8.0D));

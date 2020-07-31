@@ -25,7 +25,7 @@ public class FeatureBears extends Feature<NoFeatureConfig> {
     public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         if (rand.nextFloat() > 0.80) {
             Biome biome = world.getBiome(pos);
-            EntityType type = AbstractBear.SpeciesBear.getSpeciesByBiome(biome);
+            EntityType<? extends AbstractBear> type = AbstractBear.SpeciesBear.getSpeciesByBiome(biome);
             FaunaSpawn.performWorldGenSpawning(type, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, world, biome, pos, rand, 1);
             return true;
         }

@@ -6,13 +6,12 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import untamedwilds.entity.mammal.bigcat.BigCatAbstract;
+import untamedwilds.entity.mammal.bigcat.AbstractBigCat;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelBigCat extends AdvancedEntityModel
+public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat>
 {
     public AdvancedModelBox body_main;
     public AdvancedModelBox body_abdomen;
@@ -49,7 +48,7 @@ public class ModelBigCat extends AdvancedEntityModel
 
     public AdvancedModelBox teeth_down_right;
     public AdvancedModelBox teeth_down_left;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelBigCat() {
         this.textureWidth = 128;
@@ -272,19 +271,19 @@ public class ModelBigCat extends AdvancedEntityModel
         );
     }
 
-    private void animate(IAnimatedEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    private void animate(IAnimatedEntity entityIn) {
         this.resetToDefaultPose();
-        BigCatAbstract big_cat = (BigCatAbstract) entityIn;
+        AbstractBigCat big_cat = (AbstractBigCat) entityIn;
         animator.update(big_cat);
 
-        animator.setAnimation(BigCatAbstract.IDLE_TALK);
+        animator.setAnimation(AbstractBigCat.IDLE_TALK);
         animator.startKeyframe(10);
         this.rotate(animator, head_jaw, 26.09F, 0, 0);
         this.rotate(animator, head_main, -26.09F, 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(10);
 
-        animator.setAnimation(BigCatAbstract.ATTACK_POUNCE);
+        animator.setAnimation(AbstractBigCat.ATTACK_POUNCE);
         animator.startKeyframe(12);
         this.rotate(animator, body_main, -18.26F, 0, 0);
         animator.move(body_main, 0, -2, 0);
@@ -368,9 +367,8 @@ public class ModelBigCat extends AdvancedEntityModel
         animator.resetKeyframe(8);
     }
 
-    public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        BigCatAbstract big_cat = (BigCatAbstract) entityIn;
-        animate(big_cat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    public void setRotationAngles(AbstractBigCat big_cat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        animate(big_cat);
 
         float globalSpeed = 2f;
         float globalDegree = 1f;
@@ -425,7 +423,7 @@ public class ModelBigCat extends AdvancedEntityModel
         bob(leg_right_upper, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
         bob(leg_left_upper, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
 
-        this.tail_1.rotateAngleX = this.tail_1.defaultRotationX + (float)big_cat.getSpeed() * 2;;
+        this.tail_1.rotateAngleX = this.tail_1.defaultRotationX + (float)big_cat.getSpeed() * 2;
         flap(tail_1, 0.4f * globalSpeed, 0.2f * globalDegree, true, 0F, 0f, ageInTicks / 6, 2);
         flap(tail_2, 0.4f * globalSpeed, 0.2f * globalDegree, true, 0.5F, 0f, ageInTicks / 6, 2);
         flap(tail_3, 0.4f * globalSpeed, 0.2f * globalDegree, true, 1.0F, 0f, ageInTicks / 6, 2);

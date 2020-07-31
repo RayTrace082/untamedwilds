@@ -19,7 +19,7 @@ public class UntamedWildsGenerator {
     private static final Feature<NoFeatureConfig> BIG_CATS = new FeatureBigCats(NoFeatureConfig::deserialize);
     private static final Feature<NoFeatureConfig> APEX = new FeatureApexPredators(NoFeatureConfig::deserialize);
     private static final Feature<NoFeatureConfig> CRITTERS = new FeatureCritters(NoFeatureConfig::deserialize);
-    private static final Feature<NoFeatureConfig> SPAWNLIST_SESSILE = new FeatureOceanSessileSpawns(NoFeatureConfig::deserialize);
+    private static final Feature<NoFeatureConfig> SESSILE = new FeatureOceanSessileSpawns(NoFeatureConfig::deserialize);
 
     private static final Feature<NoFeatureConfig> OCEAN_RARE = new FeatureOceanSwimming(NoFeatureConfig::deserialize);
 
@@ -29,7 +29,7 @@ public class UntamedWildsGenerator {
         for (Biome biome : ForgeRegistries.BIOMES) {
             if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) ) {
                 if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
-                    biome.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SPAWNLIST_SESSILE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CHANCE_TOP_SOLID_HEIGHTMAP.configure(new ChanceConfig(1))));
+                    biome.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SESSILE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CHANCE_TOP_SOLID_HEIGHTMAP.configure(new ChanceConfig(1))));
                     biome.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, OCEAN_RARE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP.configure(new ChanceConfig(1))));
                     if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.SNOWY)) {
                         // TODO: Yep, hardcoded Polar Bears, because fuck this shit. Replace the feature with "SpawnUniqueMob" to not have to use a list

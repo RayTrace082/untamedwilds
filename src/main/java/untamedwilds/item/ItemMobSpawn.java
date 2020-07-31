@@ -29,9 +29,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class ItemMobSpawn extends Item {
-    private EntityType<? extends ComplexMob> entity;
-    private int species;
-    private String sciname;
+    private final EntityType<? extends ComplexMob> entity;
+    private final int species;
+    private final String sciname;
 
     public ItemMobSpawn(EntityType<? extends ComplexMob> typeIn, int species, String sciname, Properties properties) {
         super(properties);
@@ -45,6 +45,7 @@ public class ItemMobSpawn extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.getTag() != null) {
             CompoundNBT compound = stack.getChildTag("EntityTag");
+            UntamedWilds.LOGGER.info(compound);
             if (compound.contains("Gender")) {
                 if (compound.getInt("Gender") == 0) {
                     tooltip.add((new TranslationTextComponent("mobspawn.tooltip.male")).applyTextStyle(TextFormatting.GRAY));
@@ -63,25 +64,23 @@ public class ItemMobSpawn extends Item {
 
         World worldIn = useContext.getWorld();
 
-        if (worldIn.isRemote) {
-            return ActionResultType.SUCCESS;
-        } else {
+        if (!worldIn.isRemote) {
             ItemStack itemStack = useContext.getItem();
             BlockPos pos = useContext.getPos();
             Direction facing = useContext.getFace();
             BlockState blockState = worldIn.getBlockState(pos);
 
             BlockPos spawnPos = pos;
-            if (blockState.getCollisionShape(worldIn, pos).isEmpty()) {
-                spawnPos = pos;
-            }
-            else {
+            if (!blockState.getCollisionShape(worldIn, pos).isEmpty()) {
                 spawnPos = pos.offset(facing);
             }
 
-            if (!useContext.getPlayer().abilities.isCreativeMode) {
-                itemStack.shrink(1);
+            if (useContext.getPlayer() != null) {
+                if (!useContext.getPlayer().abilities.isCreativeMode) {
+                    itemStack.shrink(1);
+                }
             }
+
             EntityType<?> entity = this.getType(itemStack.getTag());
             Entity spawn;
             if (itemStack.hasTag()) {
@@ -91,7 +90,7 @@ public class ItemMobSpawn extends Item {
                         spawn.setCustomName(itemStack.getDisplayName());
                     }
                     spawn.setLocationAndAngles(spawnPos.getX() + 0.5F, spawnPos.getY(), spawnPos.getZ() + 0.5F, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
-                    if (!((ServerWorld)worldIn).addEntityIfNotDuplicate(spawn)) {
+                    if (!((ServerWorld) worldIn).addEntityIfNotDuplicate(spawn)) {
                         spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
                         worldIn.addEntity(spawn);
                         UntamedWilds.LOGGER.info("Randomizing repeated UUID");
@@ -105,20 +104,22 @@ public class ItemMobSpawn extends Item {
             spawn = entity.create(worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, !Objects.equals(pos, spawnPos) && facing == Direction.UP);
             if (spawn instanceof ComplexMob) {
                 // Instead of using onInitialSpawn, data is replicated to prevent RandomSpecies from acting, not an ideal solution
-                ComplexMob entitySpawn = (ComplexMob)spawn;
+                ComplexMob entitySpawn = (ComplexMob) spawn;
                 entitySpawn.setRandomMobSize();
                 entitySpawn.setGender(worldIn.rand.nextInt(2));
                 entitySpawn.setSpecies(this.species);
                 entitySpawn.setGrowingAge(0);
                 entitySpawn.setPlayerSpawned(true);
             }
-            spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
-            if (itemStack.hasDisplayName()) {
-                spawn.setCustomName(itemStack.getDisplayName());
+            if (spawn != null) {
+                spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
+                if (itemStack.hasDisplayName()) {
+                    spawn.setCustomName(itemStack.getDisplayName());
+                }
+                worldIn.addEntity(spawn);
             }
-            worldIn.addEntity(spawn);
-            return ActionResultType.SUCCESS;
         }
+        return ActionResultType.SUCCESS;
     }
 
     /*public boolean tick() {

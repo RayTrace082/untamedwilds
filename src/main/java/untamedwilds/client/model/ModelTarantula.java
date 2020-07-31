@@ -4,13 +4,12 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.arthropod.Tarantula;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelTarantula extends AdvancedEntityModel
+public class ModelTarantula extends AdvancedEntityModel<Tarantula>
 {
     public AdvancedModelBox mainbody;
     public AdvancedModelBox abdomen;
@@ -149,14 +148,11 @@ public class ModelTarantula extends AdvancedEntityModel
         );
     }
 
-    public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float f = ageInTicks - (float)entityIn.ticksExisted;
-        Tarantula tarantula = (Tarantula) entityIn;
+    public void setRotationAngles(Tarantula tarantula, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
         limbSwing = ageInTicks;
 
-        float limbSwingConstant = 0.5f;
         float globalSpeed = 1.2f;
         float globalDegree = 0.6f;
 

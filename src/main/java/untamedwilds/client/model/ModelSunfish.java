@@ -4,13 +4,12 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.fish.Sunfish;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelSunfish extends AdvancedEntityModel {
+public class ModelSunfish extends AdvancedEntityModel<Sunfish> {
     public AdvancedModelBox body_main;
     public AdvancedModelBox body_head;
     public AdvancedModelBox body_tail;
@@ -80,10 +79,8 @@ public class ModelSunfish extends AdvancedEntityModel {
         );
     }
 
-    public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float f = ageInTicks - (float)entityIn.ticksExisted / 10;
-        limbSwing *= 0.2F;
-        Sunfish sunfish = (Sunfish) entityIn;
+    public void setRotationAngles(Sunfish sunfish, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        float f = ageInTicks - (float)sunfish.ticksExisted / 10;
         resetToDefaultPose();
 
         if (!sunfish.isInWater()) {
@@ -94,7 +91,6 @@ public class ModelSunfish extends AdvancedEntityModel {
             this.setRotateAngle(body_main, netHeadYaw * 2 * ((float)Math.PI / 180F), headPitch * 2 * ((float)Math.PI / 180F), 0);
             progressRotation(body_main, sunfish.baskProgress, 0, 0, (float)Math.toRadians(90D), 100);
         }
-        float limbSwingConstant = 0.5f;
         float globalSpeed = 0.6f;
         float globalDegree = 0.6f;
 

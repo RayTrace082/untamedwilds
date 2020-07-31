@@ -1,12 +1,10 @@
 package untamedwilds.entity;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -29,7 +27,6 @@ import untamedwilds.config.ConfigGamerules;
 import untamedwilds.init.ModItems;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public abstract class ComplexMob extends TameableEntity {
 
@@ -40,7 +37,7 @@ public abstract class ComplexMob extends TameableEntity {
     private static final DataParameter<Boolean> IS_ANGRY = EntityDataManager.createKey(ComplexMob.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT);
     public int ecoLevel;
-    // Not currently used anywhere
+    // Not currently used anywhere, may be implemented if critter despawning/respawning ever becomes a thing
     private static final DataParameter<Boolean> IS_PLAYER_SPAWNED = EntityDataManager.createKey(ComplexMob.class, DataSerializers.BOOLEAN);
     //private Block spawnableBlock = Blocks.GRASS_BLOCK;
 
@@ -61,9 +58,9 @@ public abstract class ComplexMob extends TameableEntity {
         this.ecoLevel = 0;
     }
 
-    public static boolean canSpawnInPosition(EntityType<? extends AnimalEntity> entity, IWorld worldIn, SpawnReason reason, BlockPos pos, Random p_223316_4_) {
+    /*public static boolean canSpawnInPosition(EntityType<? extends AnimalEntity> entity, IWorld worldIn, SpawnReason reason, BlockPos pos, Random p_223316_4_) {
         return (worldIn.getBlockState(pos.down()).getBlock() == Blocks.GRASS_BLOCK || worldIn.getBlockState(pos.down()).getBlock() == Blocks.ICE);
-    }
+    }*/
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return true;
@@ -219,7 +216,7 @@ public abstract class ComplexMob extends TameableEntity {
     public CompoundNBT writeEntityToNBT(LivingEntity entity) {
         CompoundNBT baseTag = new CompoundNBT();
         CompoundNBT entityTag = new CompoundNBT();
-        this.writeUnlessRemoved(entityTag); // Write the entity into NBT
+        entity.writeUnlessRemoved(entityTag); // Write the entity into NBT
         baseTag.put("EntityTag", entityTag); // Put the entity in the Tag
         return baseTag;
     }

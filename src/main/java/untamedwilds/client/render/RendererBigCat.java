@@ -8,9 +8,9 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
 import untamedwilds.client.model.ModelBigCat;
 import untamedwilds.client.model.ModelBigCatCub;
-import untamedwilds.entity.mammal.bigcat.BigCatAbstract;
+import untamedwilds.entity.mammal.bigcat.AbstractBigCat;
 
-public class RendererBigCat extends MobRenderer<BigCatAbstract, EntityModel<BigCatAbstract>> {
+public class RendererBigCat extends MobRenderer<AbstractBigCat, EntityModel<AbstractBigCat>> {
 
     private static final ModelBigCat BIG_CAT_MODEL = new ModelBigCat();
     private static final ModelBigCatCub BIG_CAT_MODEL_CUB = new ModelBigCatCub();
@@ -20,7 +20,7 @@ public class RendererBigCat extends MobRenderer<BigCatAbstract, EntityModel<BigC
     }
 
     @Override
-    public void render(BigCatAbstract entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+    public void render(AbstractBigCat entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         if (entityIn.isChild()) {
             entityModel = BIG_CAT_MODEL_CUB;
         } else {
@@ -29,7 +29,7 @@ public class RendererBigCat extends MobRenderer<BigCatAbstract, EntityModel<BigC
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
-    protected void preRenderCallback(BigCatAbstract entity, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void preRenderCallback(AbstractBigCat entity, MatrixStack matrixStackIn, float partialTickTime) {
         float f = entity.getModelScale();
         f += (entity.getMobSize() * 0.25f);
         if (entity.isChild()) {
@@ -40,7 +40,7 @@ public class RendererBigCat extends MobRenderer<BigCatAbstract, EntityModel<BigC
     }
 
     @Override
-    public ResourceLocation getEntityTexture(BigCatAbstract entity) {
+    public ResourceLocation getEntityTexture(AbstractBigCat entity) {
         return entity.getTexture();
     }
 }

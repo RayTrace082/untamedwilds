@@ -1,6 +1,9 @@
 package untamedwilds.block;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.OptionalDispenseBehavior;
@@ -33,6 +36,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import untamedwilds.UntamedWilds;
 import untamedwilds.block.tileentity.BlockEntityCage;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.init.ModBlock;
@@ -42,7 +46,7 @@ import java.util.List;
 import java.util.Random;
 
 // TODO: It's possible to catch ghost entities if a mob touches multiple boxes at once (eg. 2x2 mob failling into a pit full of Cages)
-public class BlockCage extends Block implements ITileEntityProvider, IWaterLoggable {
+public class BlockCage extends Block implements IWaterLoggable {
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final VoxelShape CAGE_COLLISION_AABB_EMPTY = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 2.0D, 15.0D);
@@ -84,11 +88,7 @@ public class BlockCage extends Block implements ITileEntityProvider, IWaterLogga
     }
 
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        if (!state.get(OPEN)) {
-            return CAGE_COLLISION_AABB_FULL;
-        } else {
-            return CAGE_COLLISION_AABB_EMPTY;
-        }
+        return state.get(OPEN) ? CAGE_COLLISION_AABB_EMPTY : CAGE_COLLISION_AABB_FULL;
     }
 
     public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
@@ -124,11 +124,9 @@ public class BlockCage extends Block implements ITileEntityProvider, IWaterLogga
                     Block block = worldIn.getBlockState(check).getBlock();
                     worldIn.playSound(null, pos, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
                     if (worldIn.isAirBlock(check) || block.canBeReplacedByLogs(state, worldIn, check)) {
-                        //BlockPos spawnpos = new BlockPos(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
                         te.spawnCagedCreature(worldIn, pos, true);
                     }
                     else {
-                        //BlockPos spawnpos = new BlockPos(pos.getX() + 0.5F, pos.getY() +1F, pos.getZ() + 0.5F);
                         BlockPos spawnpos = new BlockPos(pos.getX(), pos.getY() + 1F, pos.getZ());
                         te.spawnCagedCreature(worldIn, spawnpos, false);
                     }
@@ -165,13 +163,11 @@ public class BlockCage extends Block implements ITileEntityProvider, IWaterLogga
             worldIn.setBlockState(pos, state.with(OPEN, Boolean.TRUE));
             if (worldIn.isAirBlock(check) || block.canBeReplacedByLogs(state, worldIn, check)) {
                 if (te != null) {
-                    //BlockPos spawnpos = new BlockPos(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
                     te.spawnCagedCreature(worldIn, pos, true);
                 }
             }
             else {
                 if (te != null) {
-                    //BlockPos spawnpos = new BlockPos(pos.getX() + 0.5F, pos.getY() +1F, pos.getZ() + 0.5F);
                     BlockPos spawnpos = new BlockPos(pos.getX(), pos.getY() + 1F, pos.getZ());
                     te.spawnCagedCreature(worldIn, spawnpos, false);
                 }
@@ -202,13 +198,24 @@ public class BlockCage extends Block implements ITileEntityProvider, IWaterLogga
         }
     }
 
+    @Override
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.getTag() != null) {
-            CompoundNBT compound = stack.getChildTag("EntityTag");
-            if (compound != null) {
+            CompoundNBT compound_1 = stack.getChildTag("EntityTag");
+            if (compound_1 != null) {
+                CompoundNBT compound = compound_1.getCompound("EntityTag");
                 String entityID = compound.getString("id").replace(":", ".");
                 tooltip.add(new TranslationTextComponent("entity." + entityID).applyTextStyle(TextFormatting.GRAY));
+                UntamedWilds.LOGGER.info(compound);
+                if (compound.contains("Gender")) {
+                    if (compound.getInt("Gender") == 0) {
+                        tooltip.add((new TranslationTextComponent("mobspawn.tooltip.male")).applyTextStyle(TextFormatting.GRAY));
+                    }
+                    else { tooltip.add((new TranslationTextComponent("mobspawn.tooltip.female")).applyTextStyle(TextFormatting.GRAY)); }
+                }
+                else { tooltip.add((new TranslationTextComponent("mobspawn.tooltip.unknown")).applyTextStyle(TextFormatting.GRAY)); }
+
                 if (ConfigGamerules.scientificNames.get() && !compound.hasUniqueId("Species")) {
                     TextFormatting[] sciText = new TextFormatting[]{TextFormatting.ITALIC, TextFormatting.GRAY};
                     if (!(new TranslationTextComponent("entity." + entityID + ".sciname").getUnformattedComponentText()).equals("entity." + entityID + ".sciname")) {
@@ -224,7 +231,7 @@ public class BlockCage extends Block implements ITileEntityProvider, IWaterLogga
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity createTileEntity(BlockState state, IBlockReader worldIn) {
         return new BlockEntityCage();
     }
 

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class BigCatAbstract extends ComplexMobTerrestrial {
+public abstract class AbstractBigCat extends ComplexMobTerrestrial {
 
     public static Animation ATTACK_BITE;
     public static Animation ATTACK_MAUL;
@@ -39,7 +39,7 @@ public abstract class BigCatAbstract extends ComplexMobTerrestrial {
     public static Animation IDLE_TALK;
     public int aggroProgress;
 
-    public BigCatAbstract(EntityType<? extends BigCatAbstract> type, World worldIn) {
+    public AbstractBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
         ATTACK_POUNCE = Animation.create(42);
         IDLE_TALK = Animation.create(20);
@@ -55,21 +55,9 @@ public abstract class BigCatAbstract extends ComplexMobTerrestrial {
         return f < 0.21F || f > 0.78;
     }
 
-    /*public boolean wantsToBreed() {
-        if (Config.doNaturalBreeding && this.growingAge == 0) {
-            if (CompatBridge.SereneSeasons) {
-                return (CompatSereneSeasons.isCurrentSeason(this.world, SpeciesBear.values()[this.getSpecies()].breedingSeason));
-            }
-            return this.getHunger() >= 80;
-        }
-        return false;
-    }*/
-
     public void livingTick() {
         if (!this.world.isRemote) {
-            /*if (!this.isMale() && !this.isChild() && this.growingAge < 100 && this.growingAge != 0) {
-                EntityHelper.spawnOffspring(this, 1 + this.rand.nextInt(2), Config.HCBreeding ? 1008000 : 48000);
-            }*/
+
             if (this.world.getGameTime() % 1000 == 0) {
                 this.addHunger(-3);
                 if (!this.isStarving()) {
@@ -238,19 +226,19 @@ public abstract class BigCatAbstract extends ComplexMobTerrestrial {
 
     public enum SpeciesBigCat implements IStringSerializable {
 
-        JAGUAR		(ModEntity.JAGUAR, BigCatJaguar.getRarity(), BiomeDictionary.Type.JUNGLE),
-        LEOPARD		(ModEntity.LEOPARD, BigCatLeopard.getRarity(), BiomeDictionary.Type.SAVANNA, BiomeDictionary.Type.SPARSE),
-        LION		(ModEntity.LION, BigCatLion.getRarity(), BiomeDictionary.Type.SAVANNA, BiomeDictionary.Type.SPARSE),
-        PANTHER		(ModEntity.PANTHER, BigCatPanther.getRarity(), BiomeDictionary.Type.JUNGLE),
-        PUMA		(ModEntity.PUMA, BigCatPuma.getRarity(), BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.MESA, BiomeDictionary.Type.FOREST),
-        SNOW_LEOPARD(ModEntity.SNOW_LEOPARD, BigCatSnowLeopard.getRarity(), BiomeDictionary.Type.SNOWY),
-        TIGER		(ModEntity.TIGER, BigCatTiger.getRarity(), BiomeDictionary.Type.JUNGLE);
+        JAGUAR		(ModEntity.JAGUAR, JaguarBigCat.getRarity(), BiomeDictionary.Type.JUNGLE),
+        LEOPARD		(ModEntity.LEOPARD, LeopardBigCat.getRarity(), BiomeDictionary.Type.SAVANNA, BiomeDictionary.Type.SPARSE),
+        LION		(ModEntity.LION, LionBigCat.getRarity(), BiomeDictionary.Type.SAVANNA, BiomeDictionary.Type.SPARSE),
+        PANTHER		(ModEntity.PANTHER, PantherBigCat.getRarity(), BiomeDictionary.Type.JUNGLE),
+        PUMA		(ModEntity.PUMA, PumaBigCat.getRarity(), BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.MESA, BiomeDictionary.Type.FOREST),
+        SNOW_LEOPARD(ModEntity.SNOW_LEOPARD, SnowLeopardBigCat.getRarity(), BiomeDictionary.Type.SNOWY),
+        TIGER		(ModEntity.TIGER, TigerBigCat.getRarity(), BiomeDictionary.Type.JUNGLE);
 
-        public EntityType type;
+        public EntityType<? extends AbstractBigCat> type;
         public int rarity;
         public BiomeDictionary.Type[] spawnBiomes;
 
-        SpeciesBigCat(EntityType type, int rolls, BiomeDictionary.Type... biomes) {
+        SpeciesBigCat(EntityType<? extends AbstractBigCat> type, int rolls, BiomeDictionary.Type... biomes) {
             this.type = type;
             this.rarity = rolls;
             this.spawnBiomes = biomes;
@@ -261,9 +249,9 @@ public abstract class BigCatAbstract extends ComplexMobTerrestrial {
             return "why would you do this?";
         }
 
-        public static EntityType getSpeciesByBiome(Biome biome) {
-            List<BigCatAbstract.SpeciesBigCat> types = new ArrayList<>();
-            for (BigCatAbstract.SpeciesBigCat type : values()) {
+        public static EntityType<? extends AbstractBigCat> getSpeciesByBiome(Biome biome) {
+            List<AbstractBigCat.SpeciesBigCat> types = new ArrayList<>();
+            for (AbstractBigCat.SpeciesBigCat type : values()) {
                 for(BiomeDictionary.Type biomeTypes : type.spawnBiomes) {
                     if(BiomeDictionary.hasType(biome, biomeTypes)){
                         for (int i = 0; i < type.rarity; i++) {

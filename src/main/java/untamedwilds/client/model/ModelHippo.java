@@ -6,13 +6,12 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mammal.EntityHippo;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelHippo extends AdvancedEntityModel {
+public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
     public AdvancedModelBox body_main;
     public AdvancedModelBox head_neck;
     public AdvancedModelBox arm_right;
@@ -254,8 +253,7 @@ public class ModelHippo extends AdvancedEntityModel {
         animator.resetKeyframe(6);
     }
 
-    public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        EntityHippo hippo = (EntityHippo) entityIn;
+    public void setRotationAngles(EntityHippo hippo, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animate(hippo, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         //limbSwing = ageInTicks / 3;
         //limbSwingAmount = 0.5f;

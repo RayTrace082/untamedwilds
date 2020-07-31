@@ -3,29 +3,29 @@ package untamedwilds.client.model;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import untamedwilds.entity.mammal.bigcat.BigCatAbstract;
+import untamedwilds.entity.mammal.bigcat.AbstractBigCat;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelBigCatCub extends AdvancedEntityModel
+public class ModelBigCatCub extends AdvancedEntityModel<AbstractBigCat>
 {
-    private AdvancedModelBox main_body;
-    private AdvancedModelBox main_buttocks;
-    private AdvancedModelBox head_face;
-    private AdvancedModelBox arm_right;
-    private AdvancedModelBox arm_left;
-    private AdvancedModelBox leg_left;
-    private AdvancedModelBox leg_right;
-    private AdvancedModelBox tail_1;
-    private AdvancedModelBox tail_2;
-    private AdvancedModelBox head_snout;
-    private AdvancedModelBox ear_left;
-    private AdvancedModelBox ear_right;
-    private AdvancedModelBox eye_left;
-    private AdvancedModelBox eye_right;
+    private final AdvancedModelBox main_body;
+    private final AdvancedModelBox main_buttocks;
+    private final AdvancedModelBox head_face;
+    private final AdvancedModelBox arm_right;
+    private final AdvancedModelBox arm_left;
+    private final AdvancedModelBox leg_left;
+    private final AdvancedModelBox leg_right;
+    private final AdvancedModelBox tail_1;
+    private final AdvancedModelBox tail_2;
+    private final AdvancedModelBox head_snout;
+    private final AdvancedModelBox ear_left;
+    private final AdvancedModelBox ear_right;
+    private final AdvancedModelBox eye_left;
+    private final AdvancedModelBox eye_right;
 
     public ModelBigCatCub() {
         this.textureWidth = 128;
@@ -99,7 +99,7 @@ public class ModelBigCatCub extends AdvancedEntityModel
     }
 
     @Override
-    public Iterable<AdvancedModelBox> getParts() {
+    public Iterable<ModelRenderer> getParts() {
         return ImmutableList.of(this.main_body);
     }
 
@@ -120,8 +120,7 @@ public class ModelBigCatCub extends AdvancedEntityModel
         );
     }
 
-    public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        BigCatAbstract big_cat = (BigCatAbstract)entityIn;
+    public void setRotationAngles(AbstractBigCat big_cat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
         this.faceTarget(netHeadYaw, headPitch, 1, head_face);

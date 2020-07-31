@@ -4,13 +4,12 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.reptile.EntitySoftshellTurtle;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelTurtleSoftshell extends AdvancedEntityModel {
+public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTurtle> {
     public AdvancedModelBox main_body;
     public AdvancedModelBox body_shell;
     public AdvancedModelBox hand_right;
@@ -93,14 +92,11 @@ public class ModelTurtleSoftshell extends AdvancedEntityModel {
         );
     }
 
-    public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float f = ageInTicks - (float)entityIn.ticksExisted;
-        EntitySoftshellTurtle turtle = (EntitySoftshellTurtle) entityIn;
+    public void setRotationAngles(EntitySoftshellTurtle turtle, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
         limbSwing = ageInTicks;
 
-        float limbSwingConstant = 0.5f;
         float globalSpeed = 1.2f;
         float globalDegree = 0.6f;
         if (limbSwingAmount > 0.5) {

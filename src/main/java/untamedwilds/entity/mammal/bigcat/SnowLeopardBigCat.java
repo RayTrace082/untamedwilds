@@ -9,10 +9,7 @@ import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.*;
@@ -23,23 +20,23 @@ import untamedwilds.init.ModEntity;
 
 import java.util.List;
 
-public class BigCatMarsupialLion extends BigCatAbstract {
+public class SnowLeopardBigCat extends AbstractBigCat {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/marsupial_lion.png");
-    private static final float SIZE = 0.8F;
+    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/snow_leopard.png");
+    private static final float SIZE = 0.8f;
     private static final String BREEDING = "ALL";
-    private static final int GESTATION = 8 * ConfigGamerules.cycleLength.get();
-    private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
-    private static final int RARITY = 1;
+    private static final int GESTATION = 4 * ConfigGamerules.cycleLength.get();
+    private static final int GROWING = 10 * ConfigGamerules.cycleLength.get();
+    private static final int RARITY = 5;
 
-    public BigCatMarsupialLion(EntityType<? extends BigCatAbstract> type, World worldIn) {
+    public SnowLeopardBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 6;
+        this.ecoLevel = 7;
     }
 
     public void registerGoals() {
         this.goalSelector.addGoal(1, new SmartSwimGoal(this));
-        this.goalSelector.addGoal(2, new FindItemsGoal(this, 12)); // This is purely speculative, but Marsupial Lions are able to eat Veggies
+        this.goalSelector.addGoal(2, new FindItemsGoal(this, 12, true));
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 2.3D, false, 1));
         this.goalSelector.addGoal(3, new SmartFollowOwnerGoal(this, 2.3D, 16.0F, 3.0F));
         this.goalSelector.addGoal(3, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 6));
@@ -50,16 +47,16 @@ public class BigCatMarsupialLion extends BigCatAbstract {
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof BigCatMarsupialLion)));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof PantherBigCat)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 6));
+        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 5));
     }
 
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.13D);
+        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.16D);
         this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.8D);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(24.0D);
     }
@@ -71,8 +68,8 @@ public class BigCatMarsupialLion extends BigCatAbstract {
         return time > 13000 || time < 4000;
     }
 
-    /* Breeding conditions for the Marsupial Lion are:
-     * Warm Biome (T higher than 0.6)
+    /* Breeding conditions for the Snow Leopard are:
+     * Cold Biome (T between -1.0 and 0.4)
      * No other entities nearby */
     public boolean wantsToBreed() {
         if (super.wantsToBreed()) {
@@ -80,7 +77,7 @@ public class BigCatMarsupialLion extends BigCatAbstract {
                 if (ConfigGamerules.hardcoreBreeding.get()) {
                     List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                     float i = this.world.getBiome(this.getPosition()).getTemperature(this.getPosition());
-                    return i >= 0.6 && list.size() < 3;
+                    return i <= 0.4 && list.size() < 3;
                 }
                 return true;
             }
@@ -89,8 +86,8 @@ public class BigCatMarsupialLion extends BigCatAbstract {
     }
 
     public void breed() {
-        for (int i = 0; i <= 1 + this.rand.nextInt(1); i++) {
-            BigCatMarsupialLion child = this.createChild(this);
+        for (int i = 0; i <= 1 + this.rand.nextInt(3); i++) {
+            SnowLeopardBigCat child = this.createChild(this);
             if (child != null) {
                 child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
                 if (this.getOwner() != null) {
@@ -101,25 +98,15 @@ public class BigCatMarsupialLion extends BigCatAbstract {
         }
     }
 
-    public BigCatMarsupialLion createChild(AgeableEntity ageable) {
-        BigCatMarsupialLion bear = new BigCatMarsupialLion(ModEntity.MARSUPIAL_LION, this.world);
+    public SnowLeopardBigCat createChild(AgeableEntity ageable) {
+        SnowLeopardBigCat bear = new SnowLeopardBigCat(ModEntity.SNOW_LEOPARD, this.world);
         bear.setSpecies(this.getSpecies());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());
         return bear;
     }
 
-    protected SoundEvent getAmbientSound() {
-        return !this.isChild() ? null : SoundEvents.ENTITY_PANDA_AMBIENT;
-    }
-
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return !this.isChild() ? SoundEvents.ENTITY_PANDA_WORRIED_AMBIENT : SoundEvents.ENTITY_PANDA_HURT;
-    }
-
-    protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_PANDA_DEATH; }
-
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.CHICKEN; }
+    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEEF; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }
     public int getAdulthoodTime() { return GROWING; }

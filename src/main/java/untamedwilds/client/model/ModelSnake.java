@@ -6,13 +6,12 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.reptile.EntitySnake;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelSnake extends AdvancedEntityModel {
+public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
     
     public AdvancedModelBox main_neck;
     public AdvancedModelBox head_face;
@@ -29,7 +28,7 @@ public class ModelSnake extends AdvancedEntityModel {
     public AdvancedModelBox body_8;
     public AdvancedModelBox body_9;
     public AdvancedModelBox body_10;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelSnake() {
         this.textureWidth = 32;
@@ -104,7 +103,7 @@ public class ModelSnake extends AdvancedEntityModel {
         return ImmutableList.of(this.body_5);
     }
 
-    public void animate(IAnimatedEntity entity, float limbSwing, float limbSwingAmount, float f2, float f3, float f4) {
+    public void animate(IAnimatedEntity entity) {
         this.resetToDefaultPose();
         animator.update(entity);
 
@@ -141,14 +140,13 @@ public class ModelSnake extends AdvancedEntityModel {
         );
     }
 
-    public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        EntitySnake snek = (EntitySnake) entityIn;
-        animate(snek, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    public void setRotationAngles(EntitySnake snake, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        animate(snake);
         limbSwing *= -1.2;
         float globalSpeed = 1f;
         float globalDegree = 2f;
 
-        if (snek.isSleeping()) {
+        if (snake.isSleeping()) {
             limbSwingAmount = 0F;
             this.setRotateAngle(body_1, 39.13F, 67.83F, 44.35F);
             this.setRotateAngle(body_2, -15.65F, 70.43F, 0);
@@ -187,25 +185,25 @@ public class ModelSnake extends AdvancedEntityModel {
         this.body_8.setScaleY(0.9F);
         this.body_9.setScaleX(0.8F);
         this.body_9.setScaleY(0.8F);
-        if (!snek.isRattler()) {
+        if (!snake.isRattler()) {
             this.body_10.setScaleX(0.7F);
             this.body_10.setScaleY(0.7F);
         }
 
-        if (snek.isAngry()) {
+        if (snake.isAngry()) {
             this.setRotateAngle(head_face, -50F, 0F, 0F);
             this.setRotateAngle(head_jaw, 45F,0F,  0F);
             head_face.scaleX = 1.01F;
             head_jaw.scaleX = 1.01F;
-            if (snek.isRattler()) {
+            if (snake.isRattler()) {
                 body_9.rotateAngleX += Math.toRadians(31.30F);
                 body_10.rotateAngleX += Math.toRadians(60F);
-                swing(body_10, 1f * globalSpeed, 0.2f * globalDegree, false, 0f, 0, snek.ticksExisted, 0.5F);
-                flap(body_10, 1f * globalSpeed, 0.2f * globalDegree, false, 0f, 0, snek.ticksExisted, 0.5F);
+                swing(body_10, 1f * globalSpeed, 0.2f * globalDegree, false, 0f, 0, snake.ticksExisted, 0.5F);
+                flap(body_10, 1f * globalSpeed, 0.2f * globalDegree, false, 0f, 0, snake.ticksExisted, 0.5F);
             }
-            if (snek.isSleeping()) {
-                //walk(body_1, 0.2f * globalSpeed, 0.1f * globalDegree - 80F, false, 0f, 0, snek.ticksExisted, 0.01F);
-                //walk(body_2, 0.2f * globalSpeed, 0.1f * globalDegree - 80F, false, 0f, 0, snek.ticksExisted, 0.01F);
+            if (snake.isSleeping()) {
+                //walk(body_1, 0.2f * globalSpeed, 0.1f * globalDegree - 80F, false, 0f, 0, snake.ticksExisted, 0.01F);
+                //walk(body_2, 0.2f * globalSpeed, 0.1f * globalDegree - 80F, false, 0f, 0, snake.ticksExisted, 0.01F);
                 this.setRotateAngle(main_neck, 40F, 0F, 30F);
                 body_1.rotateAngleX -= Math.toRadians(30F);
                 body_2.rotateAngleX -= Math.toRadians(30F);

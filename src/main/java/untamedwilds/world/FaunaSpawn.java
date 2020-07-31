@@ -4,7 +4,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
@@ -117,7 +116,7 @@ public final class FaunaSpawn {
                             if (net.minecraftforge.common.ForgeHooks.canEntitySpawn(entity2, worldIn, d0, blockpos.getY(), d1, null, SpawnReason.NATURAL) == -1) continue;
                             if (entity2.canSpawn(worldIn, SpawnReason.CHUNK_GENERATION)) {
 
-                                entity2.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.CHUNK_GENERATION, (ILivingEntityData)null, (CompoundNBT) null);
+                                entity2.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.CHUNK_GENERATION, null, null);
                                 if (entity2 instanceof ISpecies) {
                                     if (((ComplexMob)entity2).getSpecies() != 99) {
                                         worldIn.addEntity(entity2);

@@ -263,16 +263,15 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
             if (!this.isTamed() && this.isChild() && this.getHealth() == this.getMaxHealth() && this.isFavouriteFood(itemstack)) {
                 this.playSound(SoundEvents.ENTITY_HORSE_EAT, 1.5F, 0.8F);
                 if (this.getRNG().nextInt(3) == 0) {
+                    // TODO: Advancement Trigger here
                     this.setTamedBy(player);
                     //this.registerGoals(); // AI Reset Hook
                     for (int i = 0; i < 6; i++) {
                         ((ServerWorld)this.world).spawnParticle(ParticleTypes.HEART, this.getPosX(), this.getPosY() + (double)this.getHeight() / 1.5D, this.getPosZ(), 3, this.getWidth() / 4.0F, this.getHeight() / 4.0F, this.getWidth() / 4.0F, 0.05D);
-                        //this.world.addParticle(ParticleTypes.HEART, this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + 0.5D + (double) (this.rand.nextFloat() * this.getHeight()), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), 0, 0, 0);
                     }
                 } else {
                     for (int i = 0; i < 3; i++) {
                         ((ServerWorld)this.world).spawnParticle(ParticleTypes.SMOKE, this.getPosX(), this.getPosY() + (double)this.getHeight() / 1.5D, this.getPosZ(), 3, this.getWidth() / 4.0F, this.getHeight() / 4.0F, this.getWidth() / 4.0F, 0.01D);
-                        //this.world.addParticle(ParticleTypes.SMOKE, this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), this.getPosY() + 0.5D + (double) (this.rand.nextFloat() * this.getHeight()), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(), 0, 0, 0);
                     }
                 }
             }
@@ -302,11 +301,11 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
         POLAR		(ModEntity.POLAR_BEAR, PolarBear.getRarity(), BiomeDictionary.Type.SNOWY),
         SPECTACLED	(ModEntity.SPECTACLED_BEAR, SpectacledBear.getRarity(), BiomeDictionary.Type.MOUNTAIN),
         SUN 		(ModEntity.SUN_BEAR, SunBear.getRarity(), BiomeDictionary.Type.JUNGLE);
-        public EntityType type;
+        public EntityType<? extends AbstractBear> type;
         public int rarity;
         public BiomeDictionary.Type[] spawnBiomes;
 
-        SpeciesBear(EntityType type, int rolls, BiomeDictionary.Type... biomes) {
+        SpeciesBear(EntityType<? extends AbstractBear> type, int rolls, BiomeDictionary.Type... biomes) {
             this.type = type;
             this.rarity = rolls;
             this.spawnBiomes = biomes;
@@ -317,7 +316,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
             return "why would you do this?";
         }
 
-        public static EntityType getSpeciesByBiome(Biome biome) {
+        public static EntityType<? extends AbstractBear> getSpeciesByBiome(Biome biome) {
             if (biome == Biomes.FROZEN_OCEAN || biome == Biomes.DEEP_FROZEN_OCEAN) {
                 return ModEntity.POLAR_BEAR;
             }
