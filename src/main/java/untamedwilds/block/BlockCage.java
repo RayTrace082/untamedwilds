@@ -121,14 +121,13 @@ public class BlockCage extends Block implements IWaterLoggable {
                 BlockEntityCage te = (BlockEntityCage)worldIn.getTileEntity(pos);
                 if (te.hasCagedEntity() && te.hasTagCompound()) {
                     BlockPos check = pos.down();
-                    Block block = worldIn.getBlockState(check).getBlock();
                     worldIn.playSound(null, pos, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
-                    if (worldIn.isAirBlock(check) || block.canBeReplacedByLogs(state, worldIn, check)) {
-                        te.spawnCagedCreature(worldIn, pos, true);
+                    if (worldIn.isAirBlock(check)) {
+                        BlockPos spawnpos = new BlockPos(pos.getX() + 0.5F, pos.getY() - 1F, pos.getZ() + 0.5F);
+                        te.spawnCagedCreature(worldIn, spawnpos, true);
                     }
                     else {
-                        BlockPos spawnpos = new BlockPos(pos.getX(), pos.getY() + 1F, pos.getZ());
-                        te.spawnCagedCreature(worldIn, spawnpos, false);
+                        te.spawnCagedCreature(worldIn, pos, false);
                     }
                     worldIn.setBlockState(pos, state.with(OPEN, Boolean.TRUE));
                 }

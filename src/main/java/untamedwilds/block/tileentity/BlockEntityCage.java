@@ -5,12 +5,10 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.UntamedWilds;
 import untamedwilds.init.ModBlock;
 
 import javax.annotation.Nullable;
@@ -48,14 +46,12 @@ public class BlockEntityCage extends TileEntity {
             EntityType<?> entity = this.getType(this.spawndata);
             if (entity != null) {
                 Entity caged_entity = entity.create(worldIn, this.spawndata, null, null, pos, SpawnReason.BUCKET, true, !Objects.equals(pos, this.getPos()));
-                if (offsetHitbox) {
-                    pos.offset(Direction.DOWN, (int)caged_entity.getHeight() - 1);
-                }
-                caged_entity.setLocationAndAngles(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
+                caged_entity.setLocationAndAngles(pos.getX() + 0.5F, pos.getY() - (offsetHitbox ? caged_entity.getHeight() : 1), pos.getZ() + 0.5F, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
+
                 if (!((ServerWorld)worldIn).addEntityIfNotDuplicate(caged_entity)) {
                     caged_entity.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
                     worldIn.addEntity(caged_entity);
-                    UntamedWilds.LOGGER.info("Randomizing repeated UUID");
+                    //UntamedWilds.LOGGER.info("Randomizing repeated UUID");
                 }
                 this.setTagCompound(null);
             }
