@@ -96,13 +96,11 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
             }
             if (ConfigGamerules.playerBreeding.get() && this.growingAge == 0) {
                 this.setInLove(player);
-                if (true) { // TODO: Have this be toggleable with Config.doParticles
-                    for (int i = 0; i < 7; ++i) {
-                        double d0 = this.rand.nextGaussian() * 0.02D;
-                        double d1 = this.rand.nextGaussian() * 0.02D;
-                        double d2 = this.rand.nextGaussian() * 0.02D;
-                        this.world.addParticle(ParticleTypes.HEART, this.getPosX() + (double)(this.rand.nextFloat() * this.getWidth() * 2.0F) - (double)this.getWidth(), this.getPosY() + 0.5D + (double)(this.rand.nextFloat() * this.getHeight()), this.getPosZ() + (double)(this.rand.nextFloat() * this.getWidth() * 2.0F) - (double)this.getWidth(), d0, d1, d2);
-                    }
+                for (int i = 0; i < 7; ++i) {
+                    double d0 = this.rand.nextGaussian() * 0.02D;
+                    double d1 = this.rand.nextGaussian() * 0.02D;
+                    double d2 = this.rand.nextGaussian() * 0.02D;
+                    this.world.addParticle(ParticleTypes.HEART, this.getPosX() + (double)(this.rand.nextFloat() * this.getWidth() * 2.0F) - (double)this.getWidth(), this.getPosY() + 0.5D + (double)(this.rand.nextFloat() * this.getHeight()), this.getPosZ() + (double)(this.rand.nextFloat() * this.getWidth() * 2.0F) - (double)this.getWidth(), d0, d1, d2);
                 }
             }
             this.setAnimation(this.getAnimationEat());
@@ -239,14 +237,12 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
 
         public void tick() {
             this.updateSpeed();
-            // UntamedWilds.LOGGER.info(this.turtle.getAIMoveSpeed());
-            // if (this.action == MovementController.Action.MOVE_TO && !this.turtle.getNavigator().noPath()) {
             if (this.turtle.isInWater() || (this.action == MovementController.Action.MOVE_TO && !this.turtle.getNavigator().noPath())) { // Yeah, fuck this shit, it's staying this way
                 double d0 = this.posX - this.turtle.getPosX();
-                double d1 = this.posY - this.turtle.getPosY();
+                //double d1 = this.posY - this.turtle.getPosY();
                 double d2 = this.posZ - this.turtle.getPosZ();
-                double d3 = MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-                d1 = d1 / d3;
+                //double d3 = MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                //d1 = d1 / d3;
                 float f = (float)(MathHelper.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
                 this.turtle.rotationYaw = this.limitAngle(this.turtle.rotationYaw, f, this.turtle.dexterity * 100);
                 this.turtle.renderYawOffset = this.turtle.rotationYaw;
@@ -259,9 +255,9 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
                 if (this.turtle.areEyesInFluid(FluidTags.WATER) || this.turtle.collidedHorizontally) {
                     this.turtle.getJumpController().setJumping();
                 }
-                else if (!this.turtle.areEyesInFluid(FluidTags.WATER)) {
+                /*else if (!this.turtle.areEyesInFluid(FluidTags.WATER)) {
                     this.turtle.setMotion(this.turtle.getMotion().add(0.0D, 0.001D, 0.0D));
-                }
+                }*/
             } else {
                 this.turtle.setAIMoveSpeed(0.0F);
             }

@@ -45,7 +45,6 @@ public class ItemMobSpawn extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.getTag() != null) {
             CompoundNBT compound = stack.getChildTag("EntityTag");
-            UntamedWilds.LOGGER.info(compound);
             if (compound.contains("Gender")) {
                 if (compound.getInt("Gender") == 0) {
                     tooltip.add((new TranslationTextComponent("mobspawn.tooltip.male")).applyTextStyle(TextFormatting.GRAY));

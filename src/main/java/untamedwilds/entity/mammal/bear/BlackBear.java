@@ -38,7 +38,7 @@ public class BlackBear extends AbstractBear {
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(1, new SmartSwimGoal(this));
+        //this.goalSelector.addGoal(1, new SmartSwimGoal(this));
         this.goalSelector.addGoal(2, new FindItemsGoal(this, 12));
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 2.3D, false, 1));
         this.goalSelector.addGoal(3, new SmartFollowOwnerGoal(this, 2.3D, 16.0F, 3.0F));

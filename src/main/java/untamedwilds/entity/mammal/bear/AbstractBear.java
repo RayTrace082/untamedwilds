@@ -199,7 +199,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
     public boolean attackEntityAsMob(Entity entityIn) {
         boolean flag = super.attackEntityAsMob(entityIn);
         if (flag && this.getAnimation() == NO_ANIMATION && !this.isChild()) {
-            Animation anim = chooseAttackAnimation(this);
+            Animation anim = chooseAttackAnimation();
             this.setAnimation(anim);
             this.setAnimation(anim);
             this.setAnimationTick(0);
@@ -207,7 +207,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
         return flag;
     }
 
-    private Animation chooseAttackAnimation(Entity entityIn) {
+    private Animation chooseAttackAnimation() {
         switch (this.rand.nextInt(3)) {
             case 0: return ATTACK_SWIPE;
             case 1: return ATTACK_BITE;
@@ -263,7 +263,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
             if (!this.isTamed() && this.isChild() && this.getHealth() == this.getMaxHealth() && this.isFavouriteFood(itemstack)) {
                 this.playSound(SoundEvents.ENTITY_HORSE_EAT, 1.5F, 0.8F);
                 if (this.getRNG().nextInt(3) == 0) {
-                    // TODO: Advancement Trigger here
+                    // TODO: "Bear Force One" Advancement Trigger here
                     this.setTamedBy(player);
                     //this.registerGoals(); // AI Reset Hook
                     for (int i = 0; i < 6; i++) {

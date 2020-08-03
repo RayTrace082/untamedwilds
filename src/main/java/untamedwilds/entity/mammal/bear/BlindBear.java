@@ -93,11 +93,13 @@ public class BlindBear extends AbstractBear {
     public void breed() {
         for (int i = 0; i <= 1; i++) {
             BlindBear child = this.createChild(this);
-            child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
-            if (this.getOwner() != null) {
-                child.setTamedBy((PlayerEntity) this.getOwner());
+            if (child != null) {
+                child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
+                if (this.getOwner() != null) {
+                    child.setTamedBy((PlayerEntity) this.getOwner());
+                }
+                this.world.addEntity(child);
             }
-            this.world.addEntity(child);
         }
     }
 

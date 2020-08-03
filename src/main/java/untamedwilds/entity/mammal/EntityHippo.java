@@ -7,6 +7,7 @@ import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.item.BoatEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
@@ -16,12 +17,15 @@ import net.minecraft.world.World;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAmphibious;
+import untamedwilds.entity.ai.AmphibiousTransition;
 import untamedwilds.entity.ai.SmartMateGoal;
 import untamedwilds.entity.ai.SmartWanderGoal;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.mammal.bear.BlackBear;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModSounds;
+
+import javax.annotation.Nullable;
 
 public class EntityHippo extends ComplexMobAmphibious {
 
@@ -49,7 +53,7 @@ public class EntityHippo extends ComplexMobAmphibious {
         this.goalSelector.addGoal(3, new SmartMateGoal(this, 0.8D));
         //this.goalSelector.addTask(5, new EntityAIGraze(this, 100));
         //this.goalSelector.addTask(6, new EntityAIGetInWater(this, 1.1D));
-        //this.goalSelector.addTask(6, new EntityAIGetInLand(this, 1.1D));
+        this.goalSelector.addGoal(4, new AmphibiousTransition(this, 1.1D));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, true));
         this.goalSelector.addGoal(6, new LookAtGoal(this, LivingEntity.class, 10.0F));
         this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
@@ -181,39 +185,31 @@ public class EntityHippo extends ComplexMobAmphibious {
     //public int getPregnancyTime() { return Config.HCBreeding ? SpeciesHippo.values()[this.getSpecies()].pregnancyDuration * EntityHelper.getTicksInMonth(world) : 84000; }
 
     public void breed() {
-        for (int i = 0; i <= 1; i++) {
-            BlackBear child = this.createChild(this);
-            child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
-            this.world.addEntity(child);
+        for (int i = 0; i <= 1 + this.rand.nextInt(1); i++) {
+            EntityHippo child = this.createChild(this);
+            if (child != null) {
+                child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
+                if (this.getOwner() != null) {
+                    child.setTamedBy((PlayerEntity) this.getOwner());
+                }
+                this.world.addEntity(child);
+            }
         }
     }
 
-    public BlackBear createChild(AgeableEntity ageable) {
-        BlackBear hippo = ModEntity.BLACK_BEAR.create(this.world);
-        hippo.setGender(this.rand.nextInt(2));
-        hippo.setMobSize(this.rand.nextFloat());
-        hippo.setGrowingAge(this.getAdulthoodTime() * -1);
-        return hippo;
+    @Nullable
+    public EntityHippo createChild(AgeableEntity ageable) {
+        EntityHippo bear = new EntityHippo(ModEntity.HIPPO, this.world);
+        bear.setGender(this.rand.nextInt(2));
+        bear.setMobSize(this.rand.nextFloat());
+        bear.setGrowingAge(this.getAdulthoodTime() * -2);
+        bear.registerGoals();
+        return bear;
     }
 
     public boolean isBreedingItem(ItemStack stack) {
         return (stack.getItem() == Items.GLISTERING_MELON_SLICE);
     }
-
-    /*public int setSpeciesByBiome(Biome biome) {
-        if (Config.doRandom) {
-            return this.rand.nextInt(SpeciesHippo.values().length);
-        }
-        return SpeciesHippo.getSpeciesByBiome(biome);
-    }*/
-
-    /*@Override
-    public double swimSpeed() {
-        if (this.getAttackTarget() != null) {
-            return 0.3;
-        }
-        return 0.15;
-    }*/
 
     @Override
     public Animation[] getAnimations() {

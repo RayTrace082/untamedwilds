@@ -21,6 +21,7 @@ import untamedwilds.entity.ComplexMobAmphibious;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.AmphibiousRandomSwimGoal;
 import untamedwilds.entity.ai.AmphibiousTransition;
+import untamedwilds.entity.ai.SmartAvoidGoal;
 import untamedwilds.entity.ai.SmartMateGoal;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.init.ModItems;
@@ -54,12 +55,12 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         super.registerGoals();
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
-        //this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1D, 1.1D, input -> this.getEcoLevel(input) > 4));
+        this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1D, 1.1D, input -> this.getEcoLevel(input) > 4));
         this.goalSelector.addGoal(3, new AmphibiousTransition(this, 1D));
         //this.goalSelector.addGoal(3, new SwimGoal(this));
         this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 80));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 4));
+        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 5));
     }
 
     public boolean wantsToLeaveWater() { return this.world.getDayTime() > 5000 && this.world.getDayTime() < 7000; }
@@ -72,7 +73,7 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
 
     public void onDeath(DamageSource cause) {
         if (cause == DamageSource.ANVIL && !this.isChild()) {
-            // TODO: Advancement trigger here
+            // TODO: "Unethical Soup" Advancement trigger here
             ItemEntity entityitem = this.entityDropItem(new ItemStack(ModItems.FOOD_TURTLE_SOUP.get()), 0.2F);
             if (entityitem != null) {
                 entityitem.getItem().setCount(1);

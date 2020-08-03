@@ -97,6 +97,7 @@ public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTur
 
         limbSwing = ageInTicks;
 
+        float limbSwingConstant = 0.5f;
         float globalSpeed = 1.2f;
         float globalDegree = 0.6f;
         if (limbSwingAmount > 0.5) {

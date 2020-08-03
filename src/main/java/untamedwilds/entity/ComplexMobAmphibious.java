@@ -17,7 +17,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public abstract class ComplexMobAmphibious extends ComplexMobTerrestrial {
-    public float buoyancy;
+    public float buoyancy = 1;
     protected boolean isAmphibious;
     protected boolean isLandNavigator;
     private boolean swimmingUp;
@@ -29,25 +29,14 @@ public abstract class ComplexMobAmphibious extends ComplexMobTerrestrial {
         this.moveController = new ComplexMobAmphibious.MoveHelperController(this);
         this.setPathPriority(PathNodeType.WATER, 0.0F);
         this.lookController = new DolphinLookController(this, 10);
+        this.stepHeight = 1.0F;
         //this.waterNavigator = new SwimmerPathNavigator(this, worldIn);
         //this.groundNavigator = new GroundPathNavigator(this, worldIn);
     }
 
-    protected void switchNavigator(boolean onLand) {
-        this.navigator = new ComplexMobAmphibious.AmphibiousNavigator(this, world);
+    public boolean wantsToLeaveWater() { return true; }
 
-        if (onLand) {
-            this.moveController = new MovementController(this);
-            this.isLandNavigator = true;
-        } else {
-            this.moveController = new ComplexMobAmphibious.MoveHelperController(this);
-            this.isLandNavigator = false;
-        }
-    }
-
-    public boolean wantsToLeaveWater() { return false; }
-
-    public boolean wantsToEnterWater() { return true; }
+    public boolean wantsToEnterWater() { return false; }
 
     public float getWaterSlowDown() {
         return 1;

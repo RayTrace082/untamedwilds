@@ -128,7 +128,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     }
 
     protected SoundEvent getAmbientSound() {
-        return !this.isChild() ? null : ModSounds.ENTITY_BEAR_BABY_AMBIENT;
+        return !this.isChild() ? ModSounds.ENTITY_BIG_CAT_AMBIENT : null;
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
