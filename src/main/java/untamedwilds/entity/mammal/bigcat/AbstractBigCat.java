@@ -111,7 +111,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
             this.playSound(SoundEvents.ENTITY_HORSE_EAT,1.5F, 0.8F);
         }
         if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-            this.playSound(this.getAmbientSound(), 1.5F, 1);
+            this.playSound(ModSounds.ENTITY_BIG_CAT_AMBIENT, 1.5F, 1);
         }
         if (this.world.isRemote && this.isAngry() && this.aggroProgress < 40) {
             this.aggroProgress++;
@@ -128,7 +128,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     }
 
     protected SoundEvent getAmbientSound() {
-        return !this.isChild() ? ModSounds.ENTITY_BIG_CAT_AMBIENT : null;
+        return !this.isChild() ? null : SoundEvents.ENTITY_OCELOT_AMBIENT;
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {

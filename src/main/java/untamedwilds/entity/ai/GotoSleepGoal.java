@@ -15,7 +15,7 @@ public class GotoSleepGoal extends Goal {
     protected double x;
     protected double y;
     protected double z;
-    private int executionChance;
+    private final int executionChance;
     private final double speed;
 
     public GotoSleepGoal(ComplexMobTerrestrial entityIn, double speedIn) {
@@ -43,7 +43,7 @@ public class GotoSleepGoal extends Goal {
             /*if (this.creature.getIdleTime() >= 100) {
                 return false;
             }*/
-            //if (this.creature.getRNG().nextInt(this.executionChance) != 0) { return false; }
+            if (this.creature.getRNG().nextInt(this.executionChance) != 0) { return false; }
 
             if (this.creature.getHome() == BlockPos.ZERO || this.creature.getDistanceSq(this.creature.getHomeAsVec()) > 100000) {
                 this.creature.setHome(BlockPos.ZERO);

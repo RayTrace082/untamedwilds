@@ -10,7 +10,6 @@ import untamedwilds.UntamedWilds;
 public class ModSounds {
 
     public static final SoundEvent ENTITY_ATTACK_BITE = registerSound("entity.generic.bite");
-    public static final SoundEvent ENTITY_SNIFF = registerSound("entity.generic.sniff");
 
     public static final SoundEvent ENTITY_BEAR_AMBIENT = registerSound("entity.bear.ambient");
     public static final SoundEvent ENTITY_BEAR_WARNING = registerSound("entity.bear.warning");
@@ -24,18 +23,6 @@ public class ModSounds {
     public static final SoundEvent ENTITY_BIG_CAT_DEATH = registerSound("entity.big_cat.death");
 
     public static final SoundEvent ENTITY_TARANTULA_AMBIENT = registerSound("entity.tarantula.ambient");
-
-    public static final SoundEvent ENTITY_FROG_AMBIENT = registerSound("entity.frog.ambient");
-    public static final SoundEvent ENTITY_FROG_HURT = registerSound("entity.frog.hurt");
-    public static final SoundEvent ENTITY_FROG_MATING = registerSound("entity.frog.mating");
-    public static final SoundEvent ENTITY_DARTFROG_MATING = registerSound("entity.dartfrog.mating");
-    public static final SoundEvent ENTITY_TOAD_AMBIENT = registerSound("entity.toad.ambient");
-
-    public static final SoundEvent ENTITY_SNAKE_HISS = registerSound("entity.snake.hiss");
-    public static final SoundEvent ENTITY_SNAKE_RATTLE = registerSound("entity.snake.rattle");
-
-    public static final SoundEvent WEAPON_BLOWGUN_SHOOT = registerSound("weapon.blowgun.shoot");
-    public static final SoundEvent WEAPON_BLOWGUN_CHARGE = registerSound("weapon.blowgun.charge");
 
     private static SoundEvent registerSound(String soundName) {
         ResourceLocation location = new ResourceLocation(UntamedWilds.MOD_ID, soundName);

@@ -1,7 +1,7 @@
 {   "parent": "block/thin_block",
     "textures": {
-        "all": "untamedwilds:block/decor/carpet/bear_brown",
-        "particle": "untamedwilds:block/decor/carpet/bear_brown"
+        "all": "untamedwilds:block/carpet/bear_brown",
+        "particle": "untamedwilds:block/carpet/bear_brown"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

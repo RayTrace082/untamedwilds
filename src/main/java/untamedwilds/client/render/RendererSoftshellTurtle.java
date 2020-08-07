@@ -31,7 +31,7 @@ public class RendererSoftshellTurtle extends MobRenderer<EntitySoftshellTurtle, 
         float f = 1F;
         f += (entity.getMobSize() * 0.2f);
         f *= entity.getRenderScale();
-        f *= (EntitySoftshellTurtle.SpeciesSoftshellTurtle.values()[entity.getSpecies()].sizeMult);
+        f *= (EntitySoftshellTurtle.SpeciesSoftshellTurtle.values()[entity.getSpecies()].scale);
         matrixStackIn.scale(f, f, f);
     }
 

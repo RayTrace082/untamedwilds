@@ -15,7 +15,6 @@ import untamedwilds.entity.ComplexMob;
 import java.util.EnumSet;
 
 // TODO: Abstract the process so mobs can follow other mobs
-// TODO: Extend the class to cover Water mobs
 public class SmartFollowOwnerGoal extends Goal {
     protected final ComplexMob taskOwner;
     private LivingEntity owner;
@@ -84,10 +83,10 @@ public class SmartFollowOwnerGoal extends Goal {
                             int lvt_2_1_ = MathHelper.floor(this.owner.getPosZ()) - 2;
                             int lvt_3_1_ = MathHelper.floor(this.owner.getBoundingBox().minY);
 
-                            for(int lvt_4_1_ = 0; lvt_4_1_ <= 4; ++lvt_4_1_) {
-                                for(int lvt_5_1_ = 0; lvt_5_1_ <= 4; ++lvt_5_1_) {
-                                    if ((lvt_4_1_ < 1 || lvt_5_1_ < 1 || lvt_4_1_ > 3 || lvt_5_1_ > 3) && this.canTeleportToBlock(new BlockPos(lvt_1_1_ + lvt_4_1_, lvt_3_1_ - 1, lvt_2_1_ + lvt_5_1_))) {
-                                        this.taskOwner.setLocationAndAngles((double)((float)(lvt_1_1_ + lvt_4_1_) + 0.5F), (double)lvt_3_1_, (double)((float)(lvt_2_1_ + lvt_5_1_) + 0.5F), this.taskOwner.rotationYaw, this.taskOwner.rotationPitch);
+                            for(int i = 0; i <= 4; ++i) {
+                                for(int j = 0; j <= 4; ++j) {
+                                    if ((i < 1 || j < 1 || i > 3 || j > 3) && this.canTeleportToBlock(new BlockPos(lvt_1_1_ + i, lvt_3_1_ - 1, lvt_2_1_ + j))) {
+                                        this.taskOwner.setLocationAndAngles(((float)(lvt_1_1_ + i) + 0.5F), lvt_3_1_, ((float)(lvt_2_1_ + j) + 0.5F), this.taskOwner.rotationYaw, this.taskOwner.rotationPitch);
                                         this.navigator.clearPath();
                                         return;
                                     }
@@ -100,8 +99,8 @@ public class SmartFollowOwnerGoal extends Goal {
         }
     }
 
-    protected boolean canTeleportToBlock(BlockPos p_220707_1_) {
-        BlockState lvt_2_1_ = this.world.getBlockState(p_220707_1_);
-        return lvt_2_1_.canEntitySpawn(this.world, p_220707_1_, this.taskOwner.getType()) && this.world.isAirBlock(p_220707_1_.up()) && this.world.isAirBlock(p_220707_1_.up(2));
+    protected boolean canTeleportToBlock(BlockPos pos) {
+        BlockState state = this.world.getBlockState(pos);
+        return state.canEntitySpawn(this.world, pos, this.taskOwner.getType()) && this.world.isAirBlock(pos.up()) && this.world.isAirBlock(pos.up(2));
     }
 }

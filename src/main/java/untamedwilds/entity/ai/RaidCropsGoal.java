@@ -18,7 +18,7 @@ import java.util.List;
 public class RaidCropsGoal extends Goal {
     private BlockPos targetPos;
     private final ComplexMobTerrestrial taskOwner;
-    private boolean continueTask;
+    private final boolean continueTask;
 
     public RaidCropsGoal(ComplexMobTerrestrial entityIn) {
         this.taskOwner = entityIn;
@@ -60,7 +60,7 @@ public class RaidCropsGoal extends Goal {
             BlockState block = this.taskOwner.world.getBlockState(this.targetPos);
             if (block.getBlock() instanceof CropsBlock) {
                 LootContext.Builder loot = new LootContext.Builder((ServerWorld) taskOwner.world).withParameter(LootParameters.POSITION, new BlockPos(this.targetPos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withRandom(this.taskOwner.getRNG());
-                List<ItemStack> drops = block.getBlock().getDrops(block, loot);
+                List<ItemStack> drops = block.getDrops(loot);
                 if (!drops.isEmpty()) {
                     int count = 0;
                     for(ItemStack stack : drops){

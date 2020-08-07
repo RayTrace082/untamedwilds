@@ -46,14 +46,16 @@ public class ModItems {
     public static RegistryObject<Item> HIDE_BEAR_BLACK = createItem("hide_bear_black", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
     public static RegistryObject<Item> HIDE_BEAR_BROWN = createItem("hide_bear_brown", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
     public static RegistryObject<Item> HIDE_BEAR_WHITE = createItem("hide_bear_white", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
+    public static RegistryObject<Item> HIDE_BIG_CAT_JAGUAR = createItem("hide_big_cat_jaguar", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
+
 
     // Debug Tools
     public static RegistryObject<Item> OWNERSHIP_DEED = createItem("ownership_deed", () -> new ItemOwnershipDeed(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> DEBUG_ANALYZER = createItem("debug_analyzer", () -> new ItemAnalizer(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> DEBUG_IPECAC = createItem("debug_ipecac", () -> new ItemIpecac(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> DEBUG_LOVE_POTION = createItem("debug_love_potion", () -> new ItemLovePotion(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> DEBUG_ERASER = createItem("debug_eraser", () -> new ItemEraser(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> DEBUG_GROWTH_TONIC = createItem("debug_growth_tonic", () -> new ItemGrowthTonic(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> DEBUG_ANALYZER = createItem("debug_analyzer", () -> new ItemAnalizer(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
+    public static RegistryObject<Item> DEBUG_IPECAC = createItem("debug_ipecac", () -> new ItemIpecac(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
+    public static RegistryObject<Item> DEBUG_LOVE_POTION = createItem("debug_love_potion", () -> new ItemLovePotion(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
+    public static RegistryObject<Item> DEBUG_ERASER = createItem("debug_eraser", () -> new ItemEraser(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
+    public static RegistryObject<Item> DEBUG_GROWTH_TONIC = createItem("debug_growth_tonic", () -> new ItemGrowthTonic(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
 
     public static <I extends Item> RegistryObject<I> createItem(String name, Supplier<? extends I> supplier) {
         return ModItems.ITEMS.register(name, supplier);

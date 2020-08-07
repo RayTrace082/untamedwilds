@@ -188,16 +188,16 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
         SWAMP_MOCCASIN	(11,0.7F,	1,	false, 2, BiomeDictionary.Type.SWAMP);
 
 
-        public Float sizeMult;
+        public Float scale;
         public int species;
         public int rolls;
         public int venomTier;
         public boolean rattler;
         public BiomeDictionary.Type[] spawnBiomes;
 
-        SpeciesSnake(int species, Float smult, int venomTier, boolean rattler, int rolls, BiomeDictionary.Type... biomes) {
+        SpeciesSnake(int species, Float scale, int venomTier, boolean rattler, int rolls, BiomeDictionary.Type... biomes) {
             this.species = species;
-            this.sizeMult = smult;
+            this.scale = scale;
             this.rolls = rolls;
             this.venomTier = venomTier;
             this.rattler = rattler;

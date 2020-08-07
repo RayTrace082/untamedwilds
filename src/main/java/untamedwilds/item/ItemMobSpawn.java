@@ -74,12 +74,6 @@ public class ItemMobSpawn extends Item {
                 spawnPos = pos.offset(facing);
             }
 
-            if (useContext.getPlayer() != null) {
-                if (!useContext.getPlayer().abilities.isCreativeMode) {
-                    itemStack.shrink(1);
-                }
-            }
-
             EntityType<?> entity = this.getType(itemStack.getTag());
             Entity spawn;
             if (itemStack.hasTag()) {
@@ -94,8 +88,11 @@ public class ItemMobSpawn extends Item {
                         worldIn.addEntity(spawn);
                         UntamedWilds.LOGGER.info("Randomizing repeated UUID");
                     }
-                    //((LivingEntity)spawn).addPotionEffect(new EffectInstance(Effects.GLOWING, 800, 0));
-                    return ActionResultType.SUCCESS;
+                    if (useContext.getPlayer() != null) {
+                        if (!useContext.getPlayer().abilities.isCreativeMode) {
+                            itemStack.shrink(1);
+                        }
+                    }return ActionResultType.SUCCESS;
                 }
             }
 
@@ -116,6 +113,12 @@ public class ItemMobSpawn extends Item {
                     spawn.setCustomName(itemStack.getDisplayName());
                 }
                 worldIn.addEntity(spawn);
+            }
+
+            if (useContext.getPlayer() != null) {
+                if (!useContext.getPlayer().abilities.isCreativeMode) {
+                    itemStack.shrink(1);
+                }
             }
         }
         return ActionResultType.SUCCESS;

@@ -33,7 +33,7 @@ public class RendererTarantula extends MobRenderer<Tarantula, EntityModel<Tarant
         float f = 0.5F;
         f += (entity.getMobSize() * 0.2f);
         f *= entity.getRenderScale();
-        f *= (Tarantula.SpeciesTarantula.values()[entity.getSpecies()].sizeMult);
+        f *= (Tarantula.SpeciesTarantula.values()[entity.getSpecies()].scale);
         matrixStackIn.scale(f, f, f);
     }
 

@@ -39,9 +39,6 @@ public class SmartMeleeAttackGoal extends Goal {
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute() {
         if (this.attacker.isChild()) {
             return false;
@@ -76,9 +73,6 @@ public class SmartMeleeAttackGoal extends Goal {
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean shouldContinueExecuting() {
         LivingEntity livingentity = this.attacker.getAttackTarget();
         if (livingentity == null) {
@@ -94,18 +88,12 @@ public class SmartMeleeAttackGoal extends Goal {
         }
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting() {
         this.attacker.getNavigator().setPath(this.path, this.speedTowardsTarget);
         this.attacker.setAggroed(true);
         this.delayCounter = 0;
     }
 
-    /**
-     * Reset the task's internal state. Called when this task is interrupted by another one
-     */
     public void resetTask() {
         LivingEntity livingentity = this.attacker.getAttackTarget();
         if (!EntityPredicates.CAN_AI_TARGET.test(livingentity)) {
@@ -116,9 +104,6 @@ public class SmartMeleeAttackGoal extends Goal {
         this.attacker.getNavigator().clearPath();
     }
 
-    /**
-     * Keep ticking a continuous task that has already been started
-     */
     public void tick() {
         LivingEntity livingentity = this.attacker.getAttackTarget();
         this.attacker.getLookController().setLookPositionWithEntity(livingentity, 30.0F, 30.0F);

@@ -6,13 +6,12 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mammal.bear.AbstractBear;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelBear extends AdvancedEntityModel {
+public class ModelBear extends AdvancedEntityModel<AbstractBear> {
 
     private final AdvancedModelBox body_main;
     private final AdvancedModelBox body_buttocks;
@@ -34,8 +33,7 @@ public class ModelBear extends AdvancedEntityModel {
     private final AdvancedModelBox arm_right_2;
     private final AdvancedModelBox arm_right_foot;
 
-    private ModelAnimator animator;
-    private static final ModelBearCub CUB_MODEL = new ModelBearCub();
+    private final ModelAnimator animator;
 
     public ModelBear() {
         this.textureWidth = 128;
@@ -173,7 +171,7 @@ public class ModelBear extends AdvancedEntityModel {
         );
     }
 
-    private void animate(IAnimatedEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    private void animate(IAnimatedEntity entityIn) {
         this.resetToDefaultPose();
         AbstractBear bear = (AbstractBear) entityIn;
         animator.update(bear);
@@ -408,9 +406,8 @@ public class ModelBear extends AdvancedEntityModel {
         animator.resetKeyframe(20);
     }
 
-    public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        AbstractBear bear = (AbstractBear)entityIn;
-        animate(bear, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    public void setRotationAngles(AbstractBear bear, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        animate(bear);
 
         // Some scale tweaks to prevent Z-fighting
         this.head_snout.setScaleX(1.05F);

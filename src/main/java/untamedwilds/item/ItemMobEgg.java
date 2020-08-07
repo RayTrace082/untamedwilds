@@ -56,11 +56,6 @@ public class ItemMobEgg extends Item {
                 spawnPos = pos.offset(facing);
             }
 
-            if (useContext.getPlayer() != null) {
-                if (!useContext.getPlayer().abilities.isCreativeMode) {
-                    itemStack.shrink(1);
-                }
-            }
             EntityType<?> entity = this.getType(itemStack.getTag());
             Entity spawn = entity.create(worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, !Objects.equals(pos, spawnPos) && facing == Direction.UP);
             if (!itemStack.hasTag()) {
@@ -75,6 +70,12 @@ public class ItemMobEgg extends Item {
             }
             if (spawn != null) {
                 worldIn.addEntity(spawn);
+            }
+
+            if (useContext.getPlayer() != null) {
+                if (!useContext.getPlayer().abilities.isCreativeMode) {
+                    itemStack.shrink(1);
+                }
             }
         }
         return ActionResultType.SUCCESS;

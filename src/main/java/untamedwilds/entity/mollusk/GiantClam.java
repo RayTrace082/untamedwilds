@@ -186,16 +186,16 @@ public class GiantClam extends ComplexMob implements ISpecies {
         SQUAMOSA	    (3, "Tridacna squamosa", 	0.8F, 2, BiomeDictionary.Type.OCEAN);
 
         public String sciname;
-        public Float sizeMult;
+        public Float scale;
 
         public int species;
         public int rolls;
         public BiomeDictionary.Type[] spawnBiomes;
 
-        SpeciesGiantClam(int species, String sname, Float smult, int rolls, BiomeDictionary.Type... biomes) {
+        SpeciesGiantClam(int species, String sname, Float scale, int rolls, BiomeDictionary.Type... biomes) {
             this.species = species;
             this.sciname = sname;
-            this.sizeMult = smult;
+            this.scale = scale;
             this.rolls = rolls;
             this.spawnBiomes = biomes;
         }

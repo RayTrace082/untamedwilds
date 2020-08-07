@@ -123,7 +123,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
             }
             return true;
         }
-        return flag;
+        return false;
     }
 
     public boolean isPotionApplicable(EffectInstance potionEffectIn) {
@@ -170,14 +170,14 @@ public class Tarantula extends ComplexMob implements ISpecies {
         ROSE			(6, 0.8F, 3, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.MESA),
         TIGER			(7, 0.8F, 2, BiomeDictionary.Type.JUNGLE);
 
-        public Float sizeMult;
+        public Float scale;
         public int species;
         public int rolls;
         public BiomeDictionary.Type[] spawnBiomes;
 
-        SpeciesTarantula(int species, Float smult, int rolls, BiomeDictionary.Type... biomes) {
+        SpeciesTarantula(int species, Float scale, int rolls, BiomeDictionary.Type... biomes) {
             this.species = species;
-            this.sizeMult = smult;
+            this.scale = scale;
             this.rolls = rolls;
             this.spawnBiomes = biomes;
         }

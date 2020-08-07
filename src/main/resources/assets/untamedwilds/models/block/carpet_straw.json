@@ -1,7 +1,7 @@
 {   "parent": "block/thin_block",
     "textures": {
-        "all": "untamedwilds:block/decor/carpet/straw",
-        "particle": "untamedwilds:block/decor/carpet/straw"
+        "all": "untamedwilds:block/carpet/straw",
+        "particle": "untamedwilds:block/carpet/straw"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

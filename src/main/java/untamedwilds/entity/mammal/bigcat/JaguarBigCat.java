@@ -17,6 +17,7 @@ import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
 import untamedwilds.init.ModEntity;
+import untamedwilds.init.ModLootTables;
 
 import java.util.List;
 
@@ -106,6 +107,10 @@ public class JaguarBigCat extends AbstractBigCat {
         return bear;
     }
 
+    @Override
+    protected ResourceLocation getLootTable() {
+        return ModLootTables.BIG_CAT_LOOT_JAGUAR;
+    }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.PORKCHOP; } // TODO: Replace with Capybara meat if they are ever added
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }

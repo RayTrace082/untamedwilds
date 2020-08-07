@@ -20,15 +20,15 @@ public class RendererSnake extends MobRenderer<EntitySnake, EntityModel<EntitySn
     private final ResourceLocation CORAL_BLUE        = new ResourceLocation("untamedwilds:textures/entity/snake/coral_blue.png");
     private final ResourceLocation CORN        = new ResourceLocation("untamedwilds:textures/entity/snake/corn.png");
 
-    public RendererSnake(EntityRendererManager rendermanager, ModelSnake model, float shadowsize) {
-        super(rendermanager, model, shadowsize);
+    public RendererSnake(EntityRendererManager renderManager, ModelSnake model, float shadowSize) {
+        super(renderManager, model, shadowSize);
     }
 
     protected void preRenderCallback(EntitySnake entity, MatrixStack matrixStackIn, float partialTickTime) {
         float f = 0.8F;
         f += (entity.getMobSize() * 0.3f);
         f *= entity.getRenderScale();
-        f *= (EntitySnake.SpeciesSnake.values()[entity.getSpecies()].sizeMult);
+        f *= (EntitySnake.SpeciesSnake.values()[entity.getSpecies()].scale);
         matrixStackIn.scale(f, f, f);
     }
 

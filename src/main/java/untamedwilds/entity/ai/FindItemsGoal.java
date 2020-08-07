@@ -12,14 +12,14 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class FindItemsGoal extends Goal  {
-    private ComplexMobTerrestrial taskOwner;
+    private final ComplexMobTerrestrial taskOwner;
     private final Sorter sorter;
-    private int distance;
+    private final int distance;
     private ItemEntity targetItem;
     private Item targetItemStack;
     private final int executionChance;
-    private boolean hyperCarnivore; // TODO; Shitty patchwork, since Minecraft does not consider fish as "Meat", move to item tags?
-    private boolean hyperHerbivore;
+    private final boolean hyperCarnivore; // TODO; Shitty patchwork, since Minecraft does not consider fish as "Meat", move to item tags?
+    private final boolean hyperHerbivore;
 
     public FindItemsGoal(ComplexMobTerrestrial creature, int distance) {
         this(creature, distance, 100, false, false);
@@ -49,22 +49,20 @@ public class FindItemsGoal extends Goal  {
         List<ItemEntity> list = this.taskOwner.world.getEntitiesWithinAABB(ItemEntity.class, this.getTargetableArea(distance));
 
         list.removeIf((ItemEntity item) -> !item.getItem().isFood());
-        if (this.hyperCarnivore) {
-            list.removeIf((ItemEntity item) -> !item.getItem().getItem().getFood().isMeat());
+        if (!list.isEmpty()) {
+            if (this.hyperCarnivore) {
+                list.removeIf((ItemEntity item) -> !item.getItem().getItem().getFood().isMeat());
+            } else if (this.hyperHerbivore) {
+                list.removeIf((ItemEntity item) -> item.getItem().getItem().getFood().isMeat());
+            }
+            if (!list.isEmpty()) {
+                list.sort(this.sorter);
+                this.targetItem = list.get(0);
+                this.targetItemStack = this.targetItem.getItem().getItem();
+                return true;
+            }
         }
-        else if (this.hyperHerbivore) {
-            list.removeIf((ItemEntity item) -> item.getItem().getItem().getFood().isMeat());
-        }
-
-        if (list.isEmpty()) {
-            return false;
-        }
-        else {
-            list.sort(this.sorter);
-            this.targetItem = list.get(0);
-            this.targetItemStack = this.targetItem.getItem().getItem();
-            return true;
-        }
+        return false;
     }
 
     private AxisAlignedBB getTargetableArea(double targetDistance) {

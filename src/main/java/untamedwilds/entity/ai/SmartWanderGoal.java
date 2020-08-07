@@ -12,10 +12,9 @@ public class SmartWanderGoal extends Goal {
     protected double x;
     protected double y;
     protected double z;
-    private int runChance;
-    private int executionChance;
-    private boolean mustUpdate;
-    private boolean avoidWater;
+    private final int runChance;
+    private final int executionChance;
+    private final boolean avoidWater;
     private final double speed;
 
     public SmartWanderGoal(ComplexMobTerrestrial creatureIn, double speedIn) {
@@ -53,7 +52,6 @@ public class SmartWanderGoal extends Goal {
                 this.x = vec3d.x;
                 this.y = vec3d.y;
                 this.z = vec3d.z;
-                this.mustUpdate = false;
                 return true;
             }
         }

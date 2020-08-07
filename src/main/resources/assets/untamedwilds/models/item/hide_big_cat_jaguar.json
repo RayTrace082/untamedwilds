@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "untamedwilds:item/hide/bear_brown"
+        "layer0": "untamedwilds:item/hide/big_cat_jaguar"
     }
 }

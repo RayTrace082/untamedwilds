@@ -12,8 +12,7 @@ public class CompatBridge {
 
     public static void RegisterCompat() {
         if (ModList.get().isLoaded(SS_MOD_ID)) {
-            //SereneSeasons = true;
-            SereneSeasons = false;
+            SereneSeasons = true;
             UntamedWilds.LOGGER.log(Level.INFO, "Loading compatibility module with SereneSeasons");
         }
     }

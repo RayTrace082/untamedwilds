@@ -10,6 +10,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.init.ModBlock;
+import untamedwilds.init.ModTags;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -23,19 +24,23 @@ public class BlockEntityCage extends TileEntity {
         super(ModBlock.BLOCKENTITY_CAGE.get());
     }
 
-    public void cageEntity(Entity entity) {
+    public boolean cageEntity(Entity entity) {
         if (!this.hasCagedEntity()) {
-            String entityID = EntityType.getKey(entity.getType()).toString(); // TODO: Introduce configurable Blacklist
-            CompoundNBT nbttagcompound = new CompoundNBT();
-            nbttagcompound.putString("id", entityID);
-            CompoundNBT nbttagcompound2 = new CompoundNBT();
-            entity.writeUnlessRemoved(nbttagcompound2);
-            nbttagcompound.put("EntityTag", nbttagcompound2);
-            this.setTagCompound(nbttagcompound);
-            this.setCagedEntity(true);
-            entity.remove();
+            if (!ModTags.EntityTags.CAGE_BLACKLIST.contains(entity.getType())) {
+                String entityID = EntityType.getKey(entity.getType()).toString();
+                CompoundNBT nbttagcompound = new CompoundNBT();
+                nbttagcompound.putString("id", entityID);
+                CompoundNBT nbttagcompound2 = new CompoundNBT();
+                entity.writeUnlessRemoved(nbttagcompound2);
+                nbttagcompound.put("EntityTag", nbttagcompound2);
+                this.setTagCompound(nbttagcompound);
+                this.setCagedEntity(true);
+                entity.remove();
+                markDirty();
+                return true;
+            }
         }
-        markDirty();
+        return false;
     }
 
     @Nullable
@@ -51,7 +56,6 @@ public class BlockEntityCage extends TileEntity {
                 if (!((ServerWorld)worldIn).addEntityIfNotDuplicate(caged_entity)) {
                     caged_entity.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
                     worldIn.addEntity(caged_entity);
-                    //UntamedWilds.LOGGER.info("Randomizing repeated UUID");
                 }
                 this.setTagCompound(null);
             }

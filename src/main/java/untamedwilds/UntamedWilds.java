@@ -1,5 +1,6 @@
 package untamedwilds;
 
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import untamedwilds.block.BlockCage;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.config.ConfigBase;
 import untamedwilds.init.ModBlock;
@@ -59,6 +61,7 @@ public class UntamedWilds {
     }
 
     private void setupCommon(final FMLCommonSetupEvent event) {
+        DispenserBlock.registerDispenseBehavior(ModBlock.TRAP_CAGE.get().asItem(), new BlockCage.DispenserBehaviorTrapCage());
         UntamedWildsGenerator.setUp();
     }
 

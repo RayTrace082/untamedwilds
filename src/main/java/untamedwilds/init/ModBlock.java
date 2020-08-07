@@ -16,10 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
-import untamedwilds.block.BlockCage;
-import untamedwilds.block.BlockCarpet;
-import untamedwilds.block.BlockFaunaAnemone;
-import untamedwilds.block.BlockLard;
+import untamedwilds.block.*;
 import untamedwilds.block.tileentity.BlockEntityCage;
 
 import javax.annotation.Nullable;
@@ -45,6 +42,7 @@ public class ModBlock {
     public static RegistryObject<Block> ANEMONE_ROSE_BULB  = createBlock("anemone_rose_bulb", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.RED).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS);
     public static RegistryObject<Block> ANEMONE_SAND  = createBlock("anemone_sand", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.RED).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS);
     public static RegistryObject<Block> ANEMONE_SEBAE  = createBlock("anemone_sebae", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.RED).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS);
+    public static RegistryObject<Block> ORCHID_RED = createBlock("flora_orchid_red", () -> new BlockPlantEpyphite(Block.Properties.create(Material.PLANTS, MaterialColor.RED).hardnessAndResistance(0.0F).sound(SoundType.PLANT)), ItemGroup.DECORATIONS);
 
     public static RegistryObject<TileEntityType<BlockEntityCage>> BLOCKENTITY_CAGE = TILE_ENTITY_TYPES.register("trap_cage", () -> new TileEntityType<>(BlockEntityCage::new, Sets.newHashSet(ModBlock.TRAP_CAGE.get()), null));
 
@@ -60,6 +58,8 @@ public class ModBlock {
     }
 
     public static void registerRendering() {
+        RenderTypeLookup.setRenderLayer(ModBlock.ORCHID_RED.get(), RenderType.getCutout());
+
         RenderTypeLookup.setRenderLayer(ModBlock.ANEMONE_SEBAE.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(ModBlock.ANEMONE_SAND.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(ModBlock.ANEMONE_ROSE_BULB.get(), RenderType.getCutout());

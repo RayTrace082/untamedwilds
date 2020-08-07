@@ -157,7 +157,6 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
 
     public void onDeath(DamageSource p_70645_1_) {
         if (!this.world.isRemote && ConfigGamerules.hardcoreDeath.get() && this.getHome() != BlockPos.ZERO && this.isTamed() && this.getHunger() != 0) {
-            // TODO: Wiggle the mob a bit, to avoid teleporting inside a wall
             this.addPotionEffect(new EffectInstance(Effects.GLOWING, 800, 0));
             this.setHealth(0.5F);
             this.setHunger(0);
@@ -222,7 +221,6 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
         private void updateSpeed() {
             float speed = (float)this.turtle.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
             speed *= this.getSpeed();
-            //UntamedWilds.LOGGER.info(speed + " " + this.getSpeed() + " " + this.turtle.getAIMoveSpeed());
             if (this.turtle.isInWater()) {
                 if (this.turtle.isChild()) {
                     this.turtle.setAIMoveSpeed((float) Math.max(speed / 2, this.getSpeed() / 2));

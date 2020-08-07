@@ -12,6 +12,9 @@ public class ModLootTables {
     public static ResourceLocation BEAR_LOOT_POLAR = new ResourceLocation(UntamedWilds.MOD_ID, "entities/bear/polar");
     public static ResourceLocation BEAR_LOOT_SPECTACLED = new ResourceLocation(UntamedWilds.MOD_ID, "entities/bear/spectacled");
     public static ResourceLocation BEAR_LOOT_SUN = new ResourceLocation(UntamedWilds.MOD_ID, "entities/bear/sun");
+
+    public static ResourceLocation BIG_CAT_LOOT_JAGUAR = new ResourceLocation(UntamedWilds.MOD_ID, "entities/big_cat/jaguar");
+
     public static ResourceLocation HIPPO_LOOT;
 
     public static void init() {

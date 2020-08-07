@@ -179,14 +179,14 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         PIG_NOSE		(5, 0.8F, 2, BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.SWAMP),
         SPINY		    (6, 0.7F, 3, BiomeDictionary.Type.SWAMP);
 
-        public Float sizeMult;
+        public Float scale;
         public int species;
         public int rolls;
         public BiomeDictionary.Type[] spawnBiomes;
 
-        SpeciesSoftshellTurtle(int species, Float smult, int rolls, BiomeDictionary.Type... biomes) {
+        SpeciesSoftshellTurtle(int species, Float scale, int rolls, BiomeDictionary.Type... biomes) {
             this.species = species;
-            this.sizeMult = smult;
+            this.scale = scale;
             this.rolls = rolls;
             this.spawnBiomes = biomes;
         }

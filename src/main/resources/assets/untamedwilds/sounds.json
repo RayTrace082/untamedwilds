@@ -11,7 +11,7 @@
 			"untamedwilds:generic_bite"
 		]
 	},
-		"entity.generic.sniff": {
+	"entity.generic.sniff": {
 		"category": "neutral",
 		"sounds": [
 			"untamedwilds:generic_sniff"
@@ -23,8 +23,7 @@
 			"untamedwilds:bear/idle_1",
 			"untamedwilds:bear/idle_2",
 			"untamedwilds:bear/idle_3",
-			"untamedwilds:bear/idle_4",
-			"untamedwilds:bear/idle_5"
+			"untamedwilds:bear/idle_4"
 		],
 		"subtitle": "untamedwilds.subtitles.bear.ambient"
 	},

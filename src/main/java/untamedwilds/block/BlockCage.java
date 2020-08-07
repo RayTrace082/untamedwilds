@@ -5,16 +5,16 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.dispenser.OptionalDispenseBehavior;
+import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathType;
@@ -36,7 +36,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import untamedwilds.UntamedWilds;
 import untamedwilds.block.tileentity.BlockEntityCage;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.init.ModBlock;
@@ -118,19 +117,7 @@ public class BlockCage extends Block implements IWaterLoggable {
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         if (!worldIn.isRemote) {
             if (worldIn.isBlockPowered(pos)) {
-                BlockEntityCage te = (BlockEntityCage)worldIn.getTileEntity(pos);
-                if (te.hasCagedEntity() && te.hasTagCompound()) {
-                    BlockPos check = pos.down();
-                    worldIn.playSound(null, pos, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
-                    if (worldIn.isAirBlock(check)) {
-                        BlockPos spawnpos = new BlockPos(pos.getX() + 0.5F, pos.getY() - 1F, pos.getZ() + 0.5F);
-                        te.spawnCagedCreature(worldIn, spawnpos, true);
-                    }
-                    else {
-                        te.spawnCagedCreature(worldIn, pos, false);
-                    }
-                    worldIn.setBlockState(pos, state.with(OPEN, Boolean.TRUE));
-                }
+                spawnEntity(state, worldIn, pos);
             }
         }
     }
@@ -150,28 +137,31 @@ public class BlockCage extends Block implements IWaterLoggable {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-        if (playerIn.isShiftKeyDown() || worldIn.isRemote) {
-                return ActionResultType.FAIL;
+        if (playerIn.isShiftKeyDown() || worldIn.isRemote || state.get(OPEN)) {
+            return ActionResultType.FAIL;
         }
         else {
-            BlockEntityCage te = (BlockEntityCage)worldIn.getTileEntity(pos);
-            BlockPos check = pos.down();
-            Block block = worldIn.getBlockState(check).getBlock();
-            spawnParticles(worldIn, pos);
-            worldIn.playSound(null, pos, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
-            worldIn.setBlockState(pos, state.with(OPEN, Boolean.TRUE));
-            if (worldIn.isAirBlock(check) || block.canBeReplacedByLogs(state, worldIn, check)) {
-                if (te != null) {
-                    te.spawnCagedCreature(worldIn, pos, true);
-                }
-            }
-            else {
-                if (te != null) {
-                    BlockPos spawnpos = new BlockPos(pos.getX(), pos.getY() + 1F, pos.getZ());
-                    te.spawnCagedCreature(worldIn, spawnpos, false);
-                }
-            }
+            spawnEntity(state, worldIn, pos);
             return ActionResultType.SUCCESS;
+        }
+    }
+
+    private void spawnEntity(BlockState state, World worldIn, BlockPos pos) {
+        BlockEntityCage te = (BlockEntityCage)worldIn.getTileEntity(pos);
+        BlockPos check = pos.down();
+        spawnParticles(worldIn, pos);
+        worldIn.playSound(null, pos, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
+        worldIn.setBlockState(pos, state.with(OPEN, Boolean.TRUE));
+        if (worldIn.isAirBlock(check)) {
+            if (te != null) {
+                te.spawnCagedCreature(worldIn, pos, true);
+            }
+        }
+        else {
+            if (te != null) {
+                BlockPos spawnpos = new BlockPos(pos.getX(), pos.getY() + 1F, pos.getZ());
+                te.spawnCagedCreature(worldIn, spawnpos, false);
+            }
         }
     }
 
@@ -180,7 +170,7 @@ public class BlockCage extends Block implements IWaterLoggable {
         double d3 = random.nextGaussian() * 0.02D;
         double d1 = random.nextGaussian() * 0.02D;
         double d2 = random.nextGaussian() * 0.02D;
-        ((ServerWorld)worldIn).spawnParticle(ParticleTypes.POOF, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, 12, d3, d1, d2, (double)0.15F);
+        ((ServerWorld)worldIn).spawnParticle(ParticleTypes.POOF, (double)pos.getX() + 0.5D, pos.getY(), (double)pos.getZ() + 0.5D, 12, d3, d1, d2, 0.15F);
     }
 
 
@@ -189,10 +179,11 @@ public class BlockCage extends Block implements IWaterLoggable {
         BlockEntityCage te = (BlockEntityCage)world.getTileEntity(pos);
         if (!world.isRemote && !(entity instanceof PlayerEntity) && entity.isNonBoss() && entity instanceof LivingEntity) {
             if (te != null && !te.hasCagedEntity()) {
-                te.cageEntity(entity);
-                world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
-                world.setBlockState(pos, state.with(OPEN, Boolean.FALSE));
-                spawnParticles(world, pos);
+                if (te.cageEntity(entity)) {
+                    world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
+                    world.setBlockState(pos, state.with(OPEN, Boolean.FALSE));
+                    spawnParticles(world, pos);
+                }
             }
         }
     }
@@ -206,7 +197,6 @@ public class BlockCage extends Block implements IWaterLoggable {
                 CompoundNBT compound = compound_1.getCompound("EntityTag");
                 String entityID = compound.getString("id").replace(":", ".");
                 tooltip.add(new TranslationTextComponent("entity." + entityID).applyTextStyle(TextFormatting.GRAY));
-                UntamedWilds.LOGGER.info(compound);
                 if (compound.contains("Gender")) {
                     if (compound.getInt("Gender") == 0) {
                         tooltip.add((new TranslationTextComponent("mobspawn.tooltip.male")).applyTextStyle(TextFormatting.GRAY));
@@ -238,24 +228,15 @@ public class BlockCage extends Block implements IWaterLoggable {
         return false;
     }
 
-    // TODO: Reimplement Dispenser Behaviour
-    public static class DispenserBehaviorTrapCage extends OptionalDispenseBehavior {
+    public static class DispenserBehaviorTrapCage extends DefaultDispenseItemBehavior implements IDispenseItemBehavior {
 
         public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-            World worldIn = source.getWorld();
-            Direction direction = source.getBlockState().get(DispenserBlock.FACING);
-            BlockPos pos = source.getBlockPos().offset(direction);
-            //Direction direction = source.getWorld().isAirBlock(pos.down()) ? direction : Direction.UP;
-            if (worldIn.isAirBlock(pos)) {
-                worldIn.setBlockState(pos, ModBlock.TRAP_CAGE.get().getDefaultState());
-                worldIn.setTileEntity(pos, new BlockEntityCage());
-                stack.shrink(1);
-                if (stack.hasTag()) {
-                    TileEntity te = worldIn.getTileEntity(pos);
-                    if (stack.getTag() != null && te != null) {
-                        te.read(stack.getTag());
-                    }
-                }
+            Item item = stack.getItem();
+            if (item instanceof BlockItem) {
+                Direction direction = source.getBlockState().get(DispenserBlock.FACING);
+                BlockPos blockpos = source.getBlockPos().offset(direction);
+                Direction direction1 = source.getWorld().isAirBlock(blockpos.down()) ? direction : Direction.UP;
+                boolean successful = ((BlockItem)item).tryPlace(new DirectionalPlaceContext(source.getWorld(), blockpos, direction, stack, direction1)) == ActionResultType.SUCCESS;
             }
             return stack;
         }

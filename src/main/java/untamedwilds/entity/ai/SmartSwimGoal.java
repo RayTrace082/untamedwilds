@@ -9,7 +9,7 @@ import java.util.EnumSet;
 public class SmartSwimGoal extends Goal {
 
     private final MobEntity entity;
-    private float speed;
+    private final float speed;
 
     public SmartSwimGoal(MobEntity entityIn) {
         this(entityIn, 1.0f);
@@ -18,17 +18,16 @@ public class SmartSwimGoal extends Goal {
     public SmartSwimGoal(MobEntity entityIn, float speedIn) {
         this.entity = entityIn;
         this.speed = speedIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.JUMP));
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.setMutexFlags(EnumSet.of(Goal.Flag.JUMP, Flag.MOVE, Flag.LOOK));
         entityIn.getNavigator().setCanSwim(true);
     }
 
     public boolean shouldExecute() {
-        double eyeHeight = (double) this.entity.getEyeHeight() - 0.18F; // Tiny offset because otherwise the Mob is prone to drowning
-        if (this.entity.getAttackTarget() != null) {
-            return false;
+        if (this.entity.onGround && this.entity.getAttackTarget() == null) {
+            double eyeHeight = (double) this.entity.getEyeHeight() - 0.18F; // Tiny offset because otherwise the Mob is prone to drowning
+            return this.entity.getSubmergedHeight() > eyeHeight || this.entity.isInLava();
         }
-        return this.entity.onGround && (this.entity.isInWater() || this.entity.isInLava());
+        return false;
     }
 
     public void tick() {

@@ -128,14 +128,14 @@ public class Sunfish extends ComplexMobAquatic implements ISpecies {
         SUNFISH			(0, 1F, 2, BiomeDictionary.Type.OCEAN),
         SOUTHERN    	(1, 1.1F, 1, BiomeDictionary.Type.OCEAN);
 
-        public Float sizeMult;
+        public Float scale;
         public int species;
         public int rolls;
         public BiomeDictionary.Type[] spawnBiomes;
 
-        SpeciesSunfish(int species, Float smult, int rolls, BiomeDictionary.Type... biomes) {
+        SpeciesSunfish(int species, Float scale, int rolls, BiomeDictionary.Type... biomes) {
             this.species = species;
-            this.sizeMult = smult;
+            this.scale = scale;
             this.rolls = rolls;
             this.spawnBiomes = biomes;
         }
