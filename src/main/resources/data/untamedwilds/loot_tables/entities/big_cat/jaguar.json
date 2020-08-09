@@ -1,5 +1,5 @@
 {
-  "pools": [{
+  "pools": [
     {
       "name": "big_cat",
       "rolls": 1,

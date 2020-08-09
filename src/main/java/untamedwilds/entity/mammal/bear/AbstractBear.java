@@ -153,7 +153,6 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
             this.setAnimation(ANIMATION_ROAR);
         }
         if (this.getAnimation() != NO_ANIMATION) {
-            // TODO: Polar Bear Sounds are WIP
             if (this.getAnimation() == ATTACK_BITE && this.getAnimationTick() == 1) {
                 this.playSound(ModSounds.ENTITY_ATTACK_BITE, 1.5F, 0.8F);
             }
@@ -174,10 +173,6 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
             }
         }
         super.livingTick();
-    }
-
-    public boolean preventDespawn() {
-        return true;
     }
 
     public double getMountedYOffset() { return getModelScale() + 0.5f * this.getMobSize(); }

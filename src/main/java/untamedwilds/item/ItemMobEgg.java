@@ -65,7 +65,6 @@ public class ItemMobEgg extends Item {
                     entitySpawn.setGender(worldIn.rand.nextInt(2));
                     entitySpawn.setSpecies(this.species);
                     entitySpawn.setGrowingAge(entitySpawn.getAdulthoodTime() * -1);
-                    entitySpawn.setPlayerSpawned(true);
                 }
             }
             if (spawn != null) {

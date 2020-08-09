@@ -20,7 +20,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 
@@ -86,13 +85,14 @@ public class ItemMobSpawn extends Item {
                     if (!((ServerWorld) worldIn).addEntityIfNotDuplicate(spawn)) {
                         spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
                         worldIn.addEntity(spawn);
-                        UntamedWilds.LOGGER.info("Randomizing repeated UUID");
+                        //UntamedWilds.LOGGER.info("Randomizing repeated UUID");
                     }
                     if (useContext.getPlayer() != null) {
                         if (!useContext.getPlayer().abilities.isCreativeMode) {
                             itemStack.shrink(1);
                         }
-                    }return ActionResultType.SUCCESS;
+                    }
+                    return ActionResultType.SUCCESS;
                 }
             }
 
@@ -105,7 +105,6 @@ public class ItemMobSpawn extends Item {
                 entitySpawn.setGender(worldIn.rand.nextInt(2));
                 entitySpawn.setSpecies(this.species);
                 entitySpawn.setGrowingAge(0);
-                entitySpawn.setPlayerSpawned(true);
             }
             if (spawn != null) {
                 spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));

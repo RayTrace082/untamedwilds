@@ -37,9 +37,6 @@ public abstract class ComplexMob extends TameableEntity {
     private static final DataParameter<Boolean> IS_ANGRY = EntityDataManager.createKey(ComplexMob.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT);
     public int ecoLevel;
-    // Not currently used anywhere, may be implemented if critter despawning/respawning ever becomes a thing
-    private static final DataParameter<Boolean> IS_PLAYER_SPAWNED = EntityDataManager.createKey(ComplexMob.class, DataSerializers.BOOLEAN);
-    //private Block spawnableBlock = Blocks.GRASS_BLOCK;
 
     public ComplexMob(EntityType<? extends ComplexMob> type, World worldIn){
         super(type, worldIn);
@@ -53,7 +50,6 @@ public abstract class ComplexMob extends TameableEntity {
         this.dataManager.register(SIZE, 0F);
         this.dataManager.register(GENDER, 0);
         this.dataManager.register(IS_ANGRY, false);
-        this.dataManager.register(IS_PLAYER_SPAWNED, false);
         this.dataManager.register(COMMAND, 0);
         this.ecoLevel = 0;
     }
@@ -72,6 +68,10 @@ public abstract class ComplexMob extends TameableEntity {
             return !this.getLeashed();
         }
         return (!this.getLeashed() && this.isTamed());
+    }
+
+    public boolean preventDespawn() {
+        return true;
     }
 
     //protected BodyController createBodyController() {
@@ -146,6 +146,7 @@ public abstract class ComplexMob extends TameableEntity {
         return null;
     }
 
+    // Returns the ecological level of an entity. Since only UntamedWilds mobs have such parameter, it is defaulted to 4, with the exception of players, who are 7 (TODO: Make this data driven)
     protected int getEcoLevel(LivingEntity entity) {
         if (entity instanceof ComplexMob) {
             return ((ComplexMob) entity).ecoLevel;
@@ -156,18 +157,8 @@ public abstract class ComplexMob extends TameableEntity {
         return 4;
     }
 
-    /*protected void onGrowingAdult() {
-        super.onGrowingAdult();
-        if (!this.isChild()) {
-            this.registerGoals(); // AI reset hook
-        }
-    }*/
-
     protected void setAngry(boolean isAngry) { this.dataManager.set(IS_ANGRY, isAngry); }
     public boolean isAngry() { return (this.dataManager.get(IS_ANGRY)); }
-
-    public void setPlayerSpawned(boolean isPlayerSpawned) { this.dataManager.set(IS_PLAYER_SPAWNED, isPlayerSpawned); }
-    public boolean isPlayerSpawned() { return (this.dataManager.get(IS_PLAYER_SPAWNED)); }
 
     // Commands:
     // 0 - Wander: The mob wanders around naturally
@@ -191,7 +182,6 @@ public abstract class ComplexMob extends TameableEntity {
         compound.putFloat("Size", this.getMobSize());
         compound.putInt("Gender", this.getGender());
         compound.putBoolean("isAngry", this.isAngry());
-        compound.putBoolean("isPlayerSpawned", this.isPlayerSpawned());
     }
 
     public void readAdditional(CompoundNBT compound){ // Read NBT Tags
@@ -209,7 +199,6 @@ public abstract class ComplexMob extends TameableEntity {
         this.setMobSize(compound.getFloat("Size"));
         this.setGender(compound.getInt("Gender"));
         this.setAngry(compound.getBoolean("isAngry"));
-        this.setPlayerSpawned(compound.getBoolean("isPlayerSpawned"));
     }
 
     // This method writes this entity into a CompoundNBT Tag

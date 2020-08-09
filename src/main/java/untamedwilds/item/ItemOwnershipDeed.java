@@ -80,7 +80,7 @@ public class ItemOwnershipDeed extends Item {
                     nbt.putString("entityid", entity_target.getUniqueID().toString());
                     itemstack.setTag(nbt);
                     if (UntamedWilds.DEBUG) {
-                        UntamedWilds.LOGGER.log(Level.ERROR, "Pet owner signed a deed for a " + entity_target.getName().getString());
+                        UntamedWilds.LOGGER.log(Level.INFO, "Pet owner signed a deed for a " + entity_target.getName().getString());
                     }
                     return true;
                 }

@@ -17,7 +17,7 @@ public class UntamedWildsGenerator {
     private static final Feature<NoFeatureConfig> UNDERGROUND = new FeatureUndergroundFaunaLarge(NoFeatureConfig::deserialize);
     private static final Feature<NoFeatureConfig> BEAR = new FeatureBears(NoFeatureConfig::deserialize);
     private static final Feature<NoFeatureConfig> BIG_CATS = new FeatureBigCats(NoFeatureConfig::deserialize);
-    private static final Feature<NoFeatureConfig> APEX = new FeatureApexPredators(NoFeatureConfig::deserialize);
+    // private static final Feature<NoFeatureConfig> APEX = new FeatureApexPredators(NoFeatureConfig::deserialize);
     private static final Feature<NoFeatureConfig> CRITTERS = new FeatureCritters(NoFeatureConfig::deserialize);
     private static final Feature<NoFeatureConfig> SESSILE = new FeatureOceanSessileSpawns(NoFeatureConfig::deserialize);
 
@@ -44,7 +44,7 @@ public class UntamedWildsGenerator {
                     //biome.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(1))));
                     biome.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, BEAR.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(1))));
                     biome.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, BIG_CATS.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(1))));
-                    biome.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(2))));
+                    biome.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(3))));
                 }
             }
         }

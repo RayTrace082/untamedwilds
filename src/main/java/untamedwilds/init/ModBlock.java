@@ -37,8 +37,7 @@ public class ModBlock {
     public static RegistryObject<Block> TRAP_CAGE  = createBlock("trap_cage", () -> new BlockCage(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(3.0F).sound(SoundType.WOOD)), ItemGroup.TRANSPORTATION);
     public static RegistryObject<Block> LARD_BLOCK  = createBlock("block_lard", () -> new BlockLard(Block.Properties.create(Material.CLAY, MaterialColor.YELLOW).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.BUILDING_BLOCKS);
     public static RegistryObject<Block> PEARL_BLOCK  = createBlock("block_pearl", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.CYAN).hardnessAndResistance(5.0F, 6.0F).sound(SoundType.STONE)), ItemGroup.BUILDING_BLOCKS);
-
-
+    
     public static RegistryObject<Block> ANEMONE_ROSE_BULB  = createBlock("anemone_rose_bulb", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.RED).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS);
     public static RegistryObject<Block> ANEMONE_SAND  = createBlock("anemone_sand", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.RED).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS);
     public static RegistryObject<Block> ANEMONE_SEBAE  = createBlock("anemone_sebae", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.RED).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS);

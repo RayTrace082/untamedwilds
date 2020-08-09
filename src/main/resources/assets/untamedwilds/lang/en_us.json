@@ -1,7 +1,7 @@
 {
   "itemgroup.untamedwilds_items": "Untamed Wilds",
-  "entity.untamedwilds.command.0": "This mob is now wandering",
-  "entity.untamedwilds.command.1": "This mob is now following you",
+  "entity.untamedwilds.command.0": "This mob is now Wandering",
+  "entity.untamedwilds.command.1": "This mob is now Protecting you",
   "entity.untamedwilds.command.2": "This mob is now Sitting",
   "entity.untamedwilds.command.3": "This mob is now Guarding the area",
 
@@ -162,6 +162,8 @@
   "item.untamedwilds.ownership_deed_desc_5": "Right-click this deed to highlight the associated mob",
   "item.untamedwilds.ownership_deed_desc_6": "Signed by: %d",
   "item.untamedwilds.debug_analyzer": "Mob Analyzer",
+  "untamedwilds.timeutils.weeks": "%d weeks and %d days",
+  "untamedwilds.timeutils.days": "%d days",
   "mobspawn.tooltip.unknown": "???",
   "mobspawn.tooltip.male": "Male",
   "mobspawn.tooltip.female": "Female",

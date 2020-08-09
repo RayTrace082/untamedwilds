@@ -1,8 +1,9 @@
 package untamedwilds.util;
 
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-// A set of fucntions relating Time conversion between Ticks, Days and Months
+// A set of functions relating Time conversion between Ticks, Days and Months
 // Handles compatibility with SereneSeasons, using their functions if the Mod and the option are enabled
 public abstract class TimeUtils {
 
@@ -20,9 +21,9 @@ public abstract class TimeUtils {
         if (d > 7) {
             int m = d/7;
             d -= m * 7;
-            return m + " weeks and " + d + " days"; // TODO: More localization
+            return new TranslationTextComponent("untamedwilds.timeutils.weeks", m, d).getString();
         }
-        return d + " days";
+        return new TranslationTextComponent("untamedwilds.timeutils.days", d).getString();
     }
 
     public static int getTicksInMonth(World world) {

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#",
+    "S",
+    "S"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:string"
+    },
+    "S": {
+      "item": "untamedwilds:material_fat"
+    }
+  },
+  "result": {
+    "item": "buzzier_bees:candle",
+    "count": 2
+  }
+}
