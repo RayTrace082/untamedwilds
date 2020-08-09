@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "untamedwilds:food_bear_raw",
+    "untamedwilds:food_bear_cooked",
+    "untamedwilds:food_turtle_raw",
+    "untamedwilds:food_turtle_cooked"
+  ]
+}
