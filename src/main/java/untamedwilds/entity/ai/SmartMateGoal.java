@@ -13,19 +13,25 @@ import java.util.List;
 public class SmartMateGoal extends Goal {
     private final ComplexMob taskOwner;
     private World world;
+    private int executionChance;
     private final Class<? extends ComplexMob> mateClass;
     private ComplexMob targetMate;
     private int spawnBabyDelay;
     private double moveSpeed;
 
     public SmartMateGoal(ComplexMob taskOwner, double speedIn) {
-        this(taskOwner, speedIn, taskOwner.getClass());
+        this(taskOwner, speedIn, 120, taskOwner.getClass());
     }
 
     private SmartMateGoal(ComplexMob taskOwner, double speedIn, Class<? extends ComplexMob> mateClass) {
+        this(taskOwner, speedIn, 120, mateClass);
+    }
+
+    private SmartMateGoal(ComplexMob taskOwner, double speedIn, int executionChance, Class<? extends ComplexMob> mateClass) {
         this.taskOwner = taskOwner;
         this.world = taskOwner.world;
         this.mateClass = mateClass;
+        this.executionChance = executionChance;
         this.moveSpeed = speedIn;
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
@@ -33,7 +39,11 @@ public class SmartMateGoal extends Goal {
     public boolean shouldExecute() {
         if (!this.taskOwner.isInLove() || this.taskOwner.getGrowingAge() != 0) {
             return false;
-        } else {
+        }
+        if (this.taskOwner.getRNG().nextInt(this.executionChance) != 0) {
+            return false;
+        }
+        else {
             this.targetMate = this.getNearbyMate();
             return this.targetMate != null;
         }

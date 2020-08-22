@@ -4,7 +4,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -19,10 +18,7 @@ import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAmphibious;
 import untamedwilds.entity.ISpecies;
-import untamedwilds.entity.ai.AmphibiousRandomSwimGoal;
-import untamedwilds.entity.ai.AmphibiousTransition;
-import untamedwilds.entity.ai.SmartAvoidGoal;
-import untamedwilds.entity.ai.SmartMateGoal;
+import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.init.ModItems;
 
@@ -53,11 +49,10 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
 
     public void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1D, false));
+        this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
         this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1D, 1.1D, input -> this.getEcoLevel(input) > 4));
         this.goalSelector.addGoal(3, new AmphibiousTransition(this, 1D));
-        //this.goalSelector.addGoal(3, new SwimGoal(this));
         this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 80));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 5));
@@ -95,10 +90,12 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
                 this.heal(1.0F);
             }
         }
-        if (this.world.isRemote && !this.isInWater() && this.baskProgress < 100) {
-            this.baskProgress++;
-        } else if (this.world.isRemote && this.isInWater() && this.baskProgress > 0) {
-            this.baskProgress--;
+        else {
+            if (!this.isInWater() && this.baskProgress < 100) {
+                this.baskProgress++;
+            } else if (this.isInWater() && this.baskProgress > 0) {
+                this.baskProgress--;
+            }
         }
     }
 

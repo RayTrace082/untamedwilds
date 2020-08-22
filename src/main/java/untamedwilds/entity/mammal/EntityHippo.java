@@ -5,7 +5,6 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -13,7 +12,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
@@ -27,6 +25,7 @@ import untamedwilds.entity.ai.SmartWanderGoal;
 import untamedwilds.entity.ai.unique.HippoTerritorialityTargetGoal;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModSounds;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -133,20 +132,8 @@ public class EntityHippo extends ComplexMobAmphibious {
             }
             if (this.getAnimation() == ATTACK && this.getAttackTarget() != null && this.getBoundingBox().grow(1.2F, 1.0F, 1.2F).contains(this.getAttackTarget().getPositionVector()) && (this.getAnimationTick() > 8)) {
                 LivingEntity target = this.getAttackTarget();
-                //if (this.getAttackTarget().isActiveItemStackBlocking()) this.getAttackTarget().getActiveItemStack().damageItem(40, this.getAttackTarget());
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributes().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getValue() * 1F);
-                if (target.getRidingEntity() != null && target.getRidingEntity() instanceof BoatEntity) {
-                    BoatEntity boat = (BoatEntity) target.getRidingEntity();
-                    boat.remove();
-                    if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
-                        for(int j = 0; j < 3; ++j) {
-                            boat.entityDropItem(boat.getBoatType().asPlank());
-                        }
-                        for(int k = 0; k < 2; ++k) {
-                            boat.entityDropItem(Items.STICK);
-                        }
-                    }
-                }
+                EntityUtils.destroyBoat(this.world, target);
             }
             this.setAngry(this.getAttackTarget() != null);
         }
@@ -178,8 +165,6 @@ public class EntityHippo extends ComplexMobAmphibious {
         if (flag && this.getAnimation() == NO_ANIMATION && !this.isChild()) {
             Animation anim = chooseAttackAnimation();
             this.setAnimation(anim);
-            this.setAnimation(anim);
-            this.setAnimationTick(0);
         }
         return flag;
     }
