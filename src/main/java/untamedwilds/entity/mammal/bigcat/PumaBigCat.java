@@ -20,6 +20,7 @@ import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
 import untamedwilds.init.ModEntity;
+import untamedwilds.init.ModLootTables;
 
 import java.util.List;
 
@@ -121,6 +122,9 @@ public class PumaBigCat extends AbstractBigCat {
         return SoundEvents.ENTITY_OCELOT_DEATH;
     }
 
+    protected ResourceLocation getLootTable() {
+        return ModLootTables.BIGCAT_LOOT_PUMA;
+    }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.RABBIT; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }

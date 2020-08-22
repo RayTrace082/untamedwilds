@@ -39,6 +39,8 @@ public class ModItems {
     public static RegistryObject<Item> MEAT_BEAR_COOKED = createItem("food_bear_cooked", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(7).saturation(1F).meat().build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> MEAT_TURTLE_RAW = createItem("food_turtle_raw", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(2).saturation(0.3F).meat().build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> MEAT_TURTLE_COOKED = createItem("food_turtle_cooked", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(6).saturation(0.6F).meat().build()).group(ItemGroup.FOOD)));
+    public static RegistryObject<Item> MEAT_HIPPO_RAW = createItem("food_hippo_raw", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.7F).meat().build()).group(ItemGroup.FOOD)));
+    public static RegistryObject<Item> MEAT_HIPPO_COOKED = createItem("food_hippo_cooked", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(7).saturation(1.1F).meat().build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> FOOD_TURTLE_SOUP = createItem("food_turtle_soup", () -> new SoupItem(new Item.Properties().food((new Food.Builder()).hunger(8).saturation(0.6F).build()).group(ItemGroup.FOOD)));
 
     // Hides
@@ -46,8 +48,13 @@ public class ModItems {
     public static RegistryObject<Item> HIDE_BEAR_BLACK = createItem("hide_bear_black", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
     public static RegistryObject<Item> HIDE_BEAR_BROWN = createItem("hide_bear_brown", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
     public static RegistryObject<Item> HIDE_BEAR_WHITE = createItem("hide_bear_white", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
-    public static RegistryObject<Item> HIDE_BIG_CAT_JAGUAR = createItem("hide_big_cat_jaguar", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
-
+    public static RegistryObject<Item> HIDE_BIGCAT_JAGUAR = createItem("hide_bigcat_jaguar", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
+    public static RegistryObject<Item> HIDE_BIGCAT_LEOPARD = createItem("hide_bigcat_leopard", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
+    public static RegistryObject<Item> HIDE_BIGCAT_LION = createItem("hide_bigcat_lion", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
+    public static RegistryObject<Item> HIDE_BIGCAT_PANTHER = createItem("hide_bigcat_panther", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
+    public static RegistryObject<Item> HIDE_BIGCAT_PUMA = createItem("hide_bigcat_puma", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
+    public static RegistryObject<Item> HIDE_BIGCAT_SNOW_LEOPARD = createItem("hide_bigcat_snow_leopard", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
+    public static RegistryObject<Item> HIDE_BIGCAT_TIGER = createItem("hide_bigcat_tiger", () -> new Item(new Item.Properties().group(ItemGroup.MISC)));
 
     // Debug Tools
     public static RegistryObject<Item> OWNERSHIP_DEED = createItem("ownership_deed", () -> new ItemOwnershipDeed(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items)));
@@ -62,7 +69,7 @@ public class ModItems {
     }
 
     public static void registerSpawnItems(DeferredRegister<Item> registry) {
-        // These items have no associated object, they are not supposed to be accessed
+        // These items have no associated objects, as they are not supposed to be accessed, and I do not want to independently register each of them
         // Tarantula Items
         if (ConfigMobControl.addTarantula.get()) {
             for (int i = 0; i < Tarantula.SpeciesTarantula.values().length; i++) {
@@ -75,8 +82,8 @@ public class ModItems {
         if (ConfigMobControl.addSnake.get()) {
             for (int i = 0; i < EntitySnake.SpeciesSnake.values().length; i++) {
                 int snake = i;
-                //ModItems.ITEMS.register("softshell_turtle_" + EntitySnake.SpeciesSnake.values()[i].name().toLowerCase(), () -> new ItemMobSpawn(ModEntity.SNAKE, snake, EntitySnake.SpeciesSnake.values()[snake].name().toLowerCase(), new Item.Properties().group(ItemGroup.MISC)));
-                //ModItems.ITEMS.register("egg_snake_" + EntitySnake.SpeciesSnake.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.SNAKE, snake, new Item.Properties().group(ItemGroup.MISC)));
+                ModItems.ITEMS.register("snake_" + EntitySnake.SpeciesSnake.values()[i].name().toLowerCase(), () -> new ItemMobSpawn(ModEntity.SNAKE, snake, EntitySnake.SpeciesSnake.values()[snake].name().toLowerCase(), new Item.Properties().group(ItemGroup.MISC)));
+                ModItems.ITEMS.register("egg_snake_" + EntitySnake.SpeciesSnake.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.SNAKE, snake, new Item.Properties().group(ItemGroup.MISC)));
             }
         }
         // Softshell Turtle Items

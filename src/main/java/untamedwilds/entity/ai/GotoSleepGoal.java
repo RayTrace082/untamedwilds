@@ -3,6 +3,7 @@ package untamedwilds.entity.ai;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.LightType;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
@@ -12,9 +13,7 @@ import java.util.Random;
 
 public class GotoSleepGoal extends Goal {
     private final ComplexMobTerrestrial creature;
-    protected double x;
-    protected double y;
-    protected double z;
+    protected Vec3d target;
     private final int executionChance;
     private final double speed;
 
@@ -52,21 +51,17 @@ public class GotoSleepGoal extends Goal {
                     return false;
                 } else {
                     this.creature.setHome(pos);
-                    this.x = this.creature.getHome().getX(); // TODO: Replace x, y, z with vec3d, somehow
-                    this.y = this.creature.getHome().getY();
-                    this.z = this.creature.getHome().getZ();
+                    this.target = new Vec3d(this.creature.getHome());
                     return true;
                 }
             }
-            this.x = this.creature.getHome().getX();
-            this.y = this.creature.getHome().getY();
-            this.z = this.creature.getHome().getZ();
+            this.target = new Vec3d(this.creature.getHome());
             return true;
         }
     }
 
     public void startExecuting() {
-        this.creature.getNavigator().tryMoveToXYZ(this.x, this.y, this.z, this.speed);
+        this.creature.getNavigator().tryMoveToXYZ(this.target.getX(), this.target.getY(), this.target.getZ(), this.speed);
     }
 
     public boolean shouldContinueExecuting() {

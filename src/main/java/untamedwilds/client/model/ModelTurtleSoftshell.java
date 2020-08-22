@@ -110,6 +110,9 @@ public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTur
             progressRotation(neck, turtle.baskProgress, -0.5009094953223726F, 0, 0.0F, 100);
             progressRotation(main_head, turtle.baskProgress, 0.36425021489121656F, 0, 0.0F, 100);
         }
+        if (turtle.isInWater() && !turtle.onGround) {
+            this.setRotateAngle(main_body, (float) (turtle.getMotion().getY() * -30 * Math.PI / 180F), 0, 0);
+        }
 
         this.main_body.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F));
         walk(neck, 0.4F, 0.03F, false, 2.8f, 0.1F, ageInTicks / 16, 0.1F);
@@ -128,23 +131,5 @@ public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTur
             flap(main_body, globalSpeed / 2, globalDegree * 1.2f, false, 0, 0.1f, limbSwing / 2, limbSwingAmount);
             swing(main_body, globalSpeed / 2, globalDegree * 1.2f, false, 0.8F, 0.1f, limbSwing / 3, limbSwingAmount);
         }
-        /*swing(legL2, globalSpeed, globalDegree * 1.2f, false, 0 + 1.57f*3, 0.1f, limbSwing, limbSwingAmount);
-        flap(legL2, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*3, 0.2f, limbSwing, limbSwingAmount);
-        flap(legL22, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*3, 0f, limbSwing, limbSwingAmount);
-        swing(legL3, globalSpeed, globalDegree * 1.2f, false, 0, 0.1f, limbSwing, limbSwingAmount);
-        flap(legL3, globalSpeed, globalDegree * 0.8f, true, 1.57f, 0.2f, limbSwing, limbSwingAmount);
-        flap(legL32, globalSpeed, globalDegree * 0.8f, true, 1.57f, 0f, limbSwing, limbSwingAmount);
-        swing(legL4, globalSpeed, globalDegree * 1.2f, false, 0 + 1.57f, 0.1f, limbSwing, limbSwingAmount);
-        flap(legL4, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f, 0.2f, limbSwing, limbSwingAmount);
-        flap(legL42, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f, 0f, limbSwing, limbSwingAmount);
-        swing(legR2, globalSpeed, globalDegree * 1.2f, false, 0 + 1.57f, -0.1f, limbSwing, limbSwingAmount);
-        flap(legR2, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f, -0.2f, limbSwing, limbSwingAmount);
-        flap(legR22, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f, 0f, limbSwing, limbSwingAmount);
-        swing(legR3, globalSpeed, globalDegree * 1.2f, false, 0 + 1.57f*2, -0.1f, limbSwing, limbSwingAmount);
-        flap(legR3, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*2, -0.2f, limbSwing, limbSwingAmount);
-        flap(legR32, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*2, 0f, limbSwing, limbSwingAmount);
-        swing(legR4, globalSpeed, globalDegree * 1.2f, false, 0 + 1.57f*3, -0.1f, limbSwing, limbSwingAmount);
-        flap(legR4, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*3, -0.2f, limbSwing, limbSwingAmount);
-        flap(legR42, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*3, 0f, limbSwing, limbSwingAmount);*/
     }
 }

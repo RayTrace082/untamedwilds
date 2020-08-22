@@ -109,12 +109,12 @@ public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
 
         animator.setAnimation(EntitySnake.ANIMATION_TONGUE);
         animator.startKeyframe(4);
-        this.rotate(animator, head_tongue, 13.04F, 15.65F, 0);
-        animator.move(head_tongue, 0, 0, -1.5F);
+        this.rotate(animator, head_tongue, 26.08F, 36.52F, 0);
+        animator.move(head_tongue, 0, 0, -2.5F);
         animator.endKeyframe();
         animator.startKeyframe(3);
         this.rotate(animator, head_tongue, -26.08F, -36.52F, 0);
-        animator.move(head_tongue, 0, 0, -2.5F);
+        animator.move(head_tongue, 0, 0, -3F);
         animator.endKeyframe();
         animator.resetKeyframe(3);
     }
@@ -145,24 +145,25 @@ public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
         limbSwing *= -1.2;
         float globalSpeed = 1f;
         float globalDegree = 2f;
+        limbSwingAmount = 0.5F;
 
-        if (snake.isSleeping()) {
-            limbSwingAmount = 0F;
-            this.setRotateAngle(body_1, 39.13F, 67.83F, 44.35F);
-            this.setRotateAngle(body_2, -15.65F, 70.43F, 0);
-            this.setRotateAngle(body_3, 0F, 46.96F, 0F);
-            this.setRotateAngle(body_4, 0F, 67.83F, 0F);
-            body_5.rotationPointX = -3F;
-            body_5.rotationPointZ = -3F;
-            this.setRotateAngle(body_5, 0F, 101.74F, 0F);
-            this.setRotateAngle(body_6, 0F, -57.39F, 0F);
-            this.setRotateAngle(body_7, 0F, -52.17F, 0F);
-            this.setRotateAngle(body_8, 0F, -26.09F, 0F);
-            this.setRotateAngle(body_9, 0F, -60F, 0F);
-            this.setRotateAngle(body_10, 0F, -31.30F, 0F);
+        if (snake.sitProgress != 0) {
+            limbSwingAmount /= snake.sitProgress;
+            this.progressRotation(body_1, snake.sitProgress, (float) Math.toRadians(39.13F), (float) Math.toRadians(67.83F), (float) Math.toRadians(44.35F), 40);
+            this.progressRotation(body_2, snake.sitProgress,(float) Math.toRadians(-15.65F), (float) Math.toRadians(70.43F), 0, 40);
+            this.progressRotation(body_3, snake.sitProgress,0F, (float) Math.toRadians(75.65F), 0F, 40);
+            this.progressRotation(body_4, snake.sitProgress,0F, (float) Math.toRadians(75.65F), 0F, 40);
+            body_5.rotationPointX = -4F;
+            body_5.rotationPointZ = 1F;
+            this.progressRotation(body_5, snake.sitProgress,0F, (float) Math.toRadians(67.83F), 0F, 40);
+            this.progressRotation(body_6, snake.sitProgress,0F, (float) Math.toRadians(-57.39F), 0F, 40);
+            this.progressRotation(body_7, snake.sitProgress,0F, (float) Math.toRadians(49.57F), 0F, 40);
+            this.progressRotation(body_8, snake.sitProgress,0F, (float) Math.toRadians(57.39F), 0F, 40);
+            this.progressRotation(body_9, snake.sitProgress,0F, (float) Math.toRadians(75.65F), 0F, 40);
+            this.progressRotation(body_10, snake.sitProgress,0F, (float) Math.toRadians(62.61F), 0F, 40);
         }
-        else {
-            limbSwingAmount = 0.5F;
+        if (snake.isInWater() && !snake.onGround) {
+            this.setRotateAngle(body_5, (float) (snake.getMotion().getY() * -30 * Math.PI / 180F), 0, 0);
         }
 
         // This chunk gives the snakes a slithering motion, replacing limbSwingAmount with a constant value prevents the snake from going stiff once not moving
@@ -191,8 +192,10 @@ public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
         }
 
         if (snake.isAngry()) {
-            this.setRotateAngle(head_face, -50F, 0F, 0F);
-            this.setRotateAngle(head_jaw, 45F,0F,  0F);
+            this.setRotateAngle(body_1, (float) Math.toRadians(-18.26F),0F,  0F);
+            this.setRotateAngle(main_neck, (float) Math.toRadians(18.26F), 0F, 0F);
+            this.setRotateAngle(head_face, (float) Math.toRadians(-41.74F), 0F, 0F);
+            this.setRotateAngle(head_jaw, (float) Math.toRadians(49.57F),0F,  0F);
             head_face.scaleX = 1.01F;
             head_jaw.scaleX = 1.01F;
             if (snake.isRattler()) {
@@ -200,13 +203,6 @@ public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
                 body_10.rotateAngleX += Math.toRadians(60F);
                 swing(body_10, 1f * globalSpeed, 0.2f * globalDegree, false, 0f, 0, snake.ticksExisted, 0.5F);
                 flap(body_10, 1f * globalSpeed, 0.2f * globalDegree, false, 0f, 0, snake.ticksExisted, 0.5F);
-            }
-            if (snake.isSleeping()) {
-                //walk(body_1, 0.2f * globalSpeed, 0.1f * globalDegree - 80F, false, 0f, 0, snake.ticksExisted, 0.01F);
-                //walk(body_2, 0.2f * globalSpeed, 0.1f * globalDegree - 80F, false, 0f, 0, snake.ticksExisted, 0.01F);
-                this.setRotateAngle(main_neck, 40F, 0F, 30F);
-                body_1.rotateAngleX -= Math.toRadians(30F);
-                body_2.rotateAngleX -= Math.toRadians(30F);
             }
         }
     }

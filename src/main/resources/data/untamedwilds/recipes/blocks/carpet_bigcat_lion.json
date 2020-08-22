@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "carpet",
+  "pattern": [
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "untamedwilds:hide_bigcat_lion"
+    }
+  },
+  "result": {
+    "item": "untamedwilds:carpet_bigcat_lion",
+    "count": 6
+  }
+}

@@ -28,7 +28,7 @@ import untamedwilds.world.UntamedWildsGenerator;
 public class UntamedWilds {
 
     // TODO: Migrate entities to DeferredRegistries if Spawn Eggs ever get fixed
-    // TODO: Consider Brains as a replacement for Goals when necessary (Bears may benefit from removing half their Goals when adult/tamed)
+    // TODO: Consider Brains as a replacement for Goals when necessary (Complex Mobs may benefit from removing half their Goals when adult/tamed)
     // TODO: Skins! Reuse the Species system in complex mobs to introduce random skins
     // TODO: Migration AI, rare events executed by hungry mobs where they will choose a direction and keep moving there
 

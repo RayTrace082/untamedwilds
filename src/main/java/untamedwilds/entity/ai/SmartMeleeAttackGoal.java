@@ -8,6 +8,7 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import untamedwilds.UntamedWilds;
 
 import java.util.EnumSet;
 
@@ -109,6 +110,18 @@ public class SmartMeleeAttackGoal extends Goal {
         this.attacker.getLookController().setLookPositionWithEntity(livingentity, 30.0F, 30.0F);
         double d0 = this.attacker.getDistanceSq(livingentity.getPosX(), livingentity.getBoundingBox().minY, livingentity.getPosZ());
         --this.delayCounter;
+
+        // This piece of code fixes Amphibious mobs being unable to chase upwards
+        if (this.attacker.isInWater() && this.attacker.ticksExisted % 20 == 0) {
+            UntamedWilds.LOGGER.info(livingentity.getBoundingBox().minY + " " + this.attacker.getPosY() + " JUMP DUMBASS");
+            if (livingentity.getBoundingBox().minY > this.attacker.getPosY()) {
+                this.attacker.getJumpController().setJumping();
+                //Vec3d prevMotion = this.attacker.getMotion();
+                //this.attacker.setMotion(prevMotion.getX(), 0.1F, prevMotion.getZ());
+                // this.attacker.getJumpController().setJumping();
+            }
+        }
+
         if ((this.longMemory || this.attacker.getEntitySenses().canSee(livingentity)) && this.delayCounter <= 0 && (this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D || livingentity.getDistanceSq(this.targetX, this.targetY, this.targetZ) >= 1.0D || this.attacker.getRNG().nextFloat() < 0.05F)) {
             this.targetX = livingentity.getPosX();
             this.targetY = livingentity.getBoundingBox().minY;

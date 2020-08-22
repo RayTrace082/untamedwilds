@@ -106,7 +106,7 @@ public class DireLionBigCat extends AbstractBigCat {
         return bear;
     }
 
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEEF; } // TODO: Replace with Zebra meat if Zebras are ever added
+    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEEF; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }
     public int getAdulthoodTime() { return GROWING; }

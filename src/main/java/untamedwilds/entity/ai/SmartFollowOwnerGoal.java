@@ -14,7 +14,6 @@ import untamedwilds.entity.ComplexMob;
 
 import java.util.EnumSet;
 
-// TODO: Abstract the process so mobs can follow other mobs
 public class SmartFollowOwnerGoal extends Goal {
     protected final ComplexMob taskOwner;
     private LivingEntity owner;

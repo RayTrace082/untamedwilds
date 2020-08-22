@@ -38,8 +38,11 @@ public abstract class ComplexMobAmphibious extends ComplexMobTerrestrial {
 
     public boolean wantsToEnterWater() { return false; }
 
-    public float getWaterSlowDown() {
+    /*public float getWaterSlowDown() {
         return 1;
+    }*/
+    public float getWaterSlowDown() {
+        return this.onGround ? 0.8F : 0.9F;
     }
 
     @Override
@@ -123,11 +126,11 @@ public abstract class ComplexMobAmphibious extends ComplexMobTerrestrial {
 
         public void tick() {
             if (this.action == MovementController.Action.MOVE_TO && !this.entity.getNavigator().noPath()) {
-                double d0 = this.posX - this.entity.getPosX();
-                double d1 = this.posY - this.entity.getPosY();
-                double d2 = this.posZ - this.entity.getPosZ();
-                double d3 = MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-                d1 = d1 / d3;
+                double d0 = this.getX() - this.entity.getPosX();
+                double d1 = this.getY() - this.entity.getPosY();
+                double d2 = this.getZ() - this.entity.getPosZ();
+                double d4 = MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                d1 = d1 / d4;
                 float f = (float)(MathHelper.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
                 this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, f, 90.0F);
                 this.entity.renderYawOffset = this.entity.rotationYaw;
@@ -137,12 +140,11 @@ public abstract class ComplexMobAmphibious extends ComplexMobTerrestrial {
                 if (this.entity.isInWater()) {
                     float f2 = -((float)(MathHelper.atan2(d1, MathHelper.sqrt(d0 * d0 + d2 * d2)) * (double)(180F / (float)Math.PI)));
                     f2 = MathHelper.clamp(MathHelper.wrapDegrees(f2), -85.0F, 85.0F);
-                    this.entity.rotationPitch = this.limitAngle(this.entity.rotationPitch, f2, 5.0F);
+                    this.entity.rotationPitch = this.limitAngle(this.entity.rotationPitch, (float) (this.entity.getMotion().getY() * -30), 5.0F);
+                    //this.entity.rotationPitch = 99F;
                 }
             } else {
                 if (this.entity.getAttackTarget() == null && this.entity.getNavigator().noPath()) {
-                    //this.setMotion(this.getMotion().add(0.0D, -0.005D, 0.0D));
-                    //this.entity.setMotion(0.0D, this.entity.buoyancy - 1, 0.0D);
                     this.entity.setMotion(this.entity.getMotion().add(0.0D, this.entity.buoyancy - 1, 0.0D));
                 }
                 this.entity.setAIMoveSpeed(0.0F);

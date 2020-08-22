@@ -21,6 +21,7 @@ import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.SmartAvoidGoal;
 import untamedwilds.entity.ai.SmartMateGoal;
 import untamedwilds.entity.ai.SmartSwimGoal;
+import untamedwilds.entity.ai.target.DontThreadOnMeTarget;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.init.ModSounds;
 
@@ -58,6 +59,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
         this.goalSelector.addGoal(3, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 4));
+        this.targetSelector.addGoal(3, new DontThreadOnMeTarget<>(this, LivingEntity.class, true));
     }
 
     public void livingTick() {

@@ -3,7 +3,8 @@
   "textures": {
     "bottom": "untamedwilds:block/trap_cage_top",
     "top": "untamedwilds:block/trap_cage_top",
-    "side": "untamedwilds:block/trap_cage"
+    "side": "untamedwilds:block/trap_cage",
+    "particle": "untamedwilds:block/trap_cage"
   },
   "elements": [
         {   "from": [ 0, 0, 0 ],

@@ -44,7 +44,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-// TODO: It's possible to catch ghost entities if a mob touches multiple boxes at once (eg. 2x2 mob failling into a pit full of Cages)
+// BUG: It's possible to catch ghost entities if a mob touches multiple boxes in the same tick (eg. 2x2 mob falling into a pit full of Cages)
 public class BlockCage extends Block implements IWaterLoggable {
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;

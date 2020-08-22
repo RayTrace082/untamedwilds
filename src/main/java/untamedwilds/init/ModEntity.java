@@ -53,7 +53,7 @@ public class ModEntity {
     public static EntityType<GiantClam> GIANT_CLAM = createEntity(ConfigMobControl.addGiantClam.get(), GiantClam::new, EntityClassification.WATER_CREATURE, "giant_clam", 32, 10, true, 1.0F, 1.0F, 0x346B70, 0xAD713C, animalType.SESSILE, 1);
 
     // Mammals
-    public static EntityType<EntityHippo> HIPPO = createEntity(UntamedWilds.DEBUG, EntityHippo::new,  "hippo",  1.8F, 1.8F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1);
+    public static EntityType<EntityHippo> HIPPO = createEntity(UntamedWilds.DEBUG, EntityHippo::new,  "hippo",  1.8F, 1.8F, 0x463A31, 0x956761, animalType.APEX_PRED, 1);
     // Bears
     public static EntityType<BlackBear> BLACK_BEAR = createEntity(ConfigMobControl.addBear.get(), BlackBear::new,  "bear_black",  1.3F, 1.3F, 0x0B0A08, 0x3D3226, animalType.APEX_PRED, 1);
     public static EntityType<BlindBear> BLIND_BEAR = createEntity(ConfigMobControl.addBear.get(), BlindBear::new,  "bear_blind",  1.6F, 1.6F, 0x241D1B, 0x4B3B35, animalType.LARGE_UNDERGROUND, 1);

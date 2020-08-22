@@ -11,6 +11,8 @@ public class ModSounds {
 
     public static final SoundEvent ENTITY_ATTACK_BITE = registerSound("entity.generic.bite");
 
+    public static final SoundEvent ENTITY_HIPPO_AMBIENT = registerSound("entity.hippo.ambient");
+
     public static final SoundEvent ENTITY_BEAR_AMBIENT = registerSound("entity.bear.ambient");
     public static final SoundEvent ENTITY_BEAR_WARNING = registerSound("entity.bear.warning");
     public static final SoundEvent ENTITY_BEAR_HURT = registerSound("entity.bear.hurt");
@@ -23,6 +25,9 @@ public class ModSounds {
     public static final SoundEvent ENTITY_BIG_CAT_DEATH = registerSound("entity.big_cat.death");
 
     public static final SoundEvent ENTITY_TARANTULA_AMBIENT = registerSound("entity.tarantula.ambient");
+
+    public static final SoundEvent ENTITY_SNAKE_HISS = registerSound("entity.snake.warning");
+    public static final SoundEvent ENTITY_SNAKE_RATTLE = registerSound("entity.snake.rattle");
 
     private static SoundEvent registerSound(String soundName) {
         ResourceLocation location = new ResourceLocation(UntamedWilds.MOD_ID, soundName);

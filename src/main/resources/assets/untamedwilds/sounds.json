@@ -99,5 +99,29 @@
 			"untamedwilds:tarantula_idle_2"
 		],
 		"subtitle": "untamedwilds.subtitles.tarantula.ambient"
+	},
+
+	"entity.hippo.ambient": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:hippo_idle_1",
+			"untamedwilds:hippo_idle_2"
+		],
+		"subtitle": "untamedwilds.subtitles.hippo.ambient"
+	},
+
+	"entity.snake.warning": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:snake_hissing"
+		],
+		"subtitle": "untamedwilds.subtitles.snake.warning"
+	},
+	"entity.snake.rattle": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:snake_rattle"
+		],
+		"subtitle": "untamedwilds.subtitles.snake.rattle"
 	}
 }

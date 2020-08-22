@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mammal.EntityHippo;
+import untamedwilds.entity.mammal.bear.AbstractBear;
 
 @OnlyIn(Dist.CLIENT)
 public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
@@ -34,7 +35,6 @@ public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
     public AdvancedModelBox leg_left_2;
 
     private ModelAnimator animator;
-    private static final ModelHippoCalf CALF_MODEL = new ModelHippoCalf();
 
     public ModelHippo() {
         this.textureWidth = 128;
@@ -160,18 +160,7 @@ public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
         );
     }
 
-    /*@Override
-    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        EntityHippo entity = (EntityHippo) entityIn;
-        animate(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        if (entity.isChild() || entity.getSpecies() == 1) {
-            CALF_MODEL.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        } else {
-            this.body_main.render(scale);
-        }
-    }*/
-
-    private void animate(IAnimatedEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    private void animate(IAnimatedEntity entityIn) {
         this.resetToDefaultPose();
         EntityHippo bear = (EntityHippo) entityIn;
         animator.update(bear);
@@ -251,21 +240,31 @@ public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
         this.rotate(animator, head_jaw_1, 36F, 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(6);
+
+        animator.setAnimation(AbstractBear.IDLE_TALK);
+        animator.startKeyframe(10);
+        this.rotate(animator, head_jaw, 26.09F, 0, 0);
+        this.rotate(animator, head_face, -26.09F, 0, 0);
+        animator.endKeyframe();
+        animator.resetKeyframe(10);
     }
 
     public void setRotationAngles(EntityHippo hippo, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        animate(hippo, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        animate(hippo);
         //limbSwing = ageInTicks / 3;
         //limbSwingAmount = 0.5f;
         float globalSpeed = 1.5f;
         float globalDegree = 1f;
-
+        float f = limbSwing / 2;
         if (limbSwingAmount > 0.4F) {
             limbSwingAmount = 0.4F;
         }
         if (!hippo.shouldRenderEyes()) {
             this.eye_right.setRotationPoint(-2F, -2.0F, -4.0F);
             this.eye_left.setRotationPoint(2F, -2.0F, -4.0F);
+        }
+        if (hippo.isInWater() && !hippo.onGround) {
+            this.setRotateAngle(body_main, (float) (hippo.getMotion().getY() * -30 * Math.PI / 180F), 0, 0);
         }
 
         if (!hippo.isSleeping()) {
@@ -314,18 +313,18 @@ public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
 
         // Controls the walking animation
         if (hippo.canMove()) {
-            bob(body_main, 0.6f * globalSpeed, 0.6f * globalDegree, true, limbSwing, limbSwingAmount);
-            walk(head_neck, 0.6f * globalSpeed, 0.2f * globalDegree, false, 0, 0, limbSwing, limbSwingAmount);
-            walk(head_face, 0.6f * globalSpeed, 0.15f * globalDegree, true, 0, 0, limbSwing, limbSwingAmount);
+            bob(body_main, 0.6f * globalSpeed, 0.6f * globalDegree, true, f, limbSwingAmount);
+            walk(head_neck, 0.6f * globalSpeed, 0.2f * globalDegree, false, 0, 0, f, limbSwingAmount);
+            walk(head_face, 0.6f * globalSpeed, 0.15f * globalDegree, true, 0, 0, f, limbSwingAmount);
 
-            walk(arm_right, -0.6f * globalSpeed, 1.4f * globalDegree, true, 0F, 1.4f, limbSwing, limbSwingAmount);
-            walk(arm_right_2, -0.6f * globalSpeed, 1.4f * globalDegree, false, -1F, 1.4f, limbSwing, limbSwingAmount * 1.2f);
-            walk(arm_left, -0.6f * globalSpeed, 1.4f * globalDegree, true, 2F, 1.4f, limbSwing, limbSwingAmount);
-            walk(arm_left_2, -0.6f * globalSpeed, 1.4f * globalDegree, false, 1F, 1.4f, limbSwing, limbSwingAmount * 1.2f);
-            walk(leg_right, 0.6f * globalSpeed, 1.4f * globalDegree, false, 2.8F, 0, limbSwing, limbSwingAmount);
-            walk(leg_right_2, 0.6f * globalSpeed, 1.4f * globalDegree, true, 1.8F, 0, limbSwing, limbSwingAmount);
-            walk(leg_left, 0.6f * globalSpeed, 1.4f * globalDegree, false, 0.8F, 0, limbSwing, limbSwingAmount);
-            walk(leg_left_2, 0.6f * globalSpeed, 1.4f * globalDegree, true, -0.2F, 0, limbSwing, limbSwingAmount);
+            walk(arm_right, -0.6f * globalSpeed, 1.4f * globalDegree, true, 0F, 1.4f, f, limbSwingAmount);
+            walk(arm_right_2, -0.6f * globalSpeed, 1.4f * globalDegree, false, -1F, 1.4f, f, limbSwingAmount * 1.2f);
+            walk(arm_left, -0.6f * globalSpeed, 1.4f * globalDegree, true, 2F, 1.4f, f, limbSwingAmount);
+            walk(arm_left_2, -0.6f * globalSpeed, 1.4f * globalDegree, false, 1F, 1.4f, f, limbSwingAmount * 1.2f);
+            walk(leg_right, 0.6f * globalSpeed, 1.4f * globalDegree, false, 2.8F, 0, f, limbSwingAmount);
+            walk(leg_right_2, 0.6f * globalSpeed, 1.4f * globalDegree, true, 1.8F, 0, f, limbSwingAmount);
+            walk(leg_left, 0.6f * globalSpeed, 1.4f * globalDegree, false, 0.8F, 0, f, limbSwingAmount);
+            walk(leg_left_2, 0.6f * globalSpeed, 1.4f * globalDegree, true, -0.2F, 0, f, limbSwingAmount);
         }
     }
 }

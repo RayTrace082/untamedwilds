@@ -5,13 +5,15 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -22,7 +24,10 @@ import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.SmartAvoidGoal;
 import untamedwilds.entity.ai.SmartMateGoal;
 import untamedwilds.entity.ai.SmartSwimGoal;
+import untamedwilds.entity.ai.SmartWanderGoal;
+import untamedwilds.entity.ai.target.DontThreadOnMeTarget;
 import untamedwilds.entity.ai.target.HuntMobTarget;
+import untamedwilds.init.ModSounds;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -30,7 +35,6 @@ import java.util.List;
 import java.util.Random;
 
 public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
-    //TODO: Move Snakes away from ComplexMobTerrestrial, they don't need Animations
 
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
     private static final String BREEDING = "LATE_SUMMER";
@@ -61,9 +65,16 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.3D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 8));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new SmartWanderGoal(this, 1.0D, true));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 4));
+        this.targetSelector.addGoal(3, new DontThreadOnMeTarget<>(this, LivingEntity.class, true));
+    }
+
+    /* Crepuscular: Active between 10:00 and 22:00 */
+    public boolean isActive() {
+        super.isActive();
+        return this.getHunger() < 20;
     }
 
     public void livingTick() {
@@ -80,13 +91,18 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
             if (this.ticksExisted % 120 == 0) {
                 this.setAnimation(ANIMATION_TONGUE);
             }
+            if (this.getAnimation() == NO_ANIMATION && this.getAttackTarget() == null && !this.isSleeping()) {
+                int i = this.rand.nextInt(3000);
+                if (i <= 10 && !this.isInWater() && this.isNotMoving() && this.canMove()) {
+                    this.getNavigator().clearPath();
+                    this.setSitting(true);
+                }
+                if ((i == 11 || this.isInWater() || this.isActive()) && this.isSitting()) {
+                    this.setSitting(false);
+                }
+            }
             this.setAngry(this.getAttackTarget() != null);
         }
-        /*if (this.world.isRemote && this.isAngry() && this.aggroProgress < 40) {
-            this.aggroProgress++;
-        } else if (this.world.isRemote && !this.isAngry() && this.aggroProgress > 0) {
-            this.aggroProgress--;
-        }*/
     }
 
     /* Breeding conditions for the Snake are:
@@ -104,7 +120,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
         return false;
     }
 
-    /*protected SoundEvent getAmbientSound() {
+    protected SoundEvent getAmbientSound() {
         if (this.isAngry()) {
             if (this.isRattler()) {
                 return ModSounds.ENTITY_SNAKE_RATTLE;
@@ -115,6 +131,9 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
+        if (this.isRattler()) {
+            return ModSounds.ENTITY_SNAKE_RATTLE;
+        }
         return ModSounds.ENTITY_SNAKE_HISS;
     }
 
@@ -123,16 +142,21 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
     }
 
     @Nullable
-    protected ResourceLocation getLootTable() {
-        return ModLootTable.FROG_LOOT;
-    }*/
-
-    @Nullable
     @Override
     public AgeableEntity createChild(AgeableEntity ageableEntity) {
-        //ItemEntity entityitem = this.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":egg_tarantula_" + this.getRawSpeciesName().toLowerCase()))), 0.2F);
-        //entityitem.getItem().setCount(1 + this.rand.nextInt(3));
+        dropEggs("egg_snake_" + this.getRawSpeciesName().toLowerCase(), 4);
         return null;
+    }
+
+    @Override
+    public boolean processInteract(PlayerEntity player, Hand hand) {
+        ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
+
+        if (!this.world.isRemote && itemstack.isEmpty() && this.isAlive()) {
+            turnEntityIntoItem("snake_" + this.getRawSpeciesName().toLowerCase());
+            return true;
+        }
+        return super.processInteract(player, hand);
     }
 
     public String getBreedingSeason() {
@@ -178,16 +202,20 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
         BALL_PYTHON		(1, 1.0F,	0,	false, 2, BiomeDictionary.Type.SAVANNA, BiomeDictionary.Type.SPARSE),
         BLACK_MAMBA		(2, 1.3F,	2,	false, 2, BiomeDictionary.Type.SAVANNA),
         CARPET_PYTHON	(3, 1.1F,	0,	false, 1, BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.LUSH),
-        CORAL			(4, 0.7F,	2,	false, 3, BiomeDictionary.Type.MESA, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.DRY),
-        CORAL_BLUE		(5, 1.1F,	1,	false, 1, BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.LUSH),
-        CORN			(6, 0.9F,	0,	false, 3, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.PLAINS),
-        EMERALD			(7, 0.9F,	0,	false, 2, BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.LUSH),
-        GRASS_SNAKE		(8, 0.8F,	0,	false, 3, BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.FOREST),
-        GRAY_KINGSNAKE	(9, 0.7F,	0,	false, 3, BiomeDictionary.Type.MESA),
-        RATTLESNAKE		(10,0.7F,	1,	true,  2, BiomeDictionary.Type.MESA, BiomeDictionary.Type.DRY, BiomeDictionary.Type.SPARSE),
-        SWAMP_MOCCASIN	(11,0.7F,	1,	false, 2, BiomeDictionary.Type.SWAMP);
-
-
+        CAVE_RACER	    (4, 1.1F,	0,	false, 3, BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.LUSH),
+        CORAL			(5, 0.7F,	2,	false, 3, BiomeDictionary.Type.MESA, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.DRY),
+        CORAL_BLUE		(6, 1.1F,	1,	false, 1, BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.LUSH),
+        CORN			(7, 0.9F,	0,	false, 3, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.PLAINS),
+        EMERALD			(8, 0.9F,	0,	false, 2, BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.LUSH),
+        GRASS_SNAKE		(9, 0.8F,	0,	false, 3, BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.FOREST),
+        GRAY_KINGSNAKE	(10, 0.7F,	0,	false, 3, BiomeDictionary.Type.MESA),
+        GREEN_MAMBA		(11, 1.3F,	2,	false, 2, BiomeDictionary.Type.SAVANNA, BiomeDictionary.Type.JUNGLE),
+        RATTLESNAKE		(12,0.7F,	1,	true,  2, BiomeDictionary.Type.MESA, BiomeDictionary.Type.DRY, BiomeDictionary.Type.SPARSE),
+        RICE_PADDY		(13,0.7F,	1,	false,  2, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.SWAMP),
+        SWAMP_MOCCASIN	(14,0.7F,	1,	false, 2, BiomeDictionary.Type.SWAMP),
+        TAIPAN		    (15, 1.0F,	2,	false, 2, BiomeDictionary.Type.MESA, BiomeDictionary.Type.DRY, BiomeDictionary.Type.SPARSE),
+        WESTERN_RATTLESNAKE	(16,0.7F,	1,	true,  2, BiomeDictionary.Type.MESA, BiomeDictionary.Type.DRY, BiomeDictionary.Type.SPARSE);
+        
         public Float scale;
         public int species;
         public int rolls;
@@ -212,7 +240,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
 
         public static int getSpeciesByBiome(Biome biome) {
             List<SpeciesSnake> types = new ArrayList<>();
-            if (biome.getDefaultTemperature() < 0.8F) {
+            if (biome.getDefaultTemperature() < 0.2F) {
                 return 99;
             }
             for (SpeciesSnake type : values()) {
