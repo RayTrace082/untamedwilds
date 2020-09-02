@@ -12,19 +12,15 @@ import java.util.List;
 
 public class SmartMateGoal extends Goal {
     private final ComplexMob taskOwner;
-    private World world;
-    private int executionChance;
+    private final World world;
+    private final int executionChance;
     private final Class<? extends ComplexMob> mateClass;
     private ComplexMob targetMate;
     private int spawnBabyDelay;
-    private double moveSpeed;
+    private final double moveSpeed;
 
     public SmartMateGoal(ComplexMob taskOwner, double speedIn) {
         this(taskOwner, speedIn, 120, taskOwner.getClass());
-    }
-
-    private SmartMateGoal(ComplexMob taskOwner, double speedIn, Class<? extends ComplexMob> mateClass) {
-        this(taskOwner, speedIn, 120, mateClass);
     }
 
     private SmartMateGoal(ComplexMob taskOwner, double speedIn, int executionChance, Class<? extends ComplexMob> mateClass) {

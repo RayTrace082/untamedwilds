@@ -34,7 +34,6 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     public static Animation ATTACK_MAUL;
     public static Animation ATTACK_POUNCE;
     public static Animation ANIMATION_ROAR;
-    public static Animation ANIMATION_STAND;
     public static Animation ANIMATION_EAT;
     public static Animation IDLE_TALK;
     public int aggroProgress;
@@ -45,6 +44,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
         IDLE_TALK = Animation.create(20);
         this.stepHeight = 1;
         this.experienceValue = 10;
+        this.dexterity = 0.1F;
     }
 
     public boolean isActive() {
@@ -53,6 +53,10 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
         }
         float f = this.world.getCelestialAngle(0F);
         return f < 0.21F || f > 0.78;
+    }
+
+    public boolean isPushedByWater() {
+        return false;
     }
 
     public void livingTick() {
@@ -95,17 +99,6 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
                 this.setAnimation(ANIMATION_ROAR);
             }
             this.setAngry(this.getAttackTarget() != null);
-            int i = this.rand.nextInt(3000);
-            if (i == 0 && !this.isInWater() && this.isNotMoving() && this.canMove() && this.getAnimation() == NO_ANIMATION) {
-                this.getNavigator().clearPath();
-                this.setSitting(true);
-            }
-            if (i == 1 && this.isSitting()) {
-                this.setSitting(false);
-            }
-            if (i == 2 && this.canMove() && !this.isInWater() && !this.isChild() && this.getAnimation() == NO_ANIMATION) {
-                this.setAnimation(ANIMATION_STAND);
-            }
         }
         if (this.getAnimation() == ANIMATION_EAT && (this.getAnimationTick() == 10 || this.getAnimationTick() == 20 || this.getAnimationTick() == 30)) {
             this.playSound(SoundEvents.ENTITY_HORSE_EAT,1.5F, 0.8F);
@@ -144,6 +137,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
         if (hand == Hand.MAIN_HAND && !this.world.isRemote()) { // Prevents all code from running twice
             if (!this.world.isRemote()) {
                 if (player.isCreative() && itemstack.isEmpty()) {
+                    this.getJumpController().setJumping();
                     UntamedWilds.LOGGER.info(this.getDistanceSq(this.getHomeAsVec()) + " | " + this.getPosition() + " | " + this.getHome());
                 }
 
@@ -221,7 +215,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     }
 
     protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
-        return sizeIn.height * 0.85F;
+        return sizeIn.height * 0.9F;
     }
 
     public enum SpeciesBigCat implements IStringSerializable {

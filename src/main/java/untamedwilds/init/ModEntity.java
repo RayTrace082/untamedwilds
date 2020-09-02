@@ -53,7 +53,7 @@ public class ModEntity {
     public static EntityType<GiantClam> GIANT_CLAM = createEntity(ConfigMobControl.addGiantClam.get(), GiantClam::new, EntityClassification.WATER_CREATURE, "giant_clam", 32, 10, true, 1.0F, 1.0F, 0x346B70, 0xAD713C, animalType.SESSILE, 1);
 
     // Mammals
-    public static EntityType<EntityHippo> HIPPO = createEntity(UntamedWilds.DEBUG, EntityHippo::new,  "hippo",  1.8F, 1.8F, 0x463A31, 0x956761, animalType.APEX_PRED, 1);
+    public static EntityType<EntityHippo> HIPPO = createEntity(ConfigMobControl.addHippo.get(), EntityHippo::new,  "hippo",  1.8F, 1.8F, 0x463A31, 0x956761, animalType.APEX_PRED, 1);
     // Bears
     public static EntityType<BlackBear> BLACK_BEAR = createEntity(ConfigMobControl.addBear.get(), BlackBear::new,  "bear_black",  1.3F, 1.3F, 0x0B0A08, 0x3D3226, animalType.APEX_PRED, 1);
     public static EntityType<BlindBear> BLIND_BEAR = createEntity(ConfigMobControl.addBear.get(), BlindBear::new,  "bear_blind",  1.6F, 1.6F, 0x241D1B, 0x4B3B35, animalType.LARGE_UNDERGROUND, 1);
@@ -64,19 +64,19 @@ public class ModEntity {
     public static EntityType<SpectacledBear> SPECTACLED_BEAR = createEntity(ConfigMobControl.addBear.get(), SpectacledBear::new,  "bear_spectacled",  1.2F, 1.2F, 0x624125, 0x8E6E51, animalType.APEX_PRED, 1);
     public static EntityType<SunBear> SUN_BEAR = createEntity(ConfigMobControl.addBear.get(), SunBear::new,  "bear_sun",  0.9F, 0.9F, 0x0B0A08, 0xA27345, animalType.APEX_PRED, 1);
     // Big Cats
-    public static EntityType<JaguarBigCat> JAGUAR = createEntity(UntamedWilds.DEBUG, JaguarBigCat::new,  "bigcat_jaguar",  1.2F, 1.0F, 0xC59F45,0x383121, animalType.APEX_PRED, 1);
-    public static EntityType<LeopardBigCat> LEOPARD = createEntity(UntamedWilds.DEBUG, LeopardBigCat::new,  "bigcat_leopard",  1.2F, 1.0F, 0xC59F45, 0x383121, animalType.APEX_PRED, 1);
-    public static EntityType<LionBigCat> LION = createEntity(UntamedWilds.DEBUG, LionBigCat::new, "bigcat_lion", 1.2F, 1.2F, 0xDCBA84, 0x442917, animalType.APEX_PRED, 1);
-    public static EntityType<PantherBigCat> PANTHER = createEntity(UntamedWilds.DEBUG, PantherBigCat::new,  "bigcat_panther",  1.2F, 1.0F, 0x0B0A0C, 0x3D3A4C, animalType.APEX_PRED, 1);
-    public static EntityType<PumaBigCat> PUMA = createEntity(UntamedWilds.DEBUG, PumaBigCat::new,  "bigcat_puma",  1.2F, 1.0F, 0x774C23, 0xECC38E, animalType.APEX_PRED, 1);
-    public static EntityType<SnowLeopardBigCat> SNOW_LEOPARD = createEntity(UntamedWilds.DEBUG, SnowLeopardBigCat::new,  "bigcat_snow_leopard",  1.2F, 1.0F, 0xD3C38D, 0x46361C, animalType.APEX_PRED, 1);
-    public static EntityType<TigerBigCat> TIGER = createEntity(UntamedWilds.DEBUG, TigerBigCat::new,  "bigcat_tiger",  1.2F, 1.0F, 0xD1741D, 0x1A0400, animalType.APEX_PRED, 1);
+    public static EntityType<JaguarBigCat> JAGUAR = createEntity(ConfigMobControl.addBigCat.get(), JaguarBigCat::new,  "bigcat_jaguar",  1.2F, 1.0F, 0xC59F45,0x383121, animalType.APEX_PRED, 1);
+    public static EntityType<LeopardBigCat> LEOPARD = createEntity(ConfigMobControl.addBigCat.get(), LeopardBigCat::new,  "bigcat_leopard",  1.2F, 1.0F, 0xC59F45, 0x383121, animalType.APEX_PRED, 1);
+    public static EntityType<LionBigCat> LION = createEntity(ConfigMobControl.addBigCat.get(), LionBigCat::new, "bigcat_lion", 1.2F, 1.2F, 0xDCBA84, 0x442917, animalType.APEX_PRED, 1);
+    public static EntityType<PantherBigCat> PANTHER = createEntity(ConfigMobControl.addBigCat.get(), PantherBigCat::new,  "bigcat_panther",  1.2F, 1.0F, 0x0B0A0C, 0x3D3A4C, animalType.APEX_PRED, 1);
+    public static EntityType<PumaBigCat> PUMA = createEntity(ConfigMobControl.addBigCat.get(), PumaBigCat::new,  "bigcat_puma",  1.2F, 1.0F, 0x774C23, 0xECC38E, animalType.APEX_PRED, 1);
+    public static EntityType<SnowLeopardBigCat> SNOW_LEOPARD = createEntity(ConfigMobControl.addBigCat.get(), SnowLeopardBigCat::new,  "bigcat_snow_leopard",  1.2F, 1.0F, 0xD3C38D, 0x46361C, animalType.APEX_PRED, 1);
+    public static EntityType<TigerBigCat> TIGER = createEntity(ConfigMobControl.addBigCat.get(), TigerBigCat::new,  "bigcat_tiger",  1.2F, 1.0F, 0xD1741D, 0x1A0400, animalType.APEX_PRED, 1);
     public static EntityType<CaveLionBigCat> CAVE_LION = createEntity(UntamedWilds.DEBUG, CaveLionBigCat::new,  "bigcat_cave_lion",  1.2F, 1.0F, 0x5B4924, 0xCCBC8F, animalType.APEX_PRED, 1);
     public static EntityType<MarsupialLionBigCat> MARSUPIAL_LION = createEntity(UntamedWilds.DEBUG, MarsupialLionBigCat::new,  "bigcat_marsupial_lion",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1);
     public static EntityType<SabertoothBigCat> SABERTOOTH = createEntity(UntamedWilds.DEBUG, SabertoothBigCat::new,  "bigcat_sabertooth",  1.2F, 1.0F, 0x97845A, 0x3A3026, animalType.APEX_PRED, 1);
     public static EntityType<DireLionBigCat> DIRE_LION = createEntity(UntamedWilds.DEBUG, DireLionBigCat::new,  "bigcat_dire_lion",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1);
 
-    // Fis
+    // Fish
     public static EntityType<Sunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), Sunfish::new,  "sunfish",  1.6F, 1.6F, 0x2C545B, 0xB6D0D3, animalType.LARGE_OCEAN, 1);
 
     @SubscribeEvent
@@ -128,38 +128,51 @@ public class ModEntity {
 
     @OnlyIn(Dist.CLIENT)
     public static void registerRendering() {
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.TARANTULA, manager -> new RendererTarantula());
+        if (ConfigMobControl.addTarantula.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TARANTULA, manager -> new RendererTarantula());
+        }
 
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNAKE, manager -> new RendererSnake(manager, new ModelSnake(), 0.0f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SOFTSHELL_TURTLE, manager -> new RendererSoftshellTurtle());
+        if (ConfigMobControl.addSoftshellTurtle.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SOFTSHELL_TURTLE, manager -> new RendererSoftshellTurtle());
+        }
+        if (ConfigMobControl.addSnake.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNAKE, manager -> new RendererSnake(manager, new ModelSnake(), 0.0f));
+        }
 
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, manager -> new RendererGiantClam(manager, new ModelGiantClam(), 1f));
+        if (ConfigMobControl.addGiantClam.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, manager -> new RendererGiantClam(manager, new ModelGiantClam(), 1f));
+        }
 
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.HIPPO, manager -> new RendererHippo(manager, new ModelHippo(), 1f));
+        if (ConfigMobControl.addHippo.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.HIPPO, manager -> new RendererHippo(manager, new ModelHippo(), 1f));
+        }
+        if (ConfigMobControl.addBear.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLIND_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.BROWN_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANDA_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.POLAR_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SPECTACLED_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUN_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
+        }
+        if (ConfigMobControl.addBigCat.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.JAGUAR, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.PUMA, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TIGER, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SABERTOOTH, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.MARSUPIAL_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANTHER, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.LEOPARD, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.DIRE_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNOW_LEOPARD, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+        }
 
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLIND_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BROWN_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANDA_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.POLAR_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SPECTACLED_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUN_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUNFISH, manager -> new RendererSunfish(manager, new ModelSunfish(), 1f));
-
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.JAGUAR, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.PUMA, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.TIGER, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SABERTOOTH, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.MARSUPIAL_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANTHER, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.LEOPARD, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.DIRE_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNOW_LEOPARD, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-
+        if (ConfigMobControl.addSunfish.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUNFISH, manager -> new RendererSunfish(manager, new ModelSunfish(), 1f));
+        }
     }
 
     public static void addWorldSpawn(EntityType<?> entityClass, int weightedProb, FaunaHandler.animalType type, int groupCount) {

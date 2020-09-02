@@ -1,5 +1,5 @@
 {
-  "itemgroup.untamedwilds_items": "Untamed Wilds",
+  "itemGroup.untamedwilds_items": "Untamed Wilds",
   "entity.untamedwilds.command.0": "This mob is now Wandering",
   "entity.untamedwilds.command.1": "This mob is now Protecting you",
   "entity.untamedwilds.command.2": "This mob is now Sitting",
@@ -10,6 +10,7 @@
   "item.untamedwilds.food_hippo_cooked": "Cooked Hippo Meat",
   "entity.untamedwilds.hippo": "Common Hippo",
   "entity.untamedwilds.hippo.sciname": "Hippopotamus amphibius",
+  "untamedwilds.subtitles.hippo.ambient": "Hippopotamus wheezes",
 
   "item.untamedwilds.bear_black_spawn_egg": "Black Bear Spawn Egg",
   "item.untamedwilds.food_bear_raw": "Raw Bear Meat",
@@ -66,6 +67,9 @@
   "item.untamedwilds.bigcat_tiger_spawn_egg": "Tiger Spawn Egg",
   "entity.untamedwilds.bigcat_tiger": "Tiger",
   "entity.untamedwilds.bigcat_tiger.sciname": "Panthera tigris",
+  "untamedwilds.subtitles.big_cat.ambient": "Big Cat roars",
+  "untamedwilds.subtitles.big_cat.hurt": "Big Cat hurts",
+  "untamedwilds.subtitles.big_cat.death": "Big Cat dies",
 
   "item.untamedwilds.tarantula_spawn_egg": "Tarantula Spawn Egg",
   "entity.untamedwilds.tarantula": "Tarantula",
@@ -231,6 +235,8 @@
   "entity.untamedwilds.snake_western_rattlesnake.sciname": "Crotalus viridis",
   "item.untamedwilds.snake_western_rattlesnake": "Prairie Rattlesnake",
   "item.untamedwilds.egg_snake_western_rattlesnake": "Snake Egg",
+  "untamedwilds.subtitles.snake.warning": "Snake hisses",
+  "untamedwilds.subtitles.snake.rattle": "Snake rattles",
 
   "item.untamedwilds.ownership_deed": "Ownership Deed",
   "item.untamedwilds.ownership_deed_desc_1": "Right-Click on a tamed mob you own to bind it's ownership to this contract",

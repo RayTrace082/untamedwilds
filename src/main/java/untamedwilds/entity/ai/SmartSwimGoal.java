@@ -12,7 +12,7 @@ public class SmartSwimGoal extends Goal {
     private final float speed;
 
     public SmartSwimGoal(MobEntity entityIn) {
-        this(entityIn, 1.0f);
+        this(entityIn, 0.7f);
     }
 
     public SmartSwimGoal(MobEntity entityIn, float speedIn) {
@@ -23,7 +23,7 @@ public class SmartSwimGoal extends Goal {
     }
 
     public boolean shouldExecute() {
-        if (this.entity.onGround && this.entity.getAttackTarget() == null) {
+        if (this.entity.getAttackTarget() == null) {
             double eyeHeight = (double) this.entity.getEyeHeight() - 0.18F; // Tiny offset because otherwise the Mob is prone to drowning
             return this.entity.getSubmergedHeight() > eyeHeight || this.entity.isInLava();
         }

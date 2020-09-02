@@ -83,6 +83,11 @@ public class Tarantula extends ComplexMob implements ISpecies {
         }
     }
 
+    @Override
+    public CreatureAttribute getCreatureAttribute() {
+        return CreatureAttribute.ARTHROPOD;
+    }
+
     /* Breeding conditions for the Tarantula are:
      * A nearby Tarantula of the opposite gender and the same species */
     public boolean wantsToBreed() {

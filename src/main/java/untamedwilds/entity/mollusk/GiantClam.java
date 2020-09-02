@@ -82,8 +82,8 @@ public class GiantClam extends ComplexMob implements ISpecies {
 
     public void livingTick() {
         super.livingTick();
-        double speedY = this.getMotion().getY();
-        this.setMotion(0, speedY, 0);
+        // The following locks the X and Z position to zero, preventing the entity from being pushed
+        this.setMotion(0, this.getMotion().getY(), 0);
         if (!this.world.isRemote) {
             if (this.ticksExisted % 1000 == 0) {
                 if (this.wantsToBreed()) {

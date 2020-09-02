@@ -8,7 +8,6 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.placement.*;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.registries.ForgeRegistries;
-import untamedwilds.UntamedWilds;
 import untamedwilds.world.gen.feature.*;
 
 public class UntamedWildsGenerator {
@@ -24,7 +23,6 @@ public class UntamedWildsGenerator {
     private static final Feature<NoFeatureConfig> OCEAN_RARE = new FeatureOceanSwimming(NoFeatureConfig::deserialize);
 
     public static void setUp() {
-        UntamedWilds.LOGGER.debug(Biome.BIOMES);
 
         for (Biome biome : ForgeRegistries.BIOMES) {
             if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) ) {

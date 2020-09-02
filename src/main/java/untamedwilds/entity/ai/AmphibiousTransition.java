@@ -14,6 +14,7 @@ import java.util.Random;
 public class AmphibiousTransition extends Goal {
     protected final ComplexMobAmphibious taskOwner;
     private final double movementSpeed;
+    private final int executionChance;
     private final World world;
     private double shelterX;
     private double shelterY;
@@ -22,6 +23,7 @@ public class AmphibiousTransition extends Goal {
     public AmphibiousTransition(ComplexMobAmphibious taskOwner, double movementSpeedIn) {
         this.taskOwner = taskOwner;
         this.movementSpeed = movementSpeedIn;
+        this.executionChance = 120;
         this.world = taskOwner.world;
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
@@ -31,6 +33,7 @@ public class AmphibiousTransition extends Goal {
         if (taskOwner.isBeingRidden() || !taskOwner.canMove() || taskOwner.getAttackTarget() != null /* && !taskOwner.getAttackTarget().isInWater()*/) {
             return false;
         }
+        if (this.taskOwner.getRNG().nextInt(this.executionChance) != 0) { return false; }
 
         Vec3d vec3d = null;
         if (taskOwner.wantsToEnterWater() && !taskOwner.isInWater()) {

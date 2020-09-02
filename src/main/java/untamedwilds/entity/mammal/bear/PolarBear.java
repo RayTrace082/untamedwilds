@@ -34,7 +34,7 @@ public class PolarBear extends AbstractBear {
     public PolarBear(EntityType<? extends AbstractBear> type, World worldIn) {
         super(type, worldIn);
         this.ecoLevel = 8;
-        this.getNavigator().setCanSwim(true);
+        this.swimSpeedMult = 1.4f;
     }
 
     public void registerGoals() {
@@ -98,7 +98,6 @@ public class PolarBear extends AbstractBear {
             if (this.getOwner() != null) {
                 child.setTamedBy((PlayerEntity) this.getOwner());
             }
-            this.getWaterSlowDown();
             this.world.addEntity(child);
         }
     }

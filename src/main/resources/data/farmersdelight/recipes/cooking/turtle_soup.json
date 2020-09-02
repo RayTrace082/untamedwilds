@@ -1,0 +1,20 @@
+{
+  "type": "farmersdelight:cooking",
+  "ingredients": [
+    {
+      "item": "untamedwilds:food_turtle_raw"
+    },
+    {
+      "item": "minecraft:brown_mushroom"
+    },
+    {
+      "tag": "forge:vegetables"
+    }
+  ],
+  "result": {
+    "item": "untamedwilds:food_turtle_soup"
+  },
+  "container": {
+    "item": "minecraft:bowl"
+  }
+}

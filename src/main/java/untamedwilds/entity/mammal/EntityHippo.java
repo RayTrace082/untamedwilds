@@ -8,20 +8,14 @@ import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAmphibious;
-import untamedwilds.entity.ai.AmphibiousTransition;
-import untamedwilds.entity.ai.SmartMateGoal;
-import untamedwilds.entity.ai.SmartMeleeAttackGoal;
-import untamedwilds.entity.ai.SmartWanderGoal;
+import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.unique.HippoTerritorialityTargetGoal;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModSounds;
@@ -60,19 +54,20 @@ public class EntityHippo extends ComplexMobAmphibious {
         this.ecoLevel = 8;
         this.isAmphibious = true;
         this.buoyancy = 0.998F;
-        this.dexterity = 0.01F;
+        this.dexterity = 0.3F;
     }
 
     public void registerGoals() {
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1.4D, false));
         this.goalSelector.addGoal(3, new SmartMateGoal(this, 0.8D));
-        //this.goalSelector.addTask(5, new EntityAIGraze(this, 100));
+        this.goalSelector.addGoal(3, new GrazeGoal(this, 100));
         this.goalSelector.addGoal(4, new AmphibiousTransition(this, 1.1D));
-        this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, 300, 0, false));
+        this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, 120, 0, false));
+        this.goalSelector.addGoal(5, new AmphibiousRandomSwimGoal(this, 1, 120));
         this.goalSelector.addGoal(6, new LookAtGoal(this, LivingEntity.class, 10.0F));
         this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
-        this.targetSelector.addGoal(3, new HippoTerritorialityTargetGoal<>(this, LivingEntity.class, true, false, input -> !(input instanceof EntityHippo && getEcoLevel(input) > 5)));
+        this.targetSelector.addGoal(3, new HippoTerritorialityTargetGoal<>(this, LivingEntity.class, true, false, input -> !(input instanceof EntityHippo || this.getEcoLevel(input) < 5)));
     }
 
     protected void registerAttributes() {
@@ -82,7 +77,7 @@ public class EntityHippo extends ComplexMobAmphibious {
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
         this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0D);
         this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(12.0D);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(24.0D);
     }
 
     public boolean isActive() {
@@ -180,14 +175,11 @@ public class EntityHippo extends ComplexMobAmphibious {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        if (this.isChild()) {
-            return ModSounds.ENTITY_BEAR_BABY_CRY;
-        }
-        return ModSounds.ENTITY_BEAR_HURT;
+        return SoundEvents.ENTITY_COW_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound() { return ModSounds.ENTITY_BEAR_DEATH; }
+    protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_COW_DEATH; }
 
     public void breed() {
         for (int i = 0; i <= 1 + this.rand.nextInt(1); i++) {

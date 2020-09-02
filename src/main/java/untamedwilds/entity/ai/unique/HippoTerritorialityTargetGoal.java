@@ -6,10 +6,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.TargetGoal;
+import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
-import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
+import untamedwilds.entity.ComplexMobTerrestrial;
 
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -29,14 +30,17 @@ public class HippoTerritorialityTargetGoal<T extends LivingEntity> extends Targe
         this.sorter = new Sorter(creature);
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         this.targetEntitySelector = (Predicate<T>) entity -> {
-            if (entity == null || creature instanceof ComplexMob) {
-                return EntityPredicates.NOT_SPECTATING.test(entity) && HippoTerritorialityTargetGoal.this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
+            if (entity == null || creature instanceof ComplexMobTerrestrial) {
+                if (entity instanceof CreeperEntity) {
+                    return false;
+                }
+                return EntityPredicates.NOT_SPECTATING.test(entity) && targetSelector.test(entity) && this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
             }
             else if (targetSelector != null && !targetSelector.test(entity)) {
                 return false;
             }
             else {
-                return EntityPredicates.NOT_SPECTATING.test(entity) && HippoTerritorialityTargetGoal.this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
+                return EntityPredicates.NOT_SPECTATING.test(entity) && this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
             }
         };
     }

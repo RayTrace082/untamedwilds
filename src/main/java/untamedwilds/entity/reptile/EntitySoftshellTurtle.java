@@ -36,6 +36,7 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
     public EntitySoftshellTurtle(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
         this.experienceValue = 1;
+        this.swimSpeedMult = 3;
         this.ecoLevel = 4;
         this.buoyancy = 0.998F;
     }

@@ -29,6 +29,7 @@ repositories{
         name = "ModMaven"
         url = "https://modmaven.k-4u.nl"
     }
+    maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
     maven {
         url = 'https://maven.blamejared.com'
     }
@@ -104,6 +105,7 @@ dependencies {
     compile 'citadel:citadel:1.1.11:deobf'
     compileOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.2:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.2")
+    // implementation fg.deobf('software.bernie.geckolib:forge-1.15.2-geckolib:2.0.0')
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.15.2-1.2-35.2:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.15.2-1.2-35.2")
 }
