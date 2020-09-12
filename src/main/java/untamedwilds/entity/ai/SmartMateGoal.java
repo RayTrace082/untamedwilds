@@ -100,6 +100,9 @@ public class SmartMateGoal extends Goal {
             return false;
         }
         else {
+            if (ConfigGamerules.playerBreeding.get()) { // Bypass breeding restrictions in the event of  a player triggered breeding
+                return true;
+            }
             return father.wantsToBreed() && mother.wantsToBreed();
         }
     }

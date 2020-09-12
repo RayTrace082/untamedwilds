@@ -22,7 +22,7 @@ public class FeatureOceanSwimming extends Feature<NoFeatureConfig> {
     }
 
     public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        if (rand.nextFloat() > 0.95) {
+        if (rand.nextFloat() > 0.9) {
             Biome biome = world.getBiome(pos);
             FaunaSpawn.performWorldGenSpawning(FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_OCEAN), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, world, biome, pos, rand);
             return true;

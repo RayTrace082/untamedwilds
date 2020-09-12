@@ -5,6 +5,7 @@ import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -146,12 +147,12 @@ public abstract class ComplexMob extends TameableEntity {
         return null;
     }
 
-    // Returns the ecological level of an entity. Since only UntamedWilds mobs have such parameter, it is defaulted to 4, with the exception of players, who are 7 (TODO: Make this data driven)
+    // Returns the ecological level of an entity. Since only UntamedWilds mobs have such parameter, it is defaulted to 4, with the exception of players and monsters, which are 7 (TODO: Make this data driven)
     protected int getEcoLevel(LivingEntity entity) {
         if (entity instanceof ComplexMob) {
             return ((ComplexMob) entity).ecoLevel;
         }
-        if (entity instanceof PlayerEntity) {
+        else if (entity instanceof MonsterEntity || entity instanceof PlayerEntity) {
             return 7;
         }
         return 4;

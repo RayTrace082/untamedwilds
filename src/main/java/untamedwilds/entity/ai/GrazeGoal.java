@@ -7,6 +7,7 @@ import net.minecraft.block.pattern.BlockStateMatcher;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
 import java.util.EnumSet;
@@ -69,7 +70,7 @@ public class GrazeGoal extends Goal
         if (this.eatingGrassTimer == 4) {
             BlockPos blockpos = new BlockPos(this.taskOwner);
             if (IS_GRASS.test(this.entityWorld.getBlockState(blockpos))) {
-                if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entityWorld, this.taskOwner)) {
+                if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entityWorld, this.taskOwner) && ConfigGamerules.grazerGriefing.get()) {
                     this.entityWorld.destroyBlock(blockpos, false);
                 }
                 this.taskOwner.addHunger(16);
@@ -79,7 +80,9 @@ public class GrazeGoal extends Goal
                 if (this.entityWorld.getBlockState(blockpos1).getBlock() == Blocks.GRASS_BLOCK) {
                     if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entityWorld, this.taskOwner)) {
                         this.entityWorld.playEvent(2001, blockpos1, Block.getStateId(Blocks.GRASS_BLOCK.getDefaultState()));
-                        this.entityWorld.setBlockState(blockpos1, Blocks.DIRT.getDefaultState(), 2);
+                        if (ConfigGamerules.grazerGriefing.get()) {
+                            this.entityWorld.setBlockState(blockpos1, Blocks.DIRT.getDefaultState(), 2);
+                        }
                     }
                     this.taskOwner.addHunger(16);
                     this.taskOwner.eatGrassBonus();

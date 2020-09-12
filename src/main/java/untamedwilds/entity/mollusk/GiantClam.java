@@ -15,11 +15,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.BiomeDictionary;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ISpecies;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -137,7 +137,7 @@ public class GiantClam extends ComplexMob implements ISpecies {
             }
             else {
                 world.playSound(null, this.getPosition(), SoundEvents.ENTITY_SHULKER_HURT_CLOSED, SoundCategory.BLOCKS, 1.0F, 0.8F);
-                ((ServerWorld)this.world).spawnParticle(ParticleTypes.SMOKE, this.getPosX(), this.getPosY() + (double)this.getHeight() / 1.5D, this.getPosZ(), 3, this.getWidth() / 4.0F, this.getHeight() / 4.0F, this.getWidth() / 4.0F, 0.05D);
+                EntityUtils.spawnParticlesOnEntity(world, this, ParticleTypes.SMOKE, 3, 1);
             }
         }
         return super.processInteract(player, hand);

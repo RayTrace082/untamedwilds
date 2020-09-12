@@ -34,7 +34,7 @@ public class UntamedWildsGenerator {
                         biome.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, BEAR.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(1))));
                     }
                     else {
-                        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, SEA_ANEMONE.withConfiguration(new CountConfig(8)).withPlacement(Placement.CHANCE_TOP_SOLID_HEIGHTMAP.configure(new ChanceConfig(16))));
+                        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, SEA_ANEMONE.withConfiguration(new CountConfig(8)).withPlacement(Placement.CHANCE_TOP_SOLID_HEIGHTMAP.configure(new ChanceConfig(8))));
                     }
                 } else {
                     biome.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.01F))));

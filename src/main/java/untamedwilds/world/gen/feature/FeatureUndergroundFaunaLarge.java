@@ -23,7 +23,7 @@ public class FeatureUndergroundFaunaLarge extends Feature<NoFeatureConfig> {
 
     public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         if (pos.getY() < 52) {
-            if (rand.nextFloat() > 0.80) {
+            if (rand.nextFloat() > 0.90) {
                 Biome biome = world.getBiome(pos);
                 FaunaSpawn.performWorldGenSpawning(FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, world, biome, pos, rand);
                 return true;

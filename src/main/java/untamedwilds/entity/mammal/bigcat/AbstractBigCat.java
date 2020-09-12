@@ -16,13 +16,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.BiomeDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModSounds;
+import untamedwilds.util.EntityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,8 +103,8 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
         if (this.getAnimation() == ANIMATION_EAT && (this.getAnimationTick() == 10 || this.getAnimationTick() == 20 || this.getAnimationTick() == 30)) {
             this.playSound(SoundEvents.ENTITY_HORSE_EAT,1.5F, 0.8F);
         }
-        if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-            this.playSound(ModSounds.ENTITY_BIG_CAT_AMBIENT, 1.5F, 1);
+        if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1 && this.getAmbientSound() != null) {
+            this.playSound(this.getAmbientSound(), 1.5F, 1);
         }
         if (this.world.isRemote && this.isAngry() && this.aggroProgress < 40) {
             this.aggroProgress++;
@@ -121,7 +121,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     }
 
     protected SoundEvent getAmbientSound() {
-        return !this.isChild() ? null : SoundEvents.ENTITY_OCELOT_AMBIENT;
+        return !this.isChild() ? null : ModSounds.ENTITY_BIG_CAT_AMBIENT;
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
@@ -179,13 +179,9 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
                 if (this.getRNG().nextInt(3) == 0) {
                     this.setTamedBy(player);
                     //this.registerGoals(); // AI Reset Hook
-                    for (int i = 0; i < 6; i++) {
-                        ((ServerWorld)this.world).spawnParticle(ParticleTypes.HEART, this.getPosX(), this.getPosY() + (double)this.getHeight() / 1.5D, this.getPosZ(), 3, this.getWidth() / 4.0F, this.getHeight() / 4.0F, this.getWidth() / 4.0F, 0.05D);
-                    }
+                    EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.HEART, 3, 6);
                 } else {
-                    for (int i = 0; i < 3; i++) {
-                        ((ServerWorld)this.world).spawnParticle(ParticleTypes.SMOKE, this.getPosX(), this.getPosY() + (double)this.getHeight() / 1.5D, this.getPosZ(), 3, this.getWidth() / 4.0F, this.getHeight() / 4.0F, this.getWidth() / 4.0F, 0.01D);
-                    }
+                    EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.SMOKE, 3, 3);
                 }
             }
         }
@@ -197,7 +193,6 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
         boolean flag = super.attackEntityAsMob(entityIn);
         if (flag && this.getAnimation() == NO_ANIMATION && !this.isChild()) {
             Animation anim = chooseAttackAnimation(this);
-            this.setAnimation(anim);
             this.setAnimation(anim);
             this.setAnimationTick(0);
         }
@@ -221,12 +216,12 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     public enum SpeciesBigCat implements IStringSerializable {
 
         JAGUAR		(ModEntity.JAGUAR, JaguarBigCat.getRarity(), BiomeDictionary.Type.JUNGLE),
-        LEOPARD		(ModEntity.LEOPARD, LeopardBigCat.getRarity(), BiomeDictionary.Type.SAVANNA, BiomeDictionary.Type.SPARSE),
+        LEOPARD		(ModEntity.LEOPARD, LeopardBigCat.getRarity(), BiomeDictionary.Type.SAVANNA, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.CONIFEROUS),
         LION		(ModEntity.LION, LionBigCat.getRarity(), BiomeDictionary.Type.SAVANNA, BiomeDictionary.Type.SPARSE),
         PANTHER		(ModEntity.PANTHER, PantherBigCat.getRarity(), BiomeDictionary.Type.JUNGLE),
         PUMA		(ModEntity.PUMA, PumaBigCat.getRarity(), BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.MESA, BiomeDictionary.Type.FOREST),
-        SNOW_LEOPARD(ModEntity.SNOW_LEOPARD, SnowLeopardBigCat.getRarity(), BiomeDictionary.Type.SNOWY),
-        TIGER		(ModEntity.TIGER, TigerBigCat.getRarity(), BiomeDictionary.Type.JUNGLE);
+        SNOW_LEOPARD(ModEntity.SNOW_LEOPARD, SnowLeopardBigCat.getRarity(), BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.CONIFEROUS),
+        TIGER		(ModEntity.TIGER, TigerBigCat.getRarity(), BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.CONIFEROUS);
 
         public EntityType<? extends AbstractBigCat> type;
         public int rarity;

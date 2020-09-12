@@ -45,7 +45,7 @@ public class ItemAnalizer extends Item {
             }
             if (target instanceof ComplexMobTerrestrial) {
                 playerIn.sendMessage(new StringTextComponent("Hunger: " + ((ComplexMobTerrestrial)entity).getHunger() + "/100 Hunger"));
-                if (!entity.isMale() && entity.getGrowingAge() > 0) {
+                if (!entity.isMale() && entity.getGrowingAge() > 0 && !ConfigGamerules.easyBreeding.get()) {
                     playerIn.sendMessage(new StringTextComponent("This female will give birth in " + TimeUtils.convertTicksToDays(world, entity.getGrowingAge()) + " (" + entity.getGrowingAge() + " ticks)"));
                 }
             }

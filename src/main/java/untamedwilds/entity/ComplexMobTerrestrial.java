@@ -288,7 +288,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
             } else {
                 double d1 = this.getPosY();
                 float f = this.isSprinting() ? 0.9F : this.getWaterSlowDown();
-                float f1 = 0.04F; // EDITED: Was 0.02
+                float f1 = 0.045F; // EDITED: Was 0.02
                 float f2 = (float) EnchantmentHelper.getDepthStriderModifier(this);
                 if (!this.onGround) {
                     f2 *= 0.5F; // EDITED: Disabled speed halving if the mob is not on solid ground, unnecessary
@@ -428,6 +428,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
                 this.entity.setMoveForward(this.moveForward);
                 this.entity.setMoveStrafing(this.moveStrafe);
                 this.action = MovementController.Action.WAIT;
+
             } else if (this.action == MovementController.Action.MOVE_TO) {
                 this.action = MovementController.Action.WAIT;
                 if (this.entity.getAttackTarget() != null) {
@@ -454,6 +455,9 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
                 VoxelShape voxelshape = blockstate.getCollisionShape(this.entity.world, blockpos);
 
                 if (this.entity.isInWater()) {
+                    if (this.entity.collidedHorizontally) {
+                        this.entity.getJumpController().setJumping();
+                    }
                     //this.entity.setMotion(this.entity.getMotion().scale(1.1));
                     float f2 = -((float)(MathHelper.atan2(d1, MathHelper.sqrt(d0 * d0 + d2 * d2)) * (double)(180F / (float)Math.PI)));
                     f2 = MathHelper.clamp(MathHelper.wrapDegrees(f2), -85.0F, 85.0F);
@@ -470,11 +474,6 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
                 float f1 = (float)(this.getSpeed() * this.entity.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue());
                 this.entity.setAIMoveSpeed(MathHelper.lerp(0.125F, this.entity.getAIMoveSpeed(), f1));
 
-
-                // 0.033 seems to be the max for Bear underwater, 0.035 on land
-                // 0.035 seems to be the max value for Big Cats underwater, 0.040 on land
-                // UntamedWilds.LOGGER.info(this.entity.getMotion());
-
                 if (d2 > (double)this.entity.stepHeight && d0 * d0 + d1 * d1 < (double)Math.max(1.0F, this.entity.getWidth()) || !voxelshape.isEmpty() && this.entity.getPosY() < voxelshape.getEnd(Direction.Axis.Y) + (double)blockpos.getY() && !block.isIn(BlockTags.DOORS) && !block.isIn(BlockTags.FENCES)) {
                     this.entity.getJumpController().setJumping();
                     this.action = MovementController.Action.JUMPING;
@@ -485,7 +484,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
                     this.action = MovementController.Action.WAIT;
                 }
             } else {
-                if (this.entity.isInWater() && this.entity.getAttackTarget() == null) {
+                if (this.entity.isInWater() && this.entity.getAttackTarget() == null && !this.entity.collidedHorizontally) {
                     this.entity.setMotion(this.entity.getMotion().add(0.0D, this.entity.buoyancy - 1, 0.0D));
                 }
                 this.entity.setMoveForward(0.0F);

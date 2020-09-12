@@ -18,13 +18,13 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.BiomeDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModSounds;
+import untamedwilds.util.EntityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -257,13 +257,9 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
                     // TODO: "Bear Force One" Advancement Trigger here
                     this.setTamedBy(player);
                     //this.registerGoals(); // AI Reset Hook
-                    for (int i = 0; i < 6; i++) {
-                        ((ServerWorld)this.world).spawnParticle(ParticleTypes.HEART, this.getPosX(), this.getPosY() + (double)this.getHeight() / 1.5D, this.getPosZ(), 3, this.getWidth() / 4.0F, this.getHeight() / 4.0F, this.getWidth() / 4.0F, 0.05D);
-                    }
+                    EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.HEART, 3, 6);
                 } else {
-                    for (int i = 0; i < 3; i++) {
-                        ((ServerWorld)this.world).spawnParticle(ParticleTypes.SMOKE, this.getPosX(), this.getPosY() + (double)this.getHeight() / 1.5D, this.getPosZ(), 3, this.getWidth() / 4.0F, this.getHeight() / 4.0F, this.getWidth() / 4.0F, 0.01D);
-                    }
+                    EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.SMOKE, 3, 3);
                 }
             }
         }

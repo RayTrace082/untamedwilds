@@ -31,6 +31,7 @@ public class UntamedWilds {
     // TODO: Consider Brains as a replacement for Goals when necessary (Complex Mobs may benefit from removing half their Goals when adult/tamed)
     // TODO: Skins! Reuse the Species system in complex mobs to introduce random skins
     // TODO: Migration AI, rare events executed by hungry mobs where they will choose a direction and keep moving there
+    // TODO: Make use of Tags to make animal's diets data-driven
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";

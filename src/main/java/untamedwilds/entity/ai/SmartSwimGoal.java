@@ -2,7 +2,9 @@ package untamedwilds.entity.ai;
 
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
+import untamedwilds.util.EntityUtils;
 
 import java.util.EnumSet;
 
@@ -18,7 +20,7 @@ public class SmartSwimGoal extends Goal {
     public SmartSwimGoal(MobEntity entityIn, float speedIn) {
         this.entity = entityIn;
         this.speed = speedIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.JUMP, Flag.MOVE, Flag.LOOK));
+        this.setMutexFlags(EnumSet.of(Goal.Flag.JUMP));
         entityIn.getNavigator().setCanSwim(true);
     }
 
@@ -30,12 +32,26 @@ public class SmartSwimGoal extends Goal {
         return false;
     }
 
+    public boolean shouldContinueExecuting() {
+        return this.entity.onGround && !this.entity.isInWater();
+    }
+
     public void tick() {
-        if (!this.entity.collidedVertically) {
+        //if (!this.entity.collidedVertically) {
             this.entity.getMoveHelper().strafe(this.speed, 0);
-        }
+        //}
         if (this.entity.areEyesInFluid(FluidTags.WATER) || this.entity.collidedHorizontally) {
+            //this.entity.setMotion(this.entity.getMotion().getX(), this.entity.getMotion().getY() + 0.2F, this.entity.getMotion().getZ());
             this.entity.getJumpController().setJumping();
         }
+        if (this.entity.ticksExisted % 6 == 0) {
+            EntityUtils.spawnParticlesOnEntity(this.entity.world, this.entity, ParticleTypes.SPLASH, 4, 1);
+        }
+        /*if (this.entity.areEyesInFluid(FluidTags.WATER)) {
+            this.entity.getJumpController().setJumping();
+        }
+        if (this.entity.collidedHorizontally) {
+            this.entity.setMotion(this.entity.getMotion().getX(), this.entity.getMotion().getY() + 0.2F, this.entity.getMotion().getZ());
+        }*/
     }
 }
