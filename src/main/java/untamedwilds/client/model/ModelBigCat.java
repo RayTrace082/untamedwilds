@@ -380,6 +380,7 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat>
         if (big_cat.isInWater() && !big_cat.onGround) {
             limbSwing = ageInTicks / 3;
             limbSwingAmount = 0.5f;
+            this.body_main.rotationPointY += 4; // Model offset to make the Big Cat "sink" in water (while not drowning)
             this.setRotateAngle(body_main, -0.136659280431156F, 0.0F, 0.0F);
             this.setRotateAngle(head_neck, -0.18203784098300857F, 0.0F, 0.0F);
         }

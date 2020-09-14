@@ -20,7 +20,7 @@ public class SmartSwimGoal extends Goal {
     public SmartSwimGoal(MobEntity entityIn, float speedIn) {
         this.entity = entityIn;
         this.speed = speedIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.JUMP));
+        this.setMutexFlags(EnumSet.of(Flag.JUMP, Flag.MOVE));
         entityIn.getNavigator().setCanSwim(true);
     }
 
@@ -33,25 +33,16 @@ public class SmartSwimGoal extends Goal {
     }
 
     public boolean shouldContinueExecuting() {
-        return this.entity.onGround && !this.entity.isInWater();
+        return !(this.entity.onGround && !this.entity.isInWater());
     }
 
     public void tick() {
-        //if (!this.entity.collidedVertically) {
-            this.entity.getMoveHelper().strafe(this.speed, 0);
-        //}
+        this.entity.getMoveHelper().strafe(this.speed, 0);
         if (this.entity.areEyesInFluid(FluidTags.WATER) || this.entity.collidedHorizontally) {
-            //this.entity.setMotion(this.entity.getMotion().getX(), this.entity.getMotion().getY() + 0.2F, this.entity.getMotion().getZ());
             this.entity.getJumpController().setJumping();
         }
         if (this.entity.ticksExisted % 6 == 0) {
-            EntityUtils.spawnParticlesOnEntity(this.entity.world, this.entity, ParticleTypes.SPLASH, 4, 1);
+            EntityUtils.spawnParticlesOnEntity(this.entity.world, this.entity, ParticleTypes.SPLASH, 4, 2);
         }
-        /*if (this.entity.areEyesInFluid(FluidTags.WATER)) {
-            this.entity.getJumpController().setJumping();
-        }
-        if (this.entity.collidedHorizontally) {
-            this.entity.setMotion(this.entity.getMotion().getX(), this.entity.getMotion().getY() + 0.2F, this.entity.getMotion().getZ());
-        }*/
     }
 }
