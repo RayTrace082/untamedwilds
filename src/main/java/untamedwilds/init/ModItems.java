@@ -50,7 +50,7 @@ public class ModItems {
     public static RegistryObject<Item> MEAT_TURTLE_COOKED = createItem(ConfigMobControl.addSoftshellTurtle.get(),"food_turtle_cooked", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(6).saturation(0.6F).meat().build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> MEAT_HIPPO_RAW = createItem(ConfigMobControl.addHippo.get(),"food_hippo_raw", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.7F).meat().build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> MEAT_HIPPO_COOKED = createItem(ConfigMobControl.addHippo.get(),"food_hippo_cooked", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(7).saturation(1.1F).meat().build()).group(ItemGroup.FOOD)));
-    public static RegistryObject<Item> FOOD_TURTLE_SOUP = createItem(ConfigMobControl.addSoftshellTurtle.get(),"food_turtle_soup", () -> new SoupItem(new Item.Properties().food((new Food.Builder()).hunger(8).saturation(0.6F).build()).group(ItemGroup.FOOD)));
+    public static RegistryObject<Item> FOOD_TURTLE_SOUP = createItem(ConfigMobControl.addSoftshellTurtle.get(),"food_turtle_soup", () -> new SoupItem(new Item.Properties().food((new Food.Builder()).hunger(8).saturation(0.6F).build()).group(ItemGroup.FOOD).maxStackSize(1)));
 
     // Hides
     public static RegistryObject<Item> HIDE_BEAR_ASHEN = createItem(ConfigMobControl.addBear.get(),"hide_bear_ashen", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
@@ -70,7 +70,7 @@ public class ModItems {
     }
 
     public static <I extends Item> RegistryObject<I> createItem(boolean enable, String name, Supplier<? extends I> supplier) {
-        if (enable == true) {
+        if (enable) {
             return ModItems.ITEMS.register(name, supplier);
         }
         return null;

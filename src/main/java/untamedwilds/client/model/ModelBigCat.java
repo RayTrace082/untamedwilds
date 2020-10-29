@@ -365,6 +365,45 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat>
         this.rotate(animator, tail_1, -15.65F, 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(8);
+
+        animator.setAnimation(AbstractBigCat.IDLE_STRETCH);
+        animator.startKeyframe(20);
+        animator.move(body_main, 0, 5, 6);
+        this.rotate(animator, body_main, 18.26F, 0, 0);
+        this.rotate(animator, head_neck, -15.65F, 0, 0);
+        this.rotate(animator, head_main, -7.83F, 0, 0);
+        animator.move(body_abdomen, 0, 0, -2);
+        this.rotate(animator, body_abdomen, 20.87F, 0, 0);
+        animator.move(arm_left_upper, 0, -2, 0);
+        //this.rotate(animator, arm_left_upper, -44.35F, 0, -5.22F);
+        this.rotate(animator, arm_left_upper, -62, 0, -5.22F);
+        this.rotate(animator, arm_left_paw, 57.39F, 0, 0);
+        animator.move(arm_right_upper, 0, -2, 0);
+        //this.rotate(animator, arm_right_upper, -44.35F, 0, 5.22F);
+        this.rotate(animator, arm_right_upper, -62, 0, -5.22F);
+        this.rotate(animator, arm_right_paw, 57.39F, 0, 0);
+        this.rotate(animator, leg_left_upper, -39.14F, 0, 0);
+        this.rotate(animator, leg_right_upper, -39.14F, 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(70);
+        animator.move(body_main, 0, 5, 6);
+        this.rotate(animator, body_main, 18.26F, 0, 0);
+        this.rotate(animator, head_neck, -15.65F, 0, 0);
+        this.rotate(animator, head_main, -7.83F, 0, 0);
+        animator.move(body_abdomen, 0, 0, -2);
+        this.rotate(animator, body_abdomen, 20.87F, 0, 0);
+        animator.move(arm_left_upper, 0, -2, 0);
+        //this.rotate(animator, arm_left_upper, -44.35F, 0, -5.22F);
+        this.rotate(animator, arm_left_upper, -62, 0, -5.22F);
+        this.rotate(animator, arm_left_paw, 57.39F, 0, 0);
+        animator.move(arm_right_upper, 0, -2, 0);
+        //this.rotate(animator, arm_right_upper, -44.35F, 0, 5.22F);
+        this.rotate(animator, arm_right_upper, -62, 0, -5.22F);
+        this.rotate(animator, arm_right_paw, 57.39F, 0, 0);
+        this.rotate(animator, leg_left_upper, -39.14F, 0, 0);
+        this.rotate(animator, leg_right_upper, -39.14F, 0, 0);
+        animator.endKeyframe();
+        animator.resetKeyframe(20);
     }
 
     public void setRotationAngles(AbstractBigCat big_cat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
@@ -416,8 +455,14 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat>
         }
 
         // Controls the idle breathing animation
-        this.body_main.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
-        this.body_abdomen.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
+        if (big_cat.getAnimation() == AbstractBigCat.IDLE_STRETCH && big_cat.getAnimationTick() > 20) {
+            this.body_main.setScale((float) (1F + Math.sin(ageInTicks * 2) * 0.08F), (float) (1F + Math.sin(ageInTicks / 8) * 0.06F), 1.0F);
+            this.body_abdomen.setScale((float) (1F + Math.sin(ageInTicks * 2) * 0.06F), (float) (1F + Math.sin(ageInTicks / 8) * 0.06F), 1.0F);
+        }
+        else {
+            this.body_main.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
+            this.body_abdomen.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
+        }
         bob(body_main, 0.4F * globalSpeed, 0.03F, false, ageInTicks / 20, 2);
         bob(arm_right_upper, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
         bob(arm_left_upper, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);

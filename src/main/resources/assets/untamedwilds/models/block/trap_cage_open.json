@@ -1,6 +1,6 @@
 ﻿{
 	"parent": "block/cube_bottom_top",
-	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
 	"textures": {
 		"0": "untamedwilds:block/trap_cage",
 		"1": "untamedwilds:block/trap_cage_inside",

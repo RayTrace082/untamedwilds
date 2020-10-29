@@ -25,12 +25,12 @@ public class UntamedWildsGenerator {
     public static void setUp() {
 
         for (Biome biome : ForgeRegistries.BIOMES) {
-            if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.END) ) {
+            if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.OVERWORLD)) {
                 if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
                     biome.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SESSILE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CHANCE_TOP_SOLID_HEIGHTMAP.configure(new ChanceConfig(1))));
                     biome.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, OCEAN_RARE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP.configure(new ChanceConfig(1))));
                     if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.SNOWY)) {
-                        // TODO: Yep, hardcoded Polar Bears, because fuck this shit. Replace the feature with "SpawnUniqueMob" to not have to use a list
+                        // TODO: Hardcoded Polar Bears in Frozen Ocean, because fuck this shit. Replace the feature with something less stupid
                         biome.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, BEAR.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(1))));
                     }
                     else {

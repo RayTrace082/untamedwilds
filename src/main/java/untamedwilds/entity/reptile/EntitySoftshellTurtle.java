@@ -170,12 +170,12 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
     public enum SpeciesSoftshellTurtle implements IStringSerializable {
 
         BLACK			(0, 1.0F, 2, BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.JUNGLE),
-        CHINESE	        (1, 0.8F, 3, BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.JUNGLE),
-        FLAPSHELL		(2, 1.0F, 2, BiomeDictionary.Type.SWAMP),
-        NILE			(3, 1.1F, 2, BiomeDictionary.Type.SAVANNA),
+        CHINESE	        (1, 0.8F, 3, BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.RIVER),
+        FLAPSHELL		(2, 1.0F, 2, BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.RIVER),
+        NILE			(3, 1.1F, 2, BiomeDictionary.Type.RIVER),
         PEACOCK			(4, 0.9F, 1, BiomeDictionary.Type.JUNGLE),
         PIG_NOSE		(5, 0.8F, 2, BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.SWAMP),
-        SPINY		    (6, 0.7F, 3, BiomeDictionary.Type.SWAMP);
+        SPINY		    (6, 0.7F, 3, BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.RIVER);
 
         public Float scale;
         public int species;

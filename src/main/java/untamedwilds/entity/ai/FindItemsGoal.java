@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.math.AxisAlignedBB;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
@@ -18,7 +19,7 @@ public class FindItemsGoal extends Goal  {
     private ItemEntity targetItem;
     private Item targetItemStack;
     private final int executionChance;
-    private final boolean hyperCarnivore; // TODO; Shitty patchwork, since Minecraft does not consider fish as "Meat", move to item tags?
+    private final boolean hyperCarnivore; // Not a TODO; but consider moving diets to ItemTags for more customization
     private final boolean hyperHerbivore;
 
     public FindItemsGoal(ComplexMobTerrestrial creature, int distance) {
@@ -51,9 +52,9 @@ public class FindItemsGoal extends Goal  {
         list.removeIf((ItemEntity item) -> !item.getItem().isFood());
         if (!list.isEmpty()) {
             if (this.hyperCarnivore) {
-                list.removeIf((ItemEntity item) -> !item.getItem().getItem().getFood().isMeat());
+                list.removeIf((ItemEntity item) -> !(item.getItem().getItem().getFood().isMeat() || item.getItem().getItem().isIn(ItemTags.FISHES)));
             } else if (this.hyperHerbivore) {
-                list.removeIf((ItemEntity item) -> item.getItem().getItem().getFood().isMeat());
+                list.removeIf((ItemEntity item) -> item.getItem().getItem().getFood().isMeat() || item.getItem().getItem().isIn(ItemTags.FISHES));
             }
             if (!list.isEmpty()) {
                 list.sort(this.sorter);

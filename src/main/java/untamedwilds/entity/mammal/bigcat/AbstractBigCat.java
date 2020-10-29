@@ -36,12 +36,14 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     public static Animation ANIMATION_ROAR;
     public static Animation ANIMATION_EAT;
     public static Animation IDLE_TALK;
+    public static Animation IDLE_STRETCH;
     public int aggroProgress;
 
     public AbstractBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
         ATTACK_POUNCE = Animation.create(42);
         IDLE_TALK = Animation.create(20);
+        IDLE_STRETCH = Animation.create(110);
         this.stepHeight = 1;
         this.experienceValue = 10;
         this.dexterity = 0.1F;
@@ -90,6 +92,10 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
                     if ((i == 1 || this.isInWater()) && this.isSitting() && this.getCommandInt() < 2) {
                         this.setSitting(false);
                     }
+                    if (i == 2 && this.canMove() && !this.isInWater() && !this.isChild()) {
+                        this.getNavigator().clearPath();
+                        this.setAnimation(IDLE_STRETCH);
+                    }
                     if (i > 2980 && !this.isInWater() && !this.isChild()) {
                         this.setAnimation(IDLE_TALK);
                     }
@@ -137,7 +143,9 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
         if (hand == Hand.MAIN_HAND && !this.world.isRemote()) { // Prevents all code from running twice
             if (!this.world.isRemote()) {
                 if (player.isCreative() && itemstack.isEmpty()) {
-                    this.getJumpController().setJumping();
+                    this.setAnimation(IDLE_STRETCH);
+                    //this.getJumpController().setJumping();
+                    this.getNavigator().clearPath();
                     UntamedWilds.LOGGER.info(this.getDistanceSq(this.getHomeAsVec()) + " | " + this.getPosition() + " | " + this.getHome());
                 }
 
@@ -206,7 +214,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     //public Animation getAnimationEat() { return ANIMATION_EAT; }
     @Override
     public Animation[] getAnimations() {
-        return new Animation[]{NO_ANIMATION, ATTACK_POUNCE, IDLE_TALK};
+        return new Animation[]{NO_ANIMATION, ATTACK_POUNCE, IDLE_TALK, IDLE_STRETCH};
     }
 
     protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
@@ -216,10 +224,10 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     public enum SpeciesBigCat implements IStringSerializable {
 
         JAGUAR		(ModEntity.JAGUAR, JaguarBigCat.getRarity(), BiomeDictionary.Type.JUNGLE),
-        LEOPARD		(ModEntity.LEOPARD, LeopardBigCat.getRarity(), BiomeDictionary.Type.SAVANNA, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.CONIFEROUS),
-        LION		(ModEntity.LION, LionBigCat.getRarity(), BiomeDictionary.Type.SAVANNA, BiomeDictionary.Type.SPARSE),
+        LEOPARD		(ModEntity.LEOPARD, LeopardBigCat.getRarity(), BiomeDictionary.Type.SAVANNA, BiomeDictionary.Type.CONIFEROUS),
+        LION		(ModEntity.LION, LionBigCat.getRarity(), BiomeDictionary.Type.SAVANNA),
         PANTHER		(ModEntity.PANTHER, PantherBigCat.getRarity(), BiomeDictionary.Type.JUNGLE),
-        PUMA		(ModEntity.PUMA, PumaBigCat.getRarity(), BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.MESA, BiomeDictionary.Type.FOREST),
+        PUMA		(ModEntity.PUMA, PumaBigCat.getRarity(), BiomeDictionary.Type.MESA, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.CONIFEROUS),
         SNOW_LEOPARD(ModEntity.SNOW_LEOPARD, SnowLeopardBigCat.getRarity(), BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.CONIFEROUS),
         TIGER		(ModEntity.TIGER, TigerBigCat.getRarity(), BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.CONIFEROUS);
 

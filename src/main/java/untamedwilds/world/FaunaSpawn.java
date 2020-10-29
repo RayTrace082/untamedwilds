@@ -85,20 +85,28 @@ public final class FaunaSpawn {
                     boolean flag = false;
                     int x = i;
                     int z = j;
+                    int y = pos.getY();
                     if (l1 != 0) {
                         // Do not offset the first entity of the pack
                         x += rand.nextInt(8);
                         z += rand.nextInt(8);
                     }
 
-                    for(int i2 = 0; !flag && i2 < 4; ++i2) {
+                    for(int i2 = 0; !flag && i2 < 4; ++i2) { // 4 attempts at spawning are made for each mob
+                        if (i2 != 0) {
+                            if (i2 == 1) {
+                                y += 1;
+                            }
+                            x += rand.nextInt(2);
+                            z += rand.nextInt(2);
+                        }
                         BlockPos blockpos = getTopSolidOrLiquidBlock(worldIn, entityType, x, z);
                         if (entityType.isSummonable() && canCreatureTypeSpawnAtLocation(spawnType, worldIn, blockpos, entityType)) {
                             float f = entityType.getWidth();
                             double d0 = MathHelper.clamp(x, (double)x + (double)f, (double)x + 16.0D - (double)f);
                             double d1 = MathHelper.clamp(z, (double)z + (double)f, (double)z + 16.0D - (double)f);
 
-                            // method to check if an entity's AABB box does not overlap with any blocks
+                            // Unmapped method to check if an entity's AABB box does not overlap with any blocks
                             if (!worldIn.func_226664_a_(entityType.func_220328_a(d0, pos.getY(), d1)) || !EntitySpawnPlacementRegistry.func_223515_a(entityType, worldIn, SpawnReason.CHUNK_GENERATION, new BlockPos(d0, pos.getY(), d1), worldIn.getRandom())) {
                                 continue;
                             }
@@ -112,7 +120,7 @@ public final class FaunaSpawn {
 
                             MobEntity entity2 = (MobEntity)entity;
                             assert entity != null;
-                            entity.setLocationAndAngles(d0, pos.getY(), d1, rand.nextFloat() * 360.0F, 0.0F);
+                            entity.setLocationAndAngles(d0, y, d1, rand.nextFloat() * 360.0F, 0.0F);
                             if (net.minecraftforge.common.ForgeHooks.canEntitySpawn(entity2, worldIn, d0, blockpos.getY(), d1, null, SpawnReason.NATURAL) == -1) continue;
                             if (entity2.canSpawn(worldIn, SpawnReason.CHUNK_GENERATION)) {
 
