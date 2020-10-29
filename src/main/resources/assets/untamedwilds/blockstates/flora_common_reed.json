@@ -1,0 +1,7 @@
+{
+	"variants": {
+		"age=0": {	"model": "untamedwilds:block/flora_reed_top" },
+		"age=1": {	"model": "untamedwilds:block/flora_reed_middle" },
+		"age=2": {	"model": "untamedwilds:block/flora_reed_bottom" }
+	}
+}

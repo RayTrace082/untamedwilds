@@ -1,0 +1,17 @@
+{
+    "name": "Smooth Clam" , 
+    "icon": "untamedwilds:textures/icon/giant_clam/derasa.png" , 
+    "category": "giant_clam_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Smooth Clam" , 
+            "text": "No data is available about this creature"
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:giant_clam{Species: 0}" , 
+            "text": "A Smooth Clam"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "block",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:gems/pearl"
+    }
+  },
+  "result": {
+    "item": "untamedwilds:block_pearl",
+    "count": 1
+  }
+}

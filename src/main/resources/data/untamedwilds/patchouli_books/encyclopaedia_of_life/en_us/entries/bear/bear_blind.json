@@ -1,0 +1,17 @@
+{
+    "name": "Blind Cave Bear" , 
+    "icon": "untamedwilds:textures/icon/bear/blind.png" , 
+    "category": "bear_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Blind Cave Bear" , 
+            "text": "No data is available about this creature"
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:bear_blind" , 
+            "text": "A Blind Cave Bear"
+        }
+    ]
+}

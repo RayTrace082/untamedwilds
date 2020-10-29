@@ -1,0 +1,17 @@
+{
+    "name": "Giant Clam" , 
+    "icon": "untamedwilds:textures/icon/giant_clam/gigas.png" , 
+    "category": "giant_clam_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Giant Clam" , 
+            "text": "No data is available about this creature"
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:giant_clam{Species: 1}" , 
+            "text": "A Giant Clam"
+        }
+    ]
+}

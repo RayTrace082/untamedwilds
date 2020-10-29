@@ -1,0 +1,17 @@
+{
+    "name": "Black Bear" , 
+    "icon": "untamedwilds:textures/icon/bear/black.png" , 
+    "category": "bear_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Black Bear" , 
+            "text": "Along with the brown bear, it is one of only two of the eight modern bear species not considered by the IUCN to be globally threatened with extinction. The American black bear is the world's most common bear species. The American black bear (Ursus americanus) is a medium-sized bear native to North America. It is the continent's smallest and most widely distributed bear species. American black bears are omnivores, with their diets varying greatly depending on season and location. The fur, though usually black, is not always this color. They typically live in largely forested areas but will leave forests in search of food."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:bear_black" , 
+            "text": "A Black Bear"
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "name": "sunfish",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:tropical_fish",
+          "functions": [{
+            "function": "set_count",
+            "count": {
+              "min": 2,
+              "max": 6
+            }
+          },
+          {
+            "function": "looting_enchant",
+            "count": {
+              "min": 1,
+              "max": 2
+            }
+          }]
+        }
+      ]
+    }
+  ]
+}

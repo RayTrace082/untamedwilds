@@ -1,0 +1,17 @@
+{
+    "name": "African Softshell Turtle" , 
+    "icon": "untamedwilds:textures/icon/softshell_turtle/nile.png" , 
+    "category": "softshell_turtle_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "African Softshell Turtle" , 
+            "text": "Despite the name \"African softshell turtle\", it is not the only species or genus of softshell turtle in Africa (the genera Cyclanorbis and Cycloderma are also African). They are under threat because of large use of their habitats with fishing activities, and irrigation, destruction of their nesting places, destruction of boats, and water pollution The Mediterranean subpopulation of the Nile soft-shelled turtle was listed by \u201cRed List of Threatened Species\u201d as in the IUCN as critically endangered. They are omnivores in diet, consuming small fish, crustaceans, and also palm seeds and fallen leaves. Trionyx triunguis was listed on Appendix II by CITES in 2016 the population in Ghana was also included in CITES Appendix III from 1976 to 2007."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:softshell_turtle{Species: 3}" , 
+            "text": "A African Softshell Turtle"
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+{
+    "name": "Mountain Lion" , 
+    "icon": "untamedwilds:textures/icon/big_cat/puma.png" , 
+    "category": "big_cat_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Mountain Lion" , 
+            "text": "Secretive and largely solitary by nature, the cougar is properly considered both nocturnal and crepuscular, although daytime sightings do occur. The cougar (Puma concolor) is a large cat of the subfamily Felinae. The cougar is an ambush predator that pursues a wide variety of prey. This cat prefers habitats with dense underbrush and rocky areas for stalking, but can also live in open areas. Due to its wide range, it has many names including puma, mountain lion, panther, painter and catamount. The cougar is the second-largest cat in the New World after the jaguar. The cougar is territorial and survives at low population densities."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:bigcat_puma" , 
+            "text": "A Mountain Lion"
+        }
+    ]
+}

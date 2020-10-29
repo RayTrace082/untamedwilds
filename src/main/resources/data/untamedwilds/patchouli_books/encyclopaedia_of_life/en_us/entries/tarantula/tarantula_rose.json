@@ -1,0 +1,17 @@
+{
+    "name": "Rose Hair Tarantula" , 
+    "icon": "untamedwilds:textures/icon/tarantula/rose.png" , 
+    "category": "tarantula_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Rose Hair Tarantula" , 
+            "text": "Considerable confusion exists between this species and Grammostola porteri, with some arguing that many of the \"G. rosea\" in the pet trade actually are G. porteri. rosea is a common pet of tarantula hobbyists. The species is also known from Bolivia and Argentina.G."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:tarantula{Species: 6}" , 
+            "text": "A Rose Hair Tarantula"
+        }
+    ]
+}

@@ -1,0 +1,127 @@
+{
+	"entity.generic.swing": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:generic_swing"
+		]
+	},
+	"entity.generic.bite": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:generic_bite"
+		]
+	},
+	"entity.generic.sniff": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:generic_sniff"
+		]
+	},
+	"entity.bear.ambient": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:bear/idle_1",
+			"untamedwilds:bear/idle_2",
+			"untamedwilds:bear/idle_3",
+			"untamedwilds:bear/idle_4"
+		],
+		"subtitle": "untamedwilds.subtitles.bear.ambient"
+	},
+	"entity.bear.warning": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:bear/roar_1",
+			"untamedwilds:bear/roar_2",
+			"untamedwilds:bear/roar_3"
+		],
+		"subtitle": "untamedwilds.subtitles.bear.warning"
+	},
+	"entity.bear.hurt": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:bear/hurt_1",
+			"untamedwilds:bear/hurt_2",
+			"untamedwilds:bear/hurt_3",
+			"untamedwilds:bear/hurt_4"
+		],
+		"subtitle": "untamedwilds.subtitles.bear.hurt"
+	},
+	"entity.bear.death": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:bear/death_1",
+			"untamedwilds:bear/death_2"
+		],
+		"subtitle": "untamedwilds.subtitles.bear.death"
+	},
+	"entity.bear.baby.ambient": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:bear/idle_cub"
+		],
+		"subtitle": "untamedwilds.subtitles.bear.baby.ambient"
+	},
+	"entity.bear.baby.cry": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:bear/cry_cub"
+		],
+		"subtitle": "untamedwilds.subtitles.bear.baby.cry"
+	},
+
+	"entity.big_cat.ambient": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:big_cat/idle_1",
+			"untamedwilds:big_cat/idle_2"
+		],
+		"subtitle": "untamedwilds.subtitles.big_cat.ambient"
+	},
+	"entity.big_cat.hurt": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:big_cat/hurt_1"
+		],
+		"subtitle": "untamedwilds.subtitles.big_cat.hurt"
+	},
+	"entity.big_cat.death": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:big_cat/death_1"
+		],
+		"subtitle": "untamedwilds.subtitles.big_cat.death"
+	},
+
+	"entity.tarantula.ambient": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:tarantula_idle_1",
+			"untamedwilds:tarantula_idle_2"
+		],
+		"subtitle": "untamedwilds.subtitles.tarantula.ambient"
+	},
+
+	"entity.hippo.ambient": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:hippo_idle_1",
+			"untamedwilds:hippo_idle_2"
+		],
+		"subtitle": "untamedwilds.subtitles.hippo.ambient"
+	},
+
+	"entity.snake.warning": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:snake_hissing"
+		],
+		"subtitle": "untamedwilds.subtitles.snake.warning"
+	},
+	"entity.snake.rattle": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:snake_rattle"
+		],
+		"subtitle": "untamedwilds.subtitles.snake.rattle"
+	}
+}

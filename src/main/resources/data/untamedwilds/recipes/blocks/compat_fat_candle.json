@@ -1,0 +1,26 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "buzzierbees"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#",
+    "S",
+    "S"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:string"
+    },
+    "S": {
+      "item": "untamedwilds:material_fat"
+    }
+  },
+  "result": {
+    "item": "buzzierbees:candle",
+    "count": 2
+  }
+}

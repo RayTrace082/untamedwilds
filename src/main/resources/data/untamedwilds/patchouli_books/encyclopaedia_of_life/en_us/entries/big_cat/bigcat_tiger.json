@@ -1,0 +1,17 @@
+{
+    "name": "Tiger" , 
+    "icon": "untamedwilds:textures/icon/big_cat/tiger.png" , 
+    "category": "big_cat_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Tiger" , 
+            "text": "Tiger cubs stay with their mother for about two years, before they become independent and leave their mother's home range to establish their own. Today's tiger range is fragmented, stretching from Siberian temperate forests to subtropical and tropical forests on the Indian subcontinent and Sumatra. It is territorial and generally a solitary but social predator, requiring large contiguous areas of habitat, which support its requirements for prey and rearing of its offspring. The tiger (Panthera tigris) is the largest extant cat species and a member of the genus Panthera. Tigers are also victims of human\u2013wildlife conflict, in particular in range countries with a high human population density. India currently hosts the largest tiger population. The tiger is among the most recognisable and popular of the world's charismatic megafauna."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:bigcat_tiger" , 
+            "text": "A Tiger"
+        }
+    ]
+}

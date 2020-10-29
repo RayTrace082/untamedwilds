@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "untamedwilds:blowgun"
+  },
+  "pattern": [
+    "  A",
+    " A ",
+    "A  "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:reeds"
+    }
+  }
+}

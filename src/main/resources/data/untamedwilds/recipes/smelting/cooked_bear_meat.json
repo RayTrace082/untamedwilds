@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "untamedwilds:food_bear_raw"
+  },
+  "result": "untamedwilds:food_bear_cooked",
+  "experience": 0.35,
+  "cookingtime": 200
+}

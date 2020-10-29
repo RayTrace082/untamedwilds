@@ -1,0 +1,17 @@
+{
+    "name": "Corn Snake" , 
+    "icon": "untamedwilds:textures/icon/snake/corn.png" , 
+    "category": "snake_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Corn Snake" , 
+            "text": "Some sources maintain that the corn snake is so-named because the distinctive, nearly-checkered pattern of the snake's belly scales resembles the kernels of variegated corn. The corn snake is named for the species' regular presence near grain stores, where it preys on mice and rats that eat harvested corn. The corn snake (Pantherophis guttatus) is a North American species of rat snake that subdues its small prey by constriction. Regardless of the name's origin, the corn reference can be a useful mnemonic for identifying corn snakes. Their docile nature, reluctance to bite, moderate adult size, attractive pattern, and comparatively simple care make them commonly kept pet snakes. It is found throughout the southeastern and central United States. The Oxford English Dictionary cites this usage as far back as 1675."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:snake{Species: 7}" , 
+            "text": "A Corn Snake"
+        }
+    ]
+}

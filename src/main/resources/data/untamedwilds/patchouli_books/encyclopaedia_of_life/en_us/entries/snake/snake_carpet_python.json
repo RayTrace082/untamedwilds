@@ -1,0 +1,17 @@
+{
+    "name": "Carpet Python" , 
+    "icon": "untamedwilds:textures/icon/snake/carpet_python.png" , 
+    "category": "snake_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Carpet Python" , 
+            "text": "Many subspecies are described: ITIS lists six, the Reptile Database seven, and the IUCN eight."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:snake{Species: 3}" , 
+            "text": "A Carpet Python"
+        }
+    ]
+}

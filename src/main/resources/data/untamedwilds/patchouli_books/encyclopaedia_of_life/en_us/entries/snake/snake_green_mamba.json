@@ -1,0 +1,17 @@
+{
+    "name": "Green Mamba" , 
+    "icon": "untamedwilds:textures/icon/snake/green_mamba.png" , 
+    "category": "snake_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Green Mamba" , 
+            "text": "The eastern green mamba (Dendroaspis angusticeps) is a highly venomous snake species of the mamba genus Dendroaspis native to the coastal regions of southern East Africa. Symptoms of envenomation include swelling of the bite site, dizziness and nausea, accompanied by difficulty breathing and swallowing, irregular heartbeat and convulsions progressing to respiratory paralysis. A shy and elusive species, the eastern green mamba is rarely seen. It has also been observed to use \"sit-and-wait\" or ambush predation, like many vipers, unlike the active foraging style typical of other elapid snakes. This elusiveness is usually attributed to its green colouration, which blends with its environment, and its arboreal lifestyle. Described by Scottish surgeon and zoologist Andrew Smith in 1849, it has a slender build with bright green upperparts and yellow-green underparts. The adult female averages around 2 metres (6 ft 7 in) in length, and the male is slightly smaller."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:snake{Species: 11}" , 
+            "text": "A Green Mamba"
+        }
+    ]
+}

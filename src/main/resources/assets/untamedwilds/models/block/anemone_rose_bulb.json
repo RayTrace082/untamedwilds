@@ -1,0 +1,32 @@
+﻿{
+	"parent": "block/thin_block",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "untamedwilds:block/anemone_rose_bulb",
+		"particle": "untamedwilds:block/anemone_rose_bulb"
+	},
+	"elements": [
+		{
+			"name": "stump",
+			"from": [6, 0, 6],
+			"to": [10, 6, 10],
+			"faces": {
+				"north": {"uv": [0, 0, 4, 6], "texture": "#0"},
+				"east": {"uv": [0, 0, 4, 6], "texture": "#0"},
+				"south": {"uv": [0, 0, 4, 6], "texture": "#0"},
+				"west": {"uv": [0, 0, 4, 6], "texture": "#0"},
+				"up": {"uv": [4, 12, 8, 16], "texture": "#0"},
+				"down": {"uv": [4, 12, 8, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "anemone",
+			"from": [2, 6.01, 2],
+			"to": [14, 6.01, 14],
+			"faces": {
+				"up": {"uv": [4, 0, 16, 12], "texture": "#0"},
+				"down": {"uv": [4, 0, 16, 12], "texture": "#0"}
+			}
+		}
+	]
+}

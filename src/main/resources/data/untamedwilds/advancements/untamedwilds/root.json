@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "untamedwilds:hide_bear_brown"
+    },
+    "title": {
+      "translate": "advancements.untamedwilds.root.title"
+    },
+    "description": {
+      "translate": "advancements.untamedwilds.root.description"
+    },
+    "background": "minecraft:textures/gui/advancements/backgrounds/husbandry.png",
+    "show_toast": false,
+    "announce_to_chat": true,
+    "hidden" : false
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

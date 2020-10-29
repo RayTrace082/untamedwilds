@@ -1,0 +1,17 @@
+{
+    "name": "Inland Taipan" , 
+    "icon": "untamedwilds:textures/icon/snake/taipan.png" , 
+    "category": "snake_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Inland Taipan" , 
+            "text": "The inland taipan is a specialist hunter of mammals, so its venom is specially adapted to kill warm-blooded species. Aboriginal Australians living in those regions named the snake Dandarabilla. The word \"fierce\" from its alternative name describes its venom, not its temperament. The species is endemic to semi-arid regions of central east Australia. However, it will defend itself and strike if provoked, mishandled, or prevented from escaping."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:snake{Species: 15}" , 
+            "text": "A Inland Taipan"
+        }
+    ]
+}

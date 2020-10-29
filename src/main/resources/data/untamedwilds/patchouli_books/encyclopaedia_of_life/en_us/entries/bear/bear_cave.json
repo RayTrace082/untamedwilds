@@ -1,0 +1,17 @@
+{
+    "name": "Cave Bear" , 
+    "icon": "untamedwilds:textures/icon/bear/cave.png" , 
+    "category": "bear_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Cave Bear" , 
+            "text": "This reflects the views of experts that cave bears may have spent more time in caves than the brown bear, which uses caves only for hibernation. Both the word \"cave\" and the scientific name spelaeus are used because fossils of this species were mostly found in caves."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:bear_cave" , 
+            "text": "A Cave Bear"
+        }
+    ]
+}

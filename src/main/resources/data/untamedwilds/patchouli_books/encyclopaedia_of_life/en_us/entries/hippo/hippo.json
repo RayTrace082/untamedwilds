@@ -1,0 +1,17 @@
+{
+    "name": "Common Hippopotamus" , 
+    "icon": "untamedwilds:textures/icon/hippo/common.png" ,
+    "category": "hippo_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Common Hippopotamus" , 
+            "text": "The hippopotamus ( HIP-\u0259-POT-\u0259-m\u0259s; Hippopotamus amphibius), also called the hippo, common hippopotamus or river hippopotamus, is a large, mostly herbivorous, semiaquatic mammal and ungulate native to sub-Saharan Africa. Hippos inhabit rivers, lakes, and mangrove swamps, where territorial males preside over a stretch of river and groups of five to thirty females and young hippos. While hippos rest near each other in the water, grazing is a solitary activity and hippos are not territorial on land. It is one of only two extant species in the family Hippopotamidae, the other being the pygmy hippopotamus (Choeropsis liberiensis or Hexaprotodon liberiensis). Despite their physical resemblance to pigs and other terrestrial even-toed ungulates, the closest living relatives of the Hippopotamidae are cetaceans (whales, dolphins, porpoises, etc.) During the day, they remain cool by staying in the water or mud; reproduction and childbirth both occur in water. Despite its stocky shape and short legs, it is capable of running 30 km/h (19 mph) over short distances."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:hippo{Species: 0}" , 
+            "text": "A Common Hippopotamus"
+        }
+    ]
+}

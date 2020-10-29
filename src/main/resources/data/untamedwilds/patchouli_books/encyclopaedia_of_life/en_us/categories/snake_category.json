@@ -1,0 +1,6 @@
+{
+    "name": "snake" , 
+    "description": "List of all discovered Snake species" , 
+    "icon": "minecraft:writable_book" , 
+    "parent": "taxon_reptile"
+}

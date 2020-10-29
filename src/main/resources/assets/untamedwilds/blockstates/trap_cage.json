@@ -1,0 +1,7 @@
+{
+	"variants": {
+
+		"open=false": {	"model": "untamedwilds:block/trap_cage" },
+		"open=true": {	"model": "untamedwilds:block/trap_cage_open" }
+	}
+}

@@ -1,0 +1,6 @@
+{
+    "name": "bear" , 
+    "description": "List of all discovered Bear species" , 
+    "icon": "minecraft:writable_book" , 
+    "parent": "taxon_mammal"
+}

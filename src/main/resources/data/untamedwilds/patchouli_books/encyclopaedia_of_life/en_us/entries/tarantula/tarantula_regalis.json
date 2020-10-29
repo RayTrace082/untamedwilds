@@ -1,0 +1,17 @@
+{
+    "name": "Ornamental Tree Spider" , 
+    "icon": "untamedwilds:textures/icon/tarantula/regalis.png" , 
+    "category": "tarantula_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Ornamental Tree Spider" , 
+            "text": "The common name for this spider is Indian ornamental tree spider, or simply Indian ornamental. Poecilotheria regalis is a species of arboreal tarantula and is found in parts of India. It is one of the most popular arboreal tarantulas for amateur collectors. Their leg span sometimes exceeds 7 inches (18 cm)."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:tarantula{Species: 5}" , 
+            "text": "A Ornamental Tree Spider"
+        }
+    ]
+}

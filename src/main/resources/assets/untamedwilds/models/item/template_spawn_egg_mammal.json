@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "untamedwilds:item/egg/spawn_mammal_base",
+    "layer1": "untamedwilds:item/egg/spawn_mammal_overlay"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "patchouli"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "tag": "forge:hide"
+    }
+  ],
+  "result": {
+    "nbt": {
+      "patchouli:book": "psi:encyclopaedia_of_life"
+    },
+    "item": "patchouli:guide_book"
+  }
+}

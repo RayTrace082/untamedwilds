@@ -1,0 +1,17 @@
+{
+    "name": "Lion" , 
+    "icon": "untamedwilds:textures/icon/big_cat/lion.png" , 
+    "category": "big_cat_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Lion" , 
+            "text": "No data is available about this creature"
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:bigcat_lion" , 
+            "text": "A Lion"
+        }
+    ]
+}

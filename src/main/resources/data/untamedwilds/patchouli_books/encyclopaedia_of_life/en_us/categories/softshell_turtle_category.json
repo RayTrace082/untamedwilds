@@ -1,0 +1,6 @@
+{
+    "name": "softshell_turtle" , 
+    "description": "List of all discovered Softshell turtle species" , 
+    "icon": "minecraft:writable_book" , 
+    "parent": "taxon_reptile"
+}

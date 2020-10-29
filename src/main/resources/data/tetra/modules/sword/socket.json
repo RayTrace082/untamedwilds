@@ -1,0 +1,38 @@
+{
+    "variants": [
+        {
+            "key": "sword_socket/pearl",
+            "durability": 64,
+            "integrity": -1,
+			"effects": {
+                "toughness": 1
+            },
+            "glyph": {
+                "tint": "D3EAF4",
+                "textureX": 80,
+                "textureY": 16
+            },
+            "models": [{
+                "location": "tetra:items/module/sword/guard/socket/default",
+                "tint": "D3EAF4"
+            }]
+        },
+		{
+            "key": "sword_socket/pristine_pearl",
+            "durability": 92,
+            "integrity": -1,
+			"effects": {
+                "toughness": 2
+            },
+            "glyph": {
+                "tint": "D3EAF4",
+                "textureX": 80,
+                "textureY": 16
+            },
+            "models": [{
+                "location": "tetra:items/module/sword/guard/socket/default",
+                "tint": "D3EAF4"
+            }]
+        }
+    ]
+}
