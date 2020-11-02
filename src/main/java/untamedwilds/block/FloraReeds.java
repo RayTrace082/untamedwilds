@@ -75,42 +75,41 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
    // TODO: It should be possible to invoke "getStateForPlacement" by building an UseContext, but this works alright
    @Nullable
    public BlockState getStateForWorldgen(ISeedReader world, BlockPos pos) {
-      FluidState fluidstate = world.getFluidState(pos.up());
-      if (!fluidstate.isEmpty()) {
+      boolean isWaterLogged = !world.getFluidState(pos).isEmpty();
+      BlockState blockstate = world.getBlockState(pos.down());
+      if (blockstate.getBlock() == ModBlock.COMMON_REED.get()) {
+         if (world.getFluidState(pos.down()).isEmpty()) {
+            world.setBlockState(pos.down(), blockstate.getBlockState().with(PROPERTY_AGE, 1), 1);
+         }
+         int i = blockstate.get(PROPERTY_AGE) > 0 ? 1 : 0;
+         BlockState blockstate1 = world.getBlockState(pos.up());
+         return blockstate1.getBlock() != ModBlock.COMMON_REED.get() ? ModBlock.COMMON_REED.get().getDefaultState().with(PROPERTY_AGE, 0).with(WATERLOGGED, isWaterLogged) : this.getDefaultState().with(PROPERTY_AGE, 1).with(WATERLOGGED, isWaterLogged);
+      }
+      if (blockstate.isIn(UTBlockTags.REEDS_PLANTABLE_ON)) {
+         return this.getDefaultState().with(PROPERTY_AGE, isWaterLogged ? 2 : 0).with(WATERLOGGED, isWaterLogged);
+      }
+      else {
          return null;
-      } else {
-         boolean isWaterLogged = !world.getFluidState(pos).isEmpty();
-         BlockState blockstate = world.getBlockState(pos.down());
-         if (blockstate.isIn(UTBlockTags.REEDS_PLANTABLE_ON)) {
-            return this.getDefaultState().with(PROPERTY_AGE, isWaterLogged ? 2 : 0).with(WATERLOGGED, isWaterLogged);
-         }
-         if (blockstate.getBlock() == ModBlock.COMMON_REED.get()) {
-            BlockState blockstate1 = world.getBlockState(pos.up());
-            return blockstate1.getBlock() != ModBlock.COMMON_REED.get() ? ModBlock.COMMON_REED.get().getDefaultState().with(PROPERTY_AGE, 2).with(WATERLOGGED, isWaterLogged) : this.getDefaultState().with(PROPERTY_AGE, 1).with(WATERLOGGED, isWaterLogged);
-         } else {
-            return null;
-         }
       }
    }
 
    @Nullable
    public BlockState getStateForPlacement(BlockItemUseContext context) {
-      FluidState fluidstate = context.getWorld().getFluidState(context.getPos().up());
-      if (!fluidstate.isEmpty()) {
+      boolean isWaterLogged = !context.getWorld().getFluidState(context.getPos()).isEmpty();
+      BlockState blockstate = context.getWorld().getBlockState(context.getPos().down());
+      if (blockstate.getBlock() == ModBlock.COMMON_REED.get()) {
+         if (context.getWorld().getFluidState(context.getPos().down()).isEmpty()) {
+            context.getWorld().setBlockState(context.getPos().down(), blockstate.getBlockState().with(PROPERTY_AGE, 1));
+         }
+         int i = blockstate.get(PROPERTY_AGE) > 0 ? 1 : 0;
+         BlockState blockstate1 = context.getWorld().getBlockState(context.getPos().up());
+         return blockstate1.getBlock() != ModBlock.COMMON_REED.get() ? ModBlock.COMMON_REED.get().getDefaultState().with(PROPERTY_AGE, 0).with(WATERLOGGED, isWaterLogged) : this.getDefaultState().with(PROPERTY_AGE, 1).with(WATERLOGGED, isWaterLogged);
+      }
+      if (blockstate.isIn(UTBlockTags.REEDS_PLANTABLE_ON)) {
+         return this.getDefaultState().with(PROPERTY_AGE, isWaterLogged ? 2 : 0).with(WATERLOGGED, isWaterLogged);
+      }
+      else {
          return null;
-      } else {
-         boolean isWaterLogged = !context.getWorld().getFluidState(context.getPos()).isEmpty();
-         BlockState blockstate = context.getWorld().getBlockState(context.getPos().down());
-         if (blockstate.isIn(UTBlockTags.REEDS_PLANTABLE_ON)) {
-            return this.getDefaultState().with(PROPERTY_AGE, isWaterLogged ? 2 : 0).with(WATERLOGGED, isWaterLogged);
-         }
-         if (blockstate.getBlock() == ModBlock.COMMON_REED.get()) {
-            int i = blockstate.get(PROPERTY_AGE) > 0 ? 1 : 0;
-            BlockState blockstate1 = context.getWorld().getBlockState(context.getPos().up());
-            return blockstate1.getBlock() != ModBlock.COMMON_REED.get() ? ModBlock.COMMON_REED.get().getDefaultState().with(PROPERTY_AGE, 2).with(WATERLOGGED, isWaterLogged) : this.getDefaultState().with(PROPERTY_AGE, 1).with(WATERLOGGED, isWaterLogged);
-         } else {
-            return null;
-         }
       }
    }
 

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "sticks",
+  "pattern": [
+    "#",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "untamedwilds:flora_common_reed"
+    }
+  },
+  "result": {
+    "item": "minecraft:stick"
+  }
+}

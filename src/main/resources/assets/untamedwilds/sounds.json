@@ -72,8 +72,14 @@
 	"entity.big_cat.ambient": {
 		"category": "neutral",
 		"sounds": [
-			"untamedwilds:big_cat/idle_1",
-			"untamedwilds:big_cat/idle_2"
+			{
+				"name": "untamedwilds:big_cat/idle_1",
+				"volume": 0.8
+			},
+			{
+				"name": "untamedwilds:big_cat/idle_2",
+				"volume": 0.8
+			}
 		],
 		"subtitle": "untamedwilds.subtitles.big_cat.ambient"
 	},

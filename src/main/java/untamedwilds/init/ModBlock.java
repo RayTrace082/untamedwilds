@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
@@ -53,7 +54,7 @@ public class ModBlock {
     public static RegistryObject<Block> ANEMONE_SAND  = createBlock("anemone_sand", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.RED).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS, ConfigFeatureControl.addAnemones.get());
     public static RegistryObject<Block> ANEMONE_SEBAE  = createBlock("anemone_sebae", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.RED).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS, ConfigFeatureControl.addAnemones.get());
     public static RegistryObject<Block> ORCHID_RED = createBlock("flora_orchid_red", () -> new BlockPlantEpyphite(Block.Properties.create(Material.PLANTS, MaterialColor.RED).hardnessAndResistance(0.0F).sound(SoundType.PLANT)), ItemGroup.DECORATIONS);
-    public static RegistryObject<Block> COMMON_REED = createBlock("flora_common_reed", () -> new FloraReeds(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(0.1F).sound(SoundType.VINE).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addReeds.get());
+    public static RegistryObject<Block> COMMON_REED = createBlock("flora_common_reed", () -> new FloraReeds(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(0.1F).sound(SoundType.VINE).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addReeds.get(), 100);
 
     public static RegistryObject<TileEntityType<BlockEntityCage>> BLOCKENTITY_CAGE = TILE_ENTITY_TYPES.register("trap_cage", () -> new TileEntityType<>(BlockEntityCage::new, Sets.newHashSet(ModBlock.TRAP_CAGE.get()), null));
 
@@ -62,8 +63,17 @@ public class ModBlock {
     }
 
     public static <B extends Block> RegistryObject<B> createBlock(String name, Supplier<? extends B> supplier, @Nullable ItemGroup group, boolean add) {
+        return createBlock(name, supplier, group, add, 0);
+    }
+
+    public static <B extends Block> RegistryObject<B> createBlock(String name, Supplier<? extends B> supplier, @Nullable ItemGroup group, boolean add, int burnTime) {
         RegistryObject<B> block = ModBlock.BLOCKS.register(name, supplier);
-        ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(group)));
+        if (burnTime != 0) {
+            ModItems.ITEMS.register(name, () -> new FuelBlockItem(block.get(), burnTime, new Item.Properties().group(group)));
+        }
+        else {
+            ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(group)));
+        }
         return block;
     }
 

@@ -16,7 +16,7 @@
   ],
   "result": {
     "nbt": {
-      "patchouli:book": "psi:encyclopaedia_of_life"
+      "patchouli:book": "untamedwilds:encyclopaedia_of_life"
     },
     "item": "patchouli:guide_book"
   }

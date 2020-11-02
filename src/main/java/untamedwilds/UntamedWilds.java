@@ -1,8 +1,11 @@
 package untamedwilds;
 
 import net.minecraft.block.DispenserBlock;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,15 +18,13 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import untamedwilds.block.BlockCage;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.config.ConfigBase;
-import untamedwilds.init.ModBlock;
-import untamedwilds.init.ModEntity;
-import untamedwilds.init.ModItems;
-import untamedwilds.init.ModVillagerTrades;
+import untamedwilds.init.*;
 import untamedwilds.world.UntamedWildsGenerator;
 
 @Mod(value = UntamedWilds.MOD_ID)
