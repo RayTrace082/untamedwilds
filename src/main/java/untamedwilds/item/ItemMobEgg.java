@@ -73,7 +73,7 @@ public class ItemMobEgg extends Item {
             }
             itemStack.shrink(1);
         }
-        return ActionResultType.SUCCESS;
+        return ActionResultType.CONSUME;
     }
 
     // TODO: Have dropped eggs eventually hatch into baby mobs

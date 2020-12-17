@@ -95,7 +95,7 @@ public class ItemOwnershipDeed extends Item {
                         if (UntamedWilds.DEBUG) {
                             UntamedWilds.LOGGER.log(Level.INFO, "Pet ownership transferred to " + playerIn.getName().getString());
                         }
-                        return ActionResultType.SUCCESS;
+                        return ActionResultType.CONSUME;
                     }
                 }
                 return ActionResultType.FAIL;

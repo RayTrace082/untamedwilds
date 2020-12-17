@@ -88,7 +88,7 @@ public class ItemMobSpawn extends Item {
                         //UntamedWilds.LOGGER.info("Randomizing repeated UUID");
                     }
                     itemStack.shrink(1);
-                    return ActionResultType.SUCCESS;
+                    return ActionResultType.CONSUME;
                 }
             }
 
@@ -112,7 +112,7 @@ public class ItemMobSpawn extends Item {
 
             itemStack.shrink(1);
         }
-        return ActionResultType.SUCCESS;
+        return ActionResultType.CONSUME;
     }
 
     /*public boolean tick() {
