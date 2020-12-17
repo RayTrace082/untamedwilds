@@ -19,7 +19,7 @@ public class FeatureUndergroundFaunaLarge extends Feature<NoFeatureConfig> {
         super(codec);
     }
 
-    public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         if (pos.getY() < 52) {
             if (rand.nextFloat() > 0.96) {
                 Biome biome = world.getBiome(pos);

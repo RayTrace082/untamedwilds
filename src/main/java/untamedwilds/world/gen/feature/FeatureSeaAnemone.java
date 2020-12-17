@@ -20,7 +20,7 @@ public class FeatureSeaAnemone extends Feature<FeatureSpreadConfig> {
         super(p_i231987_1_);
     }
 
-    public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, FeatureSpreadConfig config) {
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, FeatureSpreadConfig config) {
         int i = 0;
         int m = rand.nextInt(3);
         Block type;

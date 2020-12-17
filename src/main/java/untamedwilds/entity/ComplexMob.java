@@ -41,6 +41,11 @@ public abstract class ComplexMob extends TameableEntity {
     private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     public int ecoLevel;
+    public HerdEntity herd = null;
+    int maxSchoolSize = 8;
+    protected LivingEntity followEntity;
+    protected Vector3d fleeLookVec;
+    protected Vector3d targetVec;
 
     public ComplexMob(EntityType<? extends ComplexMob> type, World worldIn){
         super(type, worldIn);
@@ -266,10 +271,26 @@ public abstract class ComplexMob extends TameableEntity {
             } else if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
                 UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + this.getName().getString());
             }
+            if (this instanceof IPackEntity) {
+                this.initPack();
+            }
             worldIn.func_242417_l(this);
             this.setGrowingAge(0);
             return spawnDataIn;
         }
         return spawnDataIn;
+    }
+
+    public void initPack() {
+        this.herd = new HerdEntity(this);
+    }
+
+    public boolean shouldLeavePack() {
+        return false;
+        //return this.rand.nextInt(1800) == 0;
+    }
+
+    public boolean canCombineWith(HerdEntity otherPack) {
+        return true;
     }
 }

@@ -29,10 +29,3 @@ Untamed Wilds aims to expand on the natural world of Minecraft by adding new hig
     versionRange="[26,)"
     ordering="NONE"
     side="BOTH"
-
-#[[dependencies.untamedwilds]]
-#    modId="minecraft"
-#    mandatory=true
-#    versionRange="[1.15.2]"
-#    ordering="NONE"
-#    side="BOTH"

@@ -28,7 +28,7 @@ import java.util.List;
 public class PolarBear extends AbstractBear {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/bear/polar.png");
-    private static final float SIZE = 1.1f;
+    private static final float SIZE = 1.3f; // Was 1.1f
     private static final String BREEDING = "LATE_SPRING";
     private static final int GESTATION = 10 * ConfigGamerules.cycleLength.get();
     private static final int GROWING = 10 * ConfigGamerules.cycleLength.get();

@@ -14,17 +14,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
+import untamedwilds.entity.IPackEntity;
 import untamedwilds.entity.ai.*;
-import untamedwilds.entity.ai.target.HuntMobTarget;
-import untamedwilds.entity.ai.target.ProtectChildrenTarget;
-import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
+import untamedwilds.entity.ai.target.*;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 
 import java.util.List;
 
-public class LionBigCat extends AbstractBigCat {
+public class LionBigCat extends AbstractBigCat implements IPackEntity {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/lion_male.png");
     private static final ResourceLocation TEXTURE_FEMALE = new ResourceLocation("untamedwilds:textures/entity/big_cat/lion_female.png");
@@ -48,13 +48,13 @@ public class LionBigCat extends AbstractBigCat {
         this.goalSelector.addGoal(4, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D, true));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, true));
+        this.goalSelector.addGoal(5, new SmartWanderHerdGoal(this, 1D, true));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new HurtPackByTargetGoal(this));
         this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof LionBigCat)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 8));
+        this.targetSelector.addGoal(3, new HuntPackMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 8));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -91,6 +91,16 @@ public class LionBigCat extends AbstractBigCat {
         return false;
     }
 
+    public void livingTick() {
+        if (this.herd == null) {
+            this.initPack();
+        }
+        else {
+            this.herd.tick();
+        }
+        super.livingTick();
+    }
+
     public void breed() {
         for (int i = 0; i <= 1 + this.rand.nextInt(3); i++) {
             LionBigCat child = this.func_241840_a((ServerWorld) this.world, this);
@@ -123,5 +133,10 @@ public class LionBigCat extends AbstractBigCat {
     public float getModelScale() { return SIZE; }
     public ResourceLocation getTexture() {
         return this.isMale() ? TEXTURE : TEXTURE_FEMALE;
+    }
+
+    @Override
+    public int getMaxPackSize(IPackEntity entity) {
+        return 8;
     }
 }

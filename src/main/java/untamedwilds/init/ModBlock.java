@@ -78,8 +78,7 @@ public class ModBlock {
     }
 
     public static <B extends Block> RegistryObject<B> createItemlessBlock(String name, Supplier<? extends B> supplier) {
-        RegistryObject<B> block = ModBlock.BLOCKS.register(name, supplier);
-        return block;
+        return ModBlock.BLOCKS.register(name, supplier);
     }
 
     public static void registerRendering() {

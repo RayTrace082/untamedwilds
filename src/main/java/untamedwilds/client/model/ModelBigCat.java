@@ -409,7 +409,7 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat>
     public void setRotationAngles(AbstractBigCat big_cat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animate(big_cat);
 
-        float globalSpeed = 2f;
+        float globalSpeed = 2.4f;
         float globalDegree = 1f;
         limbSwingAmount *= 2;
         limbSwing *= 0.5F;

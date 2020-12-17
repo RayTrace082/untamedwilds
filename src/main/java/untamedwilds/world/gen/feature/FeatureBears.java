@@ -24,7 +24,7 @@ public class FeatureBears extends Feature<NoFeatureConfig> {
         super(codec);
     }
 
-    public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         if (rand.nextFloat() > 0.80) {
             pos = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos.add(8, 0, 8));
             Biome biome = world.getBiome(pos);

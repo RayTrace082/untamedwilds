@@ -33,7 +33,7 @@ public class UntamedWilds {
     // TODO: Skins; Reuse the Species system in complex mobs to introduce random skins
     // TODO: Migration AI, rare events executed by hungry mobs where they will choose a direction and keep moving there
     // TODO: Make use of Tags to make animal's diets data-driven
-    // TODO: Make a Python script to generate a Patchouli guidebook (ideally, crawling wiki articles), because I am not doing that shit by hand
+    // TODO: Test the behavior of Herds when changing dimensions
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";
@@ -59,6 +59,7 @@ public class UntamedWilds {
         ModBlock.TILE_ENTITY_TYPES.register(eventBus);
         ModItems.registerSpawnItems();
         ModItems.ITEMS.register(eventBus);
+        UntamedWildsGenerator.FEATURES.register(eventBus);
         CompatBridge.RegisterCompat();
         MinecraftForge.EVENT_BUS.register(ModVillagerTrades.class); // Custom Villager Trades
         MinecraftForge.EVENT_BUS.register(UntamedWildsGenerator.class); // Custom Biome Features

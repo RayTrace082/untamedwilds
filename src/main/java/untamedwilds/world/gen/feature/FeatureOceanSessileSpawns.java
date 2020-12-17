@@ -22,7 +22,7 @@ public class FeatureOceanSessileSpawns extends Feature<NoFeatureConfig> {
         super(codec);
     }
 
-    public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         if (rand.nextFloat() > 0.12) {
             Biome biome = world.getBiome(pos);
             BlockPos blockPos = new BlockPos(pos.getX(), world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.getX(), pos.getZ()), pos.getZ()); // So Sessile creatures do not spawn floating

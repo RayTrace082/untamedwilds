@@ -87,11 +87,7 @@ public class ItemMobSpawn extends Item {
                         worldIn.addEntity(spawn);
                         //UntamedWilds.LOGGER.info("Randomizing repeated UUID");
                     }
-                    if (useContext.getPlayer() != null) {
-                        if (!useContext.getPlayer().abilities.isCreativeMode) {
-                            itemStack.shrink(1);
-                        }
-                    }
+                    itemStack.shrink(1);
                     return ActionResultType.SUCCESS;
                 }
             }
@@ -114,11 +110,7 @@ public class ItemMobSpawn extends Item {
                 worldIn.addEntity(spawn);
             }
 
-            if (useContext.getPlayer() != null) {
-                if (!useContext.getPlayer().abilities.isCreativeMode) {
-                    itemStack.shrink(1);
-                }
-            }
+            itemStack.shrink(1);
         }
         return ActionResultType.SUCCESS;
     }

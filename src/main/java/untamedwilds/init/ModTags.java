@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ITag;
+import net.minecraft.util.ResourceLocation;
 import untamedwilds.UntamedWilds;
 
 public class ModTags {
@@ -13,7 +14,7 @@ public class ModTags {
         public static final ITag.INamedTag<EntityType<?>> CAGE_BLACKLIST = createTag("cage_trap_blacklist");
 
         private static ITag.INamedTag<EntityType<?>> createTag(String name) {
-            return EntityTypeTags.func_232896_a_(UntamedWilds.MOD_ID + name);
+            return EntityTypeTags.createOptional(new ResourceLocation(UntamedWilds.MOD_ID + name));
         }
     }
 

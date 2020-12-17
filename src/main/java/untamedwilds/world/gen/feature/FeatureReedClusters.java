@@ -33,7 +33,7 @@ public class FeatureReedClusters extends Feature<NoFeatureConfig> {
         super(codec);
     }
 
-    public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         boolean flag = false;
 
         for(int i = 0; i < 64; ++i) {

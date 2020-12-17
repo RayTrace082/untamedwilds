@@ -71,12 +71,7 @@ public class ItemMobEgg extends Item {
             if (spawn != null) {
                 worldIn.addEntity(spawn);
             }
-
-            if (useContext.getPlayer() != null) {
-                if (!useContext.getPlayer().abilities.isCreativeMode) {
-                    itemStack.shrink(1);
-                }
-            }
+            itemStack.shrink(1);
         }
         return ActionResultType.SUCCESS;
     }

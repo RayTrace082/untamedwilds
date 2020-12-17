@@ -28,7 +28,7 @@ import java.util.List;
 public class CaveBear extends AbstractBear {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/bear/cave.png");
-    private static final float SIZE = 1.2f;
+    private static final float SIZE = 1.3f; // Was 1.2f
     private static final String BREEDING = "MID_SUMMER";
     private static final int GESTATION = 10 * ConfigGamerules.cycleLength.get();
     private static final int GROWING = 10 * ConfigGamerules.cycleLength.get();
