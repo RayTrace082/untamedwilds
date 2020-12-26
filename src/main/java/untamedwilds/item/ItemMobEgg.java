@@ -44,18 +44,15 @@ public class ItemMobEgg extends Item {
     @Override
     public ActionResultType onItemUse(ItemUseContext useContext) {
         World worldIn = useContext.getWorld();
-        if (!worldIn.isRemote) {
+        if (!(worldIn instanceof ServerWorld)) {
+            return ActionResultType.SUCCESS;
+        } else {
             ItemStack itemStack = useContext.getItem();
             BlockPos pos = useContext.getPos();
             Direction facing = useContext.getFace();
             BlockState blockState = worldIn.getBlockState(pos);
 
-            BlockPos spawnPos;
-            if (blockState.getCollisionShape(worldIn, pos).isEmpty()) {
-                spawnPos = pos;
-            } else {
-                spawnPos = pos.offset(facing);
-            }
+            BlockPos spawnPos = blockState.getCollisionShape(worldIn, pos).isEmpty() ? pos : pos.offset(facing);
 
             EntityType<?> entity = this.getType(itemStack.getTag());
             Entity spawn = entity.create((ServerWorld) worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, !Objects.equals(pos, spawnPos) && facing == Direction.UP);

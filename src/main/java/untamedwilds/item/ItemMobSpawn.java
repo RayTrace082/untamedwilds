@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 
@@ -61,17 +62,14 @@ public class ItemMobSpawn extends Item {
     public ActionResultType onItemUse(ItemUseContext useContext) {
 
         World worldIn = useContext.getWorld();
-
-        if (!worldIn.isRemote) {
+        if (!(worldIn instanceof ServerWorld)) {
+            return ActionResultType.SUCCESS;
+        } else {
             ItemStack itemStack = useContext.getItem();
             BlockPos pos = useContext.getPos();
             Direction facing = useContext.getFace();
             BlockState blockState = worldIn.getBlockState(pos);
-
-            BlockPos spawnPos = pos;
-            if (!blockState.getCollisionShape(worldIn, pos).isEmpty()) {
-                spawnPos = pos.offset(facing);
-            }
+            BlockPos spawnPos = blockState.getCollisionShape(worldIn, pos).isEmpty() ? pos : pos.offset(facing);
 
             EntityType<?> entity = this.getType(itemStack.getTag());
             Entity spawn;
@@ -82,34 +80,37 @@ public class ItemMobSpawn extends Item {
                         spawn.setCustomName(itemStack.getDisplayName());
                     }
                     spawn.setLocationAndAngles(spawnPos.getX() + 0.5F, spawnPos.getY(), spawnPos.getZ() + 0.5F, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
-                    if (!((ServerWorld) worldIn).addEntityIfNotDuplicate(spawn)) {
+                    if (((ServerWorld) worldIn).getEntityByUuid(spawn.getUniqueID()) != null) {
+                        UntamedWilds.LOGGER.info("Randomizing repeated UUID");
                         spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
-                        worldIn.addEntity(spawn);
-                        //UntamedWilds.LOGGER.info("Randomizing repeated UUID");
+                        worldIn.addEntity(spawn); // Commented out because it throws an exception on the chunk tracker
                     }
-                    itemStack.shrink(1);
-                    return ActionResultType.CONSUME;
+                    /*if (!((ServerWorld) worldIn).addEntityIfNotDuplicate(spawn)) {
+                        spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
+                        //worldIn.addEntity(spawn); // Commented out because it throws an exception on the chunk tracker
+                        //UntamedWilds.LOGGER.info("Randomizing repeated UUID");
+                    }*/
                 }
             }
-
-            // If no NBT data is assigned to the entity (eg. Item taken from the Creative menu), create a new, random mob
-            spawn = entity.create((ServerWorld) worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, !Objects.equals(pos, spawnPos) && facing == Direction.UP);
-            if (spawn instanceof ComplexMob) {
-                // Instead of using onInitialSpawn, data is replicated to prevent RandomSpecies from acting, not an ideal solution
-                ComplexMob entitySpawn = (ComplexMob) spawn;
-                entitySpawn.setRandomMobSize();
-                entitySpawn.setGender(worldIn.rand.nextInt(2));
-                entitySpawn.setSpecies(this.species);
-                entitySpawn.setGrowingAge(0);
-            }
-            if (spawn != null) {
-                spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
-                if (itemStack.hasDisplayName()) {
-                    spawn.setCustomName(itemStack.getDisplayName());
+            else {
+                // If no NBT data is assigned to the entity (eg. Item taken from the Creative menu), create a new, random mob
+                spawn = entity.create((ServerWorld) worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, !Objects.equals(pos, spawnPos) && facing == Direction.UP);
+                if (spawn instanceof ComplexMob) {
+                    // Instead of using onInitialSpawn, data is replicated to prevent RandomSpecies from acting, not an ideal solution
+                    ComplexMob entitySpawn = (ComplexMob) spawn;
+                    entitySpawn.setRandomMobSize();
+                    entitySpawn.setGender(worldIn.rand.nextInt(2));
+                    entitySpawn.setSpecies(this.species);
+                    entitySpawn.setGrowingAge(0);
                 }
-                worldIn.addEntity(spawn);
+                if (spawn != null) {
+                    spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
+                    if (itemStack.hasDisplayName()) {
+                        spawn.setCustomName(itemStack.getDisplayName());
+                    }
+                    worldIn.addEntity(spawn);
+                }
             }
-
             itemStack.shrink(1);
         }
         return ActionResultType.CONSUME;
