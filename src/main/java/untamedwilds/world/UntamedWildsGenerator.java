@@ -61,7 +61,7 @@ public class UntamedWildsGenerator {
                 registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, BEAR.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), BEAR.get().getRegistryName());
             }
             else {
-                registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, SEA_ANEMONE.get().withConfiguration(new FeatureSpreadConfig(6)).withPlacement(Features.Placements.PATCH_PLACEMENT).chance(8), SEA_ANEMONE.get().getRegistryName());
+                registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, SEA_ANEMONE.get().withConfiguration(new FeatureSpreadConfig(4)).withPlacement(Features.Placements.PATCH_PLACEMENT).chance(3), SEA_ANEMONE.get().getRegistryName());
             }
         }
         if (event.getCategory() == Biome.Category.RIVER || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) {
