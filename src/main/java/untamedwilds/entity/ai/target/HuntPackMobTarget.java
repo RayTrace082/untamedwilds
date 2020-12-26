@@ -9,7 +9,6 @@ import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
-import untamedwilds.entity.IPackEntity;
 
 import java.util.Comparator;
 import java.util.EnumSet;

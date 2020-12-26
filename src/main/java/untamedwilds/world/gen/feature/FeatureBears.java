@@ -3,7 +3,6 @@ package untamedwilds.world.gen.feature;
 import com.mojang.serialization.Codec;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
-import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.biome.Biome;
@@ -13,7 +12,6 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.mammal.bear.AbstractBear;
-import untamedwilds.world.FaunaHandler;
 import untamedwilds.world.FaunaSpawn;
 
 import java.util.Random;

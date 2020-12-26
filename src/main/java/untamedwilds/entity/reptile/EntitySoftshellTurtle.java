@@ -16,7 +16,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAmphibious;

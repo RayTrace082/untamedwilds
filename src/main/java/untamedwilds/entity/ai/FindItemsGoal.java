@@ -5,7 +5,6 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import untamedwilds.entity.ComplexMobTerrestrial;
 

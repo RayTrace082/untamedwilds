@@ -1,7 +1,6 @@
 package untamedwilds.world.gen.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
@@ -10,7 +9,6 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import untamedwilds.UntamedWilds;
 import untamedwilds.world.FaunaHandler;
 import untamedwilds.world.FaunaSpawn;
 

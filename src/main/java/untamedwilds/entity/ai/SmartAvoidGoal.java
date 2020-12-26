@@ -4,7 +4,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.vector.Vector3d;
 import untamedwilds.entity.ComplexMob;

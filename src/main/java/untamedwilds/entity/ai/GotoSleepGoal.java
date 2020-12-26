@@ -2,12 +2,10 @@ package untamedwilds.entity.ai;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.LightType;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMobTerrestrial;

@@ -1,27 +1,13 @@
 package untamedwilds.world.gen.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.IGrowable;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.WaterFluid;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.server.ServerWorld;
-import org.apache.logging.log4j.core.jmx.Server;
-import untamedwilds.UntamedWilds;
 import untamedwilds.block.FloraReeds;
-import untamedwilds.entity.mammal.bear.AbstractBear;
 import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModTags.UTBlockTags;
 

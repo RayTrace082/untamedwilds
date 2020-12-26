@@ -11,12 +11,7 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.mammal.EntityHippo;
-import untamedwilds.entity.mammal.bear.AbstractBear;
-import untamedwilds.entity.mammal.bigcat.AbstractBigCat;
-import untamedwilds.init.ModEntity;
 import untamedwilds.world.FaunaHandler;
 import untamedwilds.world.FaunaSpawn;
 

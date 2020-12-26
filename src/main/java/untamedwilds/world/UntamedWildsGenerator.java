@@ -1,15 +1,7 @@
 package untamedwilds.world;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
-import net.minecraft.world.ISeedReader;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placement.CaveEdgeConfig;
@@ -21,11 +13,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
-import untamedwilds.init.ModBlock;
-import untamedwilds.init.ModItems;
 import untamedwilds.world.gen.feature.*;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = UntamedWilds.MOD_ID)
@@ -65,7 +54,7 @@ public class UntamedWildsGenerator {
             }
         }
         if (event.getCategory() == Biome.Category.RIVER || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) {
-            registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.PATCH_PLACEMENT).chance(1), REEDS.get().getRegistryName());
+            registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.PATCH_PLACEMENT).chance(4), REEDS.get().getRegistryName());
         }
         event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.01F))));
         event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));

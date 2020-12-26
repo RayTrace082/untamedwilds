@@ -28,8 +28,8 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import untamedwilds.config.ConfigGamerules;
 

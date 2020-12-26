@@ -1,18 +1,11 @@
 package untamedwilds.world.gen.treedecorator;
 
 
-import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.treedecorator.TreeDecorator;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
-import untamedwilds.block.BlockPlantEpyphite;
-import untamedwilds.init.ModBlock;
 
 import java.util.List;
 import java.util.Random;

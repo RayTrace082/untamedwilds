@@ -19,7 +19,6 @@ import untamedwilds.UntamedWilds;
 import untamedwilds.client.model.*;
 import untamedwilds.client.render.*;
 import untamedwilds.config.ConfigMobControl;
-import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.arthropod.Tarantula;
 import untamedwilds.entity.fish.Sunfish;
 import untamedwilds.entity.mammal.EntityHippo;

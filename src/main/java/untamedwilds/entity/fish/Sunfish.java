@@ -23,7 +23,6 @@ import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
 import untamedwilds.entity.ISpecies;
-import untamedwilds.util.BiomeUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
