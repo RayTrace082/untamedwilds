@@ -16,18 +16,17 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModSounds;
-import untamedwilds.util.BiomeUtils;
 import untamedwilds.util.EntityUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public abstract class AbstractBear extends ComplexMobTerrestrial {
 
@@ -306,13 +305,15 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
             return "why would you do this?";
         }
 
-        public static EntityType<? extends AbstractBear> getSpeciesByBiome(Biome biome) {
-            if (BiomeUtils.getBiomeName(biome).equals("minecraft:frozen_ocean") || BiomeUtils.getBiomeName(biome).equals("minecraft:deep_frozen_ocean")) {
+        public static EntityType<? extends AbstractBear> getSpeciesByBiome(IWorld world, BlockPos pos) {
+            Optional<RegistryKey<Biome>> optional = world.func_242406_i(pos);
+            if (Objects.equals(optional, Optional.of(Biomes.FROZEN_OCEAN)) || Objects.equals(optional, Optional.of(Biomes.DEEP_FROZEN_OCEAN))) {
                 return ModEntity.POLAR_BEAR;
             }
-            if (BiomeUtils.getBiomeName(biome).equals("minecraft:bamboo_jungle") || BiomeUtils.getBiomeName(biome).equals("minecraft:bamboo_jungle_hills")) {
+            if (Objects.equals(optional, Optional.of(Biomes.BAMBOO_JUNGLE)) || Objects.equals(optional, Optional.of(Biomes.BAMBOO_JUNGLE_HILLS))) {
                 return ModEntity.PANDA_BEAR;
             }
+            Biome biome = world.getBiome(pos);
             List<AbstractBear.SpeciesBear> types = new ArrayList<>();
             for (AbstractBear.SpeciesBear type : values()) {
                 for(Biome.Category biomeTypes : type.spawnBiomes) {

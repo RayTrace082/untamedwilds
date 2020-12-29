@@ -119,7 +119,7 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat>
         this.setRotateAngle(head_snout, 0.31869712141416456F, 0.0F, 0.0F);
         this.head_jaw = new AdvancedModelBox(this, 25, 35);
         this.head_jaw.setRotationPoint(0.0F, 1.9F, -3.5F);
-        this.head_jaw.addBox(-2.0F, 0.0F, -3.9F, 4, 1, 3, 0.0F);
+        this.head_jaw.addBox(-2.0F, 0.0F, -3.5F, 4, 1, 3, 0.0F);
         this.setRotateAngle(head_jaw, 0.136659280431156F, 0.0F, 0.0F);
         this.leg_left_upper = new AdvancedModelBox(this, 38, 46);
         this.leg_left_upper.mirror = true;

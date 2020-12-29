@@ -26,8 +26,6 @@ public class UntamedWildsGenerator {
     private static final RegistryObject<Feature<NoFeatureConfig>> REEDS = regFeature("reeds", () -> new FeatureReedClusters(NoFeatureConfig.field_236558_a_));
 
     private static final RegistryObject<Feature<NoFeatureConfig>> UNDERGROUND = regFeature("underground", () -> new FeatureUndergroundFaunaLarge(NoFeatureConfig.field_236558_a_));
-    private static final RegistryObject<Feature<NoFeatureConfig>> BEAR = regFeature("bear", () -> new FeatureBears(NoFeatureConfig.field_236558_a_));
-    //private static final Feature<NoFeatureConfig> BIG_CATS = new FeatureBigCats(NoFeatureConfig.field_236558_a_);
     private static final RegistryObject<Feature<NoFeatureConfig>> APEX = regFeature("apex_predator", () -> new FeatureApexPredators(NoFeatureConfig.field_236558_a_));
     private static final RegistryObject<Feature<NoFeatureConfig>> CRITTERS = regFeature("critter", () -> new FeatureCritters(NoFeatureConfig.field_236558_a_));
     private static final RegistryObject<Feature<NoFeatureConfig>> SESSILE = regFeature("sessile", () -> new FeatureOceanSessileSpawns(NoFeatureConfig.field_236558_a_));
@@ -45,16 +43,13 @@ public class UntamedWildsGenerator {
         if (event.getCategory() == Biome.Category.OCEAN) {
             registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SESSILE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), SESSILE.get().getRegistryName());
             registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, OCEAN_RARE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), OCEAN_RARE.get().getRegistryName());
-            if (event.getName().toString().equals("minecraft:frozen_ocean") || event.getName().toString().equals("minecraft:deep_frozen_ocean")) {
-                // TODO: Hardcoded Polar Bears in Frozen Ocean, because fuck this shit. Replace the feature with something less stupid
-                registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, BEAR.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), BEAR.get().getRegistryName());
-            }
-            else {
+            // This shall remain commented as how to add features to biomes by resourceLocation
+            if (!event.getName().toString().equals("minecraft:frozen_ocean") && !event.getName().toString().equals("minecraft:deep_frozen_ocean")) {
                 registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, SEA_ANEMONE.get().withConfiguration(new FeatureSpreadConfig(4)).withPlacement(Features.Placements.PATCH_PLACEMENT).chance(3), SEA_ANEMONE.get().getRegistryName());
             }
         }
         if (event.getCategory() == Biome.Category.RIVER || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) {
-            registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.PATCH_PLACEMENT).chance(4), REEDS.get().getRegistryName());
+            registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.PATCH_PLACEMENT).chance(2), REEDS.get().getRegistryName());
         }
         event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.01F))));
         event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));

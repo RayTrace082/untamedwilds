@@ -35,7 +35,7 @@ public class FeatureApexPredators extends Feature<NoFeatureConfig> {
             switch (rng_type) {
                 default:
                 case 0:
-                    type = AbstractBear.SpeciesBear.getSpeciesByBiome(biome);
+                    type = AbstractBear.SpeciesBear.getSpeciesByBiome(world, pos);
                     break;
                 case 1:
                     type = AbstractBigCat.SpeciesBigCat.getSpeciesByBiome(biome);
