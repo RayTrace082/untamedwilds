@@ -56,9 +56,9 @@ public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTur
         this.hand_right.setRotationPoint(-2.0F, 0.7F, -3.0F);
         this.hand_right.addBox(-4.0F, -0.5F, -2.0F, 5, 1, 3, 0.0F);
         this.setRotateAngle(hand_right, 0.0F, -0.3490658503988659F, 0.0F);
-        this.head_nose = new AdvancedModelBox(this, 27, 0);
+        this.head_nose = new AdvancedModelBox(this, 26, 0);
         this.head_nose.setRotationPoint(0.0F, 0.0F, -3.0F);
-        this.head_nose.addBox(-0.5F, -0.5F, -1.0F, 1, 1, 2, 0.0F);
+        this.head_nose.addBox(-1F, -0.5F, -1.0F, 2, 1, 2, 0.0F);
         this.setRotateAngle(head_nose, 0.091106186954104F, 0.0F, 0.0F);
         this.main_body = new AdvancedModelBox(this, 0, 0);
         this.main_body.setRotationPoint(0.0F, 23.0F, 0.0F);
