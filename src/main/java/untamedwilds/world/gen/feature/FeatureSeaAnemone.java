@@ -21,28 +21,31 @@ public class FeatureSeaAnemone extends Feature<FeatureSpreadConfig> {
     }
 
     public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, FeatureSpreadConfig config) {
-        int i = 0;
-        int m = rand.nextInt(3);
-        Block type;
-        switch(m) {
-            case 1: type = ModBlock.ANEMONE_SAND.get();
-                break;
-            case 2: type = ModBlock.ANEMONE_SEBAE.get();
-                break;
-            default: type = ModBlock.ANEMONE_ROSE_BULB.get();
-        }
-        for(int j = 0; j < config.func_242799_a().func_242259_a(rand); ++j) {
-            int k = rand.nextInt(16) - rand.nextInt(16);
-            int l = rand.nextInt(16) - rand.nextInt(16);
-            int i1 = world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.getX() + k, pos.getZ() + l);
-            BlockPos blockpos = new BlockPos(pos.getX() + k, i1, pos.getZ() + l);
-            BlockState blockstate = type.getDefaultState();
-            if (world.getBlockState(blockpos).getBlock() == Blocks.WATER && blockstate.isValidPosition(world, blockpos)) {
-                world.setBlockState(blockpos, blockstate, 2);
-                ++i;
+        if (pos.getY() > 44) {
+            int i = 0;
+            int m = rand.nextInt(3);
+            Block type;
+            switch(m) {
+                case 1: type = ModBlock.ANEMONE_SAND.get();
+                    break;
+                case 2: type = ModBlock.ANEMONE_SEBAE.get();
+                    break;
+                default: type = ModBlock.ANEMONE_ROSE_BULB.get();
             }
-        }
+            for(int j = 0; j < config.func_242799_a().func_242259_a(rand); ++j) {
+                int k = rand.nextInt(16) - rand.nextInt(16);
+                int l = rand.nextInt(16) - rand.nextInt(16);
+                int i1 = world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.getX() + k, pos.getZ() + l);
+                BlockPos blockpos = new BlockPos(pos.getX() + k, i1, pos.getZ() + l);
+                BlockState blockstate = type.getDefaultState();
+                if (world.getBlockState(blockpos).getBlock() == Blocks.WATER && blockstate.isValidPosition(world, blockpos)) {
+                    world.setBlockState(blockpos, blockstate, 2);
+                    ++i;
+                }
+            }
 
-        return i > 0;
+            return i > 0;
+        }
+        return false;
     }
 }

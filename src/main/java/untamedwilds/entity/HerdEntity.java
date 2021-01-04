@@ -101,7 +101,7 @@ public class HerdEntity {
                 if (!this.containsCreature(creature) && creature.herd != null && creature.canCombineWith(this)) {
                     int netSize = this.creatureList.size() + creature.herd.creatureList.size();
                     if (creature.herd.isOpenToCombine() && creature.getClass().equals(this.getLeader().getClass()) && netSize <= this.getMaxSize() && netSize <= creature.herd.getMaxSize()) {
-                        combineSchools(this, creature.herd);
+                        combineHerds(this, creature.herd);
                     }
                 }
             }
@@ -178,26 +178,21 @@ public class HerdEntity {
         }
     }
 
-    public static HerdEntity combineSchools(HerdEntity herd1, HerdEntity herd2) {
+    public static HerdEntity combineHerds(HerdEntity herd1, HerdEntity herd2) {
         if (herd2.creatureList.size() > herd1.creatureList.size()) {
             herd1.setLeader(herd2.getLeader());
         }
-
         if (herd2.getMaxSize() < herd1.getMaxSize()) {
             herd1.setMaxSize(herd2.getMaxSize());
         }
-
         if (herd2.getRadius() < herd1.getRadius()) {
             herd1.setRadius(herd2.getRadius());
         }
-
         herd1.creatureList.addAll(herd2.creatureList);
-
         ComplexMob creature;
         for (Iterator<ComplexMob> i$ = herd2.creatureList.iterator(); i$.hasNext(); creature.herd = herd1) {
             creature = i$.next();
         }
-        UntamedWilds.LOGGER.info("Combining Herds into one");
         return herd1;
     }
 }

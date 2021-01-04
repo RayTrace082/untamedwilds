@@ -13,7 +13,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.biome.Biome;
 import untamedwilds.UntamedWilds;
 
 import javax.annotation.Nullable;
@@ -67,14 +66,14 @@ public final class FaunaSpawn {
         }
     }
 
-    public static void performWorldGenSpawning(List<FaunaHandler.SpawnListEntry> list, EntitySpawnPlacementRegistry.PlacementType spawnType, ISeedReader worldIn, Biome biomeIn, BlockPos pos, Random rand) {
+    public static void performWorldGenSpawning(List<FaunaHandler.SpawnListEntry> list, EntitySpawnPlacementRegistry.PlacementType spawnType, ISeedReader worldIn, BlockPos pos, Random rand) {
         if (list.size() != 0) {
             FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, list);
-            performWorldGenSpawning(entry.entityType, spawnType, worldIn, biomeIn, pos, rand, entry.groupCount);
+            performWorldGenSpawning(entry.entityType, spawnType, worldIn, pos, rand, entry.groupCount);
         }
     }
 
-    public static void performWorldGenSpawning(EntityType<?> entityType, EntitySpawnPlacementRegistry.PlacementType spawnType, ISeedReader worldIn, Biome biomeIn, BlockPos pos, Random rand, int groupSize) {
+    public static void performWorldGenSpawning(EntityType<?> entityType, EntitySpawnPlacementRegistry.PlacementType spawnType, ISeedReader worldIn, BlockPos pos, Random rand, int groupSize) {
         //UntamedWilds.LOGGER.info(entityType);
         if (entityType != null) {
             int i = pos.getX() + rand.nextInt(16);

@@ -9,7 +9,6 @@ import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -44,7 +43,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-// BUG: It's possible to catch ghost entities if a mob touches multiple boxes in the same tick (eg. 2x2 mob falling into a pit full of Cages)
 public class BlockCage extends Block implements IWaterLoggable {
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -222,10 +220,6 @@ public class BlockCage extends Block implements IWaterLoggable {
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader worldIn) {
         return new BlockEntityCage();
-    }
-
-    public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
-        return false;
     }
 
     public static class DispenserBehaviorTrapCage extends DefaultDispenseItemBehavior implements IDispenseItemBehavior {

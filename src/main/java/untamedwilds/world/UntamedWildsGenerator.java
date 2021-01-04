@@ -41,19 +41,18 @@ public class UntamedWildsGenerator {
     public static void onBiomesLoad(BiomeLoadingEvent event) {
         // Thanks Mojang, very cool 😎
         if (event.getCategory() == Biome.Category.OCEAN) {
-            registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SESSILE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), SESSILE.get().getRegistryName());
-            registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, OCEAN_RARE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), OCEAN_RARE.get().getRegistryName());
-            // This shall remain commented as how to add features to biomes by resourceLocation
+            registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SESSILE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(4), SESSILE.get().getRegistryName());
+            registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, OCEAN_RARE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(20), OCEAN_RARE.get().getRegistryName());
             if (!event.getName().toString().equals("minecraft:frozen_ocean") && !event.getName().toString().equals("minecraft:deep_frozen_ocean")) {
-                registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, SEA_ANEMONE.get().withConfiguration(new FeatureSpreadConfig(4)).withPlacement(Features.Placements.PATCH_PLACEMENT).chance(3), SEA_ANEMONE.get().getRegistryName());
+                registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, SEA_ANEMONE.get().withConfiguration(new FeatureSpreadConfig(4)).withPlacement(Features.Placements.PATCH_PLACEMENT).chance(12), SEA_ANEMONE.get().getRegistryName());
             }
         }
         if (event.getCategory() == Biome.Category.RIVER || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) {
             registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.PATCH_PLACEMENT).chance(2), REEDS.get().getRegistryName());
         }
-        event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.01F))));
-        event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
-        event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+        event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.1F)).chance(10)));
+        event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(30));
+        event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(5));
     }
 
     private static void registerFeature(BiomeLoadingEvent event, GenerationStage.Decoration decoration, ConfiguredFeature<?, ?> feature, ResourceLocation name) {

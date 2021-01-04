@@ -495,6 +495,7 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
         this.head_eyes.setScaleY(Math.min(bear.getHealth()/bear.getMaxHealth() + 0.4F, 1.0F));
 
         if (bear.hasShortSnout()) { // Hardcoded a smaller snout for Panda bears
+            this.body_main.scaleZ = 1.2F;
             this.head_snout.scaleZ = 0.7F;
             this.head_jaw.scaleZ = 0.7F;
         }

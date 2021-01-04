@@ -23,7 +23,7 @@ public class FeatureUndergroundFaunaLarge extends Feature<NoFeatureConfig> {
         if (pos.getY() < 52) {
             if (rand.nextFloat() > 0.96) {
                 Biome biome = world.getBiome(pos);
-                FaunaSpawn.performWorldGenSpawning(FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, world, biome, pos, rand);
+                FaunaSpawn.performWorldGenSpawning(FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, world, pos, rand);
                 return true;
             }
         }

@@ -26,38 +26,35 @@ public class FeatureApexPredators extends Feature<NoFeatureConfig> {
     }
 
     public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        if (rand.nextFloat() > 0.94) {
-            pos = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos.add(8, 0, 8));
-            Biome biome = world.getBiome(pos);
-            EntityType<? extends ComplexMob> type;
-            int groupSize = 1;
-            int rng_type = rand.nextInt(3);
-            switch (rng_type) {
-                default:
-                case 0:
-                    type = AbstractBear.SpeciesBear.getSpeciesByBiome(world, pos);
-                    break;
-                case 1:
-                    type = AbstractBigCat.SpeciesBigCat.getSpeciesByBiome(biome);
-                    if (type == ModEntity.LION || type == ModEntity.CAVE_LION) {
-                        groupSize += 1 + rand.nextInt(2);
-                    }
-                    break;
-                case 2:
-                    //type = ModEntity.SOFTSHELL_TURTLE;
-                    type = EntityHippo.SpeciesHippo.getSpeciesByBiome(biome);
-                    groupSize += 1 + rand.nextInt(4);
-                    break;
-            }
+        pos = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos.add(8, 0, 8));
+        Biome biome = world.getBiome(pos);
+        EntityType<? extends ComplexMob> type;
+        int groupSize = 1;
+        int rng_type = rand.nextInt(3);
+        switch (rng_type) {
+            default:
+            case 0:
+                type = AbstractBear.SpeciesBear.getSpeciesByBiome(world, pos);
+                break;
+            case 1:
+                type = AbstractBigCat.SpeciesBigCat.getSpeciesByBiome(biome);
+                if (type == ModEntity.LION || type == ModEntity.CAVE_LION) {
+                    groupSize += 1 + rand.nextInt(2);
+                }
+                break;
+            case 2:
+                //type = ModEntity.SOFTSHELL_TURTLE;
+                type = EntityHippo.SpeciesHippo.getSpeciesByBiome(biome);
+                groupSize += 1 + rand.nextInt(4);
+                break;
+        }
 
-            int diff = Math.abs(pos.getY() - world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos).getY());
-            if (diff >= 10) {
-                FaunaSpawn.performWorldGenSpawning(type, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, world, biome, world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos).up(4), rand, groupSize);
-                return false;
-            }
-            FaunaSpawn.performWorldGenSpawning(type, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, world, biome, pos, rand, groupSize);
+        int diff = Math.abs(pos.getY() - world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos).getY());
+        if (diff >= 10) {
+            FaunaSpawn.performWorldGenSpawning(type, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, world, world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos).up(4), rand, groupSize);
             return true;
         }
-        return false;
+        FaunaSpawn.performWorldGenSpawning(type, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, world, pos, rand, groupSize);
+        return true;
     }
 }

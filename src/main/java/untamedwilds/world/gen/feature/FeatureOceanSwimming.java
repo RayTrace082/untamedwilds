@@ -24,15 +24,12 @@ public class FeatureOceanSwimming extends Feature<NoFeatureConfig> {
     }
 
     public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        if (rand.nextFloat() > 0.96) {
-            pos = world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.add(8, 8, 8));
-            Biome biome = world.getBiome(pos);
-            EntityType<? extends ComplexMob> type;
-            int groupSize = 1;
-            type = (EntityType<? extends ComplexMob>) WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_OCEAN)).entityType;
-            FaunaSpawn.performWorldGenSpawning(type, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, world, biome, pos, rand, groupSize);
-            return true;
-        }
-        return false;
+        pos = world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.add(8, 8, 8));
+        Biome biome = world.getBiome(pos);
+        EntityType<? extends ComplexMob> type;
+        int groupSize = 1;
+        type = (EntityType<? extends ComplexMob>) WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_OCEAN)).entityType;
+        FaunaSpawn.performWorldGenSpawning(type, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, world, pos, rand, groupSize);
+        return true;
     }
 }

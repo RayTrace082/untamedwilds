@@ -27,10 +27,11 @@ import untamedwilds.world.UntamedWildsGenerator;
 @Mod(value = UntamedWilds.MOD_ID)
 public class UntamedWilds {
 
-    // TODO: Skins; Reuse the Species system in complex mobs to introduce random skins
+    // TODO: Skins; Reuse the Species system in complex mobs to introduce random skins (dynamically built from the textures available?)
     // TODO: Migration AI, rare events executed by hungry mobs where they will choose a direction and keep moving there
-    // TODO: Make use of Tags to make animal's diets data-driven
+    // TODO: Make use of Tags to make animal's diets data-driven?
     // TODO: Test the behavior of Herds when changing dimensions
+    // BUG: It's possible to catch ghost entities in Cage Traps if a mob touches multiple boxes in the same tick (eg. 2x2 mob falling into a pit full of Cages)
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";
@@ -48,8 +49,8 @@ public class UntamedWilds {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ConfigBase.server_config);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigBase.client_config);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupCommon);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
+        eventBus.addListener(this::setupCommon);
+        eventBus.addListener(this::setupClient);
         ConfigBase.loadConfig(ConfigBase.server_config, FMLPaths.CONFIGDIR.get().resolve("untamedwilds-server.toml").toString());
         ConfigBase.loadConfig(ConfigBase.client_config, FMLPaths.CONFIGDIR.get().resolve("untamedwilds-client.toml").toString());
         ModBlock.BLOCKS.register(eventBus);
@@ -64,12 +65,10 @@ public class UntamedWilds {
 
     private void setupCommon(final FMLCommonSetupEvent event) {
         DispenserBlock.registerDispenseBehavior(ModBlock.TRAP_CAGE.get().asItem(), new BlockCage.DispenserBehaviorTrapCage());
-        //UntamedWildsGenerator.setUp();
     }
 
     private void setupClient(final FMLClientSetupEvent event) {
         ModEntity.registerRendering();
         ModBlock.registerRendering();
-        LOGGER.info("Client registry method registered.");
     }
 }

@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ISpecies;
@@ -213,7 +212,6 @@ public class GiantClam extends ComplexMob implements ISpecies {
             List<SpeciesGiantClam> types = new ArrayList<>();
             for (SpeciesGiantClam type : values()) {
                 for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    UntamedWilds.LOGGER.info(biome.getCategory());
                     if(biome.getCategory() == biomeTypes){
                         for (int i=0; i < type.rolls; i++) {
                             types.add(type);

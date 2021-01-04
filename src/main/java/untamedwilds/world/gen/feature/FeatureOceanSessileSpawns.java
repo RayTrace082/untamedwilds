@@ -21,12 +21,9 @@ public class FeatureOceanSessileSpawns extends Feature<NoFeatureConfig> {
     }
 
     public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        if (rand.nextFloat() > 0.24) {
-            Biome biome = world.getBiome(pos);
-            BlockPos blockPos = new BlockPos(pos.getX(), world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.getX(), pos.getZ()), pos.getZ()); // So Sessile creatures do not spawn floating
-            FaunaSpawn.performWorldGenSpawning(FaunaHandler.getSpawnableList(FaunaHandler.animalType.SESSILE), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, world, biome, blockPos, rand);
-            return true;
-        }
-        return false;
+        Biome biome = world.getBiome(pos);
+        BlockPos blockPos = new BlockPos(pos.getX(), world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.getX(), pos.getZ()), pos.getZ()); // So Sessile creatures do not spawn floating
+        FaunaSpawn.performWorldGenSpawning(FaunaHandler.getSpawnableList(FaunaHandler.animalType.SESSILE), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, world, blockPos, rand);
+        return true;
     }
 }
