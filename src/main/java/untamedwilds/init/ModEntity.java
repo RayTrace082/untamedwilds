@@ -144,10 +144,10 @@ public class ModEntity {
         GlobalEntityTypeAttributes.put(PUMA, PumaBigCat.registerAttributes().create());
         GlobalEntityTypeAttributes.put(SNOW_LEOPARD, SnowLeopardBigCat.registerAttributes().create());
         GlobalEntityTypeAttributes.put(TIGER, TigerBigCat.registerAttributes().create());
-        GlobalEntityTypeAttributes.put(CAVE_LION, CaveLionBigCat.registerAttributes().create());
-        GlobalEntityTypeAttributes.put(DIRE_LION, DireLionBigCat.registerAttributes().create());
-        GlobalEntityTypeAttributes.put(MARSUPIAL_LION, MarsupialLionBigCat.registerAttributes().create());
-        GlobalEntityTypeAttributes.put(SABERTOOTH, SabertoothBigCat.registerAttributes().create());
+        //GlobalEntityTypeAttributes.put(CAVE_LION, CaveLionBigCat.registerAttributes().create());
+        //GlobalEntityTypeAttributes.put(DIRE_LION, DireLionBigCat.registerAttributes().create());
+        //GlobalEntityTypeAttributes.put(MARSUPIAL_LION, MarsupialLionBigCat.registerAttributes().create());
+        //GlobalEntityTypeAttributes.put(SABERTOOTH, SabertoothBigCat.registerAttributes().create());
 
         GlobalEntityTypeAttributes.put(SUNFISH, Sunfish.registerAttributes().create());
     }
@@ -189,14 +189,14 @@ public class ModEntity {
         if (ConfigMobControl.addBigCat.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.JAGUAR, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.PUMA, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.TIGER, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SABERTOOTH, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.MARSUPIAL_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.SABERTOOTH, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.MARSUPIAL_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANTHER, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.LEOPARD, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.DIRE_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.DIRE_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNOW_LEOPARD, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
         }
         if (ConfigMobControl.addSunfish.get()) {

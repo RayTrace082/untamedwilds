@@ -13,10 +13,11 @@ public class ConfigGamerules {
     public static ForgeConfigSpec.BooleanValue extinctMobs;
     public static ForgeConfigSpec.BooleanValue fantasyMobs;
     public static ForgeConfigSpec.BooleanValue grazerGriefing;
+    public static ForgeConfigSpec.BooleanValue sleepBehaviour;
     public static ForgeConfigSpec.IntValue cycleLength;
 
-    public static void init(ForgeConfigSpec.Builder server, ForgeConfigSpec.Builder client)
-    {
+    public static void init(ForgeConfigSpec.Builder server) {
+
         server.comment("Options pertaining to global Gamerules");
 
         naturalBreeding = server.comment("Defines whether animals should breed without Player intervention.").define("gamerules.natural_breeding", true);
@@ -29,6 +30,7 @@ public class ConfigGamerules {
         extinctMobs = server.comment("Should extinct mobs spawn naturally in the world?.").define("gamerules.extinct_mobs", true);
         fantasyMobs = server.comment("Should fantasy mobs spawn naturally in the world?.").define("gamerules.fantasy_mobs", true);
         grazerGriefing = server.comment("Should 'Grazing' mobs destroy Tall Grass and/or turn Grass into dirt blocks (like Vanilla Sheep do).").define("gamerules.grazer_griefing", true);
+        sleepBehaviour = server.comment("Should the 'Sleeping' behaviour run? Disabling this option also disables the activity").define("gamerules.mob_sleeping", true);
 
         cycleLength = server.comment("Defines how long a cycle should last, cycles are used to scale the gestation and breeding periods",
                 "Example values: 24000 - Day, 168000 - Week, 720000 - Month, 8760000 - Year").defineInRange("gamerules.cycle_length", 24000, 0, 8760000);

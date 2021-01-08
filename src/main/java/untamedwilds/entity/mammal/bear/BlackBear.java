@@ -49,10 +49,10 @@ public class BlackBear extends AbstractBear {
         this.goalSelector.addGoal(4, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D, true));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(4, new RaidCropsGoal(this));
-        this.goalSelector.addGoal(4, new BearRaidChestsGoal(this, 120));
-        this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, true));
-        this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
+        this.goalSelector.addGoal(5, new RaidCropsGoal(this));
+        this.goalSelector.addGoal(5, new BearRaidChestsGoal(this, 120));
+        this.goalSelector.addGoal(6, new SmartWanderGoal(this, 1D, true));
+        this.goalSelector.addGoal(7, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         //this.goalSelector.addGoal(7, new SmartLookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));

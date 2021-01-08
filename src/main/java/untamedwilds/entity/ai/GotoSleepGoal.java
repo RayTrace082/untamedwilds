@@ -8,6 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.LightType;
 import untamedwilds.UntamedWilds;
+import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
 import javax.annotation.Nullable;
@@ -39,7 +40,7 @@ public class GotoSleepGoal extends Goal {
         if (this.creature.isTamed() && this.creature.getCommandInt() != 0) {
             return false;
         }
-        if (this.creature.isActive() || this.creature.isBeingRidden() || this.creature.isSleeping() || !this.creature.canMove() || !this.creature.getNavigator().noPath()) {
+        if (this.creature.isActive() || this.creature.isBeingRidden() || ConfigGamerules.sleepBehaviour.get() || !this.creature.canMove() || !this.creature.getNavigator().noPath()) {
             return false;
         } else {
             /*if (this.creature.getIdleTime() >= 100) {

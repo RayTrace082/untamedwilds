@@ -17,7 +17,7 @@ public class ConfigBase {
     public static final ForgeConfigSpec client_config;
 
     static {
-        ConfigGamerules.init(server_builder, client_builder);
+        ConfigGamerules.init(server_builder);
         ConfigMobControl.init(server_builder, client_builder);
         ConfigFeatureControl.init(server_builder, client_builder);
 

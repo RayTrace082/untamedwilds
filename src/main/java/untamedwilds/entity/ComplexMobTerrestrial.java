@@ -118,7 +118,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
     }
 
     public boolean isActive() {
-        if (this.isTamed()) {
+        if (this.isTamed() || !ConfigGamerules.sleepBehaviour.get()) {
             return true;
         }
         return this.forceSleep >= 0;

@@ -26,6 +26,7 @@ public abstract class TimeUtils {
         return new TranslationTextComponent("untamedwilds.timeutils.days", d).getString();
     }
 
+    // No concept of month outside of Serene Seasons
     public static int getTicksInMonth(World world) {
         /*if (CompatBridge.SereneSeasons) {
             return CompatSereneSeasons.getTicksInMonth(world);

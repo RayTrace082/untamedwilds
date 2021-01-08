@@ -39,7 +39,7 @@ public class SmartWanderGoal extends Goal {
     }
 
     public boolean shouldExecute() {
-        if (/*!this.creature.isActive() || */this.creature.isBeingRidden() || !this.creature.canMove() || !this.creature.getNavigator().noPath()) {
+        if (!this.creature.isActive() || this.creature.isBeingRidden() || !this.creature.canMove() || !this.creature.getNavigator().noPath()) {
             return false;
         } else {
             if (this.creature.getRNG().nextInt(this.executionChance) != 0) { return false; }
