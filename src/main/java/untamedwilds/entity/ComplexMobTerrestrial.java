@@ -78,6 +78,20 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
             if (!this.isSleeping() && this.forceSleep > 0) {
                 this.setSleeping(true);
             }
+            if (this.ticksExisted % 200 == 0) {
+                if (!this.isActive() && this.getNavigator().noPath()) {
+                    this.tiredCounter++;
+                    if (this.getDistanceSq(this.getHomeAsVec()) <= 6) {
+                        this.setSleeping(true);
+                        this.tiredCounter = 0;
+                    }
+                    else if (tiredCounter >= 3) {
+                        this.setHome(BlockPos.ZERO);
+                        this.tiredCounter = 0;
+                    }
+                    this.moveController.setMoveTo(this.getHome().getX(), this.getHome().getY(), this.getHome().getZ(), 1f);
+                }
+            }
         }
         if (this.isSitting() && this.sitProgress < 40) {
             this.sitProgress++;
@@ -317,7 +331,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
 
                 Vector3d vec3d6 = this.getMotion();
                 if (this.collidedHorizontally && this.isOffsetPositionInLiquid(vec3d6.x, vec3d6.y + (double)0.6F - this.getPosY() + d1, vec3d6.z)) {
-                    this.setMotion(vec3d6.x, (double)0.3F, vec3d6.z);
+                    this.setMotion(vec3d6.x, 0.3F, vec3d6.z);
                 }
             }
         }

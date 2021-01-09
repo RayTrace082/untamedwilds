@@ -1,10 +1,10 @@
 package untamedwilds.entity.ai;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.LightType;
 import untamedwilds.UntamedWilds;
@@ -26,7 +26,7 @@ public class GotoSleepGoal extends Goal {
     }
 
     public GotoSleepGoal(ComplexMobTerrestrial entityIn, double speedIn, boolean avoidWater) {
-        this(entityIn, speedIn, 100, avoidWater);
+        this(entityIn, speedIn, 60, avoidWater);
     }
 
     public GotoSleepGoal(ComplexMobTerrestrial entityIn, double speedIn, int chance, boolean avoidWater) {
@@ -40,7 +40,7 @@ public class GotoSleepGoal extends Goal {
         if (this.creature.isTamed() && this.creature.getCommandInt() != 0) {
             return false;
         }
-        if (this.creature.isActive() || this.creature.isBeingRidden() || ConfigGamerules.sleepBehaviour.get() || !this.creature.canMove() || !this.creature.getNavigator().noPath()) {
+        if (this.creature.isActive() || this.creature.isBeingRidden() || !ConfigGamerules.sleepBehaviour.get() || !this.creature.canMove() || !this.creature.getNavigator().noPath()) {
             return false;
         } else {
             /*if (this.creature.getIdleTime() >= 100) {
@@ -89,10 +89,11 @@ public class GotoSleepGoal extends Goal {
             BlockPos blockpos1 = blockpos.add(offsetX, offsetY, offsetZ);
             this.creature.world.addParticle(ParticleTypes.FLAME, blockpos1.getX(), blockpos1.getY(), blockpos1.getZ(), 0, 0, 0);
             if (!this.creature.world.getBlockState(blockpos1).isSolid() && this.creature.world.getBlockState(blockpos1.down()).isSolid()) {
-                if (this.isValidShelter(blockpos1)/* && this.creature.getBlockPathWeight(blockpos1) < 0.0F*/) {
-                    this.creature.world.setBlockState(blockpos1, Blocks.TORCH.getDefaultState(), 11);
+                if (this.isValidShelter(blockpos1) && this.creature.getBlockPathWeight(blockpos1) < 0.0F) {
+                    // this.creature.world.setBlockState(blockpos1, Blocks.TORCH.getDefaultState(), 11);
                     // This comment shall become a reminder about how fucking trash this piece of code has consistently been
-                    return blockpos1;
+                    return new BlockPos(Vector3d.copyCenteredHorizontally(blockpos1));
+                    //return blockpos1.up();
                 }
             }
         }

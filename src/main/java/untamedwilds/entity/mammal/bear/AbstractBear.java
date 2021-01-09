@@ -105,19 +105,6 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
                     this.jump();
                 }
             }*/
-            if (this.ticksExisted % 200 == 0) {
-                if (!this.isActive() && this.getNavigator().noPath()) {
-                    this.tiredCounter++;
-                    if (this.getDistanceSq(this.getHomeAsVec()) <= 6) {
-                        this.setSleeping(true);
-                        this.tiredCounter = 0;
-                    }
-                    else if (tiredCounter >= 3) {
-                        this.setHome(BlockPos.ZERO);
-                        this.tiredCounter = 0;
-                    }
-                }
-            }
             this.setAngry(this.getAttackTarget() != null);
             if (this.getAnimation() == NO_ANIMATION && this.getAttackTarget() == null && !this.isSleeping()) {
                 if (this.getCommandInt() == 0) {

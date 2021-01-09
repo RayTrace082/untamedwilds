@@ -26,10 +26,11 @@ public class FeatureReedClusters extends Feature<NoFeatureConfig> {
             BlockPos blockpos = pos.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(2) - rand.nextInt(2), rand.nextInt(4) - rand.nextInt(4));
             if(blockpos.getY() < world.getWorld().getHeight() - 2 && world.getBlockState(blockpos.down()).getBlock().isIn(UTBlockTags.REEDS_PLANTABLE_ON)) {
                 if(world.isAirBlock(blockpos) || (world.getBlockState(blockpos).getBlock() == Blocks.WATER && world.isAirBlock(blockpos.up()))) {
-                    // TODO: Code gore, to fix later
-                    world.setBlockState(blockpos, ((FloraReeds)ModBlock.COMMON_REED.get()).getStateForWorldgen(world, blockpos).with(FloraReeds.PROPERTY_AGE, world.getFluidState(blockpos).isEmpty() ? 1 : 2), 2);
-                    world.setBlockState(blockpos.up(), ((FloraReeds)ModBlock.COMMON_REED.get()).getStateForWorldgen(world, blockpos.up()).with(FloraReeds.PROPERTY_AGE, 1), 2);
-                    world.setBlockState(blockpos.up(2), ((FloraReeds)ModBlock.COMMON_REED.get()).getStateForWorldgen(world, blockpos.up()).with(FloraReeds.PROPERTY_AGE, 0), 2);
+                    int height = rand.nextInt(4);
+                    for (int j = 0; j <= height; ++j) {
+                        int state = world.getFluidState(blockpos.up(j)).isEmpty() ? 1 : 2;
+                        world.setBlockState(blockpos.up(j), ((FloraReeds)ModBlock.COMMON_REED.get()).getStateForWorldgen(world, blockpos.up(j)).with(FloraReeds.PROPERTY_AGE, j == height ? 0 : state), 2);
+                    }
                     flag = true;
                 }
             }
