@@ -68,10 +68,6 @@ public abstract class ComplexMob extends TameableEntity {
         this.ecoLevel = 0;
     }
 
-    /*public static boolean canSpawnInPosition(EntityType<? extends AnimalEntity> entity, IWorld worldIn, SpawnReason reason, BlockPos pos, Random p_223316_4_) {
-        return (worldIn.getBlockState(pos.down()).getBlock() == Blocks.GRASS_BLOCK || worldIn.getBlockState(pos.down()).getBlock() == Blocks.ICE);
-    }*/
-
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return true;
         //return this.getBlockPathWeight(new BlockPos(this.getPosX(), this.getBoundingBox().minY, this.getPosZ()), worldIn) >= 0.0F;
@@ -87,10 +83,6 @@ public abstract class ComplexMob extends TameableEntity {
     public boolean preventDespawn() {
         return true;
     }
-
-    //protected BodyController createBodyController() {
-    //    return new SmartBodyHelper(this);
-    //}
 
     public void setSleeping(boolean sleeping){ this.dataManager.set(SLEEPING, sleeping); }
     public boolean isSleeping(){ return (this.dataManager.get(SLEEPING)); }
@@ -130,8 +122,10 @@ public abstract class ComplexMob extends TameableEntity {
         }
         return false;
     }
+    @SuppressWarnings("unchecked") // Don't use this outside ComplexMobs
     public <T extends ComplexMob> void breed() {
-        for (int i = 0; i <= 1 + this.rand.nextInt(this.getOffspring()); i++) {
+        int bound = 1 + (this.getOffspring() > 0 ? this.rand.nextInt(this.getOffspring() + 1) : 0);
+        for (int i = 0; i < bound; i++) {
             T child = (T) this.func_241840_a((ServerWorld) this.world, this);
             if (child != null) {
                 child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
