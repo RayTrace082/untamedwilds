@@ -130,6 +130,21 @@ public abstract class ComplexMob extends TameableEntity {
         }
         return false;
     }
+    public <T extends ComplexMob> void breed() {
+        for (int i = 0; i <= 1 + this.rand.nextInt(this.getOffspring()); i++) {
+            T child = (T) this.func_241840_a((ServerWorld) this.world, this);
+            if (child != null) {
+                child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
+                if (this.getOwner() != null) {
+                    child.setTamedBy((PlayerEntity) this.getOwner());
+                }
+                this.world.addEntity(child);
+            }
+        }
+    }
+    protected int getOffspring() {
+        return 0;
+    }
     protected String getBreedingSeason() {
         return "ALL";
     }
@@ -158,10 +173,6 @@ public abstract class ComplexMob extends TameableEntity {
                 this.breed();
             }
         }
-    }
-
-    public void breed() {
-        this.func_241840_a((ServerWorld)this.world, this);
     }
 
     public ResourceLocation getTexture() {

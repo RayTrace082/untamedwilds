@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import untamedwilds.entity.ComplexMobTerrestrial;
+import untamedwilds.entity.ComplexMob;
 
 public class ItemLovePotion extends Item {
 
@@ -19,10 +19,11 @@ public class ItemLovePotion extends Item {
     public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
         if (target.getEntityWorld().isRemote) return ActionResultType.PASS;
         if (target instanceof PlayerEntity || !target.isNonBoss()) return ActionResultType.FAIL;
-        if (target instanceof ComplexMobTerrestrial) {
-            ComplexMobTerrestrial entity = (ComplexMobTerrestrial)target;
+        if (target instanceof ComplexMob) {
+            ComplexMob entity = (ComplexMob)target;
             entity.setInLove(playerIn);
-            entity.setGrowingAge(60);
+            entity.breed();
+            //entity.setGrowingAge(60);
             return ActionResultType.SUCCESS;
         }
         if (target instanceof AnimalEntity) {

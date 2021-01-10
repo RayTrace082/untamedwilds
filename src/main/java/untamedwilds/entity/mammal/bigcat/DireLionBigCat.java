@@ -8,7 +8,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
@@ -89,19 +88,6 @@ public class DireLionBigCat extends AbstractBigCat {
         return false;
     }
 
-    public void breed() {
-        for (int i = 0; i <= 1 + this.rand.nextInt(1); i++) {
-            DireLionBigCat child = this.func_241840_a((ServerWorld) this.world, this);
-            if (child != null) {
-                child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
-                if (this.getOwner() != null) {
-                    child.setTamedBy((PlayerEntity) this.getOwner());
-                }
-                this.world.addEntity(child);
-            }
-        }
-    }
-
     public DireLionBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
         DireLionBigCat bear = new DireLionBigCat(ModEntity.DIRE_LION, this.world);
         bear.setSpecies(this.getSpecies());
@@ -119,4 +105,5 @@ public class DireLionBigCat extends AbstractBigCat {
     public ResourceLocation getTexture() {
         return TEXTURE;
     }
+    protected int getOffspring() { return 1; }
 }
