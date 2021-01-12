@@ -37,7 +37,7 @@ public abstract class ComplexMobAquatic extends ComplexMob {
     }
 
     public boolean isNotColliding(IWorldReader worldIn) {
-        return worldIn.checkNoEntityCollision(this); // TODO: Suspect, may be inverted
+        return worldIn.checkNoEntityCollision(this); // Suspect, may be inverted
     }
 
     protected float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {

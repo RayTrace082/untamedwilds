@@ -91,11 +91,7 @@ public class SunBear extends AbstractBear {
 
     @Nullable
     public SunBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        SunBear bear = new SunBear(ModEntity.SUN_BEAR, this.world);
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        bear.setGrowingAge(this.getAdulthoodTime() * -2);
-        return bear;
+        return create_offspring(new SunBear(ModEntity.SUN_BEAR, this.world));
     }
 
     @Override

@@ -96,12 +96,7 @@ public class BlackBear extends AbstractBear {
 
     @Nullable
     public BlackBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        BlackBear bear = new BlackBear(ModEntity.BLACK_BEAR, this.world);
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        bear.setGrowingAge(this.getAdulthoodTime() * -2);
-        bear.registerGoals();
-        return bear;
+        return create_offspring(new BlackBear(ModEntity.BLACK_BEAR, this.world));
     }
 
     @Override

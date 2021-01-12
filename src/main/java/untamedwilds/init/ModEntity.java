@@ -1,6 +1,11 @@
 package untamedwilds.init;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -9,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.LanguageMap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
@@ -30,12 +36,20 @@ import untamedwilds.entity.reptile.EntitySoftshellTurtle;
 import untamedwilds.world.FaunaHandler;
 import untamedwilds.world.FaunaHandler.animalType;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 @Mod.EventBusSubscriber(modid = UntamedWilds.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEntity {
     private final static List<EntityType<?>> entities = Lists.newArrayList();
     private final static List<Item> spawnEggs = Lists.newArrayList();
+    private static final Gson field_240591_b_ = new Gson();
+    public static final Map<String, Integer> eco_levels = new java.util.HashMap<>();
 
     // Arthropods
     public static EntityType<Tarantula> TARANTULA = createEntity(ConfigMobControl.addTarantula.get(), Tarantula::new,  "tarantula",  0.4f, 0.5f, 0xB5B095, 0x26292B, animalType.CRITTER, 4);
@@ -80,6 +94,8 @@ public class ModEntity {
             event.getRegistry().register(entity);
         }
         bakeAttributes();
+        readEcoLevels();
+        UntamedWilds.LOGGER.info("NAUTILUS " + eco_levels);
     }
 
     private static <T extends Entity> EntityType<T> createEntity(boolean enable, EntityType.IFactory<T> factory, EntityClassification classification, String name, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, float sizeX, float sizeY, int baseColor, int overlayColor) {
@@ -121,6 +137,7 @@ public class ModEntity {
     }
 
     public static void bakeAttributes() {
+        // TODO: I am 95% sure that with some generic fuckery this can be abstracted with a for-loop through `entities`
         GlobalEntityTypeAttributes.put(TARANTULA, Tarantula.registerAttributes().create());
 
         GlobalEntityTypeAttributes.put(SNAKE, EntitySnake.registerAttributes().create());
@@ -220,6 +237,26 @@ public class ModEntity {
         if (!found)
             spawns.add(new FaunaHandler.SpawnListEntry(entityClass, weightedProb, 1));
     }
+
+    private static void readEcoLevels() {
+        ImmutableMap.Builder<String, Integer> builder = ImmutableMap.builder();
+        BiConsumer<String, Integer> biconsumer = builder::put;
+
+        try (InputStream inputstream = LanguageMap.class.getResourceAsStream("/data/untamedwilds/eco_levels.json")) {
+            func_240593_a_(inputstream, biconsumer);
+        } catch (JsonParseException | IOException ioexception) {
+            UntamedWilds.LOGGER.error("Couldn't read data from /data/untamedwilds/eco_levels.json", ioexception);
+        }
+    }
+
+    public static void func_240593_a_(InputStream p_240593_0_, BiConsumer<String, Integer> p_240593_1_) {
+        JsonObject jsonobject = field_240591_b_.fromJson(new InputStreamReader(p_240593_0_, StandardCharsets.UTF_8), JsonObject.class);
+
+        for(Map.Entry<String, JsonElement> entry : jsonobject.entrySet()) {
+            eco_levels.put(entry.getKey(), entry.getValue().getAsInt());
+        }
+    }
+
 
     /*public static void addVanillaSpawn(Class <? extends LivingEntity> entityClass, int weightedProb, int min, int max, BiomeDictionary.Type... biomes) {
         Set<Biome> spawnBiomes = new ObjectArraySet<>();

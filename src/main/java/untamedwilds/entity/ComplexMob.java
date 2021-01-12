@@ -28,6 +28,7 @@ import untamedwilds.UntamedWilds;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
 import untamedwilds.config.ConfigGamerules;
+import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
 
 import javax.annotation.Nullable;
@@ -43,6 +44,7 @@ public abstract class ComplexMob extends TameableEntity {
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
+    @Deprecated
     public int ecoLevel;
     public HerdEntity herd = null;
     int maxSchoolSize = 8;
@@ -136,6 +138,14 @@ public abstract class ComplexMob extends TameableEntity {
             }
         }
     }
+    protected <T extends ComplexMob> T create_offspring(T entity) {
+        entity.setGender(this.rand.nextInt(2));
+        entity.setMobSize(this.rand.nextFloat());
+        entity.setGrowingAge(this.getAdulthoodTime() * -2);
+        // entity.registerGoals(); // ??
+        return entity;
+    }
+
     protected int getOffspring() {
         return 0;
     }
@@ -173,8 +183,14 @@ public abstract class ComplexMob extends TameableEntity {
         return null;
     }
 
-    // Returns the ecological level of an entity. Since only UntamedWilds mobs have such parameter, it is defaulted to 4, with the exception of players and monsters, which are 7 (TODO: Make this data driven)
+    // Returns the ecological level of an entity. Values are data-driven, defaulting to 4 if no key is found.
     protected int getEcoLevel(LivingEntity entity) {
+        // TODO: Too many constant calls to getEcoLevel, don't do that
+        // UntamedWilds.LOGGER.info(entity.getEntityString());
+        if (ModEntity.eco_levels.containsKey(entity.getEntityString())) {
+            // UntamedWilds.LOGGER.info(ModEntity.eco_levels.get(entity.getEntityString()));
+            return ModEntity.eco_levels.get(entity.getEntityString());
+        }
         if (entity instanceof ComplexMob) {
             return ((ComplexMob) entity).ecoLevel;
         }

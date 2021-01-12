@@ -95,12 +95,9 @@ public class SpectacledBear extends AbstractBear {
 
     @Nullable
     public SpectacledBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        SpectacledBear bear = new SpectacledBear(ModEntity.SPECTACLED_BEAR, this.world);
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        bear.setGrowingAge(this.getAdulthoodTime() * -2);
-        return bear;
+        return create_offspring(new SpectacledBear(ModEntity.SPECTACLED_BEAR, this.world));
     }
+
 
     @Override
     protected ResourceLocation getLootTable() {

@@ -26,8 +26,8 @@ public class SmartSwimGoal extends Goal {
 
     public boolean shouldExecute() {
         if (this.entity.getAttackTarget() == null) {
-            double eyeHeight = (double) this.entity.getEyeHeight() - 0.18F; // Tiny offset because otherwise the Mob is prone to drowning
-            return this.entity.func_233571_b_(FluidTags.WATER) > eyeHeight || this.entity.isInLava(); // TODO: Suspect, func may not be eyesHeightUnderWater
+            double eyeHeight = (double) this.entity.getEyeHeight() - 0.18F; // Tiny offset because otherwise the Mob drowns
+            return this.entity.func_233571_b_(FluidTags.WATER) > eyeHeight || this.entity.isInLava();
         }
         return false;
     }

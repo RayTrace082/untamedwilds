@@ -28,12 +28,11 @@ public final class FaunaSpawn {
             return false;
         } else if (!fluidStateIn.isEmpty()) {
             return false;
+        } else if (state.isIn(BlockTags.PREVENT_MOB_SPAWNING_INSIDE)) {
+            return false;
         } else {
-            return !state.isIn(BlockTags.PREVENT_MOB_SPAWNING_INSIDE);
-        }
-        /*  else { // TODO 1.16: Implement this... spawn conditions checker?
             return !entityTypeIn.func_233597_a_(state);
-        } */
+        }
     }
 
     private static boolean canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.PlacementType placeType, IWorldReader worldIn, BlockPos pos, @Nullable EntityType<?> entityTypeIn) {

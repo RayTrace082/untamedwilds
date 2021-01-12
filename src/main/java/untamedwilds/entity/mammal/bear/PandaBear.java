@@ -91,12 +91,9 @@ public class PandaBear extends AbstractBear {
 
     @Nullable
     public PandaBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        PandaBear bear = new PandaBear(ModEntity.PANDA_BEAR, this.world);
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        bear.setGrowingAge(this.getAdulthoodTime() * -2);
-        return bear;
+        return create_offspring(new PandaBear(ModEntity.PANDA_BEAR, this.world));
     }
+
 
     @Override
     protected ResourceLocation getLootTable() {

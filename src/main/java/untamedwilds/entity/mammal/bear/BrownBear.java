@@ -22,6 +22,7 @@ import untamedwilds.entity.ai.unique.BearRaidChestsGoal;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BrownBear extends AbstractBear {
@@ -93,12 +94,9 @@ public class BrownBear extends AbstractBear {
         return false;
     }
 
+    @Nullable
     public BrownBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        BrownBear bear = new BrownBear(ModEntity.BROWN_BEAR, this.world);
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        bear.setGrowingAge(this.getAdulthoodTime() * -2);
-        return bear;
+        return create_offspring(new BrownBear(ModEntity.BROWN_BEAR, this.world));
     }
 
     @Override

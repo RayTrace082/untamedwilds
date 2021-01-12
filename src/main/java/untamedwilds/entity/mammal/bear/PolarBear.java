@@ -22,6 +22,7 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
 import untamedwilds.init.ModLootTables;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class PolarBear extends AbstractBear {
@@ -93,12 +94,9 @@ public class PolarBear extends AbstractBear {
         return false;
     }
 
+    @Nullable
     public PolarBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        PolarBear bear = new PolarBear(ModEntity.POLAR_BEAR, this.world);
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        bear.setGrowingAge(this.getAdulthoodTime() * -2);
-        return bear;
+        return create_offspring(new PolarBear(ModEntity.POLAR_BEAR, this.world));
     }
 
     @Override

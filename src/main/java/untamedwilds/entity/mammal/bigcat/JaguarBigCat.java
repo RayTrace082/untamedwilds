@@ -21,6 +21,7 @@ import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class JaguarBigCat extends AbstractBigCat {
@@ -89,12 +90,9 @@ public class JaguarBigCat extends AbstractBigCat {
         return false;
     }
 
+    @Nullable
     public JaguarBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        JaguarBigCat bear = new JaguarBigCat(ModEntity.JAGUAR, this.world);
-        bear.setSpecies(this.getSpecies());
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        return bear;
+        return create_offspring(new JaguarBigCat(ModEntity.JAGUAR, this.world));
     }
 
     @Override

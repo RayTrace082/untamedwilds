@@ -11,6 +11,7 @@ import untamedwilds.block.FloraReeds;
 import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModTags.UTBlockTags;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class FeatureReedClusters extends Feature<NoFeatureConfig> {
@@ -23,13 +24,13 @@ public class FeatureReedClusters extends Feature<NoFeatureConfig> {
         boolean flag = false;
 
         for(int i = 0; i < 64; ++i) {
-            BlockPos blockpos = pos.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(2) - rand.nextInt(2), rand.nextInt(4) - rand.nextInt(4));
-            if(blockpos.getY() < world.getWorld().getHeight() - 2 && world.getBlockState(blockpos.down()).getBlock().isIn(UTBlockTags.REEDS_PLANTABLE_ON)) {
+            BlockPos blockpos = pos.add(rand.nextInt(6) - rand.nextInt(6), rand.nextInt(2) - rand.nextInt(3), rand.nextInt(3) - rand.nextInt(6));
+            if(blockpos.getY() < world.getWorld().getHeight() - 1 && world.getBlockState(blockpos.down()).getBlock().isIn(UTBlockTags.REEDS_PLANTABLE_ON)) {
                 if(world.isAirBlock(blockpos) || (world.getBlockState(blockpos).getBlock() == Blocks.WATER && world.isAirBlock(blockpos.up()))) {
                     int height = rand.nextInt(4);
                     for (int j = 0; j <= height; ++j) {
                         int state = world.getFluidState(blockpos.up(j)).isEmpty() ? 1 : 2;
-                        world.setBlockState(blockpos.up(j), ((FloraReeds)ModBlock.COMMON_REED.get()).getStateForWorldgen(world, blockpos.up(j)).with(FloraReeds.PROPERTY_AGE, j == height ? 0 : state), 2);
+                        world.setBlockState(blockpos.up(j), Objects.requireNonNull(((FloraReeds) ModBlock.COMMON_REED.get()).getStateForWorldgen(world, blockpos.up(j))).with(FloraReeds.PROPERTY_AGE, j == height ? 0 : state), 2);
                     }
                     flag = true;
                 }

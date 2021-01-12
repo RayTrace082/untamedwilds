@@ -184,12 +184,7 @@ public class EntityHippo extends ComplexMobAmphibious {
 
     @Nullable
     public EntityHippo func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        EntityHippo bear = new EntityHippo(ModEntity.HIPPO, this.world);
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        bear.setGrowingAge(this.getAdulthoodTime() * -2);
-        bear.registerGoals();
-        return bear;
+        return create_offspring(new EntityHippo(ModEntity.HIPPO, this.world));
     }
 
     public boolean isBreedingItem(ItemStack stack) {
