@@ -47,9 +47,6 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
       builder.add(PROPERTY_AGE, PROPERTY_STAGE, WATERLOGGED);
    }
 
-   /**
-    * Get the OffsetType for this Block. Determines if the model is rendered slightly offset.
-    */
    public OffsetType getOffsetType() {
       return OffsetType.XZ;
    }
@@ -72,7 +69,6 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
       return SHAPE_COLLISION.withOffset(vector3d.x, vector3d.y, vector3d.z);
    }
 
-   // TODO: It should be possible to invoke "getStateForPlacement" by building an UseContext, but this works alright
    @Nullable
    public BlockState getStateForWorldgen(ISeedReader world, BlockPos pos) {
       boolean isWaterLogged = !world.getFluidState(pos).isEmpty();
@@ -81,7 +77,6 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
          if (world.getFluidState(pos.down()).isEmpty()) {
             world.setBlockState(pos.down(), blockstate.getBlockState().with(PROPERTY_AGE, 1), 1);
          }
-         int i = blockstate.get(PROPERTY_AGE) > 0 ? 1 : 0;
          BlockState blockstate1 = world.getBlockState(pos.up());
          return blockstate1.getBlock() != ModBlock.COMMON_REED.get() ? ModBlock.COMMON_REED.get().getDefaultState().with(PROPERTY_AGE, 0).with(WATERLOGGED, isWaterLogged) : this.getDefaultState().with(PROPERTY_AGE, 1).with(WATERLOGGED, isWaterLogged);
       }
@@ -101,7 +96,6 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
          if (context.getWorld().getFluidState(context.getPos().down()).isEmpty()) {
             context.getWorld().setBlockState(context.getPos().down(), blockstate.getBlockState().with(PROPERTY_AGE, 1));
          }
-         int i = blockstate.get(PROPERTY_AGE) > 0 ? 1 : 0;
          BlockState blockstate1 = context.getWorld().getBlockState(context.getPos().up());
          return blockstate1.getBlock() != ModBlock.COMMON_REED.get() ? ModBlock.COMMON_REED.get().getDefaultState().with(PROPERTY_AGE, 0).with(WATERLOGGED, isWaterLogged) : this.getDefaultState().with(PROPERTY_AGE, 1).with(WATERLOGGED, isWaterLogged);
       }

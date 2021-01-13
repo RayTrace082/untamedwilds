@@ -4,7 +4,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import untamedwilds.UntamedWilds;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,7 +42,7 @@ public class HerdEntity {
 
     public void addCreature(ComplexMob creature) {
         if (!this.creatureList.contains(creature)) {
-            UntamedWilds.LOGGER.info("Adding new entity to Herd");
+            //UntamedWilds.LOGGER.info("Adding new entity to Herd");
             this.creatureList.add(creature);
         }
     }

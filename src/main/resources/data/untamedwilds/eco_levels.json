@@ -1,11 +1,11 @@
 {
-  "minecraft:villager": 99,
+  "minecraft:villager": 7,
   "untamedwilds:bear_black": 6,
-  "untamedwilds:bear_blind": 7,
+  "untamedwilds:bear_blind": 8,
   "untamedwilds:bear_brown": 7,
-  "untamedwilds:bear_cave": 7,
-  "untamedwilds:bear_panda": 7,
-  "untamedwilds:bear_polar": 7,
-  "untamedwilds:bear_spectacled": 7,
-  "untamedwilds:bear_sun": 7
+  "untamedwilds:bear_cave": 8,
+  "untamedwilds:bear_panda": 6,
+  "untamedwilds:bear_polar": 8,
+  "untamedwilds:bear_spectacled": 6,
+  "untamedwilds:bear_sun": 5
 }

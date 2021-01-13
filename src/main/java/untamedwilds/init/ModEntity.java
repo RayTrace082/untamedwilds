@@ -1,6 +1,5 @@
 package untamedwilds.init;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -42,7 +41,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 @Mod.EventBusSubscriber(modid = UntamedWilds.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEntity {
@@ -120,7 +118,7 @@ public class ModEntity {
                     .setShouldReceiveVelocityUpdates(sendsVelocityUpdates)
                     .build(location.toString());
 
-            spawnEggs.add(registerEntitySpawnEgg(type, name, maincolor, backcolor, ItemGroup.MISC));
+            spawnEggs.add(registerEntitySpawnEgg(type, name, maincolor, backcolor));
             type.setRegistryName(name);
             // TODO: Maybe bake attributes here if possible?
             entities.add(type);
@@ -132,8 +130,8 @@ public class ModEntity {
         return null;
     }
 
-    private static Item registerEntitySpawnEgg(EntityType<?> type, String name, int maincolor, int backcolor, ItemGroup group) {
-        return new SpawnEggItem(type, maincolor, backcolor, new Item.Properties().group(group)).setRegistryName(name + "_spawn_egg");
+    private static Item registerEntitySpawnEgg(EntityType<?> type, String name, int maincolor, int backcolor) {
+        return new SpawnEggItem(type, maincolor, backcolor, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(name + "_spawn_egg");
     }
 
     public static void bakeAttributes() {
@@ -239,24 +237,16 @@ public class ModEntity {
     }
 
     private static void readEcoLevels() {
-        ImmutableMap.Builder<String, Integer> builder = ImmutableMap.builder();
-        BiConsumer<String, Integer> biconsumer = builder::put;
-
         try (InputStream inputstream = LanguageMap.class.getResourceAsStream("/data/untamedwilds/eco_levels.json")) {
-            func_240593_a_(inputstream, biconsumer);
+            JsonObject jsonobject = field_240591_b_.fromJson(new InputStreamReader(inputstream, StandardCharsets.UTF_8), JsonObject.class);
+
+            for(Map.Entry<String, JsonElement> entry : jsonobject.entrySet()) {
+                eco_levels.put(entry.getKey(), entry.getValue().getAsInt());
+            }
         } catch (JsonParseException | IOException ioexception) {
             UntamedWilds.LOGGER.error("Couldn't read data from /data/untamedwilds/eco_levels.json", ioexception);
         }
     }
-
-    public static void func_240593_a_(InputStream p_240593_0_, BiConsumer<String, Integer> p_240593_1_) {
-        JsonObject jsonobject = field_240591_b_.fromJson(new InputStreamReader(p_240593_0_, StandardCharsets.UTF_8), JsonObject.class);
-
-        for(Map.Entry<String, JsonElement> entry : jsonobject.entrySet()) {
-            eco_levels.put(entry.getKey(), entry.getValue().getAsInt());
-        }
-    }
-
 
     /*public static void addVanillaSpawn(Class <? extends LivingEntity> entityClass, int weightedProb, int min, int max, BiomeDictionary.Type... biomes) {
         Set<Biome> spawnBiomes = new ObjectArraySet<>();

@@ -46,7 +46,6 @@ public class GotoSleepGoal extends Goal {
             }*/
             if (this.creature.getRNG().nextInt(this.executionChance) != 0) { return false; }
 
-            //UntamedWilds.LOGGER.info("Going to sleep");
             if (this.creature.getHome() == BlockPos.ZERO || this.creature.getDistanceSq(this.creature.getHomeAsVec()) > 100000) {
                 this.creature.setHome(BlockPos.ZERO);
                 BlockPos pos = this.checkForNewHome();
@@ -75,7 +74,6 @@ public class GotoSleepGoal extends Goal {
     public BlockPos checkForNewHome() {
         Random random = this.creature.getRNG();
         BlockPos blockpos = new BlockPos(this.creature.getPosition());
-        //UntamedWilds.LOGGER.info("testing new home");
         for(int i = 0; i < 10; ++i) {
             int perception = (int) this.creature.getAttribute(Attributes.FOLLOW_RANGE).getValue();
             int offsetX = random.nextInt(perception * 2) - perception;

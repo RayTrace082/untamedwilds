@@ -85,11 +85,6 @@ public class ItemMobSpawn extends Item {
                         spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
                         worldIn.addEntity(spawn); // Commented out because it throws an exception on the chunk tracker
                     }
-                    /*if (!((ServerWorld) worldIn).addEntityIfNotDuplicate(spawn)) {
-                        spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
-                        //worldIn.addEntity(spawn); // Commented out because it throws an exception on the chunk tracker
-                        //UntamedWilds.LOGGER.info("Randomizing repeated UUID");
-                    }*/
                 }
             }
             else {

@@ -23,7 +23,7 @@ public class BearRaidChestsGoal extends Goal {
     private IInventory targetInventory;
     private BlockPos targetPos;
     private final AbstractBear taskOwner;
-    private int executionChance;
+    private final int executionChance;
     private int searchCooldown;
     private boolean continueTask;
 

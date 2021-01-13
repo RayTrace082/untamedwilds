@@ -18,7 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.entity.IPackEntity;
@@ -163,8 +162,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
                     ComplexMob creature = this.herd.creatureList.get(i);
                     creature.addPotionEffect(new EffectInstance(Effects.GLOWING, 80, 0));
                 }
-                UntamedWilds.LOGGER.info("Herd contains " + this.herd.creatureList.size() + " / " + this.herd.getMaxSize() + " members");
-                // UntamedWilds.LOGGER.info(this.getDistanceSq(this.getHomeAsVec()) + " | " + this.getPosition() + " | " + this.getHome());
+                //UntamedWilds.LOGGER.info("Herd contains " + this.herd.creatureList.size() + " / " + this.herd.getMaxSize() + " members");
             }
 
             if (this.isTamed() && this.getOwner() == player) {
