@@ -44,8 +44,6 @@ public abstract class ComplexMob extends TameableEntity {
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
-    @Deprecated
-    public int ecoLevel;
     public HerdEntity herd = null;
     int maxSchoolSize = 8;
     protected LivingEntity followEntity;
@@ -66,7 +64,6 @@ public abstract class ComplexMob extends TameableEntity {
         this.dataManager.register(COMMAND, 0);
         this.dataManager.register(SLEEPING, false);
         this.dataManager.register(SITTING, false);
-        this.ecoLevel = 0;
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
@@ -194,9 +191,6 @@ public abstract class ComplexMob extends TameableEntity {
         if (ModEntity.eco_levels.containsKey(entity.getEntityString())) {
             // UntamedWilds.LOGGER.info(ModEntity.eco_levels.get(entity.getEntityString()));
             return ModEntity.eco_levels.get(entity.getEntityString());
-        }
-        if (entity instanceof ComplexMob) {
-            return ((ComplexMob) entity).ecoLevel;
         }
         else if (entity instanceof MonsterEntity || entity instanceof PlayerEntity) {
             return 7;

@@ -43,7 +43,6 @@ public class BrownBear extends AbstractBear implements ISkins {
 
     public BrownBear(EntityType<? extends AbstractBear> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 7;
     }
 
     public void registerGoals() {

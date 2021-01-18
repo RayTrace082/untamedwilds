@@ -33,7 +33,6 @@ public class SabertoothBigCat extends AbstractBigCat {
 
     public SabertoothBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 8;
     }
 
     public void registerGoals() {

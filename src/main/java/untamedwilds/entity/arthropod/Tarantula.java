@@ -42,7 +42,6 @@ public class Tarantula extends ComplexMob implements ISpecies {
 
     public Tarantula(EntityType<? extends Tarantula> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 3;
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

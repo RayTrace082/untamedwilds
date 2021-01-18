@@ -34,7 +34,6 @@ public class SnowLeopardBigCat extends AbstractBigCat {
 
     public SnowLeopardBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 7;
     }
 
     public void registerGoals() {

@@ -36,7 +36,6 @@ public class PolarBear extends AbstractBear {
 
     public PolarBear(EntityType<? extends AbstractBear> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 8;
         this.swimSpeedMult = 1.4f;
     }
 

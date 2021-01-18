@@ -36,7 +36,6 @@ public class LionBigCat extends AbstractBigCat implements IPackEntity {
 
     public LionBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 8;
     }
 
     public void registerGoals() {

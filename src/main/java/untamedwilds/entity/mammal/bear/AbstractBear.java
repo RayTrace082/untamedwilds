@@ -52,7 +52,6 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
         this.stepHeight = 1;
         this.dexterity = 0.3F;
         this.experienceValue = 10;
-        this.ecoLevel = 7;
     }
 
     public boolean isPushedByWater() {
@@ -177,7 +176,6 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
         if (flag && this.getAnimation() == NO_ANIMATION && !this.isChild()) {
             Animation anim = chooseAttackAnimation();
             this.setAnimation(anim);
-            this.setAnimation(anim);
             this.setAnimationTick(0);
         }
         return flag;
@@ -201,7 +199,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
-        if (hand == Hand.MAIN_HAND && !this.world.isRemote()) { // Prevents all code from running twice
+        if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
             if (!this.world.isRemote()) {
                 if (player.isCreative() && itemstack.isEmpty()) {
                     UntamedWilds.LOGGER.info(this.getDistanceSq(this.getHomeAsVec()) + " | " + this.getPosition() + " | " + this.getHome());
@@ -245,7 +243,6 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
                 if (this.getRNG().nextInt(3) == 0) {
                     // TODO: "Bear Force One" Advancement Trigger here
                     this.setTamedBy(player);
-                    //this.registerGoals(); // AI Reset Hook
                     EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.HEART, 3, 6);
                 } else {
                     EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.SMOKE, 3, 3);

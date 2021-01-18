@@ -123,8 +123,8 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
         if (this.getAnimation() == ANIMATION_EAT && (this.getAnimationTick() == 10 || this.getAnimationTick() == 20 || this.getAnimationTick() == 30)) {
             this.playSound(SoundEvents.ENTITY_HORSE_EAT,1.5F, 0.8F);
         }
-        if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1 && this.getAmbientSound() != null) {
-            this.playSound(ModSounds.ENTITY_BIG_CAT_AMBIENT, 1.5F, 1);
+        if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
+            this.playSound(this.getAmbientSound(), 1.5F, 1);
         }
         if (this.world.isRemote && this.isAngry() && this.aggroProgress < 40) {
             this.aggroProgress++;
@@ -140,11 +140,9 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
         this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F);
     }
 
-    protected SoundEvent getAmbientSound() { return !this.isChild() ? null : SoundEvents.ENTITY_OCELOT_AMBIENT; }
-
-    // protected SoundEvent getAmbientSound() {
-    //    return this.isChild() ? null : ModSounds.ENTITY_BIG_CAT_AMBIENT;
-    //}
+    protected SoundEvent getAmbientSound() {
+        return this.isChild() ? SoundEvents.ENTITY_OCELOT_AMBIENT : ModSounds.ENTITY_BIG_CAT_AMBIENT;
+    }
 
     protected SoundEvent getHurtSound(DamageSource source) {
         return !this.isChild() ? ModSounds.ENTITY_BIG_CAT_HURT : SoundEvents.ENTITY_OCELOT_HURT;
@@ -162,7 +160,6 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
                     ComplexMob creature = this.herd.creatureList.get(i);
                     creature.addPotionEffect(new EffectInstance(Effects.GLOWING, 80, 0));
                 }
-                //UntamedWilds.LOGGER.info("Herd contains " + this.herd.creatureList.size() + " / " + this.herd.getMaxSize() + " members");
             }
 
             if (this.isTamed() && this.getOwner() == player) {

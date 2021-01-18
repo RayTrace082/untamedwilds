@@ -36,7 +36,6 @@ public class BlindBear extends AbstractBear {
 
     public BlindBear(EntityType<? extends AbstractBear> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 8;
     }
 
     public void registerGoals() {

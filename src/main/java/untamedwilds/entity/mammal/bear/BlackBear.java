@@ -42,7 +42,6 @@ public class BlackBear extends AbstractBear implements ISkins {
 
     public BlackBear(EntityType<? extends AbstractBear> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 6;
     }
 
     @OnlyIn(Dist.CLIENT)

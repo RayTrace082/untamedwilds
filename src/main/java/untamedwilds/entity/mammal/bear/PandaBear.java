@@ -35,7 +35,6 @@ public class PandaBear extends AbstractBear {
 
     public PandaBear(EntityType<? extends AbstractBear> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 6;
     }
 
     public void registerGoals() {

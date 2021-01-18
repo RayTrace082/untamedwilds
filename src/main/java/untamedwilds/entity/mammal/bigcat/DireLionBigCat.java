@@ -33,7 +33,6 @@ public class DireLionBigCat extends AbstractBigCat {
 
     public DireLionBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 9;
     }
 
     public void registerGoals() {

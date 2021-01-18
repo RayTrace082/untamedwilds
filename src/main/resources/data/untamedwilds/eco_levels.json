@@ -1,5 +1,14 @@
 {
   "minecraft:villager": 7,
+
+  "untamedwilds:tarantula": 3,
+
+  "untamedwilds:snake": 4,
+  "untamedwilds:softshell_turtle": 4,
+
+  "untamedwilds:giant_clam": 2,
+
+  "untamedwilds:hippo": 8,
   "untamedwilds:bear_black": 6,
   "untamedwilds:bear_blind": 8,
   "untamedwilds:bear_brown": 7,
@@ -7,5 +16,18 @@
   "untamedwilds:bear_panda": 6,
   "untamedwilds:bear_polar": 8,
   "untamedwilds:bear_spectacled": 6,
-  "untamedwilds:bear_sun": 5
+  "untamedwilds:bear_sun": 5,
+  "untamedwilds:bigcat_cave_lion": 8,
+  "untamedwilds:bigcat_dire_lion": 9,
+  "untamedwilds:bigcat_jaguar": 7,
+  "untamedwilds:bigcat_leopard": 7,
+  "untamedwilds:bigcat_lion": 8,
+  "untamedwilds:bigcat_marsupial_lion": 6,
+  "untamedwilds:bigcat_panther": 7,
+  "untamedwilds:bigcat_puma": 6,
+  "untamedwilds:bigcat_sabertooth": 8,
+  "untamedwilds:bigcat_snow_leopard": 7,
+  "untamedwilds:bigcat_tiger": 8,
+
+  "untamedwilds:sunfish": 7
 }

@@ -37,7 +37,6 @@ public class PumaBigCat extends AbstractBigCat {
 
     public PumaBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 6;
     }
 
     public void registerGoals() {

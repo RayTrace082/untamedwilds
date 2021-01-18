@@ -34,7 +34,6 @@ public class SunBear extends AbstractBear {
 
     public SunBear(EntityType<? extends AbstractBear> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 5;
     }
 
     public void registerGoals() {

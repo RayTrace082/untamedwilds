@@ -39,7 +39,6 @@ public class Sunfish extends ComplexMobAquatic implements ISpecies {
     public Sunfish(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
         this.experienceValue = 5;
-        this.ecoLevel = 7;
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

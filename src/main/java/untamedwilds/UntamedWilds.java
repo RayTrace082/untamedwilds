@@ -27,10 +27,10 @@ import untamedwilds.world.UntamedWildsGenerator;
 @Mod(value = UntamedWilds.MOD_ID)
 public class UntamedWilds {
 
-    // TODO: Skins; Reuse the Species system in complex mobs to introduce random skins (dynamically built from the textures available?)
     // TODO: Migration AI, rare events executed by hungry mobs where they will choose a direction and keep moving there
     // TODO: Make use of Tags to make animal's diets data-driven?
-    // TODO: Test the behavior of Herds when changing dimensions
+    // TODO: De-bloat the ComplexMob class
+    // TODO: Remove Panther, replace it with black skins for Jaguar/Leopard
     // BUG: It's possible to catch ghost entities in Cage Traps if a mob touches multiple boxes in the same tick (eg. 2x2 mob falling into a pit full of Cages)
 
     public static final Logger LOGGER = LogManager.getLogger();

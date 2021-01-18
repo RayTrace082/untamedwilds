@@ -37,7 +37,6 @@ public class GiantClam extends ComplexMob implements ISpecies {
 
     public GiantClam(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 2;
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

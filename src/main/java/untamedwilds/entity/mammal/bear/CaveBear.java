@@ -36,7 +36,6 @@ public class CaveBear extends AbstractBear {
 
     public CaveBear(EntityType<? extends AbstractBear> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 8;
     }
 
     public void registerGoals() {

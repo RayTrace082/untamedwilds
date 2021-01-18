@@ -52,7 +52,6 @@ public class EntityHippo extends ComplexMobAmphibious {
         ATTACK = Animation.create(24);
         this.stepHeight = 1F;
         this.experienceValue = 10;
-        this.ecoLevel = 8;
         this.isAmphibious = true;
         this.buoyancy = 0.998F;
         this.dexterity = 0.3F;

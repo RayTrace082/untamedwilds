@@ -34,7 +34,6 @@ public class CaveLionBigCat extends AbstractBigCat {
 
     public CaveLionBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
-        this.ecoLevel = 8;
     }
 
     public void registerGoals() {
