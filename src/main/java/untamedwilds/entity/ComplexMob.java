@@ -28,7 +28,6 @@ import untamedwilds.UntamedWilds;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
 import untamedwilds.config.ConfigGamerules;
-import untamedwilds.entity.mammal.bear.BlackBear;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
 
@@ -50,7 +49,6 @@ public abstract class ComplexMob extends TameableEntity {
     public HerdEntity herd = null;
     int maxSchoolSize = 8;
     protected LivingEntity followEntity;
-    protected Vector3d fleeLookVec;
     protected Vector3d targetVec;
 
     public ComplexMob(EntityType<? extends ComplexMob> type, World worldIn){
@@ -145,7 +143,10 @@ public abstract class ComplexMob extends TameableEntity {
     protected <T extends ComplexMob> T create_offspring(T entity) {
         entity.setGender(this.rand.nextInt(2));
         entity.setMobSize(this.rand.nextFloat());
-        entity.setGrowingAge(this.getAdulthoodTime() * -2);
+        entity.setGrowingAge(entity.getAdulthoodTime() * -2);
+        if (entity.getSkinNumber() != 0) {
+            entity.setSpecies(this.getSpecies());
+        }
         return entity;
     }
 
@@ -298,7 +299,7 @@ public abstract class ComplexMob extends TameableEntity {
                 UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + this.getName().getString());
             }
             if (this instanceof ISkins) {
-                this.setSpecies(this.rand.nextInt(((BlackBear)this).getSkinNumber()));
+                this.setSpecies(this.rand.nextInt(getSkinNumber()));
             }
             if (this instanceof IPackEntity) {
                 this.initPack();
@@ -321,5 +322,10 @@ public abstract class ComplexMob extends TameableEntity {
 
     public boolean canCombineWith(HerdEntity otherPack) {
         return true;
+    }
+
+    // Method exclusive for classes inheriting ISkins
+    public int getSkinNumber() {
+        return 0;
     }
 }

@@ -13,7 +13,11 @@ import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
+import untamedwilds.entity.ISkins;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
@@ -23,11 +27,13 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class BrownBear extends AbstractBear {
+public class BrownBear extends AbstractBear implements ISkins {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/bear/brown.png");
+    public static final int SKIN_NUMBER = 4;
+    private static final List<ResourceLocation> TEXTURES = new ArrayList<>();
     private static final float SIZE = 1.1f; // Was 1f
     private static final String BREEDING = "EARLY_SUMMER";
     private static final int GESTATION = 8 * ConfigGamerules.cycleLength.get();
@@ -99,6 +105,12 @@ public class BrownBear extends AbstractBear {
         return create_offspring(new BrownBear(ModEntity.BROWN_BEAR, this.world));
     }
 
+    @OnlyIn(Dist.CLIENT)
+    public static void registerTextures(int count) {
+        for(int i = 1; i < count + 1; i++)
+            BrownBear.TEXTURES.add(new ResourceLocation(UntamedWilds.MOD_ID, String.format("textures/entity/bear/brown_%d.png", i)));
+    }
+
     @Override
     protected ResourceLocation getLootTable() {
         return ModLootTables.BEAR_LOOT_BROWN;
@@ -109,7 +121,8 @@ public class BrownBear extends AbstractBear {
     public int getAdulthoodTime() { return GROWING; }
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
-    public ResourceLocation getTexture() { return TEXTURE; }
+    public ResourceLocation getTexture() { return TEXTURES.get(this.getSpecies()); }
+    public int getSkinNumber() { return SKIN_NUMBER; }
     public boolean hasHump() { return true; }
     protected int getOffspring() { return 1; }
 }

@@ -34,7 +34,6 @@ public class BlackBear extends AbstractBear implements ISkins {
 
     public static final int SKIN_NUMBER = 5;
     private static final List<ResourceLocation> TEXTURES = new ArrayList<>();
-    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/bear/black.png");
     private static final float SIZE = 0.8f;
     private static final String BREEDING = "EARLY_SUMMER";
     private static final int GESTATION = 8 * ConfigGamerules.cycleLength.get();
@@ -123,6 +122,6 @@ public class BlackBear extends AbstractBear implements ISkins {
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
     public ResourceLocation getTexture() { return TEXTURES.get(this.getSpecies()); }
-    public static int getSkinNumber() { return SKIN_NUMBER; }
+    public int getSkinNumber() { return SKIN_NUMBER; }
     protected int getOffspring() { return 2; }
 }

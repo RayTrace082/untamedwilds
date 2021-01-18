@@ -192,9 +192,10 @@ public class ModEntity {
         }
         if (ConfigMobControl.addBear.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-            BlackBear.registerTextures(BlackBear.getSkinNumber());
+            BlackBear.registerTextures(5);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLIND_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BROWN_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
+            BrownBear.registerTextures(4);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANDA_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.POLAR_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
