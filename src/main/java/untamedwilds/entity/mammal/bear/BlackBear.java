@@ -68,7 +68,7 @@ public class BlackBear extends AbstractBear implements ISkins {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof BlackBear)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 5));
+        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) <= 5));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
