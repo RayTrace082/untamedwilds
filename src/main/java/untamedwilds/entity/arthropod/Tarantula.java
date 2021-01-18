@@ -202,9 +202,6 @@ public class Tarantula extends ComplexMob implements ISpecies {
 
         public static int getSpeciesByBiome(Biome biome) {
             List<SpeciesTarantula> types = new ArrayList<>();
-            /*if (biome.getTemperature() < 0.8F) { // What the fuck? Why do I need to give a BlockPos to get a Biome's defined temperature, holy shit
-                return 99;
-            }*/
             for (SpeciesTarantula type : values()) {
                 for(Biome.Category biomeTypes : type.spawnBiomes) {
                     if(biome.getCategory() == biomeTypes){

@@ -13,7 +13,11 @@ import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
+import untamedwilds.entity.ISkins;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
@@ -23,10 +27,13 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class BlackBear extends AbstractBear {
+public class BlackBear extends AbstractBear implements ISkins {
 
+    public static final int SKIN_NUMBER = 5;
+    private static final List<ResourceLocation> TEXTURES = new ArrayList<>();
     private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/bear/black.png");
     private static final float SIZE = 0.8f;
     private static final String BREEDING = "EARLY_SUMMER";
@@ -37,6 +44,12 @@ public class BlackBear extends AbstractBear {
     public BlackBear(EntityType<? extends AbstractBear> type, World worldIn) {
         super(type, worldIn);
         this.ecoLevel = 6;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void registerTextures(int count) {
+        for(int i = 1; i < count + 1; i++)
+            BlackBear.TEXTURES.add(new ResourceLocation(UntamedWilds.MOD_ID, String.format("textures/entity/bear/black_%d.png", i)));
     }
 
     public void registerGoals() {
@@ -109,6 +122,7 @@ public class BlackBear extends AbstractBear {
     public int getAdulthoodTime() { return GROWING; }
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
-    public ResourceLocation getTexture() { return TEXTURE; }
+    public ResourceLocation getTexture() { return TEXTURES.get(this.getSpecies()); }
+    public static int getSkinNumber() { return SKIN_NUMBER; }
     protected int getOffspring() { return 2; }
 }

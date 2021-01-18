@@ -93,7 +93,6 @@ public class ModEntity {
         }
         bakeAttributes();
         readEcoLevels();
-        UntamedWilds.LOGGER.info("NAUTILUS " + eco_levels);
     }
 
     private static <T extends Entity> EntityType<T> createEntity(boolean enable, EntityType.IFactory<T> factory, EntityClassification classification, String name, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, float sizeX, float sizeY, int baseColor, int overlayColor) {
@@ -193,6 +192,7 @@ public class ModEntity {
         }
         if (ConfigMobControl.addBear.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
+            BlackBear.registerTextures(BlackBear.getSkinNumber());
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLIND_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BROWN_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));

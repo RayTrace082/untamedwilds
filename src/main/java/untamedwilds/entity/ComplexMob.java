@@ -28,6 +28,7 @@ import untamedwilds.UntamedWilds;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
 import untamedwilds.config.ConfigGamerules;
+import untamedwilds.entity.mammal.bear.BlackBear;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
 
@@ -131,6 +132,9 @@ public abstract class ComplexMob extends TameableEntity {
             T child = (T) this.func_241840_a((ServerWorld) this.world, this);
             if (child != null) {
                 child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
+                if (this instanceof ISkins) {
+                    child.setSpecies(this.getSpecies());
+                }
                 if (this.getOwner() != null) {
                     child.setTamedBy((PlayerEntity) this.getOwner());
                 }
@@ -142,7 +146,6 @@ public abstract class ComplexMob extends TameableEntity {
         entity.setGender(this.rand.nextInt(2));
         entity.setMobSize(this.rand.nextFloat());
         entity.setGrowingAge(this.getAdulthoodTime() * -2);
-        // entity.registerGoals(); // ??
         return entity;
     }
 
@@ -284,7 +287,6 @@ public abstract class ComplexMob extends TameableEntity {
                 Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(this.getPosition());
                 int i = this.setSpeciesByBiome(optional.get(), worldIn.getBiome(this.getPosition()), reason);
                 this.setSpecies(i);
-                //UntamedWilds.LOGGER.info("Species chosen: " + 1);
                 if (i == 99) {
                     this.remove();
                     return null;
@@ -294,6 +296,9 @@ public abstract class ComplexMob extends TameableEntity {
                 }
             } else if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
                 UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + this.getName().getString());
+            }
+            if (this instanceof ISkins) {
+                this.setSpecies(this.rand.nextInt(((BlackBear)this).getSkinNumber()));
             }
             if (this instanceof IPackEntity) {
                 this.initPack();
