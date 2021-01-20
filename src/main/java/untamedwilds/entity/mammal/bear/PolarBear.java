@@ -102,7 +102,7 @@ public class PolarBear extends AbstractBear {
     protected ResourceLocation getLootTable() {
         return ModLootTables.BEAR_LOOT_POLAR;
     }
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == ModItems.MATERIAL_FAT.get(); } // TODO: If Seals ever get added, replace this with their meat
+    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == ModItems.MATERIAL_FAT.get(); }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }
     public int getAdulthoodTime() { return GROWING; }

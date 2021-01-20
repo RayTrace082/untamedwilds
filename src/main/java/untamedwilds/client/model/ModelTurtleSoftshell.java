@@ -4,6 +4,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.reptile.EntitySoftshellTurtle;
@@ -111,7 +112,9 @@ public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTur
             progressRotation(main_head, turtle.baskProgress, 0.36425021489121656F, 0, 0.0F, 100);
         }
         if (turtle.isInWater() && turtle.isAirBorne) {
-            this.setRotateAngle(main_body, (float) (turtle.getMotion().getY() * -30 * Math.PI / 180F), 0, 0);
+            float pitch = MathHelper.clamp(turtle.rotationPitch, -45F, 45.0F) - 10;
+            this.setRotateAngle(main_body, (float) (pitch * Math.PI / 180F), 0, 0);
+            //this.setRotateAngle(main_body, (float) (turtle.getMotion().getY() * -30 * Math.PI / 180F), 0, 0);
         }
 
         this.main_body.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F));

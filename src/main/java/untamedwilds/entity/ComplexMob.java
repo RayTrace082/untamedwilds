@@ -68,7 +68,6 @@ public abstract class ComplexMob extends TameableEntity {
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return true;
-        //return this.getBlockPathWeight(new BlockPos(this.getPosX(), this.getBoundingBox().minY, this.getPosZ()), worldIn) >= 0.0F;
     }
 
     public boolean canBeLeashedTo(PlayerEntity player) {
@@ -300,7 +299,6 @@ public abstract class ComplexMob extends TameableEntity {
             }
             worldIn.func_242417_l(this);
             this.setGrowingAge(0);
-            return spawnDataIn;
         }
         return spawnDataIn;
     }

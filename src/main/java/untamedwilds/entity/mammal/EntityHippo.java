@@ -30,7 +30,7 @@ import java.util.Random;
 public class EntityHippo extends ComplexMobAmphibious {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/hippo/common.png");
-    private static final float SIZE = 1.1f;
+    private static final float SIZE = 1.3f;
     private static final String BREEDING = "EARLY_SUMMER";
     private static final int GESTATION = 8 * ConfigGamerules.cycleLength.get();
     private static final int GROWING = 12 * ConfigGamerules.cycleLength.get();
@@ -54,7 +54,7 @@ public class EntityHippo extends ComplexMobAmphibious {
         this.experienceValue = 10;
         this.isAmphibious = true;
         this.buoyancy = 0.998F;
-        this.dexterity = 0.3F;
+        this.turn_speed = 0.3F;
     }
 
     public void registerGoals() {

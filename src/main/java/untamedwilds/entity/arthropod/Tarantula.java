@@ -69,7 +69,6 @@ public class Tarantula extends ComplexMob implements ISpecies {
     public void livingTick() {
         super.livingTick();
         if (!this.world.isRemote) {
-            //this.webProgress--;
             if (this.ticksExisted % 1000 == 0) {
                 if (this.wantsToBreed() && !this.isMale()) {
                     this.breed();

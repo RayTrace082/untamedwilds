@@ -75,6 +75,8 @@ public class SmartMeleeAttackGoal extends Goal {
         LivingEntity livingentity = this.attacker.getAttackTarget();
         if (livingentity == null) {
             return false;
+        } else if (this.attacker.getAir() < 40 && !this.attacker.canBreatheUnderwater()) {
+            return false;
         } else if (!livingentity.isAlive()) {
             return false;
         } else if (!this.longMemory) {
@@ -109,9 +111,9 @@ public class SmartMeleeAttackGoal extends Goal {
         --this.delayCounter;
 
         // This piece of code fixes mobs in water being unable to chase upwards
-        if (this.attacker.isInWater() && this.attacker.ticksExisted % 6 == 0) {
+        if (this.attacker.isInWater() && this.attacker.ticksExisted % 12 == 0) {
             //this.attacker.setMotion(this.attacker.getMotion().scale(1.4));
-            if ((livingentity.getBoundingBox().maxY - 1) > this.attacker.getPosY()) {
+            if ((livingentity.getBoundingBox().minY + 1) > this.attacker.getPosY()) {
                 this.attacker.getJumpController().setJumping();
             }
         }

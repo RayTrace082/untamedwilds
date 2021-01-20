@@ -6,6 +6,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mammal.EntityHippo;
@@ -263,8 +264,9 @@ public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
             this.eye_right.setRotationPoint(-2F, -2.0F, -4.0F);
             this.eye_left.setRotationPoint(2F, -2.0F, -4.0F);
         }
-        if (hippo.isInWater() && hippo.isAirBorne) {
-            this.setRotateAngle(body_main, (float) (hippo.getMotion().getY() * -30 * Math.PI / 180F), 0, 0);
+        if (hippo.isInWater() && !hippo.isOnGround()) {
+            float pitch = MathHelper.clamp(hippo.rotationPitch, -45F, 45.0F) - 10;
+            this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 
         if (!hippo.isSleeping()) {

@@ -6,6 +6,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mammal.bigcat.AbstractBigCat;
@@ -416,12 +417,13 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat>
         if (limbSwingAmount > 0.6F) {
             limbSwingAmount = 0.6F;
         }
-        if (big_cat.isInWater() && big_cat.isAirBorne) {
+        if (big_cat.isInWater() && !big_cat.isOnGround()) {
             limbSwing = ageInTicks / 3;
             limbSwingAmount = 0.5f;
             this.body_main.rotationPointY += 4; // Model offset to make the Big Cat "sink" in water (while not drowning)
-            this.setRotateAngle(body_main, -0.136659280431156F, 0.0F, 0.0F);
             this.setRotateAngle(head_neck, -0.18203784098300857F, 0.0F, 0.0F);
+            float pitch = MathHelper.clamp(big_cat.rotationPitch, -45F, 45.0F) - 10;
+            this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 
         if (big_cat.aggroProgress != 0) { // Aggro/Stalking animation

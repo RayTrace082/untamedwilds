@@ -33,7 +33,7 @@ public class SmartSwimGoal extends Goal {
     }
 
     public boolean shouldContinueExecuting() {
-        return !(this.entity.isOnGround() && !this.entity.isInWater());
+        return !(this.entity.isOnGround() && !this.entity.isInWater() && this.entity.getAttackTarget() == null);
     }
 
     public void tick() {

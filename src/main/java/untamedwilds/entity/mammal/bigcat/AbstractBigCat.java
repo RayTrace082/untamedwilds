@@ -47,7 +47,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
         IDLE_STRETCH = Animation.create(110);
         this.stepHeight = 1;
         this.experienceValue = 10;
-        this.dexterity = 0.1F;
+        this.turn_speed = 0.1F;
     }
 
     public boolean isActive() {

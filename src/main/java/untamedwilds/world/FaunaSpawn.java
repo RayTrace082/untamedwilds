@@ -1,7 +1,6 @@
 package untamedwilds.world;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.pathfinding.PathType;
@@ -56,8 +55,8 @@ public final class FaunaSpawn {
                 return ifluidstate.isTagged(FluidTags.LAVA);
             case ON_GROUND:
             default:
-                BlockState blockstate1 = worldIn.getBlockState(blockpos1); // Hardcode exception for Ice blocks?
-                if (!blockstate1.canCreatureSpawn(worldIn, blockpos1, placeType, entityTypeIn) || worldIn.getBlockState(blockpos1).getBlock() == Blocks.ICE) {
+                BlockState blockstate1 = worldIn.getBlockState(blockpos1);
+                if (!blockstate1.canCreatureSpawn(worldIn, blockpos1, placeType, entityTypeIn)) {
                     return false;
                 } else {
                     return isSpawnableSpace(worldIn, pos, blockstate, ifluidstate, entityTypeIn); /* && isSpawnableSpace(worldIn, blockpos, worldIn.getBlockState(blockpos), worldIn.getFluidState(blockpos)*/
@@ -125,7 +124,7 @@ public final class FaunaSpawn {
                             if (mobentity.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(mobentity.getPosition()), SpawnReason.CHUNK_GENERATION, null, null) != null) {
                                 worldIn.func_242417_l(mobentity);
                             }
-                            if (net.minecraftforge.common.ForgeHooks.canEntitySpawn(mobentity, worldIn, d0, blockpos.getY(), d1, null, SpawnReason.CHUNK_GENERATION) == -1) continue;
+                            net.minecraftforge.common.ForgeHooks.canEntitySpawn(mobentity, worldIn, d0, blockpos.getY(), d1, null, SpawnReason.CHUNK_GENERATION);
                         }
                     }
                 }

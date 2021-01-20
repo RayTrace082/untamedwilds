@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.passive.IFlyingAnimal;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -25,6 +26,7 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -44,7 +46,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
     private static final DataParameter<Boolean> IS_RUNNING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN); // TODO: Deprecated, may be redundant if we use Speed to determine the running state
     private int animationTick;
     private Animation currentAnimation;
-    public float dexterity = 0.2F;
+    public float turn_speed = 0.2F;
     protected float swimSpeedMult = 1.0F;
 
     public ComplexMobTerrestrial(EntityType<? extends ComplexMob> type, World worldIn){
@@ -77,6 +79,9 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
             }
             if (!this.isSleeping() && this.forceSleep > 0) {
                 this.setSleeping(true);
+            }
+            if (this.getAir() < 40 && this.ticksExisted % 10 == 0) { // TODO: There's probably a better place to dump this, but it refuses to work everywhere else
+                this.jump();
             }
             if (this.ticksExisted % 200 == 0) {
                 if (!this.isActive() && this.getNavigator().noPath()) {
@@ -198,141 +203,82 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
             }*/
             double d0 = gravity.getValue();
 
-            if (!this.isInWater()) {
-                if (!this.isInLava()) {
-                    /*if (this.isElytraFlying()) {
-                        Vector3d vec3d3 = this.getMotion();
-                        if (vec3d3.y > -0.5D) {
-                            this.fallDistance = 1.0F;
-                        }
+            FluidState fluidstate = this.world.getFluidState(this.getPosition());
+            if (this.isInWater() && this.func_241208_cS_() && !this.func_230285_a_(fluidstate.getFluid())) {
+                double d8 = this.getPosY();
+                float f5 = this.isSprinting() ? 0.9F : this.getWaterSlowDown();
+                float f6 = 0.045F; // EDITED: Was 0.02
+                float f7 = (float)EnchantmentHelper.getDepthStriderModifier(this);
 
-                        Vector3d vec3d = this.getLookVec();
-                        float f6 = this.rotationPitch * ((float)Math.PI / 180F);
-                        double d9 = Math.sqrt(vec3d.x * vec3d.x + vec3d.z * vec3d.z);
-                        double d11 = Math.sqrt(horizontalMag(vec3d3));
-                        double d12 = vec3d.length();
-                        float f3 = MathHelper.cos(f6);
-                        f3 = (float)((double)f3 * (double)f3 * Math.min(1.0D, d12 / 0.4D));
-                        vec3d3 = this.getMotion().add(0.0D, d0 * (-1.0D + (double)f3 * 0.75D), 0.0D);
-                        if (vec3d3.y < 0.0D && d9 > 0.0D) {
-                            double d3 = vec3d3.y * -0.1D * (double)f3;
-                            vec3d3 = vec3d3.add(vec3d.x * d3 / d9, d3, vec3d.z * d3 / d9);
-                        }
+                if (!this.onGround) {
+                    f7 *= 0.7F;
+                }
 
-                        if (f6 < 0.0F && d9 > 0.0D) {
-                            double d13 = d11 * (double)(-MathHelper.sin(f6)) * 0.04D;
-                            vec3d3 = vec3d3.add(-vec3d.x * d13 / d9, d13 * 3.2D, -vec3d.z * d13 / d9);
-                        }
-
-                        if (d9 > 0.0D) {
-                            vec3d3 = vec3d3.add((vec3d.x / d9 * d11 - vec3d3.x) * 0.1D, 0.0D, (vec3d.z / d9 * d11 - vec3d3.z) * 0.1D);
-                        }
-
-                        this.setMotion(vec3d3.mul((double)0.99F, (double)0.98F, (double)0.99F));
-                        this.move(MoverType.SELF, this.getMotion());
-                        if (this.collidedHorizontally && !this.world.isRemote) {
-                            double d14 = Math.sqrt(horizontalMag(this.getMotion()));
-                            double d4 = d11 - d14;
-                            float f4 = (float)(d4 * 10.0D - 3.0D);
-                            if (f4 > 0.0F) {
-                                this.playSound(this.getFallSound((int)f4), 1.0F, 1.0F);
-                                this.attackEntityFrom(DamageSource.FLY_INTO_WALL, f4);
-                            }
-                        }
-
-                        if (this.isOnGround() && !this.world.isRemote) {
-                            this.setFlag(7, false);
-                        }
+                if (f7 > 0.0F) {
+                    if (f7 > 3.0F) {
+                        f7 = 3.0F;
                     }
-                    else {*/
-                    BlockPos blockpos = this.getPositionUnderneath();
-                    float f5 = this.world.getBlockState(blockpos).getSlipperiness(world, blockpos, this);
-                    float f7 = this.isOnGround() ? f5 * 0.91F : 0.91F;
-                    this.moveRelative(this.isOnGround() ? this.getAIMoveSpeed() * (0.21600002F / (f5 * f5 * f5)) : this.jumpMovementFactor, destination);
-                    //this.setMotion(this.func_213362_f(this.getMotion())); // Private REEEE
-                    this.setMotion(this.getMotion());
-                    this.move(MoverType.SELF, this.getMotion());
-                    Vector3d vec3d5 = this.getMotion();
-                    if ((this.collidedHorizontally || this.isJumping) && this.isOnLadder()) {
-                        vec3d5 = new Vector3d(vec3d5.x, 0.2D, vec3d5.z);
-                    }
+                    f5 += (0.54600006F - f5) * f7 / 3.0F;
+                    f6 += (this.getAIMoveSpeed() - f6) * f7 / 3.0F;
+                }
 
-                    double d10 = vec3d5.y;
-                    if (this.isPotionActive(Effects.LEVITATION)) {
-                        d10 += (0.05D * (double)(this.getActivePotionEffect(Effects.LEVITATION).getAmplifier() + 1) - vec3d5.y) * 0.2D;
-                        this.fallDistance = 0.0F;
-                    } else if (this.world.isRemote && !this.world.isBlockLoaded(blockpos)) {
-                        if (this.getPosY() > 0.0D) {
-                            d10 = -0.1D;
-                        } else {
-                            d10 = 0.0D;
-                        }
-                    } else if (!this.hasNoGravity()) {
-                        d10 -= d0;
-                    }
+                if (this.isPotionActive(Effects.DOLPHINS_GRACE)) {
+                    f5 = 0.96F;
+                }
 
-                    this.setMotion(vec3d5.x * (double)f7, d10 * (double)0.98F, vec3d5.z * (double)f7);
+                f6 *= (float)this.getAttribute(net.minecraftforge.common.ForgeMod.SWIM_SPEED.get()).getValue();
+                this.moveRelative(f6, destination);
+                this.move(MoverType.SELF, this.getMotion());
+                Vector3d vector3d6 = this.getMotion();
+                if (this.collidedHorizontally && this.isOnLadder()) {
+                    vector3d6 = new Vector3d(vector3d6.x, 0.2D, vector3d6.z);
+                }
 
+                this.setMotion(vector3d6.mul(f5, 0.8F, f5));
+                Vector3d vector3d2 = this.func_233626_a_(d0, flag, this.getMotion());
+                this.setMotion(vector3d2);
+                if (this.collidedHorizontally && this.isOffsetPositionInLiquid(vector3d2.x, vector3d2.y + (double)0.6F - this.getPosY() + d8, vector3d2.z)) {
+                    this.setMotion(vector3d2.x, 0.3F, vector3d2.z);
+                }
+            } else if (this.isInLava() && this.func_241208_cS_() && !this.func_230285_a_(fluidstate.getFluid())) {
+                double d7 = this.getPosY();
+                this.moveRelative(0.02F, destination);
+                this.move(MoverType.SELF, this.getMotion());
+                if (this.func_233571_b_(FluidTags.LAVA) <= this.func_233579_cu_()) {
+                    this.setMotion(this.getMotion().mul(0.5D, 0.8F, 0.5D));
+                    this.setMotion(this.func_233626_a_(d0, flag, this.getMotion()));
                 } else {
-                    double d7 = this.getPosY();
-                    this.moveRelative(0.02F, destination);
-                    this.move(MoverType.SELF, this.getMotion());
                     this.setMotion(this.getMotion().scale(0.5D));
-                    if (!this.hasNoGravity()) {
-                        this.setMotion(this.getMotion().add(0.0D, -d0 / 4.0D, 0.0D));
-                    }
+                }
 
-                    Vector3d vec3d4 = this.getMotion();
-                    if (this.collidedHorizontally && this.isOffsetPositionInLiquid(vec3d4.x, vec3d4.y + (double)0.6F - this.getPosY() + d7, vec3d4.z)) {
-                        this.setMotion(vec3d4.x, 0.3F, vec3d4.z);
-                    }
+                if (!this.hasNoGravity()) {
+                    this.setMotion(this.getMotion().add(0.0D, -d0 / 4.0D, 0.0D));
+                }
+
+                Vector3d vector3d4 = this.getMotion();
+                if (this.collidedHorizontally && this.isOffsetPositionInLiquid(vector3d4.x, vector3d4.y + (double)0.6F - this.getPosY() + d7, vector3d4.z)) {
+                    this.setMotion(vector3d4.x, 0.3F, vector3d4.z);
                 }
             } else {
-                double d1 = this.getPosY();
-                float f = this.isSprinting() ? 0.9F : this.getWaterSlowDown();
-                float f1 = 0.045F; // EDITED: Was 0.02
-                float f2 = (float) EnchantmentHelper.getDepthStriderModifier(this);
-                if (!this.onGround) {
-                    f2 *= 0.5F; // EDITED: Disabled speed halving if the mob is not on solid ground, unnecessary
-                }
-                /*else {
-                    f *= 1.1f; // EDITED: Mobs on the ground get slightly faster
-                }*/
-                if (f2 > 0.0F) {
-                    if (f2 > 3.0F) {
-                        f2 = 3.0F;
-                    }
-                    f += (0.54600006F - f) * f2 / 3.0F;
-                    f1 += (this.getAIMoveSpeed() - f1) * f2 / 3.0F;
-                }
-                // EDITED: Removed Dolphin's Grace effect for mobs
-
-                f1 *= (float)this.getAttribute(net.minecraftforge.common.ForgeMod.SWIM_SPEED.get()).getValue();
-                f1 *= this.swimSpeedMult;
-                this.moveRelative(f1, destination);
-                this.move(MoverType.SELF, this.getMotion());
-                Vector3d vec3d1 = this.getMotion();
-                if (this.collidedHorizontally && this.isOnLadder()) {
-                    vec3d1 = new Vector3d(vec3d1.x, 0.2D, vec3d1.z);
-                }
-
-                this.setMotion(vec3d1.mul(f, 0.8F, f));
-                if (!this.hasNoGravity()) { // EDITED: Removed "&& !this.isSprinting()" from the check, does not cover ComplexMobs
-                    Vector3d vec3d2 = this.getMotion();
-                    double d2;
-                    if (flag && Math.abs(vec3d2.y - 0.005D) >= 0.003D && Math.abs(vec3d2.y - d0 / 16.0D) < 0.003D) {
-                        d2 = -0.003D;
+                BlockPos blockpos = this.getPositionUnderneath();
+                float f3 = this.world.getBlockState(this.getPositionUnderneath()).getSlipperiness(world, this.getPositionUnderneath(), this);
+                float f4 = this.onGround ? f3 * 0.91F : 0.91F;
+                Vector3d vector3d5 = this.func_233633_a_(destination, f3);
+                double d2 = vector3d5.y;
+                if (this.isPotionActive(Effects.LEVITATION)) {
+                    d2 += (0.05D * (double)(this.getActivePotionEffect(Effects.LEVITATION).getAmplifier() + 1) - vector3d5.y) * 0.2D;
+                    this.fallDistance = 0.0F;
+                } else if (this.world.isRemote && !this.world.isBlockLoaded(blockpos)) {
+                    if (this.getPosY() > 0.0D) {
+                        d2 = -0.1D;
                     } else {
-                        d2 = vec3d2.y - d0 / 16.0D;
+                        d2 = 0.0D;
                     }
-
-                    this.setMotion(vec3d2.x, d2, vec3d2.z);
+                } else if (!this.hasNoGravity()) {
+                    d2 -= d0;
                 }
 
-                Vector3d vec3d6 = this.getMotion();
-                if (this.collidedHorizontally && this.isOffsetPositionInLiquid(vec3d6.x, vec3d6.y + (double)0.6F - this.getPosY() + d1, vec3d6.z)) {
-                    this.setMotion(vec3d6.x, 0.3F, vec3d6.z);
-                }
+                this.setMotion(vector3d5.x * (double)f4, d2 * (double)0.98F, vector3d5.z * (double)f4);
             }
         }
 
@@ -400,7 +346,6 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
 
         @Override
         public void tick() {
-            //this.updateSpeed();
             if (this.action == MovementController.Action.STRAFE) {
                 float f = (float)this.entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue();
                 float f1 = (float)this.speed * f;
@@ -450,7 +395,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
                 }
 
                 float f = (float)(MathHelper.atan2(d1, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, f, this.entity.dexterity * 100);
+                this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, f, this.entity.turn_speed * 100);
                 BlockPos blockpos = this.entity.getPosition();
                 BlockState blockstate = this.entity.world.getBlockState(blockpos);
                 Block block = blockstate.getBlock();
@@ -458,18 +403,18 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
 
                 if (this.entity.isInWater()) {
                     if (this.entity.collidedHorizontally && this.entity.ticksExisted % 10 == 0) {
-                        this.entity.getJumpController().setJumping();
+                        this.entity.jump();
                     }
                     //this.entity.setMotion(this.entity.getMotion().scale(1.1));
                     float f2 = -((float)(MathHelper.atan2(d1, MathHelper.sqrt(d0 * d0 + d2 * d2)) * (double)(180F / (float)Math.PI)));
                     f2 = MathHelper.clamp(MathHelper.wrapDegrees(f2), -85.0F, 85.0F);
-                    this.entity.rotationPitch = this.limitAngle(this.entity.rotationPitch, f2, 5.0F);
+                    this.entity.rotationPitch = this.limitAngle(this.entity.rotationPitch, f2, 1.0F);
                     float f4 = MathHelper.sin(this.entity.rotationPitch * ((float)Math.PI / 180F));
                     this.entity.moveVertical = -f4 *  (float)this.entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue();
                     if (this.entity.getAttackTarget() == null) {
                         this.entity.setMotion(this.entity.getMotion().add(0.0D, this.entity.buoyancy - 1, 0.0D));
                     }
-                    //this.entity.rotationPitch = this.limitAngle(this.entity.rotationPitch, (float) (this.entity.getMotion().getY() * -40), 5.0F);
+                    //this.entity.rotationPitch = this.limitAngle(this.entity.rotationPitch, (float) (this.entity.getMotion().getY() * -40), 0.1F);
                 }
 
                 //((ServerWorld)this.entity.world).spawnParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 0.15F);

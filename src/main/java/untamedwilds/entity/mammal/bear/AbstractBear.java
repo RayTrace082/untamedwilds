@@ -50,7 +50,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
         ATTACK_SWIPE = Animation.create(26);
         ATTACK_POUND = Animation.create(28);
         this.stepHeight = 1;
-        this.dexterity = 0.3F;
+        this.turn_speed = 0.3F;
         this.experienceValue = 10;
     }
 

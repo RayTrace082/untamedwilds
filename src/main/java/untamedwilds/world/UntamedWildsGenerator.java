@@ -21,9 +21,12 @@ import java.util.function.Supplier;
 public class UntamedWildsGenerator {
 
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, UntamedWilds.MOD_ID);
+    //public static final DeferredRegister<TreeDecoratorType<?>> TREE_DECORATION = DeferredRegister.create(ForgeRegistries.TREE_DECORATOR_TYPES, UntamedWilds.MOD_ID);
 
     private static final RegistryObject<Feature<FeatureSpreadConfig>> SEA_ANEMONE = regFeature("sea_anemone", () -> new FeatureSeaAnemone(FeatureSpreadConfig.CODEC));
     private static final RegistryObject<Feature<NoFeatureConfig>> REEDS = regFeature("reeds", () -> new FeatureReedClusters(NoFeatureConfig.field_236558_a_));
+
+    //public static final TreeDecoratorType<TreeOrchidDecorator> TREE_ORCHID = regTreeDecorator("orchid", () -> new TreeOrchidDecorator(TreeOrchidDecorator.field_236874_c_));
 
     private static final RegistryObject<Feature<NoFeatureConfig>> UNDERGROUND = regFeature("underground", () -> new FeatureUndergroundFaunaLarge(NoFeatureConfig.field_236558_a_));
     private static final RegistryObject<Feature<NoFeatureConfig>> APEX = regFeature("apex_predator", () -> new FeatureApexPredators(NoFeatureConfig.field_236558_a_));
@@ -36,6 +39,9 @@ public class UntamedWildsGenerator {
         return FEATURES.register(name, supplier);
     }
 
+    /*private static <P extends TreeDecorator> TreeDecoratorType<P> regTreeDecorator(String name, Supplier<? extends B> supplie) {
+        return TREE_DECORATION.register(name, supplier);
+    }*/
 
     @SubscribeEvent
     public static void onBiomesLoad(BiomeLoadingEvent event) {

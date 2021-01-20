@@ -6,6 +6,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mammal.bear.AbstractBear;
@@ -411,11 +412,12 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
 
         // Some scale tweaks to prevent Z-fighting
         this.head_snout.setScaleX(1.05F);
-        if (bear.isInWater() && bear.isAirBorne) {
+        if (bear.isInWater() && !bear.isOnGround()) {
             limbSwing = ageInTicks / 3;
             limbSwingAmount = 0.5f;
-            this.setRotateAngle(body_main, -0.136659280431156F, 0.0F, 0.0F);
             this.setRotateAngle(head_face, -0.22759093446006054F, 0.0F, 0.0F);
+            float pitch = MathHelper.clamp(bear.rotationPitch, -45F, 45.0F) - 10;
+            this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 
         //limbSwingAmount = 0.5f;
