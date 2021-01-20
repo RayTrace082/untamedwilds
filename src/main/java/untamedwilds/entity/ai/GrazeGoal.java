@@ -18,6 +18,8 @@ public class GrazeGoal extends Goal
     private static final Predicate<BlockState> IS_GRASS = BlockStateMatcher.forBlock(Blocks.GRASS);
     private final ComplexMobTerrestrial taskOwner;
     private final World entityWorld;
+    private BlockPos testpos;
+    //private float test;
     private int eatingGrassTimer;
     private final int executionChance;
 
@@ -29,7 +31,7 @@ public class GrazeGoal extends Goal
     }
 
     public boolean shouldExecute() {
-        if (this.taskOwner.isSleeping() || this.taskOwner.isSitting() || this.taskOwner.isChild() || this.taskOwner.getHunger() > 100) {
+        if (!this.taskOwner.canMove() || this.taskOwner.isChild() || this.taskOwner.getHunger() > 100) {
             return false;
         }
         if (this.taskOwner.getAttackTarget() != null) {
@@ -39,11 +41,14 @@ public class GrazeGoal extends Goal
             return false;
         }
         else {
-            BlockPos blockpos = new BlockPos(this.taskOwner.getPositionVec());
-            if (IS_GRASS.test(this.entityWorld.getBlockState(blockpos))) {
+            //this.test = (float)Math.sin(this.taskOwner.getRotatedYaw() * ((float)Math.PI / 180F)) * 4;
+            //this.testpos = new BlockPos(this.taskOwner.getPosition().add(0, 0, this.test));
+            //((ServerWorld)this.taskOwner.world).spawnParticle(ParticleTypes.FLAME, this.testpos.getX(), this.testpos.getY(), this.testpos.getZ(), 1, 0, 0, 0, 0);
+            this.testpos = new BlockPos(this.taskOwner.getPosition());
+            if (IS_GRASS.test(this.entityWorld.getBlockState(this.testpos))) {
                 return true;
             } else {
-                return this.entityWorld.getBlockState(blockpos.down()).getBlock() == Blocks.GRASS_BLOCK;
+                return this.entityWorld.getBlockState(this.testpos.down()).getBlock() == Blocks.GRASS_BLOCK;
             }
         }
     }
@@ -66,17 +71,20 @@ public class GrazeGoal extends Goal
     }
 
     public void tick() {
+        //UntamedWilds.LOGGER.info(this.taskOwner.rotationYaw + " " + this.test);
         this.eatingGrassTimer = Math.max(0, this.eatingGrassTimer - 1);
         if (this.eatingGrassTimer == 4) {
-            BlockPos blockpos = new BlockPos(this.taskOwner.getPositionVec());
-            if (IS_GRASS.test(this.entityWorld.getBlockState(blockpos))) {
+            //this.test = (float)Math.sin(this.taskOwner.rotationYaw * ((float)Math.PI / 180F)) * 4;
+            //this.testpos = new BlockPos(this.taskOwner.getPosition().add(0, 0, this.test));
+            //UntamedWilds.LOGGER.info(this.taskOwner.rotationYaw + " " + this.test + " " + (float)Math.sin(this.taskOwner.rotationYaw * ((float)Math.PI / 180F)) * 4);
+            if (IS_GRASS.test(this.entityWorld.getBlockState(this.testpos))) {
                 if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entityWorld, this.taskOwner) && ConfigGamerules.grazerGriefing.get()) {
-                    this.entityWorld.destroyBlock(blockpos, false);
+                    this.entityWorld.destroyBlock(this.testpos, false);
                 }
                 this.taskOwner.addHunger(16);
                 this.taskOwner.eatGrassBonus();
             } else {
-                BlockPos blockpos1 = blockpos.down();
+                BlockPos blockpos1 = this.testpos.down();
                 if (this.entityWorld.getBlockState(blockpos1).getBlock() == Blocks.GRASS_BLOCK) {
                     if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entityWorld, this.taskOwner)) {
                         this.entityWorld.playEvent(2001, blockpos1, Block.getStateId(Blocks.GRASS_BLOCK.getDefaultState()));

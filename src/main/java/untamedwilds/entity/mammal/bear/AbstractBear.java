@@ -116,10 +116,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
                         this.setSitting(false);
                     }
                     if (i == 2 && this.canMove() && !this.isInWater() && !this.isChild()) {
-                        if (this.isSitting()) {
-                            this.setAnimation(ATTACK_POUND);
-                        }
-                        else {
+                        if (!this.isSitting()) {
                             this.setAnimation(IDLE_STAND);
                         }
                     }

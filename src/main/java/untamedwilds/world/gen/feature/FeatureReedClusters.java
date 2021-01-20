@@ -24,8 +24,8 @@ public class FeatureReedClusters extends Feature<NoFeatureConfig> {
         boolean flag = false;
 
         for(int i = 0; i < 64; ++i) {
-            BlockPos blockpos = pos.add(rand.nextInt(6) - rand.nextInt(6), rand.nextInt(2) - rand.nextInt(3), rand.nextInt(3) - rand.nextInt(6));
-            if(blockpos.getY() < world.getWorld().getHeight() - 1 && world.getBlockState(blockpos.down()).getBlock().isIn(UTBlockTags.REEDS_PLANTABLE_ON)) {
+            BlockPos blockpos = pos.add(rand.nextInt(6) - rand.nextInt(6), rand.nextInt(2) - rand.nextInt(2), rand.nextInt(6) - rand.nextInt(6));
+            if(world.getBlockState(blockpos.down()).getBlock().isIn(UTBlockTags.REEDS_PLANTABLE_ON)) {
                 if(world.isAirBlock(blockpos) || (world.getBlockState(blockpos).getBlock() == Blocks.WATER && world.isAirBlock(blockpos.up()))) {
                     int height = rand.nextInt(4);
                     for (int j = 0; j <= height; ++j) {

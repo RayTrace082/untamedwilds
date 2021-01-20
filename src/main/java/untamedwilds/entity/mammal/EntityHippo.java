@@ -5,8 +5,6 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.*;
@@ -60,12 +58,11 @@ public class EntityHippo extends ComplexMobAmphibious {
     public void registerGoals() {
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1.4D, false));
         this.goalSelector.addGoal(3, new SmartMateGoal(this, 0.8D));
-        this.goalSelector.addGoal(3, new GrazeGoal(this, 100));
+        this.goalSelector.addGoal(3, new GrazeGoal(this, 10));
         this.goalSelector.addGoal(4, new AmphibiousTransition(this, 1.1D));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, 120, 0, false));
         this.goalSelector.addGoal(5, new AmphibiousRandomSwimGoal(this, 1, 120));
-        this.goalSelector.addGoal(6, new LookAtGoal(this, LivingEntity.class, 10.0F));
-        this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
         this.targetSelector.addGoal(3, new HippoTerritorialityTargetGoal<>(this, LivingEntity.class, true, false, input -> !(input instanceof EntityHippo || this.getEcoLevel(input) < 5)));
     }
