@@ -123,7 +123,7 @@ public class Sunfish extends ComplexMobAquatic implements ISpecies {
         return 99;
     }
 
-    public String getSpeciesName() { return new TranslationTextComponent("entity.untamedwilds.sunfish_" + this.getRawSpeciesName()).getUnformattedComponentText(); }
+    public String getSpeciesName() { return new TranslationTextComponent("entity.untamedwilds.sunfish_" + this.getRawSpeciesName()).getString(); }
     public String getRawSpeciesName() { return Sunfish.SpeciesSunfish.values()[this.getSpecies()].name().toLowerCase(); }
 
     public enum SpeciesSunfish implements IStringSerializable {

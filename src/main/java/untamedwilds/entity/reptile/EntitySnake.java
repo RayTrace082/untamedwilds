@@ -174,7 +174,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
         return EntitySnake.SpeciesSnake.getSpeciesByBiome(biome);
     }
 
-    public String getSpeciesName() { return new TranslationTextComponent("item.untamedwilds.snake_" + this.getRawSpeciesName()).getUnformattedComponentText(); }
+    public String getSpeciesName() { return new TranslationTextComponent("item.untamedwilds.snake_" + this.getRawSpeciesName()).getString(); }
     public String getRawSpeciesName() { return EntitySnake.SpeciesSnake.values()[this.getSpecies()].name().toLowerCase(); }
 
     public boolean isRattler() { return SpeciesSnake.values()[this.getSpecies()].isRattler(); }

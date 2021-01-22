@@ -35,7 +35,7 @@ public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
     public AdvancedModelBox leg_right_2;
     public AdvancedModelBox leg_left_2;
 
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelHippo() {
         this.textureWidth = 128;

@@ -7,6 +7,7 @@ public class ConfigMobControl {
     public static ForgeConfigSpec.BooleanValue addBear;
     public static ForgeConfigSpec.BooleanValue addBigCat;
     public static ForgeConfigSpec.BooleanValue addHippo;
+    public static ForgeConfigSpec.BooleanValue addAardvark;
     public static ForgeConfigSpec.BooleanValue addSnake;
     public static ForgeConfigSpec.BooleanValue addSoftshellTurtle;
     public static ForgeConfigSpec.BooleanValue addSunfish;
@@ -21,6 +22,7 @@ public class ConfigMobControl {
         addBear = server.comment("Controls whether to add Bears and their associated items.").define("mobcontrol.bear", true);
         addBigCat = server.comment("Controls whether to add Big Cats and their associated items.").define("mobcontrol.bigcat", true);
         addHippo = server.comment("Controls whether to add Hippos and their associated items.").define("mobcontrol.hippo", true);
+        addAardvark = server.comment("Controls whether to add Aardvarks and their associated items.").define("mobcontrol.aardvark", true);
 
         addSnake = server.comment("Controls whether to add Snakes and their associated items.").define("mobcontrol.snake", true);
         addSoftshellTurtle = server.comment("Controls whether to add Softshell Turtles and their associated items.").define("mobcontrol.softshell_turtle", true);

@@ -157,7 +157,7 @@ public class GiantClam extends ComplexMob implements ISpecies {
         }
         return 99;
     }
-    public String getSpeciesName() { return new TranslationTextComponent("item.untamedwilds.giant_clam_" + this.getRawSpeciesName()).getUnformattedComponentText(); }
+    public String getSpeciesName() { return new TranslationTextComponent("item.untamedwilds.giant_clam_" + this.getRawSpeciesName()).getString(); }
     public String getRawSpeciesName() { return SpeciesGiantClam.values()[this.getSpecies()].name().toLowerCase(); }
 
     public boolean canBeTargeted() { return false; }

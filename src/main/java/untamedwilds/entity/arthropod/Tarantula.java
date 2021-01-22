@@ -166,7 +166,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
         }
         return SpeciesTarantula.getSpeciesByBiome(biome);
     }
-    public String getSpeciesName() { return new TranslationTextComponent("item.untamedwilds.tarantula_" + this.getRawSpeciesName()).getUnformattedComponentText(); }
+    public String getSpeciesName() { return new TranslationTextComponent("item.untamedwilds.tarantula_" + this.getRawSpeciesName()).getString(); }
     public String getRawSpeciesName() { return SpeciesTarantula.values()[this.getSpecies()].name().toLowerCase(); }
 
     public enum SpeciesTarantula implements IStringSerializable {

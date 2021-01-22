@@ -169,7 +169,7 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         return SpeciesSoftshellTurtle.getSpeciesByBiome(biome);
     }
     public String getSpeciesName() {
-        return new TranslationTextComponent("item.untamedwilds.softshell_turtle_" + this.getRawSpeciesName()).getUnformattedComponentText();
+        return new TranslationTextComponent("item.untamedwilds.softshell_turtle_" + this.getRawSpeciesName()).getString();
     }
 
     public String getRawSpeciesName() { return SpeciesSoftshellTurtle.values()[this.getSpecies()].name().toLowerCase(); }

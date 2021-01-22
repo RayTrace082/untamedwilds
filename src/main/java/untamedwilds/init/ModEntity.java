@@ -26,6 +26,7 @@ import untamedwilds.client.render.*;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.arthropod.Tarantula;
 import untamedwilds.entity.fish.Sunfish;
+import untamedwilds.entity.mammal.EntityAardvark;
 import untamedwilds.entity.mammal.EntityHippo;
 import untamedwilds.entity.mammal.bear.*;
 import untamedwilds.entity.mammal.bigcat.*;
@@ -61,6 +62,7 @@ public class ModEntity {
 
     // Mammals
     public static EntityType<EntityHippo> HIPPO = createEntity(ConfigMobControl.addHippo.get(), EntityHippo::new,  "hippo",  1.8F, 1.8F, 0x463A31, 0x956761, animalType.APEX_PRED, 1);
+    public static EntityType<EntityAardvark> AARDVARK = createEntity(ConfigMobControl.addAardvark.get(), EntityAardvark::new,  "aardvark",  0.9F, 0.9F, 0x463A31, 0x956761, animalType.CRITTER, 2);
     // Bears
     public static EntityType<BlackBear> BLACK_BEAR = createEntity(ConfigMobControl.addBear.get(), BlackBear::new,  "bear_black",  1.3F, 1.3F, 0x0B0A08, 0x3D3226, animalType.APEX_PRED, 1);
     public static EntityType<BlindBear> BLIND_BEAR = createEntity(ConfigMobControl.addBear.get(), BlindBear::new,  "bear_blind",  1.6F, 1.6F, 0x241D1B, 0x4B3B35, animalType.LARGE_UNDERGROUND, 1);
@@ -143,6 +145,7 @@ public class ModEntity {
         GlobalEntityTypeAttributes.put(GIANT_CLAM, GiantClam.registerAttributes().create());
 
         GlobalEntityTypeAttributes.put(HIPPO, EntityHippo.registerAttributes().create());
+        GlobalEntityTypeAttributes.put(AARDVARK, EntityAardvark.registerAttributes().create());
         GlobalEntityTypeAttributes.put(BLACK_BEAR, BlackBear.registerAttributes().create());
         GlobalEntityTypeAttributes.put(BROWN_BEAR, BrownBear.registerAttributes().create());
         GlobalEntityTypeAttributes.put(CAVE_BEAR, CaveBear.registerAttributes().create());
@@ -189,6 +192,9 @@ public class ModEntity {
         }
         if (ConfigMobControl.addHippo.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.HIPPO, manager -> new RendererHippo(manager, new ModelHippo(), 1f));
+        }
+        if (ConfigMobControl.addAardvark.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.AARDVARK, manager -> new RendererAardvark(manager, new ModelAardvark(), 0.4f));
         }
         if (ConfigMobControl.addBear.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));

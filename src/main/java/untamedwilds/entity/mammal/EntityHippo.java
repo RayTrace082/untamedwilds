@@ -60,6 +60,7 @@ public class EntityHippo extends ComplexMobAmphibious {
         this.goalSelector.addGoal(3, new SmartMateGoal(this, 0.8D));
         this.goalSelector.addGoal(3, new GrazeGoal(this, 10));
         this.goalSelector.addGoal(4, new AmphibiousTransition(this, 1.1D));
+        this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D, true));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, 120, 0, false));
         this.goalSelector.addGoal(5, new AmphibiousRandomSwimGoal(this, 1, 120));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
@@ -78,9 +79,7 @@ public class EntityHippo extends ComplexMobAmphibious {
     }
 
     public boolean isActive() {
-        if (this.forceSleep < 0) {
-            return false;
-        }
+        super.isActive();
         float f = this.world.getCelestialAngleRadians(0F);
         return (f > 0.21F && f < 0.78F);
     }
@@ -203,7 +202,7 @@ public class EntityHippo extends ComplexMobAmphibious {
     public ResourceLocation getTexture() { return TEXTURE; }
     protected int getOffspring() { return 1; }
 
-    // Species available, referenced to properly distribute Bears in the world
+    // Species available, referenced to properly distribute Hippos in the world
     public enum SpeciesHippo implements IStringSerializable {
 
         COMMON		(ModEntity.HIPPO, 1, Biome.Category.SWAMP, Biome.Category.SAVANNA);
