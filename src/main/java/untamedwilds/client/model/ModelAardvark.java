@@ -225,7 +225,7 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
             this.eye_left.setRotationPoint(0.51F, -1.0F, -3.0F);
         }
         if (hippo.isInWater() && !hippo.isOnGround()) {
-            float pitch = MathHelper.clamp(hippo.rotationPitch, -45F, 45.0F) - 10;
+            float pitch = MathHelper.clamp(hippo.rotationPitch, -20F, 20.0F) - 10;
             this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 
@@ -243,9 +243,23 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
         walk(head_neck, 0.4f * globalSpeed, 0.03f, false, 2.4F, 0.08F, ageInTicks / 20, 2);
         walk(head_head, 0.4f * globalSpeed, 0.03f, false, 2.8F, 0.06F, ageInTicks / 20, 2);
         this.head_snout.setScale((float) (1.0F + Math.sin(ageInTicks / 6) * 0.08F + Math.sin(ageInTicks / 2) * 0.1F), (float) (1.0F + Math.sin(ageInTicks / 8) * 0.04F), 1.0F);
-        flap(body_tail_1, 0.4f * globalSpeed, 0.2f * globalDegree, true, 0F, 0f, ageInTicks / 6, 2);
-        flap(body_tail_2, 0.4f * globalSpeed, 0.2f * globalDegree, true, 0.5F, 0f, ageInTicks / 6, 2);
-        flap(body_tail_3, 0.4f * globalSpeed, 0.2f * globalDegree, true, 1.0F, 0f, ageInTicks / 6, 2);
+
+        // Sleeping Animation
+        if (hippo.sleepProgress > 0) {
+            this.progressPosition(body_main, hippo.sleepProgress, -3.0F, 21F, -5.0F, 40);
+            this.progressRotation(body_main, hippo.sleepProgress, (float)Math.toRadians(20.87F), 0.0F, (float)Math.toRadians(-91.30), 40);
+            this.progressRotation(head_neck, hippo.sleepProgress, (float)Math.toRadians(26.09), (float)Math.toRadians(15.65), 0, 40);
+            this.progressRotation(arm_left_1, hippo.sleepProgress, (float)Math.toRadians(5.22), 0, (float)Math.toRadians(23.48), 40);
+            this.progressRotation(leg_left_1, hippo.sleepProgress, (float)Math.toRadians(10.43), 0, (float)Math.toRadians(36.52), 40);
+            this.progressRotation(body_tail_1, hippo.sleepProgress, (float)Math.toRadians(-31.30), 0, (float)Math.toRadians(23.48), 40);
+            this.progressRotation(body_tail_2, hippo.sleepProgress, (float)Math.toRadians(-39.13), 0, (float)Math.toRadians(-10.43), 40);
+            this.progressRotation(body_tail_3, hippo.sleepProgress, (float)Math.toRadians(-52.17), 0, (float)Math.toRadians(23.48), 40);
+        }
+        else {
+            flap(body_tail_1, 0.4f * globalSpeed, 0.2f * globalDegree, true, 0F, 0f, ageInTicks / 6, 2);
+            flap(body_tail_2, 0.4f * globalSpeed, 0.2f * globalDegree, true, 0.5F, 0f, ageInTicks / 6, 2);
+            flap(body_tail_3, 0.4f * globalSpeed, 0.2f * globalDegree, true, 1.0F, 0f, ageInTicks / 6, 2);
+        }
 
         if (hippo.canMove()) {
             if (hippo.getSpeed() > 0.1f || hippo.isAngry() || hippo.isRunning()) { // Running animation

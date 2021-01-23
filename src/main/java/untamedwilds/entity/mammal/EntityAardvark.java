@@ -51,6 +51,7 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.3D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 4));
+        this.goalSelector.addGoal(3, new GotoSleepGoal(this, 1));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, 120, 0, false));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
