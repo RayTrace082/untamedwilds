@@ -77,7 +77,7 @@ public final class FaunaSpawn {
             int i = pos.getX() + rand.nextInt(16);
             int j = pos.getZ() + rand.nextInt(16);
 
-            if (true /*rand.nextFloat() < biomeIn.getSpawningChance()*/) { // TODO: Implement a "Biodiversity" parameter to Biomes to further scale the amount of mob spawns
+            if (rand.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(worldIn.getBiome(pos).getRegistryName())) {
                 int k = 1;
                 if (groupSize != 1) {
                     k = 1 + rand.nextInt(groupSize);

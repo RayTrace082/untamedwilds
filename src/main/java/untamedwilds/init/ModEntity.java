@@ -48,7 +48,6 @@ import java.util.Map;
 public class ModEntity {
     private final static List<EntityType<?>> entities = Lists.newArrayList();
     private final static List<Item> spawnEggs = Lists.newArrayList();
-    private static final Gson field_240591_b_ = new Gson();
     public static final Map<String, Integer> eco_levels = new java.util.HashMap<>();
 
     // Arthropods
@@ -249,7 +248,7 @@ public class ModEntity {
 
     private static void readEcoLevels() {
         try (InputStream inputstream = LanguageMap.class.getResourceAsStream("/data/untamedwilds/eco_levels.json")) {
-            JsonObject jsonobject = field_240591_b_.fromJson(new InputStreamReader(inputstream, StandardCharsets.UTF_8), JsonObject.class);
+            JsonObject jsonobject = new Gson().fromJson(new InputStreamReader(inputstream, StandardCharsets.UTF_8), JsonObject.class);
 
             for(Map.Entry<String, JsonElement> entry : jsonobject.entrySet()) {
                 eco_levels.put(entry.getKey(), entry.getValue().getAsInt());

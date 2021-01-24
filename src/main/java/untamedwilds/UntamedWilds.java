@@ -61,6 +61,7 @@ public class UntamedWilds {
         CompatBridge.RegisterCompat();
         MinecraftForge.EVENT_BUS.register(ModVillagerTrades.class); // Custom Villager Trades
         MinecraftForge.EVENT_BUS.register(UntamedWildsGenerator.class); // Custom Biome Features
+        UntamedWildsGenerator.readBioDiversityLevels();
     }
 
     private void setupCommon(final FMLCommonSetupEvent event) {

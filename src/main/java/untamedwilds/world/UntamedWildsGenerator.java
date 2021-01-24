@@ -1,6 +1,11 @@
 package untamedwilds.world;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.LanguageMap;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.*;
@@ -16,12 +21,18 @@ import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigFeatureControl;
 import untamedwilds.world.gen.feature.*;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = UntamedWilds.MOD_ID)
 public class UntamedWildsGenerator {
 
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, UntamedWilds.MOD_ID);
+    public static final Map<String, Float> biodiversity_levels = new java.util.HashMap<>();
     //public static final DeferredRegister<TreeDecoratorType<?>> TREE_DECORATION = DeferredRegister.create(ForgeRegistries.TREE_DECORATOR_TYPES, UntamedWilds.MOD_ID);
 
     private static final RegistryObject<Feature<FeatureSpreadConfig>> SEA_ANEMONE = regFeature("sea_anemone", () -> new FeatureSeaAnemone(FeatureSpreadConfig.CODEC));
@@ -48,8 +59,8 @@ public class UntamedWildsGenerator {
     public static void onBiomesLoad(BiomeLoadingEvent event) {
         // Thanks Mojang, very cool 😎
         if (event.getCategory() == Biome.Category.OCEAN) {
-            registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SESSILE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(4), SESSILE.get().getRegistryName());
-            registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, OCEAN_RARE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(20), OCEAN_RARE.get().getRegistryName());
+            registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SESSILE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(3), SESSILE.get().getRegistryName());
+            registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, OCEAN_RARE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(16), OCEAN_RARE.get().getRegistryName());
             if (!event.getName().toString().equals("minecraft:frozen_ocean") && !event.getName().toString().equals("minecraft:deep_frozen_ocean")) {
                 if (ConfigFeatureControl.addAnemones.get()) {
                     registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, SEA_ANEMONE.get().withConfiguration(new FeatureSpreadConfig(4)).withPlacement(Features.Placements.PATCH_PLACEMENT).chance(12), SEA_ANEMONE.get().getRegistryName());
@@ -61,9 +72,9 @@ public class UntamedWildsGenerator {
                 registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(ConfigFeatureControl.loadsOfReeds.get() ? Features.Placements.KELP_PLACEMENT : Features.Placements.PATCH_PLACEMENT).chance(1), REEDS.get().getRegistryName());
             }
         }
-        event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.1F)).chance(10)));
-        event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(30));
-        event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(2));
+        event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.1F)).chance(8)));
+        event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(24));
+        event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(1));
     }
 
     private static void registerFeature(BiomeLoadingEvent event, GenerationStage.Decoration decoration, ConfiguredFeature<?, ?> feature, ResourceLocation name) {
@@ -71,5 +82,28 @@ public class UntamedWildsGenerator {
             UntamedWilds.LOGGER.info("Adding feature " + name + " to biome " + event.getName());
         }
         event.getGeneration().withFeature(decoration, feature);
+    }
+
+    public static void readBioDiversityLevels() {
+        try (InputStream inputstream = LanguageMap.class.getResourceAsStream("/data/untamedwilds/tags/biodiversity_levels.json")) {
+            JsonObject jsonobject = new Gson().fromJson(new InputStreamReader(inputstream, StandardCharsets.UTF_8), JsonObject.class);
+
+            for(Map.Entry<String, JsonElement> entry : jsonobject.entrySet()) {
+                biodiversity_levels.put(entry.getKey(), entry.getValue().getAsFloat());
+            }
+        } catch (JsonParseException | IOException ioexception) {
+            UntamedWilds.LOGGER.error("Couldn't read data from /data/untamedwilds/tags/biodiversity_levels.json", ioexception);
+        }
+    }
+
+    // Returns the biodiversity level of a biome. Values are data-driven, defaulting to 0.6 if no key is found.
+    public static float getBioDiversityLevel(ResourceLocation biome) {
+        String key = biome.toString();
+        // UntamedWilds.LOGGER.info(key);
+        if (biodiversity_levels.containsKey(key)) {
+            // UntamedWilds.LOGGER.info("Gottem " + biodiversity_levels.get(key));
+            return biodiversity_levels.get(key);
+        }
+        return 0.6F;
     }
 }
