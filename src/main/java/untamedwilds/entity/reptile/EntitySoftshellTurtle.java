@@ -73,7 +73,7 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
 
     public void onDeath(DamageSource cause) {
         if (cause == DamageSource.ANVIL && !this.isChild()) {
-            // TODO: "Unethical Soup" Advancement trigger here
+            // Advancement Trigger: "Unethical Soup"
             ItemEntity entityitem = this.entityDropItem(new ItemStack(ModItems.FOOD_TURTLE_SOUP.get()), 0.2F);
             if (entityitem != null) {
                 entityitem.getItem().setCount(1);

@@ -8,6 +8,7 @@ import com.google.gson.JsonParseException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -121,7 +122,6 @@ public class ModEntity {
 
             spawnEggs.add(registerEntitySpawnEgg(type, name, maincolor, backcolor));
             type.setRegistryName(name);
-            // TODO: Maybe bake attributes here if possible?
             entities.add(type);
             if (ConfigMobControl.masterSpawner.get()) {
                 addWorldSpawn(type, weight, spawnType, groupCount);
@@ -133,6 +133,10 @@ public class ModEntity {
 
     private static Item registerEntitySpawnEgg(EntityType<?> type, String name, int maincolor, int backcolor) {
         return new SpawnEggItem(type, maincolor, backcolor, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(name + "_spawn_egg");
+    }
+
+    public static <T extends LivingEntity> void bakeAttribute(EntityType<? extends LivingEntity> ent) {
+        GlobalEntityTypeAttributes.put(ent, T.registerAttributes().create());
     }
 
     public static void bakeAttributes() {

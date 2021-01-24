@@ -25,7 +25,7 @@ public class SmartOwnerHurtTargetGoal extends TargetGoal {
     }
 
     public boolean shouldExecute() {
-        if (this.tameable.isTamed() && !this.tameable.isSleeping() && !this.tameable.isChild()) { // TODO: ???
+        if (this.tameable.isTamed() && !this.tameable.isSleeping() && !this.tameable.isChild()) {
             LivingEntity owner = this.tameable.getOwner();
             if (owner == null) {
                 return false;
