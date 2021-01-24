@@ -164,7 +164,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
     }
     public int getAdulthoodTime() { return GROWING; }
 
-    public boolean isBreedingItem(ItemStack stack) { return stack.getItem() == Items.RABBIT; } //TODO: Rat meat from Rats mod?
+    public boolean isBreedingItem(ItemStack stack) { return stack.getItem() == Items.RABBIT; }
 
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomeKey, Biome biome, SpawnReason reason) {

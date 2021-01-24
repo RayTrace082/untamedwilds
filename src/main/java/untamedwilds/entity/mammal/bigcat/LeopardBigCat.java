@@ -97,7 +97,7 @@ public class LeopardBigCat extends AbstractBigCat {
     protected ResourceLocation getLootTable() {
         return ModLootTables.BIGCAT_LOOT_LEOPARD;
     }
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.PORKCHOP; } // TODO: Replace with Venison meat if Gazelles are ever added
+    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.PORKCHOP; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }
     public int getAdulthoodTime() { return GROWING; }

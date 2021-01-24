@@ -157,7 +157,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
     }
     public int getAdulthoodTime() { return GROWING; }
 
-    public boolean isBreedingItem(ItemStack stack) { return stack.getItem() == Items.CHICKEN; } //TODO: Make this some kind of meat
+    public boolean isBreedingItem(ItemStack stack) { return stack.getItem() == Items.CHICKEN; }
 
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {

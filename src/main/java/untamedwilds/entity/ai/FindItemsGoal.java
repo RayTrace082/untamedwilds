@@ -19,7 +19,7 @@ public class FindItemsGoal extends Goal  {
     private ItemEntity targetItem;
     private Item targetItemStack;
     private final int executionChance;
-    private final boolean hyperCarnivore; // Not a TODO; but consider moving diets to ItemTags for more customization
+    private final boolean hyperCarnivore;
     private final boolean hyperHerbivore;
 
     public FindItemsGoal(ComplexMobTerrestrial creature, int distance) {

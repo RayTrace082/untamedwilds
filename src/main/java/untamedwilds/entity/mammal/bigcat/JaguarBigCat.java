@@ -98,7 +98,7 @@ public class JaguarBigCat extends AbstractBigCat {
     protected ResourceLocation getLootTable() {
         return ModLootTables.BIGCAT_LOOT_JAGUAR;
     }
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.PORKCHOP; } // TODO: Replace with Capybara meat if they are ever added
+    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.PORKCHOP; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }
     public int getAdulthoodTime() { return GROWING; }
