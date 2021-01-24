@@ -518,7 +518,7 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat>
 
         // Controls the moving animations
         if (big_cat.canMove()) {
-            if (big_cat.getSpeed() > 0.1f || big_cat.isAngry() || big_cat.isRunning()) { // Running animation
+            if (big_cat.getSpeed() > 0.1f || big_cat.isAngry()) { // Running animation
                 //walk(body_main, 0.5f * globalSpeed, 0.6f * globalDegree, true, -0.5F, 0f, limbSwing, limbSwingAmount);
                 bob(body_main, 0.5F * globalSpeed, 0.5F, false, limbSwing, limbSwingAmount);
                 walk(body_main, 0.5f * globalSpeed, 0.5f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);

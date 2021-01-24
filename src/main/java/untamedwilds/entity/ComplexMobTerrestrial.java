@@ -43,7 +43,6 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
     protected int tiredCounter = 0;
     protected int buoyancy = 1;
     private static final DataParameter<Integer> HUNGER = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> IS_RUNNING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN); // TODO: Deprecated, may be redundant if we use Speed to determine the running state
     private int animationTick;
     private Animation currentAnimation;
     public float turn_speed = 0.2F;
@@ -58,7 +57,6 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
     protected void registerData(){
         super.registerData();
         this.dataManager.register(HUNGER, 79); // One point less than the breeding threshold
-        this.dataManager.register(IS_RUNNING, false);
     }
 
     public void livingTick() {
@@ -108,9 +106,6 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
         } else if (!this.isSleeping() && this.sleepProgress > 0) {
             this.sleepProgress--;
         }
-        if (this.isRunning() && !world.isRemote && this.isNotMoving()) {
-            this.setRunning(false);
-        }
         super.livingTick();
     }
 
@@ -149,8 +144,6 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
 
     public boolean shouldRenderEyes() { return !this.isSleeping() && !this.dead && !this.isBlinking() && this.hurtTime == 0; }
 
-    public void setRunning(boolean running){ this.dataManager.set(IS_RUNNING, running); }
-    public boolean isRunning(){ return (this.dataManager.get(IS_RUNNING)); }
     public boolean canMove() { return !this.isSitting() && !this.isSleeping(); }
 
     private void setHunger(int hunger){
@@ -324,7 +317,6 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
         compound.putInt("SleepingTicks", this.forceSleep);
         compound.putBoolean("Sitting", this.isSitting());
         compound.putInt("Hunger", this.getHunger());
-        compound.putBoolean("isRunning", this.isRunning());
     }
 
     public void readAdditional(CompoundNBT compound){
@@ -333,7 +325,6 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
         this.forceSleep = compound.getInt("SleepingTicks");
         this.setSitting(compound.getBoolean("Sitting"));
         this.setHunger(compound.getInt("Hunger"));
-        this.setRunning(compound.getBoolean("isRunning"));
     }
 
     static class MoveHelperController extends MovementController {

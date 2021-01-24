@@ -16,6 +16,7 @@ import untamedwilds.UntamedWilds;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public final class FaunaSpawn {
@@ -77,7 +78,7 @@ public final class FaunaSpawn {
             int i = pos.getX() + rand.nextInt(16);
             int j = pos.getZ() + rand.nextInt(16);
 
-            if (rand.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(worldIn.getBiome(pos).getRegistryName())) {
+            if (rand.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(Objects.requireNonNull(worldIn.getBiome(pos).getRegistryName()))) {
                 int k = 1;
                 if (groupSize != 1) {
                     k = 1 + rand.nextInt(groupSize);

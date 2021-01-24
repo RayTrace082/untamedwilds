@@ -77,7 +77,7 @@ public class SmartWanderHerdGoal extends Goal {
 
     public void startExecuting() {
         if (this.creature.getRNG().nextInt(100) < this.runChance) {
-            this.creature.setRunning(true);
+            //this.creature.setRunning(true);
             this.creature.getNavigator().tryMoveToXYZ(this.x, this.y, this.z, this.speed * 1.8f);
         }
         else {

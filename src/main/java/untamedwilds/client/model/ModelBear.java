@@ -515,7 +515,7 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
         // Controls the moving animations
         if (bear.canMove()) {
             // Running animation
-            if (bear.getSpeed() > 0.08f || bear.isAngry() || bear.isRunning()) {
+            if (bear.getSpeed() > 0.08f || bear.isAngry()) {
                 walk(body_main, 0.5f * globalSpeed, 0.6f * globalDegree, true, -0.5F, 0f, limbSwing, limbSwingAmount);
                 flap(body_torso, 0.5f * globalSpeed, 0.2f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
                 flap(body_buttocks, 0.5f * globalSpeed, 0.2f * globalDegree, false, 0.5F, 0f, limbSwing, limbSwingAmount);

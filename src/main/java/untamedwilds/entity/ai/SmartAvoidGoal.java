@@ -32,7 +32,7 @@ public class SmartAvoidGoal <T extends LivingEntity> extends AvoidEntityGoal<T> 
         if (this.entity instanceof ComplexMob) {
             this.taskOwner = (ComplexMob)this.entity;
         }
-        if (this.taskOwner.getAttackTarget() != null || this.taskOwner.isSleeping()) {
+        if (this.taskOwner.getAttackTarget() != null || this.taskOwner.isSleeping() || this.taskOwner.isTamed()) {
             return false;
         }
         List<T> list;
