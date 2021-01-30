@@ -113,7 +113,7 @@ public class Sunfish extends ComplexMobAquatic implements ISpecies {
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (biomekey.equals(Biomes.DEEP_LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_OCEAN) || biomekey.equals(Biomes.DEEP_COLD_OCEAN)) {
             //if (ConfigGamerules.randomSpecies.get()) {
-                return this.rand.nextInt(Sunfish.SpeciesSunfish.values().length);
+            return this.rand.nextInt(Sunfish.SpeciesSunfish.values().length);
             //}
             //return Sunfish.SpeciesSunfish.getSpeciesByBiome(biome);
         }

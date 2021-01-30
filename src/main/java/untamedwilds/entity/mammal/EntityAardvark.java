@@ -54,7 +54,7 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
         this.goalSelector.addGoal(3, new GotoSleepGoal(this, 1));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, 120, 0, false));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -98,7 +98,7 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
             if (i == 14 && this.isSitting()) {
                 this.setSitting(false);
             }
-            if (i > 2950 && !this.isInWater() && this.getHunger() < 60 && this.canMove() && this.getAnimation() == NO_ANIMATION) {
+            if (i > (2980 - (100 - this.getHunger())) && !this.isInWater() && this.getHunger() < 60 && this.canMove() && this.getAnimation() == NO_ANIMATION) {
                 if (this.world.getBlockState(this.getPosition().down()).getHarvestTool() == ToolType.SHOVEL) {
                     this.setAnimation(WORK_DIG);
                 }

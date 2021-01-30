@@ -59,7 +59,7 @@ public class RaidCropsGoal extends Goal {
         if (this.targetPos != null && this.taskOwner.getDistanceSq(targetPos.getX(), targetPos.getY(), targetPos.getZ()) < 4) {
             BlockState block = this.taskOwner.world.getBlockState(this.targetPos);
             if (block.getBlock() instanceof CropsBlock) {
-                LootContext.Builder loot = new LootContext.Builder((ServerWorld)taskOwner.world).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withParameter(LootParameters.field_237457_g_, taskOwner.getPositionVec()).withRandom(this.taskOwner.getRNG()).withLuck((float)1.0F);
+                LootContext.Builder loot = new LootContext.Builder((ServerWorld)taskOwner.world).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withParameter(LootParameters.field_237457_g_, taskOwner.getPositionVec()).withRandom(this.taskOwner.getRNG()).withLuck(1.0F);
                 List<ItemStack> drops = block.getBlock().getDrops(block, loot);
                 if (!drops.isEmpty()) {
                     int count = 0;

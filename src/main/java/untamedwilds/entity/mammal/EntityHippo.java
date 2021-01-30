@@ -123,7 +123,7 @@ public class EntityHippo extends ComplexMobAmphibious {
             }
             if (this.getAnimation() == ATTACK && this.getAttackTarget() != null && this.getBoundingBox().grow(1.2F, 1.0F, 1.2F).contains(this.getAttackTarget().getPositionVec()) && (this.getAnimationTick() > 8)) {
                 LivingEntity target = this.getAttackTarget();
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * 1F);
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
                 EntityUtils.destroyBoat(this.world, target);
             }
             this.setAngry(this.getAttackTarget() != null);

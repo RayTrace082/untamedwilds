@@ -31,6 +31,7 @@ public class UntamedWilds {
     // TODO: Make use of Tags to make animal's diets data-driven?
     // TODO: Remove Panther, replace it with black skins for Jaguar/Leopard
     // TODO: Define list of diggables, maybe extend it to it's own weighted list and include Truffles and funsies
+    // TODO: setupTamedAI() function is promising to trim unnecessary tasks from Tameable Mobs
     // BUG: It's possible to catch ghost entities in Cage Traps if a mob touches multiple boxes in the same tick (eg. 2x2 mob falling into a pit full of Cages)
 
     public static final Logger LOGGER = LogManager.getLogger();

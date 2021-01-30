@@ -8,9 +8,9 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class FollowParentGoal extends Goal {
-    private ComplexMob taskOwner;
+    private final ComplexMob taskOwner;
     private ComplexMob parentAnimal;
-    private double moveSpeed;
+    private final double moveSpeed;
     private int delayCounter;
 
     public FollowParentGoal(ComplexMob entityIn, double speedIn) {

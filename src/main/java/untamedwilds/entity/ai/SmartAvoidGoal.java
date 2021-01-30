@@ -14,7 +14,6 @@ import java.util.function.Predicate;
 public class SmartAvoidGoal <T extends LivingEntity> extends AvoidEntityGoal<T> {
 
     protected ComplexMob taskOwner;
-    protected LivingEntity entityToAvoid;
     private final Predicate<? super T> targetEntitySelector;
     private static final Predicate<Entity> SHOULD_AVOID = (entity) -> !entity.isDiscrete() && EntityPredicates.CAN_AI_TARGET.test(entity);
 
