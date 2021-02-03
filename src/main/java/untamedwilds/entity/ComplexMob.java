@@ -1,5 +1,6 @@
 package untamedwilds.entity;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
@@ -8,13 +9,16 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.Hand;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
@@ -271,6 +275,26 @@ public abstract class ComplexMob extends TameableEntity {
         }
     }
 
+    // This function replaces a given ItemStack with a new item with item_name registry name, and removes the entity from the world
+    protected void mutateEntityIntoItem(PlayerEntity player, Hand hand, String item_name, ItemStack itemstack) {
+        this.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
+        itemstack.shrink(1);
+        ItemStack newitem = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase())));
+        newitem.setTag(this.writeEntityToNBT(this));
+        if (this.hasCustomName()) {
+            newitem.setDisplayName(this.getCustomName());
+        }
+        if (!this.world.isRemote) {
+            CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity)player, newitem);
+        }
+        if (itemstack.isEmpty()) {
+            player.setHeldItem(hand, newitem);
+        } else if (!player.inventory.addItemStackToInventory(newitem)) {
+            player.dropItem(newitem, false);
+        }
+        this.remove();
+    }
+
     @Nullable
     @Override
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
@@ -297,7 +321,7 @@ public abstract class ComplexMob extends TameableEntity {
             if (this instanceof IPackEntity) {
                 this.initPack();
             }
-            worldIn.func_242417_l(this);
+            //worldIn.func_242417_l(this);
             this.setGrowingAge(0);
         }
         return spawnDataIn;

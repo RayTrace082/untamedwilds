@@ -1,6 +1,7 @@
 package untamedwilds.init;
 
 import com.google.common.collect.Lists;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.*;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
@@ -10,9 +11,11 @@ import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.arthropod.Tarantula;
 import untamedwilds.entity.fish.Sunfish;
+import untamedwilds.entity.fish.Trevally;
 import untamedwilds.entity.mollusk.GiantClam;
 import untamedwilds.entity.reptile.EntitySnake;
 import untamedwilds.entity.reptile.EntitySoftshellTurtle;
+import untamedwilds.item.ItemMobBucketed;
 import untamedwilds.item.ItemMobEgg;
 import untamedwilds.item.ItemMobSpawn;
 import untamedwilds.item.ItemOwnershipDeed;
@@ -118,6 +121,14 @@ public class ModItems {
             for (int i = 0; i < Sunfish.SpeciesSunfish.values().length; i++) {
                 int sunfishSpecies = i;
                 ModItems.ITEMS.register("egg_sunfish_" + Sunfish.SpeciesSunfish.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.SUNFISH, sunfishSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+            }
+        }
+        // Trevally Items
+        if (ConfigMobControl.addTrevally.get()) {
+            for (int i = 0; i < Trevally.SpeciesTrevally.values().length; i++) {
+                int trevallySpecies = i;
+                ModItems.ITEMS.register("egg_trevally_" + Trevally.SpeciesTrevally.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.TREVALLY, trevallySpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("bucket_trevally_" + Trevally.SpeciesTrevally.values()[i].name().toLowerCase(), () -> new ItemMobBucketed(ModEntity.TREVALLY, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), trevallySpecies, Trevally.SpeciesTrevally.values()[trevallySpecies].name().toLowerCase()));
             }
         }
     }

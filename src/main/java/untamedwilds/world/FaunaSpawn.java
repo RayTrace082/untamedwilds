@@ -13,6 +13,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorldReader;
 import untamedwilds.UntamedWilds;
+import untamedwilds.entity.ComplexMob;
+import untamedwilds.entity.ISpecies;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -80,6 +82,7 @@ public final class FaunaSpawn {
 
             if (rand.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(Objects.requireNonNull(worldIn.getBiome(pos).getRegistryName()))) {
                 int k = 1;
+                int species = -1;
                 if (groupSize != 1) {
                     k = 1 + rand.nextInt(groupSize);
                 }
@@ -110,7 +113,6 @@ public final class FaunaSpawn {
                             if (!worldIn.hasNoCollisions(entityType.getBoundingBoxWithSizeApplied(d0, pos.getY(), d1)) || !EntitySpawnPlacementRegistry.canSpawnEntity(entityType, worldIn, SpawnReason.CHUNK_GENERATION, new BlockPos(d0, pos.getY(), d1), worldIn.getRandom())) {
                                 continue;
                             }
-
                             Entity entity;
                             try {
                                 entity = entityType.create(worldIn.getWorld());
@@ -118,14 +120,24 @@ public final class FaunaSpawn {
                                 UntamedWilds.LOGGER.warn("Failed to create mob", exception);
                                 continue;
                             }
-                            assert entity != null;
+
                             entity.setLocationAndAngles(d0, y, d1, rand.nextFloat() * 360.0F, 0.0F);
-                            flag = true;
-                            MobEntity mobentity = (MobEntity)entity;
-                            if (mobentity.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(mobentity.getPosition()), SpawnReason.CHUNK_GENERATION, null, null) != null) {
-                                worldIn.func_242417_l(mobentity);
+                            if (entity instanceof MobEntity) {
+                                MobEntity mobentity = (MobEntity)entity;
+                                if (net.minecraftforge.common.ForgeHooks.canEntitySpawn(mobentity, worldIn, d0, blockpos.getY(), d1, null, SpawnReason.CHUNK_GENERATION) == -1) continue;
+                                if (mobentity.canSpawn(worldIn, SpawnReason.CHUNK_GENERATION) && mobentity.isNotColliding(worldIn)) {
+                                    ILivingEntityData ilivingentitydata = mobentity.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(mobentity.getPosition()), SpawnReason.CHUNK_GENERATION, null, null);
+                                    if (mobentity instanceof ISpecies) {
+                                        if (species == -1) {
+                                            species = ((ComplexMob)mobentity).getSpecies();
+                                        } else {
+                                            ((ComplexMob)mobentity).setSpecies(species);
+                                        }
+                                    }
+                                    worldIn.func_242417_l(mobentity);
+                                    flag = true;
+                                }
                             }
-                            net.minecraftforge.common.ForgeHooks.canEntitySpawn(mobentity, worldIn, d0, blockpos.getY(), d1, null, SpawnReason.CHUNK_GENERATION);
                         }
                     }
                 }

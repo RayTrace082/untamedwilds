@@ -27,6 +27,7 @@ import untamedwilds.client.render.*;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.arthropod.Tarantula;
 import untamedwilds.entity.fish.Sunfish;
+import untamedwilds.entity.fish.Trevally;
 import untamedwilds.entity.mammal.EntityAardvark;
 import untamedwilds.entity.mammal.EntityHippo;
 import untamedwilds.entity.mammal.bear.*;
@@ -87,6 +88,7 @@ public class ModEntity {
 
     // Fish
     public static EntityType<Sunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), Sunfish::new,  "sunfish",  1.6F, 1.6F, 0x2C545B, 0xB6D0D3, animalType.LARGE_OCEAN, 1);
+    public static EntityType<Trevally> TREVALLY = createEntity(ConfigMobControl.addTrevally.get(), Trevally::new,  "trevally",  1.0F, 1.0F, 0xA5B4AF, 0xC89D17, animalType.LARGE_OCEAN, 2, 8);
 
     @SubscribeEvent
     public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
@@ -103,6 +105,10 @@ public class ModEntity {
 
     private static <T extends Entity> EntityType<T> createEntity(boolean enable, EntityType.IFactory<T> factory, String name, float sizeX, float sizeY, int baseColor, int overlayColor, FaunaHandler.animalType spawnType, int weight) {
         return createEntity(enable, factory, EntityClassification.CREATURE, name, 64, 1, true, sizeX, sizeY, baseColor, overlayColor, spawnType, weight);
+    }
+
+    private static <T extends Entity> EntityType<T> createEntity(boolean enable, EntityType.IFactory<T> factory, String name, float sizeX, float sizeY, int baseColor, int overlayColor, FaunaHandler.animalType spawnType, int weight, int groupCount) {
+        return createEntity(enable, factory, EntityClassification.CREATURE, name, 64, 1, true, sizeX, sizeY, baseColor, overlayColor, spawnType, weight, groupCount);
     }
 
     private static <T extends Entity> EntityType<T> createEntity(boolean enable, EntityType.IFactory<T> factory, EntityClassification classification, String name, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, float sizeX, float sizeY, int maincolor, int backcolor, FaunaHandler.animalType spawnType, int weight) {
@@ -170,6 +176,7 @@ public class ModEntity {
         //GlobalEntityTypeAttributes.put(SABERTOOTH, SabertoothBigCat.registerAttributes().create());
 
         GlobalEntityTypeAttributes.put(SUNFISH, Sunfish.registerAttributes().create());
+        GlobalEntityTypeAttributes.put(TREVALLY, Trevally.registerAttributes().create());
     }
 
     @SubscribeEvent
@@ -227,6 +234,9 @@ public class ModEntity {
         if (ConfigMobControl.addSunfish.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUNFISH, manager -> new RendererSunfish(manager, new ModelSunfish(), 1f));
         }
+        if (ConfigMobControl.addTrevally.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TREVALLY, manager -> new RendererTrevally());
+        }
     }
 
     public static void addWorldSpawn(EntityType<?> entityClass, int weightedProb, FaunaHandler.animalType type, int groupCount) {
@@ -243,7 +253,7 @@ public class ModEntity {
         }
 
         if (!found)
-            spawns.add(new FaunaHandler.SpawnListEntry(entityClass, weightedProb, 1));
+            spawns.add(new FaunaHandler.SpawnListEntry(entityClass, weightedProb, groupCount));
     }
 
     private static void readEcoLevels() {

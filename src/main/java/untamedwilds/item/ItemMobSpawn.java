@@ -8,21 +8,18 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.UntamedWilds;
-import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -43,19 +40,7 @@ public class ItemMobSpawn extends Item {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (stack.getTag() != null) {
-            CompoundNBT compound = stack.getChildTag("EntityTag");
-            if (compound.contains("Gender")) {
-                if (compound.getInt("Gender") == 0) {
-                    tooltip.add((new TranslationTextComponent("mobspawn.tooltip.male")).mergeStyle(TextFormatting.GRAY));
-                }
-                else { tooltip.add((new TranslationTextComponent("mobspawn.tooltip.female")).mergeStyle(TextFormatting.GRAY)); }
-            }
-            else { tooltip.add((new TranslationTextComponent("mobspawn.tooltip.unknown")).mergeStyle(TextFormatting.GRAY)); }
-        }
-        if (ConfigGamerules.scientificNames.get()) {
-            tooltip.add(new TranslationTextComponent(entity.getTranslationKey() + "_" + this.sciname + ".sciname").mergeStyle(TextFormatting.ITALIC, TextFormatting.GRAY));
-        }
+        EntityUtils.buildTooltipData(stack, tooltip, this.entity, this.sciname);
     }
 
     @Override
@@ -71,11 +56,12 @@ public class ItemMobSpawn extends Item {
             BlockState blockState = worldIn.getBlockState(pos);
             BlockPos spawnPos = blockState.getCollisionShape(worldIn, pos).isEmpty() ? pos : pos.offset(facing);
 
-            EntityType<?> entity = this.getType(itemStack.getTag());
+            EntityType<?> entity = EntityUtils.getEntityTypeFromTag(itemStack.getTag(), this.entity);
             Entity spawn;
+            boolean doVerticalOffset = !Objects.equals(pos, spawnPos) && facing == Direction.UP;
             if (itemStack.hasTag()) {
                 if (itemStack.getTag().contains("EntityTag")) {
-                    spawn = entity.create((ServerWorld) worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, !Objects.equals(pos, spawnPos) && facing == Direction.UP);
+                    spawn = entity.spawn((ServerWorld) worldIn, itemStack, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, doVerticalOffset);
                     if (itemStack.hasDisplayName()) {
                         spawn.setCustomName(itemStack.getDisplayName());
                     }
@@ -83,13 +69,13 @@ public class ItemMobSpawn extends Item {
                     if (((ServerWorld) worldIn).getEntityByUuid(spawn.getUniqueID()) != null) {
                         UntamedWilds.LOGGER.info("Randomizing repeated UUID");
                         spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
-                        worldIn.addEntity(spawn); // Commented out because it throws an exception on the chunk tracker
+                        ((ServerWorld) worldIn).func_242417_l(spawn);
                     }
                 }
             }
             else {
                 // If no NBT data is assigned to the entity (eg. Item taken from the Creative menu), create a new, random mob
-                spawn = entity.create((ServerWorld) worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, !Objects.equals(pos, spawnPos) && facing == Direction.UP);
+                spawn = entity.create((ServerWorld) worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, doVerticalOffset);
                 if (spawn instanceof ComplexMob) {
                     // Instead of using onInitialSpawn, data is replicated to prevent RandomSpecies from acting, not an ideal solution
                     ComplexMob entitySpawn = (ComplexMob) spawn;
@@ -150,15 +136,4 @@ public class ItemMobSpawn extends Item {
         worldIn.spawnEntity(entity);
         return super.onEntityItemUpdate(entityItem);
     }*/
-
-    private EntityType<?> getType(@Nullable CompoundNBT nbt) {
-        if (nbt != null && nbt.contains("EntityTag", 10)) {
-            CompoundNBT entityNBT = nbt.getCompound("EntityTag");
-            if (entityNBT.contains("id", 8)) {
-                return EntityType.byKey(entityNBT.getString("id")).orElse(this.entity);
-            }
-        }
-
-        return this.entity;
-    }
 }

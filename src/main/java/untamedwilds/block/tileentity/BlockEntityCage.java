@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -24,9 +25,13 @@ public class BlockEntityCage extends TileEntity {
         super(ModBlock.BLOCKENTITY_CAGE.get());
     }
 
+    public static boolean isBlacklisted(Entity entity) {
+        return EntityTypeTags.getCollection().get(ModTags.EntityTags.CAGE_BLACKLIST).contains(entity.getType());
+    }
+
     public boolean cageEntity(Entity entity) {
         if (!this.hasCagedEntity()) {
-            if (!ModTags.EntityTags.CAGE_BLACKLIST.contains(entity.getType())) {
+            if (!isBlacklisted(entity)) {
                 String entityID = EntityType.getKey(entity.getType()).toString();
                 CompoundNBT nbttagcompound = new CompoundNBT();
                 nbttagcompound.putString("id", entityID);
