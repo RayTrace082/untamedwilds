@@ -129,12 +129,12 @@ public class GiantClam extends ComplexMob implements ISpecies {
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
 
-        if (!this.world.isRemote && !this.isBreedingItem(itemstack) && itemstack.getItem() instanceof ShovelItem && this.isAlive() && hand == Hand.MAIN_HAND) {
+        if (itemstack.getItem() instanceof ShovelItem && this.isAlive() && hand == Hand.MAIN_HAND) {
             if (this.rand.nextInt(4) == 0) {
                 // Advancement Trigger: "Clam Digger"
                 world.playSound(null, this.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.BLOCKS, 1.0F, 0.8F);
                 turnEntityIntoItem("giant_clam_" + this.getRawSpeciesName().toLowerCase());
-                return ActionResultType.SUCCESS;
+                return ActionResultType.func_233537_a_(this.world.isRemote);
             }
             else {
                 world.playSound(null, this.getPosition(), SoundEvents.ENTITY_SHULKER_HURT_CLOSED, SoundCategory.BLOCKS, 1.0F, 0.8F);

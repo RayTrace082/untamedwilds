@@ -152,9 +152,9 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
 
-        if (!this.world.isRemote && itemstack.isEmpty() && this.isAlive()) {
+        if (itemstack.isEmpty() && this.isAlive()) {
             turnEntityIntoItem("snake_" + this.getRawSpeciesName().toLowerCase());
-            return ActionResultType.SUCCESS;
+            return ActionResultType.func_233537_a_(this.world.isRemote);
         }
         return super.func_230254_b_(player, hand);
     }

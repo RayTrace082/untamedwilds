@@ -79,15 +79,15 @@ public class Trevally extends ComplexMobAquatic implements ISpecies, IPackEntity
 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
-        if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
+        if (hand == Hand.MAIN_HAND) {
             if (player.isCreative() && itemstack.isEmpty()) {
                 for (int i = 0; i < this.herd.creatureList.size(); ++i) {
                     ComplexMob creature = this.herd.creatureList.get(i);
                     creature.addPotionEffect(new EffectInstance(Effects.GLOWING, 80, 0));
                 }
             }
-            if (itemstack.getItem().equals(Items.WATER_BUCKET)) {
-                this.mutateEntityIntoItem(player, hand, "bucket_trevally_" + this.getRawSpeciesName().toLowerCase(), itemstack);
+            if (itemstack.getItem().equals(Items.WATER_BUCKET) && this.isAlive()) {
+                mutateEntityIntoItem(player, hand, "bucket_trevally_" + this.getRawSpeciesName().toLowerCase(), itemstack);
                 return ActionResultType.func_233537_a_(this.world.isRemote);
             }
         }
@@ -139,7 +139,7 @@ public class Trevally extends ComplexMobAquatic implements ISpecies, IPackEntity
         return Trevally.SpeciesTrevally.getSpeciesByBiome(biome);
     }
 
-    public String getSpeciesName() { return new TranslationTextComponent("entity.untamedwilds.tevally_" + this.getRawSpeciesName()).getString(); }
+    public String getSpeciesName() { return new TranslationTextComponent("entity.untamedwilds.trevally_" + this.getRawSpeciesName()).getString(); }
     public String getRawSpeciesName() { return Trevally.SpeciesTrevally.values()[this.getSpecies()].name().toLowerCase(); }
 
     public enum SpeciesTrevally implements IStringSerializable {

@@ -2,22 +2,18 @@ package untamedwilds.item;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.util.EntityUtils;
 
@@ -57,41 +53,10 @@ public class ItemMobSpawn extends Item {
             BlockPos spawnPos = blockState.getCollisionShape(worldIn, pos).isEmpty() ? pos : pos.offset(facing);
 
             EntityType<?> entity = EntityUtils.getEntityTypeFromTag(itemStack.getTag(), this.entity);
-            Entity spawn;
             boolean doVerticalOffset = !Objects.equals(pos, spawnPos) && facing == Direction.UP;
-            if (itemStack.hasTag()) {
-                if (itemStack.getTag().contains("EntityTag")) {
-                    spawn = entity.spawn((ServerWorld) worldIn, itemStack, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, doVerticalOffset);
-                    if (itemStack.hasDisplayName()) {
-                        spawn.setCustomName(itemStack.getDisplayName());
-                    }
-                    spawn.setLocationAndAngles(spawnPos.getX() + 0.5F, spawnPos.getY(), spawnPos.getZ() + 0.5F, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
-                    if (((ServerWorld) worldIn).getEntityByUuid(spawn.getUniqueID()) != null) {
-                        UntamedWilds.LOGGER.info("Randomizing repeated UUID");
-                        spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
-                        ((ServerWorld) worldIn).func_242417_l(spawn);
-                    }
-                }
-            }
-            else {
-                // If no NBT data is assigned to the entity (eg. Item taken from the Creative menu), create a new, random mob
-                spawn = entity.create((ServerWorld) worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, doVerticalOffset);
-                if (spawn instanceof ComplexMob) {
-                    // Instead of using onInitialSpawn, data is replicated to prevent RandomSpecies from acting, not an ideal solution
-                    ComplexMob entitySpawn = (ComplexMob) spawn;
-                    entitySpawn.setRandomMobSize();
-                    entitySpawn.setGender(worldIn.rand.nextInt(2));
-                    entitySpawn.setSpecies(this.species);
-                    entitySpawn.setGrowingAge(0);
-                }
-                if (spawn != null) {
-                    spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
-                    if (itemStack.hasDisplayName()) {
-                        spawn.setCustomName(itemStack.getDisplayName());
-                    }
-                    worldIn.addEntity(spawn);
-                }
-            }
+
+            EntityUtils.createMobFromItem((ServerWorld) worldIn, itemStack, entity, this.species, spawnPos, useContext.getPlayer(), doVerticalOffset);
+
             itemStack.shrink(1);
         }
         return ActionResultType.CONSUME;
