@@ -325,6 +325,7 @@ public abstract class ComplexMob extends TameableEntity {
             //worldIn.func_242417_l(this);
             this.setGrowingAge(0);
         }
+        UntamedWilds.LOGGER.info(spawnDataIn);
         return spawnDataIn;
     }
 

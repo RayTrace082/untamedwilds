@@ -92,7 +92,7 @@ public abstract class EntityUtils {
 
                 spawn = entity.spawn(worldIn, itemstack, player, spawnPos, SpawnReason.BUCKET, true, offset);
                 if (spawn != null) {
-                    spawn.setLocationAndAngles(spawnPos.getX() + 0.5F, spawnPos.getY(), spawnPos.getZ() + 0.5F, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
+                    //spawn.setLocationAndAngles(spawnPos.getX() + 0.5F, spawnPos.getY(), spawnPos.getZ() + 0.5F, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
                     if (itemstack.hasDisplayName()) {
                         spawn.setCustomName(itemstack.getDisplayName());
                     }
@@ -102,19 +102,15 @@ public abstract class EntityUtils {
         }
         else {
             // If no NBT data is assigned to the entity (eg. Item taken from the Creative menu), create a new, random mob
-            spawn = entity.create(worldIn, null, null, player, spawnPos, SpawnReason.BUCKET, true, offset);
-            if (spawn instanceof ComplexMob) {
-                // Instead of using onInitialSpawn, data is replicated to prevent RandomSpecies from acting, not an ideal solution
-                ComplexMob entitySpawn = (ComplexMob) spawn;
-                entitySpawn.setRandomMobSize();
-                entitySpawn.setGender(worldIn.rand.nextInt(2));
-                entitySpawn.setSpecies(species);
-                entitySpawn.setGrowingAge(0);
-            }
+            spawn = entity.create(worldIn, null, null, player, spawnPos, SpawnReason.SPAWN_EGG, true, offset);
             if (spawn != null) {
-                spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
-                if (itemstack.hasDisplayName()) {
-                    spawn.setCustomName(itemstack.getDisplayName());
+                if (spawn instanceof ComplexMob) {
+                    ComplexMob entitySpawn = (ComplexMob) spawn;
+                    entitySpawn.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(spawnPos), SpawnReason.SPAWN_EGG, null, null);
+                    entitySpawn.setSpecies(species);
+                    if (itemstack.hasDisplayName()) {
+                        entitySpawn.setCustomName(itemstack.getDisplayName());
+                    }
                 }
                 worldIn.addEntity(spawn);
             }

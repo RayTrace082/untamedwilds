@@ -121,17 +121,24 @@ public final class FaunaSpawn {
                                 continue;
                             }
 
+                            assert entity != null;
                             entity.setLocationAndAngles(d0, y, d1, rand.nextFloat() * 360.0F, 0.0F);
                             if (entity instanceof MobEntity) {
                                 MobEntity mobentity = (MobEntity)entity;
                                 if (net.minecraftforge.common.ForgeHooks.canEntitySpawn(mobentity, worldIn, d0, blockpos.getY(), d1, null, SpawnReason.CHUNK_GENERATION) == -1) continue;
                                 if (mobentity.canSpawn(worldIn, SpawnReason.CHUNK_GENERATION) && mobentity.isNotColliding(worldIn)) {
-                                    ILivingEntityData ilivingentitydata = mobentity.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(mobentity.getPosition()), SpawnReason.CHUNK_GENERATION, null, null);
-                                    if (mobentity instanceof ISpecies) {
-                                        if (species == -1) {
-                                            species = ((ComplexMob)mobentity).getSpecies();
-                                        } else {
-                                            ((ComplexMob)mobentity).setSpecies(species);
+                                    mobentity.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(mobentity.getPosition()), SpawnReason.CHUNK_GENERATION, null, null);
+                                    if (mobentity instanceof ComplexMob) {
+                                        if (mobentity instanceof ISpecies) {
+                                            if (species == -1) {
+                                                species = ((ComplexMob)mobentity).getSpecies();
+                                            } else {
+                                                ((ComplexMob)mobentity).setSpecies(species);
+                                            }
+                                        }
+                                        if (((ComplexMob)mobentity).getSpecies() == 99) {
+                                            mobentity.remove();
+                                            continue;
                                         }
                                     }
                                     worldIn.func_242417_l(mobentity);
