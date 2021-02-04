@@ -16,30 +16,23 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class HuntMobTarget<T extends LivingEntity, target, attacked> extends TargetGoal {
+public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
     private final Class<T> targetClass;
     private final Sorter sorter;
     private final Predicate<? super T> targetEntitySelector;
     private T targetEntity;
-    private boolean isCannibal;
+    private final int threshold;
+    private final boolean isCannibal;
 
     public HuntMobTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, int hungerThreshold, boolean onlyNearby, boolean isCannibal, final Predicate<? super T > targetSelector) {
         super(creature, checkSight, onlyNearby);
         this.targetClass = classTarget;
         this.sorter = new Sorter(creature);
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.threshold = hungerThreshold;
         this.isCannibal = isCannibal;
         this.targetEntitySelector = (Predicate<T>) entity -> {
-            if (entity == null || creature instanceof ComplexMobTerrestrial) {
-                if (((ComplexMobTerrestrial)creature).getHunger() >= hungerThreshold || creature.isTamed()) {
-                    return false;
-                }
-                if (entity instanceof CreeperEntity) {
-                    return false;
-                }
-                return EntityPredicates.NOT_SPECTATING.test(entity) && targetSelector.test(entity) && this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
-            }
-            else if (targetSelector != null && !targetSelector.test(entity)) {
+            if (targetSelector != null && !targetSelector.test(entity)) {
                 return false;
             }
             else {
@@ -52,9 +45,12 @@ public class HuntMobTarget<T extends LivingEntity, target, attacked> extends Tar
         if (this.goalOwner.isChild() || this.goalOwner.getHealth() < this.goalOwner.getMaxHealth() / 3) {
             return false;
         }
-        //if (this.goalOwner == targetEntity) {
-        //  return false;
-        //}
+        if (this.goalOwner instanceof ComplexMobTerrestrial) {
+            ComplexMobTerrestrial temp = (ComplexMobTerrestrial) this.goalOwner;
+            if (temp.isTamed() || temp.getHunger() > this.threshold) {
+                return false;
+            }
+        }
         List<T> list = this.goalOwner.world.getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
         list.removeIf((Predicate<LivingEntity>) this::shouldRemoveTarget);
 
