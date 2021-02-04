@@ -7,7 +7,6 @@ import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
@@ -68,12 +67,6 @@ public abstract class ComplexMobAquatic extends ComplexMob {
         }
 
         super.livingTick();
-    }
-
-    protected void setBucketData(ItemStack p_204211_1_) {
-        if (this.hasCustomName()) {
-            p_204211_1_.setDisplayName(this.getCustomName());
-        }
     }
 
     protected void updateAir(int air) {

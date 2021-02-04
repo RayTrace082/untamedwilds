@@ -18,7 +18,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 
@@ -84,17 +83,20 @@ public abstract class EntityUtils {
         Entity spawn;
         if (itemstack.getTag() != null) {
             if (itemstack.getTag().contains("EntityTag")) {
+                if (itemstack.getChildTag("EntityTag").contains("UUID")) {
+                    if (worldIn.getEntityByUuid(itemstack.getChildTag("EntityTag").getUniqueId("UUID")) != null) {
+                        itemstack.getChildTag("EntityTag").putUniqueId("UUID", MathHelper.getRandomUUID(worldIn.rand));
+                    }
+                }
+                itemstack.getChildTag("EntityTag").remove("Pos"); // TODO: Temporary solution to prevent loss of mobs with Pos tag
+
                 spawn = entity.spawn(worldIn, itemstack, player, spawnPos, SpawnReason.BUCKET, true, offset);
                 if (spawn != null) {
                     spawn.setLocationAndAngles(spawnPos.getX() + 0.5F, spawnPos.getY(), spawnPos.getZ() + 0.5F, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
                     if (itemstack.hasDisplayName()) {
                         spawn.setCustomName(itemstack.getDisplayName());
                     }
-                    if (worldIn.getEntityByUuid(spawn.getUniqueID()) != null) {
-                        UntamedWilds.LOGGER.info("Randomizing repeated UUID");
-                        spawn.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));
-                        worldIn.func_242417_l(spawn);
-                    }
+                    worldIn.func_242417_l(spawn);
                 }
             }
         }
