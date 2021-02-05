@@ -6,17 +6,20 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.client.model.ModelHippo;
 import untamedwilds.client.model.ModelHippoCalf;
 import untamedwilds.entity.mammal.EntityHippo;
 
+@OnlyIn(Dist.CLIENT)
 public class RendererHippo extends MobRenderer<EntityHippo, EntityModel<EntityHippo>> {
 
     private static final ModelHippo HIPPO_MODEL = new ModelHippo();
     private static final ModelHippoCalf HIPPO_MODEL_CALF = new ModelHippoCalf();
 
-    public RendererHippo(EntityRendererManager renderManager, ModelHippo model, float shadowSize) {
-        super(renderManager, model, shadowSize);
+    public RendererHippo(EntityRendererManager renderManager) {
+        super(renderManager, HIPPO_MODEL, 1F);
     }
 
     @Override

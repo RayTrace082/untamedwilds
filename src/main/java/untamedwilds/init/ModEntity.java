@@ -22,7 +22,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import untamedwilds.UntamedWilds;
-import untamedwilds.client.model.*;
 import untamedwilds.client.render.*;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.arthropod.Tarantula;
@@ -189,53 +188,53 @@ public class ModEntity {
     @OnlyIn(Dist.CLIENT)
     public static void registerRendering() {
         if (ConfigMobControl.addTarantula.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TARANTULA, manager -> new RendererTarantula());
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TARANTULA, RendererTarantula::new);
         }
         if (ConfigMobControl.addSoftshellTurtle.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SOFTSHELL_TURTLE, manager -> new RendererSoftshellTurtle());
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SOFTSHELL_TURTLE, RendererSoftshellTurtle::new);
         }
         if (ConfigMobControl.addSnake.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNAKE, manager -> new RendererSnake(manager, new ModelSnake(), 0.0f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNAKE, RendererSnake::new);
         }
         if (ConfigMobControl.addGiantClam.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, manager -> new RendererGiantClam(manager, new ModelGiantClam(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, RendererGiantClam::new);
         }
         if (ConfigMobControl.addHippo.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.HIPPO, manager -> new RendererHippo(manager, new ModelHippo(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.HIPPO, RendererHippo::new);
         }
         if (ConfigMobControl.addAardvark.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.AARDVARK, manager -> new RendererAardvark(manager, new ModelAardvark(), 0.4f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.AARDVARK, RendererAardvark::new);
         }
         if (ConfigMobControl.addBear.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, RendererBear::new);
             BlackBear.registerTextures(5);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLIND_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.BROWN_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLIND_BEAR, RendererBear::new);
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.BROWN_BEAR, RendererBear::new);
             BrownBear.registerTextures(4);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANDA_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.POLAR_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SPECTACLED_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUN_BEAR, manager -> new RendererBear(manager, new ModelBear(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_BEAR, RendererBear::new);
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANDA_BEAR, RendererBear::new);
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.POLAR_BEAR, RendererBear::new);
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SPECTACLED_BEAR, RendererBear::new);
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUN_BEAR, RendererBear::new);
         }
         if (ConfigMobControl.addBigCat.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.JAGUAR, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.PUMA, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TIGER, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.SABERTOOTH, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.MARSUPIAL_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANTHER, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.LEOPARD, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.DIRE_LION, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNOW_LEOPARD, manager -> new RendererBigCat(manager, new ModelBigCat(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.JAGUAR, RendererBigCat::new);
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.PUMA, RendererBigCat::new);
+            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_LION, RendererBigCat::new);
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TIGER, RendererBigCat::new);
+            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.SABERTOOTH, RendererBigCat::new);
+            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.MARSUPIAL_LION, RendererBigCat::new);
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.LION, RendererBigCat::new);
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANTHER, RendererBigCat::new);
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.LEOPARD, RendererBigCat::new);
+            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.DIRE_LION, RendererBigCat::new);
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNOW_LEOPARD, RendererBigCat::new);
         }
         if (ConfigMobControl.addSunfish.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUNFISH, manager -> new RendererSunfish(manager, new ModelSunfish(), 1f));
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUNFISH, RendererSunfish::new);
         }
         if (ConfigMobControl.addTrevally.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TREVALLY, manager -> new RendererTrevally());
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TREVALLY, RendererTrevally::new);
         }
     }
 

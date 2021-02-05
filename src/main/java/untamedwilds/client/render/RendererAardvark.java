@@ -6,15 +6,18 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.client.model.ModelAardvark;
 import untamedwilds.entity.mammal.EntityAardvark;
 
+@OnlyIn(Dist.CLIENT)
 public class RendererAardvark extends MobRenderer<EntityAardvark, EntityModel<EntityAardvark>> {
 
     private static final ModelAardvark AARDVARK_MODEL = new ModelAardvark();
 
-    public RendererAardvark(EntityRendererManager renderManager, ModelAardvark model, float shadowSize) {
-        super(renderManager, model, shadowSize);
+    public RendererAardvark(EntityRendererManager renderManager) {
+        super(renderManager, AARDVARK_MODEL, 0.4F);
     }
 
     @Override

@@ -5,20 +5,25 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.client.model.ModelGiantClam;
 import untamedwilds.entity.mollusk.GiantClam;
 
 import javax.annotation.Nonnull;
 
+@OnlyIn(Dist.CLIENT)
 public class RendererGiantClam extends MobRenderer<GiantClam, EntityModel<GiantClam>> {
+
+    private static final ModelGiantClam GIANT_CLAM_MODEL = new ModelGiantClam();
 
     private static final ResourceLocation DERASA         = new ResourceLocation("untamedwilds:textures/entity/giant_clam/derasa.png");
     private static final ResourceLocation GIGAS         = new ResourceLocation("untamedwilds:textures/entity/giant_clam/gigas.png");
     private static final ResourceLocation MAXIMA        = new ResourceLocation("untamedwilds:textures/entity/giant_clam/maxima.png");
     private static final ResourceLocation SQUAMOSA      = new ResourceLocation("untamedwilds:textures/entity/giant_clam/squamosa.png");
 
-    public RendererGiantClam(EntityRendererManager renderManager, ModelGiantClam model, float shadowSize) {
-        super(renderManager, model, shadowSize);
+    public RendererGiantClam(EntityRendererManager renderManager) {
+        super(renderManager, GIANT_CLAM_MODEL, 1F);
     }
 
     @Override

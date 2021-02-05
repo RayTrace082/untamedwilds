@@ -1,15 +1,18 @@
 package untamedwilds.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.client.model.ModelTurtleSoftshell;
 import untamedwilds.entity.reptile.EntitySoftshellTurtle;
 
 import javax.annotation.Nonnull;
 
+@OnlyIn(Dist.CLIENT)
 public class RendererSoftshellTurtle extends MobRenderer<EntitySoftshellTurtle, EntityModel<EntitySoftshellTurtle>> {
 
     private static final ModelTurtleSoftshell SOFTSHELL_TURTLE_MODEL = new ModelTurtleSoftshell();
@@ -22,8 +25,8 @@ public class RendererSoftshellTurtle extends MobRenderer<EntitySoftshellTurtle, 
     private final ResourceLocation PIG_NOSE         = new ResourceLocation("untamedwilds:textures/entity/softshell_turtle/pig_nose.png");
     private final ResourceLocation SPINY       = new ResourceLocation("untamedwilds:textures/entity/softshell_turtle/spiny.png");
 
-    public RendererSoftshellTurtle() {
-        super(Minecraft.getInstance().getRenderManager(), SOFTSHELL_TURTLE_MODEL, 0.4F);
+    public RendererSoftshellTurtle(EntityRendererManager rendererManager) {
+        super(rendererManager, SOFTSHELL_TURTLE_MODEL, 0.4F);
     }
 
     @Override

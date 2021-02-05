@@ -1,15 +1,18 @@
 package untamedwilds.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.client.model.ModelTrevally;
 import untamedwilds.entity.fish.Trevally;
 
 import javax.annotation.Nonnull;
 
+@OnlyIn(Dist.CLIENT)
 public class RendererTrevally extends MobRenderer<Trevally, EntityModel<Trevally>> {
 
     private static final ModelTrevally TREVALLY_MODEL = new ModelTrevally();
@@ -20,10 +23,9 @@ public class RendererTrevally extends MobRenderer<Trevally, EntityModel<Trevally
     private final ResourceLocation GOLDEN = new ResourceLocation("untamedwilds:textures/entity/trevally/golden.png");
     private final ResourceLocation JACK        = new ResourceLocation("untamedwilds:textures/entity/trevally/jack.png");
 
-    public RendererTrevally() {
-        super(Minecraft.getInstance().getRenderManager(), TREVALLY_MODEL, 0.2F);
+    public RendererTrevally(EntityRendererManager rendermanager) {
+        super(rendermanager, TREVALLY_MODEL, 0.2F);
     }
-
     @Override
     protected void preRenderCallback(Trevally entity, MatrixStack matrixStackIn, float partialTickTime) {
         float f = 1F;

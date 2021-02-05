@@ -6,17 +6,20 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.client.model.ModelBigCat;
 import untamedwilds.client.model.ModelBigCatCub;
 import untamedwilds.entity.mammal.bigcat.AbstractBigCat;
 
+@OnlyIn(Dist.CLIENT)
 public class RendererBigCat extends MobRenderer<AbstractBigCat, EntityModel<AbstractBigCat>> {
 
     private static final ModelBigCat BIG_CAT_MODEL = new ModelBigCat();
     private static final ModelBigCatCub BIG_CAT_MODEL_CUB = new ModelBigCatCub();
 
-    public RendererBigCat(EntityRendererManager rendermanager, ModelBigCat model, float shadowsize) {
-        super(rendermanager, model, shadowsize);
+    public RendererBigCat(EntityRendererManager renderManager) {
+        super(renderManager, BIG_CAT_MODEL, 1F);
     }
 
     @Override

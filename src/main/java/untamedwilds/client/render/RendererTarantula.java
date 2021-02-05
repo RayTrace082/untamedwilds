@@ -1,15 +1,18 @@
 package untamedwilds.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.client.model.ModelTarantula;
 import untamedwilds.entity.arthropod.Tarantula;
 
 import javax.annotation.Nonnull;
 
+@OnlyIn(Dist.CLIENT)
 public class RendererTarantula extends MobRenderer<Tarantula, EntityModel<Tarantula>> {
 
     private static final ModelTarantula TARANTULA_MODEL = new ModelTarantula();
@@ -24,8 +27,8 @@ public class RendererTarantula extends MobRenderer<Tarantula, EntityModel<Tarant
     private final ResourceLocation ROSE       = new ResourceLocation("untamedwilds:textures/entity/tarantula/rose.png");
     private final ResourceLocation TIGER       = new ResourceLocation("untamedwilds:textures/entity/tarantula/tiger.png");
 
-    public RendererTarantula() {
-        super(Minecraft.getInstance().getRenderManager(), TARANTULA_MODEL, 0.2F);
+    public RendererTarantula(EntityRendererManager renderManager) {
+        super(renderManager, TARANTULA_MODEL, 0.2F);
     }
 
     @Override

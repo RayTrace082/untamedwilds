@@ -5,12 +5,17 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.client.model.ModelSnake;
 import untamedwilds.entity.reptile.EntitySnake;
 
 import javax.annotation.Nonnull;
 
+@OnlyIn(Dist.CLIENT)
 public class RendererSnake extends MobRenderer<EntitySnake, EntityModel<EntitySnake>> {
+
+    private static final ModelSnake SNAKE_MODEL = new ModelSnake();
 
     private final ResourceLocation ADDER         = new ResourceLocation("untamedwilds:textures/entity/snake/adder.png");
     private final ResourceLocation BALL_PYTHON = new ResourceLocation("untamedwilds:textures/entity/snake/ball_python.png");
@@ -30,8 +35,8 @@ public class RendererSnake extends MobRenderer<EntitySnake, EntityModel<EntitySn
     private final ResourceLocation TAIPAN        = new ResourceLocation("untamedwilds:textures/entity/snake/taipan.png");
     private final ResourceLocation WESTERN_RATTLESNAKE        = new ResourceLocation("untamedwilds:textures/entity/snake/western_rattlesnake.png");
 
-    public RendererSnake(EntityRendererManager renderManager, ModelSnake model, float shadowSize) {
-        super(renderManager, model, shadowSize);
+    public RendererSnake(EntityRendererManager renderManager) {
+        super(renderManager, SNAKE_MODEL, 0F);
     }
 
     protected void preRenderCallback(EntitySnake entity, MatrixStack matrixStackIn, float partialTickTime) {
