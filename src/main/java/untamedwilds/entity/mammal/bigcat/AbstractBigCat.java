@@ -238,7 +238,6 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
         JAGUAR		(ModEntity.JAGUAR, JaguarBigCat.getRarity(), Biome.Category.JUNGLE),
         LEOPARD		(ModEntity.LEOPARD, LeopardBigCat.getRarity(), Biome.Category.SAVANNA, Biome.Category.TAIGA),
         LION		(ModEntity.LION, LionBigCat.getRarity(), Biome.Category.SAVANNA),
-        PANTHER		(ModEntity.PANTHER, PantherBigCat.getRarity(), Biome.Category.JUNGLE),
         PUMA		(ModEntity.PUMA, PumaBigCat.getRarity(), Biome.Category.MESA, Biome.Category.FOREST, Biome.Category.TAIGA),
         SNOW_LEOPARD(ModEntity.SNOW_LEOPARD, SnowLeopardBigCat.getRarity(), Biome.Category.ICY, Biome.Category.TAIGA),
         TIGER		(ModEntity.TIGER, TigerBigCat.getRarity(), Biome.Category.JUNGLE, Biome.Category.TAIGA);

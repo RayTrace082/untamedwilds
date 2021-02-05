@@ -13,7 +13,11 @@ import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
+import untamedwilds.entity.ISkins;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
@@ -22,11 +26,13 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class JaguarBigCat extends AbstractBigCat {
+public class JaguarBigCat extends AbstractBigCat implements ISkins {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/jaguar.png");
+    public static final int SKIN_NUMBER = 3;
+    private static final List<ResourceLocation> TEXTURES = new ArrayList<>();
     private static final float SIZE = 0.9f;
     private static final String BREEDING = "ALL";
     private static final int GESTATION = 4 * ConfigGamerules.cycleLength.get();
@@ -53,6 +59,12 @@ public class JaguarBigCat extends AbstractBigCat {
         this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof JaguarBigCat)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 5));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void registerTextures(int count) {
+        for(int i = 1; i < count + 1; i++)
+            JaguarBigCat.TEXTURES.add(new ResourceLocation(UntamedWilds.MOD_ID, String.format("textures/entity/big_cat/jaguar_%d.png", i)));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -104,6 +116,7 @@ public class JaguarBigCat extends AbstractBigCat {
     public int getAdulthoodTime() { return GROWING; }
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
-    public ResourceLocation getTexture() { return TEXTURE; }
+    public ResourceLocation getTexture() { return TEXTURES.get(this.getSpecies()); }
+    public int getSkinNumber() { return SKIN_NUMBER; }
     protected int getOffspring() { return 2; }
 }
