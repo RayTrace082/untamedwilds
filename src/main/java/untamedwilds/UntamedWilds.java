@@ -33,6 +33,7 @@ public class UntamedWilds {
     // TODO: setupTamedAI() function is promising to trim unnecessary tasks from Tameable Mobs
     // BUG: It's possible to catch ghost entities in Cage Traps if a mob touches multiple boxes in the same tick (eg. 2x2 mob falling into a pit full of Cages)
     // BUG: Minecraft will complain about duplicate UUIDs when using Mob Spawn items in Creative mode (since they are not used up)
+    // BUG: Creative/Sneaking players standing closest to an angry sleeper will cause other nearby players to be ignored
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";

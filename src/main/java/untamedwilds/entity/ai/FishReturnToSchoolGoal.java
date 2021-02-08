@@ -9,30 +9,31 @@ import untamedwilds.entity.IPackEntity;
 
 public class FishReturnToSchoolGoal extends RandomSwimmingGoal {
 
-    private ComplexMob taskOwner;
-    private int maxDist = 6;
+    private final ComplexMob taskOwner;
+    private final int maxDist;
 
     public FishReturnToSchoolGoal(ComplexMobAquatic entity) {
-        super(entity, 1.0D, 20);
+        this(entity, 1.0D, 20, 5);
     }
 
+    public FishReturnToSchoolGoal(ComplexMobAquatic entity, double speedIn, int chance, int maxDist) {
+        super(entity, speedIn, chance);
+        this.maxDist = maxDist;
+        this.taskOwner = entity;
+    }
+
+    @Override
     public boolean shouldExecute() {
         if (!(this.creature instanceof IPackEntity)) {
             return false;
         }
-        this.taskOwner = (ComplexMob) this.creature;
-        if (this.taskOwner.herd == null) {
-            return false;
-        }
-        if (this.taskOwner.herd.getLeader() == this.taskOwner) {
-            return false;
-        }
-        if (this.taskOwner.getDistance(this.taskOwner.herd.getLeader()) < this.maxDist) {
+        if (this.taskOwner.herd == null || this.taskOwner.herd.getLeader() == this.taskOwner || this.taskOwner.getDistance(this.taskOwner.herd.getLeader()) < this.maxDist) {
             return false;
         }
         return super.shouldExecute();
     }
 
+    @Override
     protected Vector3d getPosition() {
         Vector3d vec3d = RandomPositionGenerator.findRandomTarget(this.taskOwner.herd.getLeader(), 4, 3);
         return vec3d == null ? RandomPositionGenerator.findRandomTarget(this.taskOwner.herd.getLeader(), 3, 2) : vec3d;

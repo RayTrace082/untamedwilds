@@ -2,7 +2,6 @@ package untamedwilds.entity.ai;
 
 import net.minecraft.entity.ai.goal.Goal;
 import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ComplexMobTerrestrial;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -16,18 +15,13 @@ public class FollowParentGoal extends Goal {
     public FollowParentGoal(ComplexMob entityIn, double speedIn) {
         this.taskOwner = entityIn;
         this.moveSpeed = speedIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.TARGET));
     }
 
+    @Override
     public boolean shouldExecute() {
-
-       if (!this.taskOwner.isChild()) {
+       if (!this.taskOwner.isChild() || !this.taskOwner.canMove()) {
             return false;
-        }
-        if (this.taskOwner instanceof ComplexMobTerrestrial) {
-            if (this.taskOwner.isSleeping() || this.taskOwner.isSitting()) {
-                return false;
-            }
         }
         List<ComplexMob> list = this.taskOwner.world.getEntitiesWithinAABB(this.taskOwner.getClass(), this.taskOwner.getBoundingBox().grow(8.0D, 4.0D, 8.0D));
         ComplexMob entityanimal = null;
@@ -56,6 +50,7 @@ public class FollowParentGoal extends Goal {
         }
     }
 
+    @Override
     public boolean shouldContinueExecuting() {
         if (this.taskOwner.getGrowingAge() >= 0) {
             return false;
@@ -69,16 +64,19 @@ public class FollowParentGoal extends Goal {
         }
     }
 
+    @Override
     public void startExecuting()
     {
         this.delayCounter = 0;
     }
 
+    @Override
     public void resetTask()
     {
         this.parentAnimal = null;
     }
 
+    @Override
     public void tick() {
         if (--this.delayCounter <= 0) {
             this.delayCounter = 10;

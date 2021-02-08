@@ -6,6 +6,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
+import untamedwilds.entity.ISkins;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -29,9 +30,10 @@ public class SmartMateGoal extends Goal {
         this.mateClass = mateClass;
         this.executionChance = executionChance;
         this.moveSpeed = speedIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
+    @Override
     public boolean shouldExecute() {
         if (!this.taskOwner.isInLove() || this.taskOwner.getGrowingAge() != 0) {
             return false;
@@ -45,15 +47,18 @@ public class SmartMateGoal extends Goal {
         }
     }
 
+    @Override
     public boolean shouldContinueExecuting() {
         return this.targetMate.isAlive() && this.targetMate.isInLove() && this.spawnBabyDelay < 200;
     }
 
+    @Override
     public void resetTask() {
         this.targetMate = null;
         this.spawnBabyDelay = 0;
     }
 
+    @Override
     public void tick() {
         this.taskOwner.getLookController().setLookPositionWithEntity(this.targetMate, 10.0F, (float) this.taskOwner.getVerticalFaceSpeed());
         this.taskOwner.getNavigator().tryMoveToXYZ(this.targetMate.getPosX(), this.targetMate.getPosY(), this.targetMate.getPosZ(), this.moveSpeed);
@@ -65,7 +70,7 @@ public class SmartMateGoal extends Goal {
             if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
                 this.world.addEntity(new ExperienceOrbEntity(this.world, this.taskOwner.getPosX(), this.taskOwner.getPosY(), this.taskOwner.getPosZ(), this.taskOwner.getRNG().nextInt(7) + 1));
             }
-            // Positive Growing Age is used as pregnancy counter (only works for females)
+            // Positive Growing Age is used as pregnancy counter (handled in ComplexMob)
             this.taskOwner.setGrowingAge(this.taskOwner.getPregnancyTime());
             this.targetMate.setGrowingAge(this.taskOwner.getPregnancyTime());
             if (!ConfigGamerules.easyBreeding.get()) {
@@ -96,11 +101,11 @@ public class SmartMateGoal extends Goal {
         if (father.getGender() == mother.getGender()) {
             return false;
         }
-        else if (father.getSpecies() != mother.getSpecies()) {
+        else if (!(father instanceof ISkins) && father.getSpecies() != mother.getSpecies()) {
             return false;
         }
         else {
-            if (ConfigGamerules.playerBreeding.get()) { // Bypass breeding restrictions in the event of  a player triggered breeding
+            if (ConfigGamerules.playerBreeding.get()) { // Bypass breeding restrictions in the event of a player triggered breeding
                 return true;
             }
             return father.wantsToBreed() && mother.wantsToBreed();

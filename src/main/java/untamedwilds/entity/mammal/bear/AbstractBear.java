@@ -20,7 +20,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
-import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModSounds;
@@ -65,15 +64,16 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
                     this.setInLove(null);
                 }
             }
-            if (this.getHealth() < this.getMaxHealth() / 2) {
-                this.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200, 0, true, true));
-                this.forceSleep = -1200;
-            }
             if (this.ticksExisted % 1000 == 0) {
                 this.addHunger(-2);
                 if (!this.isStarving()) {
                     this.heal(2.0F);
                 }
+            }
+            // Bearserk
+            if (this.getHealth() < this.getMaxHealth() / 2) {
+                this.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200, 0, true, true));
+                this.forceSleep = -1200;
             }
             // Angry sleepers
             if (!this.isTamed() && this.isSleeping() && this.forceSleep == 0) {
@@ -197,40 +197,34 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
         if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
-            if (!this.world.isRemote()) {
-                if (player.isCreative() && itemstack.isEmpty()) {
-                    UntamedWilds.LOGGER.info(this.getDistanceSq(this.getHomeAsVec()) + " | " + this.getPosition() + " | " + this.getHome());
+            if (this.isTamed() && this.getOwner() == player) {
+                if (itemstack.isEmpty()) {
+                    this.setCommandInt(this.getCommandInt() + 1);
+                    player.sendMessage(new TranslationTextComponent("entity.untamedwilds.command." + this.getCommandInt()), null);
+                    if (this.getCommandInt() > 1) {
+                        this.getNavigator().clearPath();
+                        this.setSitting(true);
+                    } else if (this.getCommandInt() <= 1 && this.isSitting()) {
+                        this.setSitting(false);
+                    }
                 }
-
-                if (this.isTamed() && this.getOwner() == player) {
-                    if (itemstack.isEmpty()) {
-                        this.setCommandInt(this.getCommandInt() + 1);
-                        player.sendMessage(new TranslationTextComponent("entity.untamedwilds.command." + this.getCommandInt()), null);
-                        if (this.getCommandInt() > 1) {
-                            this.getNavigator().clearPath();
-                            this.setSitting(true);
-                        } else if (this.getCommandInt() <= 1 && this.isSitting()) {
-                            this.setSitting(false);
+                if (itemstack.isFood()) {
+                    this.playSound(SoundEvents.ENTITY_PLAYER_BURP, 1, 1);
+                    this.addHunger((itemstack.getItem().getFood().getHealing() * 10 * itemstack.getCount()));
+                    for (Pair<EffectInstance, Float> pair : itemstack.getItem().getFood().getEffects()) {
+                        if (pair.getFirst() != null && this.world.rand.nextFloat() < pair.getSecond()) {
+                            this.addPotionEffect(new EffectInstance(pair.getFirst()));
                         }
                     }
-                    if (itemstack.isFood()) {
-                        this.playSound(SoundEvents.ENTITY_PLAYER_BURP, 1, 1);
-                        this.addHunger((itemstack.getItem().getFood().getHealing() * 10 * itemstack.getCount()));
-                        for (Pair<EffectInstance, Float> pair : itemstack.getItem().getFood().getEffects()) {
-                            if (pair.getFirst() != null && this.world.rand.nextFloat() < pair.getSecond()) {
-                                this.addPotionEffect(new EffectInstance(pair.getFirst()));
-                            }
-                        }
-                    }
-                    else if (itemstack.hasEffect()) {
-                        this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1, 1);
-                        this.addHunger(10);
-                        for(EffectInstance effectinstance : PotionUtils.getEffectsFromStack(itemstack)) {
-                            if (effectinstance.getPotion().isInstant()) {
-                                effectinstance.getPotion().affectEntity(this.getOwner(), this.getOwner(), this, effectinstance.getAmplifier(), 1.0D);
-                            } else {
-                                this.addPotionEffect(new EffectInstance(effectinstance));
-                            }
+                }
+                else if (itemstack.hasEffect()) {
+                    this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1, 1);
+                    this.addHunger(10);
+                    for(EffectInstance effectinstance : PotionUtils.getEffectsFromStack(itemstack)) {
+                        if (effectinstance.getPotion().isInstant()) {
+                            effectinstance.getPotion().affectEntity(this.getOwner(), this.getOwner(), this, effectinstance.getAmplifier(), 1.0D);
+                        } else {
+                            this.addPotionEffect(new EffectInstance(effectinstance));
                         }
                     }
                 }

@@ -2,7 +2,7 @@ package untamedwilds.entity.ai.unique;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.Direction;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.BlockPos;
 import untamedwilds.entity.mammal.bear.AbstractBear;
 
@@ -10,9 +10,9 @@ import java.util.EnumSet;
 
 public class PandaBreakBamboo extends Goal {
     private BlockPos targetPos;
-    private BlockPos movementPos;
     private final AbstractBear taskOwner;
     private final int executionChance;
+    private Path path;
     private int searchCooldown;
     private boolean continueTask;
 
@@ -25,7 +25,6 @@ public class PandaBreakBamboo extends Goal {
     }
 
     public boolean shouldExecute() {
-
         if (!this.taskOwner.isOnGround() || this.taskOwner.getHunger() > 40) {
             return false;
         }
@@ -38,29 +37,12 @@ public class PandaBreakBamboo extends Goal {
         BlockPos pos = this.taskOwner.getPosition();
 
         this.targetPos = findNearbyBamboo(pos);
-
-        // A stupid Pathfinder requires equally stupid solutions
-        if (this.targetPos != null) {
-            BlockPos testpos;
-            BlockPos finalpos = this.targetPos;
-            float dist = (float) this.taskOwner.getDistanceSq(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ());
-            float disttest;
-            for (Direction dir : Direction.values()) {
-                testpos = this.targetPos.offset(dir);
-                disttest = (float) this.taskOwner.getDistanceSq(testpos.getX(), testpos.getY(), testpos.getZ());
-                if (disttest > dist) {
-                    dist = disttest;
-                    finalpos = testpos;
-                }
-            }
-            this.movementPos = finalpos;
-            return true;
-        }
-        return false;
+        this.path = this.taskOwner.getNavigator().getPathToPos(this.targetPos, 0);
+        return this.path != null;
     }
 
     public void startExecuting() {
-        this.taskOwner.getNavigator().tryMoveToXYZ((double)((float)this.movementPos.getX()) + 0.5D, (double)(this.movementPos.getY() + 1), (double)((float)this.movementPos.getZ()) + 0.5D, 1f);
+        this.taskOwner.getNavigator().setPath(this.path, 1);
         super.startExecuting();
     }
 
@@ -70,12 +52,11 @@ public class PandaBreakBamboo extends Goal {
 
     public void tick() {
         // For some fucking reason, Panda Bears stop long before reaching their target block
-        // This is why the shitty approach of comparing all cardinal directions is taken, the hope is that the furthest cardinal point
-        // will place the Panda close enough to the Bamboo once accounting the distance
-
-        //UntamedWilds.LOGGER.log(Level.INFO, this.taskOwner.getDistanceSq(movementPos.getX(), movementPos.down().getY(), movementPos.getZ()));
+        this.taskOwner.getLookController().setLookPosition(this.targetPos.getX(), this.targetPos.getY() + 1.5F, this.targetPos.getZ(), 10f, (float)this.taskOwner.getVerticalFaceSpeed());
+        if (!this.taskOwner.isSitting()) {
+            this.taskOwner.getMoveHelper().strafe(1, 0);
+        }
         if (this.targetPos != null && this.taskOwner.getDistanceSq(targetPos.getX(), targetPos.getY(), targetPos.getZ()) < 5) {
-
             this.taskOwner.getLookController().setLookPosition(this.targetPos.getX(), this.targetPos.getY() + 1.5F, this.targetPos.getZ(), 10f, (float)this.taskOwner.getVerticalFaceSpeed());
             this.taskOwner.getNavigator().clearPath();
             this.taskOwner.setSitting(true);
@@ -98,20 +79,6 @@ public class PandaBreakBamboo extends Goal {
             return false;
         }
         return true;
-    }
-
-    private BlockPos getNearbyBamboo(BlockPos roomCenter) {
-        int X = 15;
-        int Y = 3;
-        //List<BlockPos> inventories = new ArrayList<>();
-        for (BlockPos blockpos : BlockPos.getAllInBoxMutable(roomCenter.add(-X, -Y, -X), roomCenter.add(X, Y, X))) {
-            if (this.taskOwner.world.getBlockState(blockpos) == Blocks.BAMBOO.getDefaultState()) {
-                if (this.taskOwner.world.getBlockState(blockpos.up()) == Blocks.BAMBOO.getDefaultState()) {
-                    return blockpos.down();
-                }
-            }
-        }
-        return null;
     }
 
     public BlockPos findNearbyBamboo(BlockPos blockpos) {

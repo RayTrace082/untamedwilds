@@ -11,88 +11,75 @@ import untamedwilds.entity.ComplexMob;
 import java.util.EnumSet;
 
 public class SmartLookAtGoal extends Goal {
-    protected final ComplexMob entity;
+    protected final ComplexMob taskOwner;
     protected Entity closestEntity;
     protected final float maxDistance;
     private int lookTime;
-    private final float chance;
+    private final int chance;
     protected final Class<? extends LivingEntity> watchedClass;
-    protected final EntityPredicate field_220716_e;
+    protected final EntityPredicate SHOULD_LOOK;
 
-    public SmartLookAtGoal(ComplexMob entityIn, Class<? extends LivingEntity> watchTargetClass, float maxDistance) {
-        this(entityIn, watchTargetClass, maxDistance, 0.02F);
+    public SmartLookAtGoal(ComplexMob entityIn, Class<? extends LivingEntity> targetClass, float maxDistance) {
+        this(entityIn, targetClass, maxDistance, 60);
     }
 
-    public SmartLookAtGoal(ComplexMob entityIn, Class<? extends LivingEntity> watchTargetClass, float maxDistance, float chanceIn) {
-        this.entity = entityIn;
-        this.watchedClass = watchTargetClass;
+    public SmartLookAtGoal(ComplexMob entityIn, Class<? extends LivingEntity> targetClass, float maxDistance, int chanceIn) {
+        this.taskOwner = entityIn;
+        this.watchedClass = targetClass;
         this.maxDistance = maxDistance;
         this.chance = chanceIn;
         this.setMutexFlags(EnumSet.of(Goal.Flag.LOOK));
-        if (watchTargetClass == PlayerEntity.class) {
-            this.field_220716_e = (new EntityPredicate()).setDistance(maxDistance).allowFriendlyFire().allowInvulnerable().setSkipAttackChecks().setCustomPredicate((p_220715_1_) -> EntityPredicates.notRiding(entityIn).test(p_220715_1_));
+        if (targetClass == PlayerEntity.class) {
+            this.SHOULD_LOOK = (new EntityPredicate()).setDistance(maxDistance).allowFriendlyFire().allowInvulnerable().setSkipAttackChecks().setCustomPredicate((p_220715_1_) -> EntityPredicates.notRiding(entityIn).test(p_220715_1_));
         } else {
-            this.field_220716_e = (new EntityPredicate()).setDistance(maxDistance).allowFriendlyFire().allowInvulnerable().setSkipAttackChecks();
+            this.SHOULD_LOOK = (new EntityPredicate()).setDistance(maxDistance).allowFriendlyFire().allowInvulnerable().setSkipAttackChecks();
         }
 
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
+    @Override
     public boolean shouldExecute() {
-        if (this.entity.isSleeping()) {
+        if (this.taskOwner.isSleeping()) {
             return false;
         }
-        if (this.entity.getRNG().nextFloat() >= this.chance) {
+        if (this.taskOwner.getRNG().nextInt(this.chance) != 0) {
             return false;
         } else {
-            if (this.entity.getAttackTarget() != null) {
-                this.closestEntity = this.entity.getAttackTarget();
+            if (this.taskOwner.getAttackTarget() != null) {
+                this.closestEntity = this.taskOwner.getAttackTarget();
             }
 
             if (this.watchedClass == PlayerEntity.class) {
-                this.closestEntity = this.entity.world.getClosestPlayer(this.field_220716_e, this.entity, this.entity.getPosX(), this.entity.getPosY() + (double)this.entity.getEyeHeight(), this.entity.getPosZ());
+                this.closestEntity = this.taskOwner.world.getClosestPlayer(this.SHOULD_LOOK, this.taskOwner, this.taskOwner.getPosX(), this.taskOwner.getPosY() + (double)this.taskOwner.getEyeHeight(), this.taskOwner.getPosZ());
             } else {
-                this.closestEntity = this.entity.world.func_225318_b(this.watchedClass, this.field_220716_e, this.entity, this.entity.getPosX(), this.entity.getPosY() + (double)this.entity.getEyeHeight(), this.entity.getPosZ(), this.entity.getBoundingBox().grow((double)this.maxDistance, 3.0D, (double)this.maxDistance));
+                this.closestEntity = this.taskOwner.world.func_225318_b(this.watchedClass, this.SHOULD_LOOK, this.taskOwner, this.taskOwner.getPosX(), this.taskOwner.getPosY() + (double)this.taskOwner.getEyeHeight(), this.taskOwner.getPosZ(), this.taskOwner.getBoundingBox().grow(this.maxDistance, 3.0D, this.maxDistance));
             }
 
             return this.closestEntity != null;
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
+    @Override
     public boolean shouldContinueExecuting() {
-        if (!this.closestEntity.isAlive()) {
+        if (!this.closestEntity.isAlive() || this.taskOwner.getDistanceSq(this.closestEntity) > (double)(this.maxDistance * this.maxDistance)) {
             return false;
-        } else if (this.entity.getDistanceSq(this.closestEntity) > (double)(this.maxDistance * this.maxDistance)) {
-            return false;
-        } else {
-            return this.lookTime > 0;
         }
+        return this.lookTime > 0;
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
+    @Override
     public void startExecuting() {
-        this.lookTime = 40 + this.entity.getRNG().nextInt(40);
+        this.lookTime = 40 + this.taskOwner.getRNG().nextInt(40);
     }
 
-    /**
-     * Reset the task's internal state. Called when this task is interrupted by another one
-     */
+    @Override
     public void resetTask() {
         this.closestEntity = null;
     }
 
-    /**
-     * Keep ticking a continuous task that has already been started
-     */
+    @Override
     public void tick() {
-        this.entity.getLookController().setLookPosition(this.closestEntity.getPosX(), this.closestEntity.getPosY() + (double)this.closestEntity.getEyeHeight(), this.closestEntity.getPosZ());
+        this.taskOwner.getLookController().setLookPosition(this.closestEntity.getPosX(), this.closestEntity.getPosY() + (double)this.closestEntity.getEyeHeight(), this.closestEntity.getPosZ());
         --this.lookTime;
     }
 }

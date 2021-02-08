@@ -13,13 +13,12 @@ import untamedwilds.entity.ComplexMobTerrestrial;
 import java.util.EnumSet;
 import java.util.function.Predicate;
 
-public class GrazeGoal extends Goal
-{
+public class GrazeGoal extends Goal {
+
     private static final Predicate<BlockState> IS_GRASS = BlockStateMatcher.forBlock(Blocks.GRASS);
     private final ComplexMobTerrestrial taskOwner;
     private final World entityWorld;
     private BlockPos testpos;
-    //private float test;
     private int eatingGrassTimer;
     private final int executionChance;
 
@@ -27,9 +26,10 @@ public class GrazeGoal extends Goal
         this.taskOwner = taskOwner;
         this.entityWorld = taskOwner.world;
         this.executionChance = executionChance;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
+        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
     }
 
+    @Override
     public boolean shouldExecute() {
         if (!this.taskOwner.canMove() || this.taskOwner.isChild() || this.taskOwner.getHunger() > 100) {
             return false;
@@ -41,9 +41,6 @@ public class GrazeGoal extends Goal
             return false;
         }
         else {
-            //this.test = (float)Math.sin(this.taskOwner.getRotatedYaw() * ((float)Math.PI / 180F)) * 4;
-            //this.testpos = new BlockPos(this.taskOwner.getPosition().add(0, 0, this.test));
-            //((ServerWorld)this.taskOwner.world).spawnParticle(ParticleTypes.FLAME, this.testpos.getX(), this.testpos.getY(), this.testpos.getZ(), 1, 0, 0, 0, 0);
             this.testpos = new BlockPos(this.taskOwner.getPosition());
             if (IS_GRASS.test(this.entityWorld.getBlockState(this.testpos))) {
                 return true;
@@ -53,6 +50,7 @@ public class GrazeGoal extends Goal
         }
     }
 
+    @Override
     public void startExecuting() {
         this.eatingGrassTimer = 40;
         this.entityWorld.setEntityState(this.taskOwner, (byte)10);
@@ -60,24 +58,23 @@ public class GrazeGoal extends Goal
         this.taskOwner.setAnimation(this.taskOwner.getAnimationEat());
     }
 
+    @Override
     public void resetTask()
     {
         this.eatingGrassTimer = 0;
     }
 
+    @Override
     public boolean shouldContinueExecuting()
     {
         return this.eatingGrassTimer > 0;
     }
 
+    @Override
     public void tick() {
-        //UntamedWilds.LOGGER.info(this.taskOwner.rotationYaw + " " + this.test);
         this.eatingGrassTimer = Math.max(0, this.eatingGrassTimer - 1);
         if (this.eatingGrassTimer == 4) {
-            //this.test = (float)Math.sin(this.taskOwner.rotationYaw * ((float)Math.PI / 180F)) * 4;
-            //this.testpos = new BlockPos(this.taskOwner.getPosition().add(0, 0, this.test));
-            //UntamedWilds.LOGGER.info(this.taskOwner.rotationYaw + " " + this.test + " " + (float)Math.sin(this.taskOwner.rotationYaw * ((float)Math.PI / 180F)) * 4);
-            if (IS_GRASS.test(this.entityWorld.getBlockState(this.testpos))) {
+            if (IS_GRASS.test(this.entityWorld.getBlockState(this.testpos))) { // TODO: Expand to SeaGrass and other vegetables
                 if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entityWorld, this.taskOwner) && ConfigGamerules.grazerGriefing.get()) {
                     this.entityWorld.destroyBlock(this.testpos, false);
                 }

@@ -12,20 +12,22 @@ import java.util.EnumSet;
 import java.util.Random;
 
 public class AmphibiousTransition extends Goal {
-    protected final ComplexMobAmphibious taskOwner;
+    private final ComplexMobAmphibious taskOwner;
     private final double movementSpeed;
     private final int executionChance;
     private final World world;
-    private double shelterX;
-    private double shelterY;
-    private double shelterZ;
+    private Vector3d shelter;
 
     public AmphibiousTransition(ComplexMobAmphibious taskOwner, double movementSpeedIn) {
+        this(taskOwner, movementSpeedIn, 120);
+    }
+
+    public AmphibiousTransition(ComplexMobAmphibious taskOwner, double movementSpeedIn, int chance) {
         this.taskOwner = taskOwner;
         this.movementSpeed = movementSpeedIn;
-        this.executionChance = 120;
+        this.executionChance = chance;
         this.world = taskOwner.world;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP));
     }
 
     @Override
@@ -37,20 +39,14 @@ public class AmphibiousTransition extends Goal {
 
         Vector3d vec3d = null;
         if (taskOwner.wantsToEnterWater() && !taskOwner.isInWater()) {
-            vec3d = this.findWaterShelter();
+            vec3d = this.findWaterPos();
         }
         else if (taskOwner.wantsToLeaveWater() && taskOwner.isInWater()) {
-            vec3d = this.findLandShelter();
+            vec3d = this.findLandPos();
         }
 
-        if (vec3d == null) {
-            return false;
-        } else {
-            this.shelterX = vec3d.x;
-            this.shelterY = vec3d.y;
-            this.shelterZ = vec3d.z;
-            return true;
-        }
+        this.shelter = vec3d;
+        return vec3d != null;
     }
 
     @Override
@@ -60,10 +56,10 @@ public class AmphibiousTransition extends Goal {
 
     @Override
     public void startExecuting() {
-        this.taskOwner.getNavigator().tryMoveToXYZ(this.shelterX, this.shelterY, this.shelterZ, this.movementSpeed);
+        this.taskOwner.getNavigator().tryMoveToXYZ(this.shelter.getX(), this.shelter.getY(), this.shelter.getZ(), this.movementSpeed);
     }
 
-    protected Vector3d findWaterShelter() {
+    protected Vector3d findWaterPos() {
         Random random = this.taskOwner.getRNG();
         BlockPos blockpos = new BlockPos(this.taskOwner.getPosX(), this.taskOwner.getBoundingBox().minY, this.taskOwner.getPosZ());
 
@@ -71,22 +67,22 @@ public class AmphibiousTransition extends Goal {
             BlockPos blockpos1 = blockpos.add(random.nextInt(20) - 10, random.nextInt(6) - 3, random.nextInt(20) - 10);
 
             if (this.world.getFluidState(blockpos1).isTagged(FluidTags.WATER)) {
-                return new Vector3d((double) blockpos1.getX() + 0.5D, blockpos1.getY(), (double) blockpos1.getZ() + 0.5D);
+                return new Vector3d(blockpos1.getX() + 0.5D, blockpos1.getY(), blockpos1.getZ() + 0.5D);
             }
         }
 
         return null;
     }
 
-    private Vector3d findLandShelter() {
+    private Vector3d findLandPos() {
         Random random = this.taskOwner.getRNG();
         BlockPos blockpos = new BlockPos(this.taskOwner.getPosX(), this.taskOwner.getBoundingBox().minY, this.taskOwner.getPosZ());
 
         for (int i = 0; i < 10; ++i) {
             BlockPos blockpos1 = blockpos.add(random.nextInt(20) - 10, random.nextInt(6), random.nextInt(20) - 10);
-            if (this.world.getFluidState(blockpos1).isEmpty() && this.world.getBlockState(blockpos1).allowsMovement(this.world, blockpos1, PathType.LAND) && this.world.getBlockState(blockpos1.down()).isSolid() && this.world.getFluidState(blockpos1.down()).isEmpty()) {
-                //this.world.setBlockState(blockpos1, Blocks.TORCH.getDefaultState());
-                return new Vector3d(blockpos1.getX(), blockpos1.getY(), blockpos1.getZ());
+
+            if (this.world.getFluidState(blockpos1).isEmpty() && this.world.getBlockState(blockpos1).allowsMovement(this.world, blockpos1, PathType.LAND) && this.world.getBlockState(blockpos1.down()).isSolid()) {
+                return new Vector3d(blockpos1.getX() + 0.5D, blockpos1.getY(), blockpos1.getZ() + 0.5D);
             }
         }
 

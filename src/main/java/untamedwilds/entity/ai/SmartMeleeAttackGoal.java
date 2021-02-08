@@ -2,12 +2,15 @@ package untamedwilds.entity.ai;
 
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EntityPredicates;
+import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
+import java.util.Objects;
 
 public class SmartMeleeAttackGoal extends Goal {
     protected final CreatureEntity attacker;
@@ -24,21 +27,28 @@ public class SmartMeleeAttackGoal extends Goal {
     private long field_220720_k;
     private int failedPathFindingPenalty = 0;
     private boolean canPenalize = false;
+    private final boolean doSkirmish;
 
     public SmartMeleeAttackGoal(CreatureEntity creature, double speedIn, boolean useLongMemory) {
-        this(creature, speedIn, useLongMemory, 0);
+        this(creature, speedIn, useLongMemory, 0, false);
     }
 
     public SmartMeleeAttackGoal(CreatureEntity creature, double speedIn, boolean useLongMemory, float reach) {
+        this(creature, speedIn, useLongMemory, reach, false);
+    }
+
+    public SmartMeleeAttackGoal(CreatureEntity creature, double speedIn, boolean useLongMemory, float reach, boolean doSkirmish) {
         this.attacker = creature;
         this.speedTowardsTarget = speedIn;
         this.longMemory = useLongMemory;
         this.extraReach = reach;
+        this.doSkirmish = doSkirmish;
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
+    @Override
     public boolean shouldExecute() {
-        if (this.attacker.isChild()) {
+        if (this.attacker.isChild() || (this.doSkirmish && this.attacker.getHealth() != this.attacker.getMaxHealth())) {
             return false;
         }
         long i = this.attacker.world.getGameTime();
@@ -71,19 +81,31 @@ public class SmartMeleeAttackGoal extends Goal {
         }
     }
 
+    @Override
     public boolean shouldContinueExecuting() {
+        // TODO: Skirmish option, where a mob low on health will retreat if targeted
+        if (this.doSkirmish && this.attacker.getHealth() != this.attacker.getMaxHealth()) {
+            if (this.attacker.getAttackTarget() instanceof CreatureEntity) {
+                CreatureEntity targetEntity = (CreatureEntity) this.attacker.getAttackTarget();
+                if (Objects.equals(targetEntity.getAttackTarget(), this.attacker)) {
+                    Vector3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(targetEntity, 12, 4, new Vector3d(targetEntity.getPosX(), targetEntity.getPosY(), targetEntity.getPosZ()));
+                    if (vec3d != null) {
+                        this.attacker.setAttackTarget(null);
+                        this.attacker.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, this.speedTowardsTarget);
+                        return false;
+                    }
+                }
+            }
+        }
         LivingEntity livingentity = this.attacker.getAttackTarget();
-        if (livingentity == null) {
-            return false;
-        } else if (this.attacker.getAir() < 40 && !this.attacker.canBreatheUnderwater()) {
-            return false;
-        } else if (!livingentity.isAlive()) {
+        if (livingentity == null || (this.attacker.getAir() < 40 && !this.attacker.canBreatheUnderwater()) || !livingentity.isAlive()) {
             return false;
         } else if (!this.longMemory) {
             return !this.attacker.getNavigator().noPath();
         } else if (!this.attacker.isWithinHomeDistanceFromPosition(livingentity.getPosition())) {
             return false;
-        } else {
+        }
+        else {
             return !(livingentity instanceof PlayerEntity) || !livingentity.isSpectator() && !((PlayerEntity)livingentity).isCreative();
         }
     }
@@ -99,7 +121,6 @@ public class SmartMeleeAttackGoal extends Goal {
         if (!EntityPredicates.CAN_AI_TARGET.test(livingentity)) {
             this.attacker.setAttackTarget(null);
         }
-
         this.attacker.setAggroed(false);
         this.attacker.getNavigator().clearPath();
     }
@@ -112,7 +133,6 @@ public class SmartMeleeAttackGoal extends Goal {
 
         // This piece of code fixes mobs in water being unable to chase upwards
         if (this.attacker.isInWater() && this.attacker.ticksExisted % 12 == 0) {
-            //this.attacker.setMotion(this.attacker.getMotion().scale(1.4));
             if ((livingentity.getBoundingBox().minY + 1) > this.attacker.getPosY()) {
                 this.attacker.getJumpController().setJumping();
             }
@@ -154,7 +174,6 @@ public class SmartMeleeAttackGoal extends Goal {
         double d0 = this.getAttackReachSqr(enemy);
         if (distToEnemySqr <= d0 && this.attackTick <= 0) {
             this.attackTick = 20;
-            // this.attacker.swingArm(Hand.MAIN_HAND);
             this.attacker.attackEntityAsMob(enemy);
         }
 

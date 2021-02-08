@@ -16,9 +16,7 @@ public class SmartLookRandomlyGoal extends Goal {
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
+    @Override
     public boolean shouldExecute() {
         if (!this.field_75258_a.isSleeping()) {
             return this.field_75258_a.getRNG().nextFloat() < 0.02F;
@@ -26,16 +24,12 @@ public class SmartLookRandomlyGoal extends Goal {
         return false;
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
+    @Override
     public boolean shouldContinueExecuting() {
         return this.idleTime >= 0;
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
+    @Override
     public void startExecuting() {
         double d0 = (Math.PI * 2D) * this.field_75258_a.getRNG().nextDouble();
         this.lookX = Math.cos(d0);
@@ -43,9 +37,7 @@ public class SmartLookRandomlyGoal extends Goal {
         this.idleTime = 20 + this.field_75258_a.getRNG().nextInt(20);
     }
 
-    /**
-     * Keep ticking a continuous task that has already been started
-     */
+    @Override
     public void tick() {
         --this.idleTime;
         this.field_75258_a.getLookController().setLookPosition(this.field_75258_a.getPosX() + this.lookX, this.field_75258_a.getPosY() + (double)this.field_75258_a.getEyeHeight(), this.field_75258_a.getPosZ() + this.lookZ);

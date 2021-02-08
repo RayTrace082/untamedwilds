@@ -69,7 +69,7 @@ public class ModEntity {
     public static EntityType<BlindBear> BLIND_BEAR = createEntity(ConfigMobControl.addBear.get() && ConfigGamerules.fantasyMobs.get(), BlindBear::new,  "bear_blind",  1.6F, 1.6F, 0x241D1B, 0x4B3B35, animalType.LARGE_UNDERGROUND, 1);
     public static EntityType<BrownBear> BROWN_BEAR = createEntity(ConfigMobControl.addBear.get(), BrownBear::new,  "bear_brown",  1.5F, 1.5F, 0x624125, 0x20130B, animalType.APEX_PRED, 1);
     public static EntityType<CaveBear> CAVE_BEAR = createEntity(ConfigMobControl.addBear.get() && ConfigGamerules.extinctMobs.get(), CaveBear::new,  "bear_cave",  1.6F, 1.6F, 0x564C45, 0x27190F, animalType.APEX_PRED, 1);
-    public static EntityType<PandaBear> PANDA_BEAR = createEntity(ConfigMobControl.addBear.get(), PandaBear::new,  "bear_panda",  1.2F, 1.2F, 15198183, 1776418, animalType.APEX_PRED, 1);
+    public static EntityType<PandaBear> PANDA_BEAR = createEntity(ConfigMobControl.addBear.get(), PandaBear::new, "bear_panda",  1.2F, 1.2F, 15198183, 1776418, animalType.APEX_PRED, 1);
     public static EntityType<PolarBear> POLAR_BEAR = createEntity(ConfigMobControl.addBear.get(), PolarBear::new,  "bear_polar",  1.6F, 1.6F, 15921906, 9803152, animalType.APEX_PRED, 1);
     public static EntityType<SpectacledBear> SPECTACLED_BEAR = createEntity(ConfigMobControl.addBear.get(), SpectacledBear::new,  "bear_spectacled",  1.2F, 1.2F, 0x624125, 0x8E6E51, animalType.APEX_PRED, 1);
     public static EntityType<SunBear> SUN_BEAR = createEntity(ConfigMobControl.addBear.get(), SunBear::new,  "bear_sun",  0.9F, 0.9F, 0x0B0A08, 0xA27345, animalType.APEX_PRED, 1);
@@ -123,7 +123,6 @@ public class ModEntity {
                     .setUpdateInterval(updateFrequency)
                     .setShouldReceiveVelocityUpdates(sendsVelocityUpdates)
                     .build(location.toString());
-
             spawnEggs.add(registerEntitySpawnEgg(type, name, maincolor, backcolor));
             type.setRegistryName(name);
             entities.add(type);
@@ -144,7 +143,7 @@ public class ModEntity {
     }
 
     public static void bakeAttributes() {
-        // TODO: I am 95% sure that with some generic fuckery this can be abstracted with a for-loop through `entities`
+        // TODO: I am 95% sure that with some fuckery this can be abstracted with a for-loop through `entities`
         GlobalEntityTypeAttributes.put(TARANTULA, Tarantula.registerAttributes().create());
 
         GlobalEntityTypeAttributes.put(SNAKE, EntitySnake.registerAttributes().create());

@@ -71,6 +71,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
                     this.heal(2.0F);
                 }
             }
+            // Angry Sleepers
             if (this.isSleeping() && this.forceSleep == 0) {
                 List<PlayerEntity> list = this.world.getEntitiesWithinAABB(PlayerEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                 if (!list.isEmpty()) {
@@ -124,7 +125,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
             this.playSound(SoundEvents.ENTITY_HORSE_EAT,1.5F, 0.8F);
         }
         if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-            this.playSound(this.getAmbientSound(), 1.5F, 1);
+            this.playSound(this.getAmbientSound(), 1F, 1);
         }
         if (this.world.isRemote && this.isAngry() && this.aggroProgress < 40) {
             this.aggroProgress++;
@@ -145,16 +146,16 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
-        return !this.isChild() ? ModSounds.ENTITY_BIG_CAT_HURT : SoundEvents.ENTITY_OCELOT_HURT;
+        return this.isChild() ?  SoundEvents.ENTITY_OCELOT_HURT : ModSounds.ENTITY_BIG_CAT_HURT;
     }
 
     protected SoundEvent getDeathSound() {
-        return !this.isChild() ? ModSounds.ENTITY_BIG_CAT_DEATH : SoundEvents.ENTITY_OCELOT_DEATH;
+        return this.isChild() ? SoundEvents.ENTITY_OCELOT_DEATH : ModSounds.ENTITY_BIG_CAT_DEATH;
     }
 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
-        if (hand == Hand.MAIN_HAND && !this.world.isRemote()) { // Prevents all code from running twice
+        if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
             if (player.isCreative() && itemstack.isEmpty() && this instanceof IPackEntity) {
                 for (int i = 0; i < this.herd.creatureList.size(); ++i) {
                     ComplexMob creature = this.herd.creatureList.get(i);
@@ -198,7 +199,6 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
                 this.playSound(SoundEvents.ENTITY_HORSE_EAT, 1.5F, 0.8F);
                 if (this.getRNG().nextInt(3) == 0) {
                     this.setTamedBy(player);
-                    //this.registerGoals(); // AI Reset Hook
                     EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.HEART, 3, 6);
                 } else {
                     EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.SMOKE, 3, 3);

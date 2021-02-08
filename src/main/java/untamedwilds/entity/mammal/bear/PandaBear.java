@@ -41,11 +41,11 @@ public class PandaBear extends AbstractBear {
         this.goalSelector.addGoal(1, new SmartSwimGoal(this));
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 2.3D, false, 1));
         this.goalSelector.addGoal(2, new PandaEatBamboo(this, 40, 16));
-        this.goalSelector.addGoal(3, new SmartFollowOwnerGoal(this, 2.3D, 16.0F, 3.0F));
+        this.goalSelector.addGoal(3, new SmartFollowOwnerGoal(this, 2.3D, 12.0F, 3.0F));
         this.goalSelector.addGoal(3, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 6));
-        this.goalSelector.addGoal(3, new PandaBreakBamboo(this, 40));
+        this.goalSelector.addGoal(3, new PandaBreakBamboo(this, 200));
         this.goalSelector.addGoal(4, new SmartMateGoal(this, 1D));
-        this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D, true));
+        this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, true));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));

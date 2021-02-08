@@ -138,14 +138,6 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
         return this.forceSleep >= 0;
     }
 
-    private boolean isBlinking() {
-        return this.ticksExisted % 60 > 53;
-    }
-
-    public boolean shouldRenderEyes() { return !this.isSleeping() && !this.dead && !this.isBlinking() && this.hurtTime == 0; }
-
-    public boolean canMove() { return !this.isSitting() && !this.isSleeping(); }
-
     private void setHunger(int hunger){
         this.dataManager.set(HUNGER, hunger);
     }
@@ -170,7 +162,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
     }
 
     public void onDeath(DamageSource p_70645_1_) {
-        if (!this.world.isRemote && ConfigGamerules.hardcoreDeath.get() && this.getHome() != BlockPos.ZERO && this.isTamed() && this.getHunger() != 0) {
+        if (!this.world.isRemote && !ConfigGamerules.hardcoreDeath.get() && this.getHome() != BlockPos.ZERO && this.isTamed() && this.getHunger() != 0) {
             this.addPotionEffect(new EffectInstance(Effects.GLOWING, 800, 0));
             this.setHealth(0.5F);
             this.setHunger(0);

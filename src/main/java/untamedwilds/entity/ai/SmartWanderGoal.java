@@ -38,8 +38,9 @@ public class SmartWanderGoal extends Goal {
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
+    @Override
     public boolean shouldExecute() {
-        if (!this.creature.isActive() || this.creature.isBeingRidden() || !this.creature.canMove() || !this.creature.getNavigator().noPath()) {
+        if (!this.creature.isActive() || this.creature.isBeingRidden() || !this.creature.canMove() || !this.creature.getNavigator().noPath() || this.creature.getCommandInt() != 0) {
             return false;
         } else {
             if (this.creature.getRNG().nextInt(this.executionChance) != 0) { return false; }
@@ -67,17 +68,13 @@ public class SmartWanderGoal extends Goal {
         }
     }
 
+    @Override
     public boolean shouldContinueExecuting() {
         return !this.creature.getNavigator().noPath();
     }
 
+    @Override
     public void startExecuting() {
-        if (this.creature.getRNG().nextInt(100) < this.runChance) {
-            //this.creature.setRunning(true);
-            this.creature.getNavigator().tryMoveToXYZ(this.x, this.y, this.z, this.speed * 1.8f);
-        }
-        else {
-            this.creature.getNavigator().tryMoveToXYZ(this.x, this.y, this.z, this.speed);
-        }
+        this.creature.getNavigator().tryMoveToXYZ(this.x, this.y, this.z, this.speed * (this.creature.getRNG().nextInt(100) < this.runChance ? 1.8f : 1f));
     }
 }

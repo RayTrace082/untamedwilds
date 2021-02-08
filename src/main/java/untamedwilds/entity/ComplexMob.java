@@ -123,6 +123,7 @@ public abstract class ComplexMob extends TameableEntity {
         }
         return false;
     }
+
     @SuppressWarnings("unchecked") // Don't use this outside ComplexMobs
     public <T extends ComplexMob> void breed() {
         int bound = 1 + (this.getOffspring() > 0 ? this.rand.nextInt(this.getOffspring() + 1) : 0);
@@ -163,6 +164,14 @@ public abstract class ComplexMob extends TameableEntity {
         return false;
     }
 
+    private boolean isBlinking() {
+        return this.ticksExisted % 60 > 53;
+    }
+
+    public boolean shouldRenderEyes() { return !this.isSleeping() && !this.dead && !this.isBlinking() && this.hurtTime == 0; }
+
+    public boolean canMove() { return !this.isSitting() && !this.isSleeping(); }
+
     public void setHome(BlockPos position) {
         this.dataManager.set(HOME_POS, position);
     }
@@ -189,16 +198,10 @@ public abstract class ComplexMob extends TameableEntity {
 
     // Returns the ecological level of an entity. Values are data-driven, defaulting to 4 if no key is found.
     protected int getEcoLevel(LivingEntity entity) {
-        // TODO: Too many constant calls to getEcoLevel, don't do that
-        // UntamedWilds.LOGGER.info(entity.getEntityString());
         if (ModEntity.eco_levels.containsKey(entity.getEntityString())) {
-            // UntamedWilds.LOGGER.info(ModEntity.eco_levels.get(entity.getEntityString()));
             return ModEntity.eco_levels.get(entity.getEntityString());
         }
-        else if (entity instanceof MonsterEntity || entity instanceof PlayerEntity) {
-            return 7;
-        }
-        return 4;
+        return entity instanceof MonsterEntity ? 7 : 4;
     }
 
     protected void setAngry(boolean isAngry) { this.dataManager.set(IS_ANGRY, isAngry); }
@@ -322,10 +325,8 @@ public abstract class ComplexMob extends TameableEntity {
             if (this instanceof IPackEntity) {
                 this.initPack();
             }
-            //worldIn.func_242417_l(this);
             this.setGrowingAge(0);
         }
-        UntamedWilds.LOGGER.info(spawnDataIn);
         return spawnDataIn;
     }
 

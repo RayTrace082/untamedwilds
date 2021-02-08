@@ -22,7 +22,7 @@ public class ItemLovePotion extends Item {
         if (target instanceof ComplexMob) {
             ComplexMob entity = (ComplexMob)target;
             entity.setInLove(playerIn);
-            entity.breed();
+            //entity.breed();
             //entity.setGrowingAge(60);
             return ActionResultType.SUCCESS;
         }
