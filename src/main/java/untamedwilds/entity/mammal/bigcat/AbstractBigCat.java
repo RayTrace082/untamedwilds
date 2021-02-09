@@ -15,6 +15,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -50,16 +51,12 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
         this.turn_speed = 0.1F;
     }
 
-    public boolean isActive() {
-        if (this.forceSleep < 0) {
-            return false;
-        }
-        float f = this.world.getCelestialAngleRadians(0F);
-        return f < 0.21F || f > 0.78;
-    }
-
     public boolean isPushedByWater() {
         return false;
+    }
+
+    protected int calculateFallDamage(float distance, float damageMultiplier) {
+        return MathHelper.ceil((distance * 0.5F - 3.0F) * damageMultiplier);
     }
 
     public void livingTick() {

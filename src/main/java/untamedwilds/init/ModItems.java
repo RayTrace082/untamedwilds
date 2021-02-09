@@ -34,7 +34,7 @@ public class ModItems {
     // Debug Tools
     public static RegistryObject<Item> OWNERSHIP_DEED = createItem("ownership_deed", () -> new ItemOwnershipDeed(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items)));
     public static RegistryObject<Item> DEBUG_ERASER = createItem("debug_eraser", () -> new ItemEraser(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
-    public static RegistryObject<Item> DEBUG_ANALYZER = createItem("debug_analyzer", () -> new ItemAnalizer(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
+    public static RegistryObject<Item> DEBUG_ANALYZER = createItem("debug_analyzer", () -> new ItemAnalyzer(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
     public static RegistryObject<Item> DEBUG_IPECAC = createItem("debug_ipecac", () -> new ItemIpecac(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
     public static RegistryObject<Item> DEBUG_LOVE_POTION = createItem("debug_love_potion", () -> new ItemLovePotion(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
     public static RegistryObject<Item> DEBUG_GROWTH_TONIC = createItem("debug_growth_tonic", () -> new ItemGrowthTonic(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
