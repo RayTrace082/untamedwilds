@@ -146,21 +146,20 @@ public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
         float globalSpeed = 1f;
         float globalDegree = 2f;
         limbSwingAmount = 0.5F;
-
         if (snake.sitProgress != 0) {
-            limbSwingAmount /= snake.sitProgress;
-            this.progressRotation(body_1, snake.sitProgress, (float) Math.toRadians(39.13F), (float) Math.toRadians(67.83F), (float) Math.toRadians(44.35F), 40);
-            this.progressRotation(body_2, snake.sitProgress,(float) Math.toRadians(-15.65F), (float) Math.toRadians(70.43F), 0, 40);
-            this.progressRotation(body_3, snake.sitProgress,0F, (float) Math.toRadians(75.65F), 0F, 40);
-            this.progressRotation(body_4, snake.sitProgress,0F, (float) Math.toRadians(75.65F), 0F, 40);
+            limbSwingAmount /= Math.max((double) snake.sitProgress / 6, 1);
+            this.progressRotation(body_1, snake.sitProgress, (float) Math.toRadians(39.13F), (float) Math.toRadians(67.83F), (float) Math.toRadians(44.35F), 20);
+            this.progressRotation(body_2, snake.sitProgress,(float) Math.toRadians(-15.65F), (float) Math.toRadians(70.43F), 0, 20);
+            this.progressRotation(body_3, snake.sitProgress,0F, (float) Math.toRadians(75.65F), 0F, 20);
+            this.progressRotation(body_4, snake.sitProgress,0F, (float) Math.toRadians(75.65F), 0F, 20);
             body_5.rotationPointX = -4F;
             body_5.rotationPointZ = 1F;
-            this.progressRotation(body_5, snake.sitProgress,0F, (float) Math.toRadians(67.83F), 0F, 40);
-            this.progressRotation(body_6, snake.sitProgress,0F, (float) Math.toRadians(-57.39F), 0F, 40);
-            this.progressRotation(body_7, snake.sitProgress,0F, (float) Math.toRadians(49.57F), 0F, 40);
-            this.progressRotation(body_8, snake.sitProgress,0F, (float) Math.toRadians(57.39F), 0F, 40);
-            this.progressRotation(body_9, snake.sitProgress,0F, (float) Math.toRadians(75.65F), 0F, 40);
-            this.progressRotation(body_10, snake.sitProgress,0F, (float) Math.toRadians(62.61F), 0F, 40);
+            this.progressRotation(body_5, snake.sitProgress,0F, (float) Math.toRadians(67.83F), 0F, 20);
+            this.progressRotation(body_6, snake.sitProgress,0F, (float) Math.toRadians(-57.39F), 0F, 20);
+            this.progressRotation(body_7, snake.sitProgress,0F, (float) Math.toRadians(49.57F), 0F, 20);
+            this.progressRotation(body_8, snake.sitProgress,0F, (float) Math.toRadians(57.39F), 0F, 20);
+            this.progressRotation(body_9, snake.sitProgress,0F, (float) Math.toRadians(75.65F), 0F, 20);
+            this.progressRotation(body_10, snake.sitProgress,0F, (float) Math.toRadians(62.61F), 0F, 20);
         }
         if (snake.isInWater() && snake.isAirBorne) {
             this.setRotateAngle(body_5, (float) (snake.getMotion().getY() * -30 * Math.PI / 180F), 0, 0);

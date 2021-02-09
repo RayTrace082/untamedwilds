@@ -42,6 +42,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
     public EntitySnake(EntityType<? extends ComplexMobTerrestrial> type, World worldIn) {
         super(type, worldIn);
         ANIMATION_TONGUE = Animation.create(10);
+        this.ticksToSit = 20;
     }
 
     @Override

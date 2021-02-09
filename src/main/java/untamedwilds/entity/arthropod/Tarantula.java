@@ -117,6 +117,11 @@ public class Tarantula extends ComplexMob implements ISpecies {
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
 
+        if (itemstack.getItem() == Items.GLASS_BOTTLE && this.isAlive()) {
+            turnEntityIntoItem("bottle_tarantula_" + this.getRawSpeciesName().toLowerCase());
+            itemstack.shrink(1);
+            return ActionResultType.func_233537_a_(this.world.isRemote);
+        }
         if (itemstack.isEmpty() && this.isAlive()) {
             turnEntityIntoItem("tarantula_" + this.getRawSpeciesName().toLowerCase());
             return ActionResultType.func_233537_a_(this.world.isRemote);

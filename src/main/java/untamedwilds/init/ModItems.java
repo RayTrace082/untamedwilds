@@ -15,10 +15,7 @@ import untamedwilds.entity.fish.Trevally;
 import untamedwilds.entity.mollusk.GiantClam;
 import untamedwilds.entity.reptile.EntitySnake;
 import untamedwilds.entity.reptile.EntitySoftshellTurtle;
-import untamedwilds.item.ItemMobBucketed;
-import untamedwilds.item.ItemMobEgg;
-import untamedwilds.item.ItemMobSpawn;
-import untamedwilds.item.ItemOwnershipDeed;
+import untamedwilds.item.*;
 import untamedwilds.item.debug.*;
 import untamedwilds.util.ItemGroupUT;
 
@@ -88,8 +85,10 @@ public class ModItems {
         if (ConfigMobControl.addTarantula.get()) {
             for (int i = 0; i < Tarantula.SpeciesTarantula.values().length; i++) {
                 int tarantulaSpecies = i;
+                // TODO: Non-bottled tarantulas are Deprecated and will probably be removed in the future
                 ModItems.ITEMS.register("tarantula_" + Tarantula.SpeciesTarantula.values()[i].name().toLowerCase(), () -> new ItemMobSpawn(ModEntity.TARANTULA, tarantulaSpecies, Tarantula.SpeciesTarantula.values()[tarantulaSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
                 ModItems.ITEMS.register("egg_tarantula_" + Tarantula.SpeciesTarantula.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.TARANTULA, tarantulaSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("bottle_tarantula_" + Tarantula.SpeciesTarantula.values()[i].name().toLowerCase(), () -> new ItemMobBottled(ModEntity.TARANTULA, tarantulaSpecies, Tarantula.SpeciesTarantula.values()[tarantulaSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             }
         }
         // Small Snake Items

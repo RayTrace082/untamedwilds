@@ -38,6 +38,7 @@ import untamedwilds.config.ConfigGamerules;
 public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnimatedEntity {
 
     public int sitProgress; // A counter which defines the progress towards the Sitting Poses
+    public int ticksToSit;
     public int sleepProgress; // A counter which defines the progress towards the Sleeping Poses
     protected int forceSleep;
     protected int tiredCounter = 0;
@@ -51,6 +52,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
     public ComplexMobTerrestrial(EntityType<? extends ComplexMob> type, World worldIn){
         super(type, worldIn);
         this.moveController = new ComplexMobTerrestrial.MoveHelperController(this);
+        this.ticksToSit = 40;
     }
 
     @Override
@@ -96,7 +98,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
                 }
             }
         }
-        if (this.isSitting() && this.sitProgress < 40) {
+        if (this.isSitting() && this.sitProgress < this.ticksToSit) {
             this.sitProgress++;
         } else if (!this.isSitting() && this.sitProgress > 0) {
             this.sitProgress--;
