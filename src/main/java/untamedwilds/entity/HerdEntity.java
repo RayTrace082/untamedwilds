@@ -55,6 +55,7 @@ public class HerdEntity {
             this.chooseRandomLeader();
         }
         creature.initPack();
+        creature.herd.setLeader(creature);
         creature.herd.setOpenToCombine(false);
     }
 
@@ -86,15 +87,12 @@ public class HerdEntity {
         if (this.creatureList.size() == this.getMaxSize()) {
             this.setOpenToCombine(false);
         }
-        else {
-            if (!this.isOpenToCombine() && this.world.rand.nextInt(1500) == 0) {
-                this.setOpenToCombine(true);
-            } else if (this.isOpenToCombine() && this.world.rand.nextInt(1800) == 0) {
-                this.setOpenToCombine(false);
-            }
+        else if (this.world.rand.nextInt(1800) == 0) {
+            this.setOpenToCombine(!this.isOpenToCombine());
         }
 
         if (this.getLeader().ticksExisted % 10 == 0) {
+            List<ComplexMob> toRemove = new ArrayList<>();
             if (this.isOpenToCombine()) {
                 List<ComplexMob> list = this.world.getEntitiesWithinAABB(ComplexMob.class, this.getLeader().getBoundingBox().grow(16.0D, 12.0D, 16.0D));
                 for (ComplexMob creature : list) {
@@ -105,9 +103,7 @@ public class HerdEntity {
                         }
                     }
                     if (creature.shouldLeavePack()) {
-                        this.removeCreature(creature);
-                        creature.herd.setLeader(creature);
-                        creature.herd.setOpenToCombine(false);
+                        toRemove.add(creature);
                     }
                 }
             }
@@ -123,9 +119,12 @@ public class HerdEntity {
                         }
                     }
                 } else {
-                    this.removeCreature(creature);
-                    creature.initPack();
+                    toRemove.add(creature);
                 }
+            }
+
+            for (ComplexMob complexMob : toRemove) {
+                this.creatureList.remove(complexMob);
             }
         }
     }

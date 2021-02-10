@@ -333,7 +333,7 @@ public abstract class ComplexMob extends TameableEntity {
     }
 
     public boolean shouldLeavePack() {
-        return this.rand.nextInt(400) == 0;
+        return this.rand.nextInt(120) == 0;
     }
 
     public boolean canCombineWith(HerdEntity otherPack) {

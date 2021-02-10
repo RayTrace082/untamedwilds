@@ -108,6 +108,10 @@ public class LionBigCat extends AbstractBigCat implements IPackEntity {
         return bear;
     }
 
+    public boolean shouldLeavePack() {
+        return false;
+    }
+
     protected ResourceLocation getLootTable() {
         return ModLootTables.BIGCAT_LOOT_LION;
     }
