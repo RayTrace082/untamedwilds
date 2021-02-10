@@ -1,7 +1,5 @@
 package untamedwilds.entity;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
@@ -10,18 +8,18 @@ import java.util.Iterator;
 import java.util.List;
 
 public class HerdEntity {
-    private int maxSchoolSize = 10;
+    private int maxSchoolSize;
     private float radius = 8.0F;
     private boolean openToCombine;
     private ComplexMob leader;
     private final World world;
     public final List<ComplexMob> creatureList = new ArrayList<>();
-    public Vector3d fleeLookVec = null;
 
-    public HerdEntity(ComplexMob creature) {
+    public HerdEntity(ComplexMob creature, int maxSize) {
         //this.openToCombine = creature.world.rand.nextInt(4) == 0;
         this.openToCombine = true;
         this.world = creature.world;
+        this.maxSchoolSize = maxSize;
         this.setLeader(creature);
     }
 
@@ -56,11 +54,8 @@ public class HerdEntity {
         if (this.creatureList.size() > 0 && this.getLeader() == creature) {
             this.chooseRandomLeader();
         }
-
         creature.initPack();
         creature.herd.setOpenToCombine(false);
-        creature.followEntity = null;
-        creature.targetVec = null;
     }
 
     public void setMaxSize(int maxSchoolSize) {
@@ -68,7 +63,7 @@ public class HerdEntity {
     }
 
     public int getMaxSize() {
-        return this.getLeader().maxSchoolSize;
+        return this.maxSchoolSize;
     }
 
     public void setRadius(float radius) {
@@ -88,96 +83,54 @@ public class HerdEntity {
     }
 
     public void tick() {
-        if (!this.isOpenToCombine() && this.world.rand.nextInt(1500) == 0) {
-            this.setOpenToCombine(true);
-        } else if (this.isOpenToCombine() && this.world.rand.nextInt(1800) == 0) {
+        if (this.creatureList.size() == this.getMaxSize()) {
             this.setOpenToCombine(false);
         }
-
-        if (this.isOpenToCombine()) {
-            List<ComplexMob> list = this.world.getEntitiesWithinAABB(ComplexMob.class, this.getLeader().getBoundingBox().grow(16.0D, 12.0D, 16.0D));
-            for (ComplexMob creature : list) {
-                if (!this.containsCreature(creature) && creature.herd != null && creature.canCombineWith(this)) {
-                    int netSize = this.creatureList.size() + creature.herd.creatureList.size();
-                    if (creature.herd.isOpenToCombine() && creature.getClass().equals(this.getLeader().getClass()) && netSize <= this.getMaxSize() && netSize <= creature.herd.getMaxSize()) {
-                        combineHerds(this, creature.herd);
-                    }
-                }
+        else {
+            if (!this.isOpenToCombine() && this.world.rand.nextInt(1500) == 0) {
+                this.setOpenToCombine(true);
+            } else if (this.isOpenToCombine() && this.world.rand.nextInt(1800) == 0) {
+                this.setOpenToCombine(false);
             }
         }
 
-        //boolean nearLeader = false;
-        //List<ComplexMob> leaderList = this.world.getEntitiesWithinAABB(ComplexMob.class, this.getLeader().getBoundingBox().grow(3));
-
-        int i;
-        ComplexMob creature;
-        /*for (i = 0; i < leaderList.size(); ++i) {
-            creature = leaderList.get(i);
-            if (creature != this.leader && this.containsCreature(creature)) {
-                nearLeader = true;
-                break;
-            }
-        }*/
-
-        for (i = 0; i < this.creatureList.size(); ++i) {
-            creature = this.creatureList.get(i);
-            MobEntity creature_entity = creature;
-            if (creature_entity.isAlive() && creature_entity.getDistanceSq(this.leader) <= 1024.0D) {
-                if (creature != this.leader) {
-                    if (creature_entity.getDistanceSq(this.leader) <= (double)(this.radius * this.radius)/* && nearLeader*/) {
-                        List<ComplexMob> list = this.world.getEntitiesWithinAABB(ComplexMob.class, creature_entity.getBoundingBox().grow(16.0D));
-                        ComplexMob closestEntity = null;
-                        double distSq = 1024.0D;
-                        boolean hasNearby = false;
-
-                        double dy;
-                        for (ComplexMob thing : list) {
-                            if (creature != thing && this.containsCreature(thing)) {
-                                dy = creature_entity.getDistanceSq(thing);
-                                float w = (creature_entity.getWidth() + thing.getWidth()) * 0.5F + 1.0F;
-                                if (dy < (double) (w * w)) {
-                                    hasNearby = true;
-                                    break;
-                                }
-
-                                if (dy < distSq * distSq) {
-                                    closestEntity = thing;
-                                    distSq = dy;
-                                }
-                            }
+        if (this.getLeader().ticksExisted % 10 == 0) {
+            if (this.isOpenToCombine()) {
+                List<ComplexMob> list = this.world.getEntitiesWithinAABB(ComplexMob.class, this.getLeader().getBoundingBox().grow(16.0D, 12.0D, 16.0D));
+                for (ComplexMob creature : list) {
+                    if (!this.containsCreature(creature) && creature.herd != null && creature.canCombineWith(this)) {
+                        int netSize = this.creatureList.size() + creature.herd.creatureList.size();
+                        if (creature.herd.isOpenToCombine() && creature.getClass().equals(this.getLeader().getClass()) && netSize <= this.getMaxSize() && netSize <= creature.herd.getMaxSize()) {
+                            combineHerds(this, creature.herd);
                         }
-
-                        if (!hasNearby && closestEntity != null) {
-                            creature.followEntity = closestEntity;
-                            creature.targetVec = null;
-                        } else {
-                            creature.followEntity = null;
-                            if (this.leader.targetVec != null) {
-                                if (creature.targetVec == null || this.world.rand.nextInt(10) == 0) {
-                                    double dx = this.leader.targetVec.x - this.leader.getPosX() + (double)((this.world.rand.nextFloat() - 0.5F) * 1.1F);
-                                    dy = this.leader.targetVec.y - this.leader.getPosY() + (double)((this.world.rand.nextFloat() - 0.5F) * 1.2F);
-                                    double dz = this.leader.targetVec.z - this.leader.getPosZ() + (double)((this.world.rand.nextFloat() - 0.5F) * 1.1F);
-                                    creature.targetVec = new Vector3d(creature_entity.getPosX() + dx, creature_entity.getPosY() + dy, creature_entity.getPosZ() + dz);
-                                }
-                            } else {
-                                creature.targetVec = null;
-                                Vector3d vec = this.leader.getLookVec();
-                                creature_entity.getLookController().setLookPosition(creature_entity.getPosX() + vec.x, ((LivingEntity) creature).getPosY() + vec.y, ((LivingEntity) creature).getPosZ() + vec.z, 6.0F, 85.0F);
-                            }
-                        }
-                    } else {
-                        creature.followEntity = this.leader;
-                        creature.targetVec = null;
+                    }
+                    if (creature.shouldLeavePack()) {
+                        this.removeCreature(creature);
+                        creature.herd.setLeader(creature);
+                        creature.herd.setOpenToCombine(false);
                     }
                 }
-            } else {
-                this.removeCreature(creature);
-                --i;
+            }
+
+            ComplexMob creature;
+            for (ComplexMob complexMob : this.creatureList) {
+                creature = complexMob;
+                if (creature.isAlive() && creature.getDistanceSq(this.leader) <= 1024.0D) {
+                    if (creature != this.leader) {
+                        if (creature.getDistanceSq(this.leader) <= (double) (this.radius * this.radius)) {
+                            Vector3d vec = this.leader.getLookVec();
+                            creature.getLookController().setLookPosition(creature.getPosX() + vec.x, creature.getPosY() + vec.y, creature.getPosZ() + vec.z, 6.0F, 85.0F);
+                        }
+                    }
+                } else {
+                    this.removeCreature(creature);
+                    creature.initPack();
+                }
             }
         }
     }
 
-    public static HerdEntity combineHerds(HerdEntity herd1, HerdEntity herd2) {
+    public static void combineHerds(HerdEntity herd1, HerdEntity herd2) {
         if (herd2.creatureList.size() > herd1.creatureList.size()) {
             herd1.setLeader(herd2.getLeader());
         }
@@ -192,6 +145,5 @@ public class HerdEntity {
         for (Iterator<ComplexMob> i$ = herd2.creatureList.iterator(); i$.hasNext(); creature.herd = herd1) {
             creature = i$.next();
         }
-        return herd1;
     }
 }

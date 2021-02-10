@@ -49,9 +49,7 @@ public abstract class ComplexMob extends TameableEntity {
     private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     public HerdEntity herd = null;
-    int maxSchoolSize = 8;
-    protected LivingEntity followEntity;
-    protected Vector3d targetVec;
+    int maxHerdSize = 8;
 
     public ComplexMob(EntityType<? extends ComplexMob> type, World worldIn){
         super(type, worldIn);
@@ -331,16 +329,15 @@ public abstract class ComplexMob extends TameableEntity {
     }
 
     public void initPack() {
-        this.herd = new HerdEntity(this);
+        this.herd = new HerdEntity(this, this.maxHerdSize);
     }
 
     public boolean shouldLeavePack() {
-        return false;
-        //return this.rand.nextInt(1800) == 0;
+        return this.rand.nextInt(400) == 0;
     }
 
     public boolean canCombineWith(HerdEntity otherPack) {
-        return true;
+        return this.herd.creatureList.size() + otherPack.creatureList.size() <= this.herd.getMaxSize();
     }
 
     // Method exclusive for classes inheriting ISkins

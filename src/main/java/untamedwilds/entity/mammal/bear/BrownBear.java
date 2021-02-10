@@ -39,7 +39,6 @@ public class BrownBear extends AbstractBear implements ISkins {
     private static final int GESTATION = 8 * ConfigGamerules.cycleLength.get();
     private static final int GROWING = 8 * ConfigGamerules.cycleLength.get();
     private static final int RARITY = 3;
-    //private static final Biome.Category[] = Biome.Category.TAIGA, Biome.Category.EXTREME_HILLS;
 
     public BrownBear(EntityType<? extends AbstractBear> type, World worldIn) {
         super(type, worldIn);
