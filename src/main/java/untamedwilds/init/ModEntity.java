@@ -225,7 +225,7 @@ public class ModEntity {
             //RenderingRegistry.registerEntityRenderingHandler(ModEntity.MARSUPIAL_LION, RendererBigCat::new);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.LION, RendererBigCat::new);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.LEOPARD, RendererBigCat::new);
-            LeopardBigCat.registerTextures(4);
+            LeopardBigCat.registerTextures(3);
             //RenderingRegistry.registerEntityRenderingHandler(ModEntity.DIRE_LION, RendererBigCat::new);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNOW_LEOPARD, RendererBigCat::new);
         }
