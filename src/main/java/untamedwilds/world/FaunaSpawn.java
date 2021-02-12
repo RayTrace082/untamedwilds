@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-public final class FaunaSpawn {
+public class FaunaSpawn {
 
     private static boolean isSpawnableSpace(IBlockReader worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn, EntityType<?> entityTypeIn) {
         if (state.hasOpaqueCollisionShape(worldIn, pos)) {
@@ -74,7 +74,7 @@ public final class FaunaSpawn {
         }
     }
 
-    public static void performWorldGenSpawning(EntityType<?> entityType, EntitySpawnPlacementRegistry.PlacementType spawnType, ISeedReader worldIn, BlockPos pos, Random rand, int groupSize) {
+    public static boolean performWorldGenSpawning(EntityType<?> entityType, EntitySpawnPlacementRegistry.PlacementType spawnType, ISeedReader worldIn, BlockPos pos, Random rand, int groupSize) {
         //UntamedWilds.LOGGER.info(entityType);
         if (entityType != null) {
             int i = pos.getX() + rand.nextInt(16);
@@ -87,7 +87,6 @@ public final class FaunaSpawn {
                     k = 1 + rand.nextInt(groupSize);
                 }
                 for(int packSize = 0; packSize < k; ++packSize) {
-                    boolean flag = false;
                     int x = i;
                     int z = j;
                     int y = pos.getY();
@@ -97,7 +96,7 @@ public final class FaunaSpawn {
                         z += rand.nextInt(6);
                     }
 
-                    for(int attempt = 0; !flag && attempt < 4; ++attempt) { // 4 attempts at spawning are made for each mob
+                    for(int attempt = 0; attempt < 4; ++attempt) { // 4 attempts at spawning are made for each mob
                         if (attempt != 0) {
                             if (attempt == 1) {
                                 y += 1;
@@ -138,18 +137,20 @@ public final class FaunaSpawn {
                                         }
                                         if (((ComplexMob)mobentity).getSpecies() == 99) {
                                             mobentity.remove();
-                                            continue;
+                                            return false;
                                         }
                                     }
                                     worldIn.func_242417_l(mobentity);
-                                    flag = true;
+                                    break;
                                 }
                             }
                         }
                     }
                 }
+                return true;
             }
         }
+        return false;
     }
 
     private static BlockPos getTopSolidOrLiquidBlock(IWorldReader worldIn, @Nullable EntityType<?> entity, int posX, int posZ) {

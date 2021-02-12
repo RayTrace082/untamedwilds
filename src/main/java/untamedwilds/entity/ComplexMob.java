@@ -96,7 +96,7 @@ public abstract class ComplexMob extends TameableEntity {
 
     public int getSpecies(){ return (this.dataManager.get(SPECIES)); }
     public void setSpecies(int species){ this.dataManager.set(SPECIES, species); }
-    protected int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) { return 0; }
+    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) { return 0; }
 
     public float getModelScale() { return 1f; }
     public float getMobSize(){ return (this.dataManager.get(SIZE)); }

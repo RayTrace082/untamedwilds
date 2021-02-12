@@ -43,7 +43,6 @@ public class FeatureApexPredators extends Feature<NoFeatureConfig> {
                 }
                 break;
             case 2:
-                //type = ModEntity.SOFTSHELL_TURTLE;
                 type = EntityHippo.SpeciesHippo.getSpeciesByBiome(biome);
                 groupSize += 1 + rand.nextInt(4);
                 break;

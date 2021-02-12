@@ -16,7 +16,6 @@ public class HerdEntity {
     public final List<ComplexMob> creatureList = new ArrayList<>();
 
     public HerdEntity(ComplexMob creature, int maxSize) {
-        //this.openToCombine = creature.world.rand.nextInt(4) == 0;
         this.openToCombine = true;
         this.world = creature.world;
         this.maxSchoolSize = maxSize;
@@ -49,10 +48,10 @@ public class HerdEntity {
         return this.creatureList.contains(creature);
     }
 
-    public void removeCreature(ComplexMob creature) {
-        this.creatureList.remove(creature);
-        if (this.creatureList.size() > 0 && this.getLeader() == creature) {
-            this.chooseRandomLeader();
+    public void removeCreature(HerdEntity herd, ComplexMob creature) {
+        herd.creatureList.remove(creature);
+        if (herd.creatureList.size() > 0 && herd.getLeader() == creature) {
+            herd.chooseRandomLeader();
         }
         creature.initPack();
         creature.herd.setLeader(creature);
@@ -123,8 +122,8 @@ public class HerdEntity {
                 }
             }
 
-            for (ComplexMob complexMob : toRemove) {
-                this.creatureList.remove(complexMob);
+            for (ComplexMob mob : toRemove) {
+                removeCreature(this, mob);
             }
         }
     }
