@@ -205,10 +205,10 @@ public class ModEntity {
         }
         if (ConfigMobControl.addBear.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, RendererBear::new);
-            BlackBear.registerTextures(3);
+            BlackBear.registerTextures(BlackBear.SKIN_NUMBER);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLIND_BEAR, RendererBear::new);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BROWN_BEAR, RendererBear::new);
-            BrownBear.registerTextures(3);
+            BrownBear.registerTextures(BrownBear.SKIN_NUMBER);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_BEAR, RendererBear::new);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANDA_BEAR, RendererBear::new);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.POLAR_BEAR, RendererBear::new);
@@ -217,7 +217,7 @@ public class ModEntity {
         }
         if (ConfigMobControl.addBigCat.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.JAGUAR, RendererBigCat::new);
-            JaguarBigCat.registerTextures(3);
+            JaguarBigCat.registerTextures(JaguarBigCat.SKIN_NUMBER);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.PUMA, RendererBigCat::new);
             //RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_LION, RendererBigCat::new);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.TIGER, RendererBigCat::new);
@@ -225,7 +225,7 @@ public class ModEntity {
             //RenderingRegistry.registerEntityRenderingHandler(ModEntity.MARSUPIAL_LION, RendererBigCat::new);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.LION, RendererBigCat::new);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.LEOPARD, RendererBigCat::new);
-            LeopardBigCat.registerTextures(3);
+            LeopardBigCat.registerTextures(LeopardBigCat.SKIN_NUMBER);
             //RenderingRegistry.registerEntityRenderingHandler(ModEntity.DIRE_LION, RendererBigCat::new);
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNOW_LEOPARD, RendererBigCat::new);
         }
