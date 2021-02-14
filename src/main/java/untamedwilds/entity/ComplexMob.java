@@ -117,7 +117,8 @@ public abstract class ComplexMob extends TameableEntity {
             if (CompatBridge.SereneSeasons) {
                 return CompatSereneSeasons.isCurrentSeason(this.world, this.getBreedingSeason());
             }
-            return this.isInLove();
+            return true;
+            //return this.isInLove();
         }
         return false;
     }
@@ -128,6 +129,7 @@ public abstract class ComplexMob extends TameableEntity {
         for (int i = 0; i < bound; i++) {
             T child = (T) this.func_241840_a((ServerWorld) this.world, this);
             if (child != null) {
+                child.setGrowingAge(this.getGrowingAge() * -1);
                 child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
                 if (this instanceof ISkins) {
                     child.setSpecies(this.getSpecies());

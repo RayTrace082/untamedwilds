@@ -61,7 +61,11 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
 
     public void livingTick() {
         if (!this.world.isRemote) {
-
+            if (this.ticksExisted % 600 == 0) {
+                if (this.wantsToBreed()) {
+                    this.setInLove(null);
+                }
+            }
             if (this.world.getGameTime() % 1000 == 0) {
                 this.addHunger(-3);
                 if (!this.isStarving()) {

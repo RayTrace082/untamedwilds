@@ -73,7 +73,7 @@ public class SmartMateGoal extends Goal {
             // Positive Growing Age is used as pregnancy counter (handled in ComplexMob)
             this.taskOwner.setGrowingAge(this.taskOwner.getPregnancyTime());
             this.targetMate.setGrowingAge(this.taskOwner.getPregnancyTime());
-            if (!ConfigGamerules.easyBreeding.get()) {
+            if (ConfigGamerules.easyBreeding.get()) {
                 if (!this.taskOwner.isMale()) {
                     this.taskOwner.breed();
                 } else {
