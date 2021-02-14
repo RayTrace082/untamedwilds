@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class HerdEntity {
-    private int maxSchoolSize;
+    private int maxHerdSize;
     private float radius = 8.0F;
     private boolean openToCombine;
     private ComplexMob leader;
@@ -18,13 +18,13 @@ public class HerdEntity {
     public HerdEntity(ComplexMob creature, int maxSize) {
         this.openToCombine = true;
         this.world = creature.world;
-        this.maxSchoolSize = maxSize;
+        this.maxHerdSize = maxSize;
         this.setLeader(creature);
     }
 
     public void setLeader(ComplexMob creature) {
         this.leader = creature;
-        if (!this.creatureList.contains(this.leader)) {
+        if (!this.containsCreature(this.leader)) {
             this.addCreature(this.leader);
         }
     }
@@ -59,11 +59,11 @@ public class HerdEntity {
     }
 
     public void setMaxSize(int maxSchoolSize) {
-        this.maxSchoolSize = maxSchoolSize;
+        this.maxHerdSize = maxSchoolSize;
     }
 
     public int getMaxSize() {
-        return this.maxSchoolSize;
+        return this.maxHerdSize;
     }
 
     public void setRadius(float radius) {
