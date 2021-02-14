@@ -76,8 +76,8 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
 
 
     public boolean wantsToBreed() {
-        if (ConfigGamerules.naturalBreeding.get() && this.growingAge == 0) {
-            return this.getHunger() >= 80;
+        if (super.wantsToBreed()) {
+            return !this.isSleeping() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth() && this.getHunger() >= 80;
         }
         return false;
     }
