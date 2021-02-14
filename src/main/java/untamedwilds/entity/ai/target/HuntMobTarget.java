@@ -11,6 +11,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
+import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.function.Predicate;
 public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
     private final Class<T> targetClass;
     private final Sorter sorter;
-    private final Predicate<? super T> targetEntitySelector;
+    protected Predicate<? super T> targetEntitySelector;
     private T targetEntity;
     private final int threshold;
     private final boolean isCannibal;
@@ -84,6 +85,10 @@ public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
             }
         }
         return false;
+    }
+
+    protected boolean isValidTarget(@Nullable LivingEntity potentialTarget, EntityPredicate targetPredicate) {
+        return this.isSuitableTarget(potentialTarget, targetPredicate);
     }
 
     public static class Sorter implements Comparator<Entity> {
