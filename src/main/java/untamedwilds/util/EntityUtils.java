@@ -75,7 +75,11 @@ public abstract class EntityUtils {
             }
         }
         if (ConfigGamerules.scientificNames.get()) {
-            tooltip.add(new TranslationTextComponent(entity.getTranslationKey() + "_" + path + ".sciname").mergeStyle(TextFormatting.ITALIC, TextFormatting.GRAY));
+            String scipath = path.isEmpty() ? "" : "_" + path;
+            TranslationTextComponent tooltipText = new TranslationTextComponent(entity.getTranslationKey() + scipath + ".sciname");
+            if (!tooltipText.getString().contains(".")) {
+                tooltip.add(tooltipText.mergeStyle(TextFormatting.ITALIC, TextFormatting.GRAY));
+            }
         }
     }
 

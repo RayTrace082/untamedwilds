@@ -249,7 +249,7 @@ public abstract class ComplexMob extends TameableEntity {
     }
 
     // This method writes this entity into a CompoundNBT Tag
-    public CompoundNBT writeEntityToNBT(LivingEntity entity) {
+    public static CompoundNBT writeEntityToNBT(LivingEntity entity) {
         CompoundNBT baseTag = new CompoundNBT();
         CompoundNBT entityTag = new CompoundNBT();
         entity.writeUnlessRemoved(entityTag); // Write the entity into NBT
@@ -271,7 +271,7 @@ public abstract class ComplexMob extends TameableEntity {
         ItemEntity entityitem = this.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase()))), 0.2F);
         if (entityitem != null) {
             entityitem.setMotion((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F, this.rand.nextFloat() * 0.05F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
-            entityitem.getItem().setTag(this.writeEntityToNBT(this));
+            entityitem.getItem().setTag(writeEntityToNBT(this));
             if (this.hasCustomName()) {
                 entityitem.getItem().setDisplayName(this.getCustomName());
             }
