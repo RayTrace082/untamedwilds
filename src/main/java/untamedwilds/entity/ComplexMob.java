@@ -254,6 +254,7 @@ public abstract class ComplexMob extends TameableEntity {
         CompoundNBT entityTag = new CompoundNBT();
         entity.writeUnlessRemoved(entityTag); // Write the entity into NBT
         entityTag.remove("Pos"); // Remove the Position from the NBT data, as it would fuck things up later on
+        entityTag.remove("Motion");
         baseTag.put("EntityTag", entityTag); // Put the entity in the Tag
         return baseTag;
     }

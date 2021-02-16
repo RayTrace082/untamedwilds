@@ -1,9 +1,6 @@
 package untamedwilds.util;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -13,6 +10,7 @@ import net.minecraft.particles.IParticleData;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameRules;
@@ -28,7 +26,7 @@ import java.util.List;
 public abstract class EntityUtils {
 
     // Destroy the boat of the selected entity (if it exists)
-    public static boolean destroyBoat(World worldIn, LivingEntity entityIn) {
+    public static void destroyBoat(World worldIn, LivingEntity entityIn) {
         if (entityIn.getRidingEntity() != null && entityIn.getRidingEntity() instanceof BoatEntity) {
             BoatEntity boat = (BoatEntity) entityIn.getRidingEntity();
             boat.remove();
@@ -40,9 +38,7 @@ public abstract class EntityUtils {
                     boat.entityDropItem(Items.STICK);
                 }
             }
-            return true;
         }
-        return false;
     }
 
     // Spawn particles throughout the entity. Features safe casting of worldIn
@@ -66,12 +62,23 @@ public abstract class EntityUtils {
         return alt;
     }
 
+    // This function builds a full tooltip containing Custom Name, EntityType, Gender and Scientific name (if available)
     public static void buildTooltipData(ItemStack stack, List<ITextComponent> tooltip, EntityType<?> entity, String path) {
         if (stack.getTag() != null) {
             CompoundNBT compound = stack.getChildTag("EntityTag");
             if (compound != null) {
-                String component = "mobspawn.tooltip." + (compound.contains("Gender") ? (compound.getInt("Gender") == 0 ? "male" : "female") : "unknown");
-                tooltip.add(new TranslationTextComponent(component).mergeStyle(TextFormatting.GRAY));
+                //String component = "mobspawn.tooltip." + (compound.contains("Gender") ? (compound.getInt("Gender") == 0 ? "male" : "female") : "unknown");
+                //tooltip.add(new TranslationTextComponent(component).mergeStyle(TextFormatting.GRAY));
+                String gender = compound.contains("Gender") ? new TranslationTextComponent("mobspawn.tooltip." + (compound.getInt("Gender") == 0 ? "male" : "female")).getString() + " " : "";
+                String type = new TranslationTextComponent(entity.getTranslationKey()).getString();
+                if (stack.getTag().getCompound("EntityTag").contains("CustomName")) {
+                    String customName = stack.getTag().getCompound("EntityTag").getString("CustomName");
+                    // Entity uses ITextComponent.Serializer.getComponentFromJson(s) instead of substrings
+                    tooltip.add(new StringTextComponent(customName.substring(9, customName.length() - 2) + " (" + gender + type + ")").mergeStyle(TextFormatting.GRAY));
+                }
+                else {
+                    tooltip.add(new StringTextComponent(gender + type).mergeStyle(TextFormatting.GRAY));
+                }
             }
         }
         if (ConfigGamerules.scientificNames.get()) {
@@ -83,6 +90,7 @@ public abstract class EntityUtils {
         }
     }
 
+    // This function creates a new mob from the NBT Tag stored in an ItemStack. Uses default EntityType and Species data to allow creating new entities from zero
     public static void createMobFromItem(ServerWorld worldIn, ItemStack itemstack, EntityType<?> entity, @Nullable int species, BlockPos spawnPos, @Nullable PlayerEntity player, boolean offset) {
         Entity spawn;
         if (itemstack.getTag() != null) {
@@ -93,7 +101,7 @@ public abstract class EntityUtils {
                     }
                 }
                 itemstack.getChildTag("EntityTag").remove("Pos"); // TODO: Temporary solution to prevent loss of mobs with Pos tag
-
+                
                 spawn = entity.spawn(worldIn, itemstack, player, spawnPos, SpawnReason.BUCKET, true, offset);
                 if (spawn != null) {
                     //spawn.setLocationAndAngles(spawnPos.getX() + 0.5F, spawnPos.getY(), spawnPos.getZ() + 0.5F, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
@@ -108,9 +116,11 @@ public abstract class EntityUtils {
             // If no NBT data is assigned to the entity (eg. Item taken from the Creative menu), create a new, random mob
             spawn = entity.create(worldIn, null, null, player, spawnPos, SpawnReason.SPAWN_EGG, true, offset);
             if (spawn != null) {
+                if (spawn instanceof MobEntity) {
+                    ((MobEntity)spawn).onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(spawnPos), SpawnReason.SPAWN_EGG, null, null);
+                }
                 if (spawn instanceof ComplexMob) {
                     ComplexMob entitySpawn = (ComplexMob) spawn;
-                    entitySpawn.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(spawnPos), SpawnReason.SPAWN_EGG, null, null);
                     entitySpawn.setSpecies(species);
                     if (itemstack.hasDisplayName()) {
                         entitySpawn.setCustomName(itemstack.getDisplayName());

@@ -29,7 +29,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -38,7 +37,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import untamedwilds.UntamedWilds;
 import untamedwilds.block.tileentity.BlockEntityCage;
 import untamedwilds.init.ModBlock;
 import untamedwilds.util.EntityUtils;
@@ -119,7 +117,7 @@ public class BlockCage extends Block implements IWaterLoggable {
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         if (!worldIn.isRemote) {
             if (worldIn.isBlockPowered(pos)) {
-                spawnEntity(state, (ServerWorld)worldIn, pos);
+                trySpawningEntity(state, (ServerWorld)worldIn, pos);
             }
         }
     }
@@ -143,12 +141,12 @@ public class BlockCage extends Block implements IWaterLoggable {
             return ActionResultType.FAIL;
         }
         else {
-            boolean success = spawnEntity(state, (ServerWorld)worldIn, pos);
+            boolean success = trySpawningEntity(state, (ServerWorld)worldIn, pos);
             return success ? ActionResultType.SUCCESS : ActionResultType.FAIL;
         }
     }
 
-    private boolean spawnEntity(BlockState state, ServerWorld worldIn, BlockPos pos) {
+    private boolean trySpawningEntity(BlockState state, ServerWorld worldIn, BlockPos pos) {
         BlockEntityCage te = (BlockEntityCage)worldIn.getTileEntity(pos);
         BlockPos check = pos.down();
         if (te != null) {
@@ -172,7 +170,7 @@ public class BlockCage extends Block implements IWaterLoggable {
         float d3 = random.nextFloat() * 0.02F;
         float d1 = random.nextFloat() * 0.02F;
         float d2 = random.nextFloat() * 0.02F;
-        ((ServerWorld)worldIn).spawnParticle(particle, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 12, d3, d1, d2, 0.15F);
+        ((ServerWorld)worldIn).spawnParticle(particle, pos.getX() + random.nextFloat(), pos.getY(), pos.getZ() + random.nextFloat(), 15, d3, d1, d2, 0.12F);
     }
 
 
@@ -196,7 +194,7 @@ public class BlockCage extends Block implements IWaterLoggable {
         if (stack.getTag() != null) {
             EntityType<?> type = EntityUtils.getEntityTypeFromTag(stack.getTag(), null);
             if (type != null) {
-                UntamedWilds.LOGGER.info(stack.getTag().getCompound("EntityTag").getString("CustomName"));
+                /*UntamedWilds.LOGGER.info(stack.getTag().getCompound("EntityTag").getString("CustomName"));
                 String key = new TranslationTextComponent(type.getTranslationKey()).getString();
                 if (stack.getTag().getCompound("EntityTag").contains("CustomName")) {
                     String customName = stack.getTag().getCompound("EntityTag").getString("CustomName");
@@ -205,7 +203,7 @@ public class BlockCage extends Block implements IWaterLoggable {
                 }
                 else {
                     tooltip.add(new TranslationTextComponent(key).mergeStyle(TextFormatting.GRAY));
-                }
+                }*/
                 EntityUtils.buildTooltipData(stack, tooltip, type, "");
             }
         }

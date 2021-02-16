@@ -59,22 +59,8 @@ public class BlockLard extends BreakableBlock {
             return false;
         } else if (entity_1.getPosY() > (double)blockPos_1.getY() + 0.9375D - 1.0E-7D) {
             return false;
-        } else if (entity_1.getMotion().y >= 0.0D) {
-            return false;
-        }
-        return true;
-        /*else {
-            double double_1 = Math.abs((double)blockPos_1.getX() + 0.5D - entity_1.getPosition().getX());
-            double double_2 = Math.abs((double)blockPos_1.getZ() + 0.5D - entity_1.getPosition().getZ());
-            double double_3 = 0.4375D + (double)(entity_1.getWidth() / 2.0F);
-            return double_1 + 1.0E-7D > double_3 || double_2 + 1.0E-7D > double_3;
-        }*/
+        } else return !(entity_1.getMotion().y >= 0.0D);
     }
-
-    /*private void method_23357(World world_1, BlockPos blockPos_1, Entity entity_1) {
-        float float_1 = entity_1.getDimensions(EntityPose.STANDING).width;
-        this.method_23355(entity_1, world_1, blockPos_1, 1, ((double)world_1.random.nextFloat() - 0.5D) * (double)float_1, (double)(world_1.random.nextFloat() / 2.0F), ((double)world_1.random.nextFloat() - 0.5D) * (double)float_1, (double)world_1.random.nextFloat() - 0.5D, (double)(world_1.random.nextFloat() - 1.0F), (double)world_1.random.nextFloat() - 0.5D);
-    }*/
 
     private void method_23358(World world_1, BlockPos blockPos_1, Entity entity_1) {
         float float_1 = entity_1.getWidth();

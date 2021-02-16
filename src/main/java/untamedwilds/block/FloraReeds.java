@@ -18,9 +18,12 @@ import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
@@ -33,7 +36,6 @@ import java.util.Random;
 
 public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
    protected static final VoxelShape SHAPE_NORMAL = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
-   protected static final VoxelShape SHAPE_COLLISION = Block.makeCuboidShape(0D, 0.0D, 0D, 0D, 0D, 0D);
    public static final IntegerProperty PROPERTY_AGE = BlockStateProperties.AGE_0_2;
    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
    public static final IntegerProperty PROPERTY_STAGE = BlockStateProperties.STAGE_0_1;
@@ -65,8 +67,7 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
    }
 
    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-      Vector3d vector3d = state.getOffset(worldIn, pos);
-      return SHAPE_COLLISION.withOffset(vector3d.x, vector3d.y, vector3d.z);
+      return VoxelShapes.empty();
    }
 
    @Nullable
@@ -113,17 +114,10 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
       }
    }
 
-   /**
-    * Returns whether or not this block is of a type that needs random ticking. Called for ref-counting purposes by
-    * ExtendedBlockStorage in order to broadly cull a chunk from the random chunk update list for efficiency's sake.
-    */
    public boolean ticksRandomly(BlockState state) {
       return state.get(PROPERTY_STAGE) == 0;
    }
 
-   /**
-    * Performs a random tick on a block.
-    */
    public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
       if (state.get(PROPERTY_STAGE) == 0 && random.nextInt(8) == 0) {
          if (worldIn.isAirBlock(pos.up()) && worldIn.getLightSubtracted(pos.up(), 0) >= 9) {
@@ -140,12 +134,6 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
       return worldIn.getBlockState(pos.down()).isIn(UTBlockTags.REEDS_PLANTABLE_ON) || worldIn.getBlockState(pos.down()).getBlock() == ModBlock.COMMON_REED.get();
    }
 
-   /**
-    * Update the provided state given the provided neighbor facing and neighbor state, returning a new state.
-    * For example, fences make their connections to the passed in state if possible, and wet concrete powder immediately
-    * returns its solidified counterpart.
-    * Note that this method should ideally consider only the specific face passed in.
-    */
    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
       if (stateIn.get(WATERLOGGED)) {
          worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
@@ -158,9 +146,6 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
       return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
    }
 
-   /**
-    * Whether this IGrowable can grow
-    */
    public boolean canGrow(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
       int i = this.getNumReedBlocksAbove(worldIn, pos);
       int j = this.getNumReedBlocksBelow(worldIn, pos);
@@ -190,11 +175,6 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
 
    }
 
-   /**
-    * Get the hardness of this Block relative to the ability of the given player
-    * @deprecated call via stuff whenever
-    * possible. Implementing/overriding is fine.
-    */
    public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
       return player.getHeldItemMainhand().getItem() instanceof SwordItem ? 1.0F : super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
    }
@@ -212,15 +192,12 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
       if (entityIn instanceof LivingEntity && !(entityIn instanceof WaterMobEntity) && !(entityIn instanceof ComplexMobAquatic) && !entityIn.isInWater() && !entityIn.isSneaking()) {
          entityIn.setMotionMultiplier(state, new Vector3d(0.95F, 1D, 0.95F));
-         /*if (worldIn.getRandom().nextInt(10) == 0) {
-            worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_CROP_BREAK, SoundCategory.AMBIENT, 1, 1, true);
-         }*/
+         if (worldIn.getRandom().nextInt(20) == 0) {
+            worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GRASS_STEP, SoundCategory.AMBIENT, 1, 1, true);
+         }
       }
    }
 
-   /**
-    * Returns the number of continuous bamboo blocks above the position passed in, up to 16.
-    */
    protected int getNumReedBlocksAbove(IBlockReader worldIn, BlockPos pos) {
       int i;
       for(i = 0; i < 4 && worldIn.getBlockState(pos.up(i + 1)).getBlock() == ModBlock.COMMON_REED.get(); ++i) {
@@ -228,9 +205,6 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
       return i;
    }
 
-   /**
-    * Returns the number of continuous bamboo blocks below the position passed in, up to 16.
-    */
    protected int getNumReedBlocksBelow(IBlockReader worldIn, BlockPos pos) {
       int i;
       for(i = 0; i < 4 && worldIn.getBlockState(pos.down(i + 1)).getBlock() == ModBlock.COMMON_REED.get(); ++i) {

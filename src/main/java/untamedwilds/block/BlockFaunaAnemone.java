@@ -5,7 +5,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.BushBlock;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.fish.TropicalFishEntity;
 import net.minecraft.fluid.FluidState;
@@ -77,9 +76,5 @@ public class BlockFaunaAnemone extends BushBlock implements IWaterLoggable {
                 ((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.POISON, 80, 0));
             }
         }
-    }
-
-    public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
-        return false;
     }
 }

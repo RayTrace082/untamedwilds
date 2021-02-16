@@ -22,6 +22,7 @@ import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
 import untamedwilds.init.ModVillagerTrades;
+import untamedwilds.util.ModEntityRightClickEvent;
 import untamedwilds.world.UntamedWildsGenerator;
 
 @Mod(value = UntamedWilds.MOD_ID)
@@ -63,6 +64,7 @@ public class UntamedWilds {
         CompatBridge.RegisterCompat();
         MinecraftForge.EVENT_BUS.register(ModVillagerTrades.class); // Custom Villager Trades
         MinecraftForge.EVENT_BUS.register(UntamedWildsGenerator.class); // Custom Biome Features
+        MinecraftForge.EVENT_BUS.register(ModEntityRightClickEvent.class); // Right Click event to handle ownership deeds
         UntamedWildsGenerator.readBioDiversityLevels();
     }
 
