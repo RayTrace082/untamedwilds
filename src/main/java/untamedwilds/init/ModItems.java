@@ -40,7 +40,7 @@ public class ModItems {
     public static RegistryObject<Item> DEBUG_GROWTH_TONIC = createItem("debug_growth_tonic", () -> new ItemGrowthTonic(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
 
     // Materials
-    public static RegistryObject<Item> MATERIAL_FAT = createItem((ConfigMobControl.addBear.get() || ConfigMobControl.addHippo.get()), "material_fat", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items).food((new Food.Builder()).hunger(1).saturation(1F).meat().build())));
+    public static RegistryObject<Item> MATERIAL_FAT = createItem("material_fat", () -> new ItemLard(new Item.Properties().food((new Food.Builder()).hunger(1).saturation(1F).meat().build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> MATERIAL_PEARL = createItem(ConfigMobControl.addGiantClam.get(),"material_pearl", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
     public static RegistryObject<Item> RARE_GIANT_PEARL = createItem(ConfigMobControl.addGiantClam.get(), "material_giant_pearl", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON).group(ItemGroupUT.untamedwilds_items)));
 
