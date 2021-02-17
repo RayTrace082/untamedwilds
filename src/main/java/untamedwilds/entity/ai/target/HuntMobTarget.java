@@ -3,33 +3,30 @@ package untamedwilds.entity.ai.target;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
-import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 
 public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
-    private final Class<T> targetClass;
-    private final Sorter sorter;
+    protected final Class<T> targetClass;
+    protected final Sorter sorter;
     protected Predicate<? super T> targetEntitySelector;
-    private T targetEntity;
+    protected T targetEntity;
     private final int threshold;
     private final boolean isCannibal;
 
     public HuntMobTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, int hungerThreshold, boolean onlyNearby, boolean isCannibal, final Predicate<? super T > targetSelector) {
-        super(creature, checkSight, onlyNearby);
+        super(creature, checkSight, true);
         this.targetClass = classTarget;
         this.sorter = new Sorter(creature);
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.setMutexFlags(EnumSet.of(Flag.TARGET));
         this.threshold = hungerThreshold;
         this.isCannibal = isCannibal;
         this.targetEntitySelector = (Predicate<T>) entity -> {
@@ -37,7 +34,7 @@ public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
                 return false;
             }
             else {
-                return EntityPredicates.NOT_SPECTATING.test(entity) && this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
+                return this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
             }
         };
     }
@@ -65,7 +62,7 @@ public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
         }
     }
 
-    private AxisAlignedBB getTargetableArea(double targetDistance) {
+    AxisAlignedBB getTargetableArea(double targetDistance) {
         return this.goalOwner.getBoundingBox().grow(targetDistance, 4.0D, targetDistance);
     }
 
@@ -74,7 +71,7 @@ public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
         super.startExecuting();
     }
 
-    private boolean shouldRemoveTarget(LivingEntity entity) {
+    boolean shouldRemoveTarget(LivingEntity entity) {
         if (entity instanceof CreeperEntity) {
             return false; // Hardcoded Creepers out because they will absolutely destroy wildlife if targeted
         }
@@ -85,10 +82,6 @@ public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
             }
         }
         return false;
-    }
-
-    protected boolean isValidTarget(@Nullable LivingEntity potentialTarget, EntityPredicate targetPredicate) {
-        return this.isSuitableTarget(potentialTarget, targetPredicate);
     }
 
     public static class Sorter implements Comparator<Entity> {

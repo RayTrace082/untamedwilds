@@ -53,7 +53,7 @@ public class LionBigCat extends AbstractBigCat implements IPackEntity {
         this.targetSelector.addGoal(1, new HurtPackByTargetGoal(this));
         this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof LionBigCat)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new HuntPackMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 8));
+        this.targetSelector.addGoal(3, new HuntPackMobTarget<>(this, LivingEntity.class, true, 30, false, input -> this.getEcoLevel(input) < 8));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

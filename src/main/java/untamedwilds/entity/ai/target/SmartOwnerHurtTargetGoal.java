@@ -5,7 +5,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.GhastEntity;
-import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -53,8 +52,8 @@ public class SmartOwnerHurtTargetGoal extends TargetGoal {
     private boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
         if (!(target instanceof CreeperEntity) && !(target instanceof GhastEntity)) {
             if (target instanceof TameableEntity) {
-                TameableEntity wolfentity = (TameableEntity)target;
-                if (wolfentity.isTamed() && wolfentity.getOwner() == owner) {
+                TameableEntity tameableTarget = (TameableEntity)target;
+                if (tameableTarget.isTamed() && tameableTarget.getOwner() == owner) {
                     return false;
                 }
             }
@@ -63,11 +62,8 @@ public class SmartOwnerHurtTargetGoal extends TargetGoal {
                 return false;
             } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTame()) {
                 return false;
-            } else {
-                return !(target instanceof CatEntity) || !((CatEntity)target).isTamed();
             }
-        } else {
-            return false;
         }
+        return false;
     }
 }

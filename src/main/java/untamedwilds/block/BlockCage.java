@@ -177,7 +177,7 @@ public class BlockCage extends Block implements IWaterLoggable {
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         BlockEntityCage te = (BlockEntityCage)world.getTileEntity(pos);
-        if (!world.isRemote && !(entity instanceof PlayerEntity) && entity.isNonBoss() && entity instanceof LivingEntity) {
+        if (!world.isRemote && !(entity instanceof PlayerEntity) && entity.isAlive() && entity.isNonBoss() && entity instanceof LivingEntity) {
             if (te != null && !te.hasCagedEntity()) {
                 if (te.cageEntity(entity)) {
                     world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);

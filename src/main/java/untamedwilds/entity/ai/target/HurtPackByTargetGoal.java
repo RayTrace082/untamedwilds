@@ -1,6 +1,9 @@
 package untamedwilds.entity.ai.target;
 
-import net.minecraft.entity.*;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.EntityPredicate;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.world.GameRules;
@@ -9,9 +12,8 @@ import untamedwilds.entity.ComplexMob;
 import java.util.EnumSet;
 
 public class HurtPackByTargetGoal extends TargetGoal {
-    private static final EntityPredicate field_220795_a = (new EntityPredicate()).setLineOfSiteRequired().setUseInvisibilityCheck();
+    private static final EntityPredicate field_220795_a = (EntityPredicate.DEFAULT).setLineOfSiteRequired().setUseInvisibilityCheck();
     private boolean entityCallsForHelp;
-    /** Store the previous revengeTimer value */
     private int revengeTimerOld;
     private final Class<?>[] excludedReinforcementTypes;
     private Class<?>[] reinforcementTypes;
@@ -22,10 +24,6 @@ public class HurtPackByTargetGoal extends TargetGoal {
         this.setMutexFlags(EnumSet.of(Goal.Flag.TARGET));
     }
 
-    /**
-     * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-     * method as well.
-     */
     public boolean shouldExecute() {
         int i = this.goalOwner.getRevengeTimer();
         LivingEntity livingentity = this.goalOwner.getRevengeTarget();
@@ -52,9 +50,6 @@ public class HurtPackByTargetGoal extends TargetGoal {
         return this;
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting() {
         this.goalOwner.setAttackTarget(this.goalOwner.getRevengeTarget());
         this.target = this.goalOwner.getAttackTarget();
@@ -76,10 +71,6 @@ public class HurtPackByTargetGoal extends TargetGoal {
                 }
             }
         }
-    }
-
-    protected void setAttackTarget(MobEntity mobIn, LivingEntity targetIn) {
-        mobIn.setAttackTarget(targetIn);
     }
 }
 

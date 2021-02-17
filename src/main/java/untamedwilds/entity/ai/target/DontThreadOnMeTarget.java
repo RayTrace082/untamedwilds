@@ -18,7 +18,6 @@ public class DontThreadOnMeTarget<T extends LivingEntity> extends TargetGoal {
     protected final Class<T> targetClass;
     protected final int targetChance;
     protected LivingEntity nearestTarget;
-    /** This filter is applied to the Entity search. Only matching entities will be targeted. */
     protected Predicate<T> targetEntitySelector;
 
     public DontThreadOnMeTarget(MobEntity goalOwnerIn, Class<T> targetClassIn, boolean checkSight) {
@@ -26,7 +25,7 @@ public class DontThreadOnMeTarget<T extends LivingEntity> extends TargetGoal {
     }
 
     public DontThreadOnMeTarget(MobEntity goalOwnerIn, Class<T> targetClassIn, boolean checkSight, boolean nearbyOnlyIn) {
-        this(goalOwnerIn, targetClassIn, 10, checkSight, nearbyOnlyIn);
+        this(goalOwnerIn, targetClassIn, 6, checkSight, nearbyOnlyIn);
     }
 
     public DontThreadOnMeTarget(MobEntity goalOwnerIn, Class<T> targetClassIn, int targetChanceIn, boolean checkSight, boolean nearbyOnlyIn) {
@@ -52,7 +51,7 @@ public class DontThreadOnMeTarget<T extends LivingEntity> extends TargetGoal {
         };}
 
     public boolean shouldExecute() {
-        if (this.targetChance > 0 && this.goalOwner.getRNG().nextInt(this.targetChance) != 0) {
+        if (this.goalOwner.getRNG().nextInt(this.targetChance) != 0) {
             return false;
         } else {
             List<T> list = this.goalOwner.world.getEntitiesWithinAABB(this.targetClass, this.goalOwner.getBoundingBox(), this.targetEntitySelector);

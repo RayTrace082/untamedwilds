@@ -32,7 +32,7 @@ public class UntamedWilds {
     // TODO: Make use of Tags to make animal's diets data-driven?
     // TODO: Define list of diggables, maybe extend it to it's own weighted list and include Truffles and funsies
     // TODO: setupTamedAI() function is promising to trim unnecessary tasks from Tameable Mobs
-    // BUG: It's possible to catch ghost entities in Cage Traps if a mob touches multiple boxes in the same tick (eg. 2x2 mob falling into a pit full of Cages)
+    // TODO: Store the children's UUID in their mother's NBT, to allow checking for Children without constant AABB checking
     // BUG: Minecraft will complain about duplicate UUIDs when using Mob Spawn items in Creative mode (since they are not used up)
     // BUG: Creative/Sneaking players standing closest to an angry sleeper will cause other nearby players to be ignored
 
@@ -64,7 +64,7 @@ public class UntamedWilds {
         CompatBridge.RegisterCompat();
         MinecraftForge.EVENT_BUS.register(ModVillagerTrades.class); // Custom Villager Trades
         MinecraftForge.EVENT_BUS.register(UntamedWildsGenerator.class); // Custom Biome Features
-        MinecraftForge.EVENT_BUS.register(ModEntityRightClickEvent.class); // TODO: WIP solution because Wolves are really stupid
+        MinecraftForge.EVENT_BUS.register(ModEntityRightClickEvent.class); // TODO: WIP solution because Wolves are really stupid, and there seems to be no way to 'this.' an entity through mixin
         UntamedWildsGenerator.readBioDiversityLevels();
     }
 
