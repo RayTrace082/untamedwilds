@@ -23,13 +23,11 @@ public class ModEntityRightClickEvent {
     public static void modEntityRightClickEvent(PlayerInteractEvent.EntityInteract event) {
         PlayerEntity playerIn = event.getPlayer();
         Entity target = event.getTarget();
-        UntamedWilds.LOGGER.info("1");
         Hand hand = event.getHand();
         if (!event.getWorld().isRemote && hand == Hand.MAIN_HAND && event.getItemStack().getItem() == ModItems.OWNERSHIP_DEED.get()) {
             ItemStack itemstack = playerIn.getHeldItem(hand);
             if (target instanceof TameableEntity) {
                 TameableEntity entity_target = (TameableEntity) target;
-                UntamedWilds.LOGGER.info("2");
                 if (entity_target.isTamed()) {
                     if (Objects.equals(entity_target.getOwnerId(), playerIn.getUniqueID()) && !itemstack.hasTag()) {
                         CompoundNBT nbt = new CompoundNBT();
@@ -41,7 +39,7 @@ public class ModEntityRightClickEvent {
                         if (UntamedWilds.DEBUG) {
                             UntamedWilds.LOGGER.log(Level.INFO, "Pet owner signed a deed for a " + entity_target.getName().getString());
                         }
-                        event.setCancellationResult(ActionResultType.SUCCESS);
+                        event.setCancellationResult(ActionResultType.CONSUME);
                     }
 
                     else {
@@ -55,7 +53,7 @@ public class ModEntityRightClickEvent {
                                     UntamedWilds.LOGGER.log(Level.INFO, "Pet ownership transferred to " + playerIn.getName().getString());
                                 }
                             }
-                            event.setCancellationResult(ActionResultType.SUCCESS);
+                            event.setCancellationResult(ActionResultType.CONSUME);
                         }
                     }
                 }
