@@ -64,7 +64,7 @@ public class UntamedWilds {
         CompatBridge.RegisterCompat();
         MinecraftForge.EVENT_BUS.register(ModVillagerTrades.class); // Custom Villager Trades
         MinecraftForge.EVENT_BUS.register(UntamedWildsGenerator.class); // Custom Biome Features
-        MinecraftForge.EVENT_BUS.register(ModEntityRightClickEvent.class); // Right Click event to handle ownership deeds
+        MinecraftForge.EVENT_BUS.register(ModEntityRightClickEvent.class); // TODO: WIP solution because Wolves are really stupid
         UntamedWildsGenerator.readBioDiversityLevels();
     }
 

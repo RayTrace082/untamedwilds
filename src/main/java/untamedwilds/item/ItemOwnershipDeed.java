@@ -2,6 +2,7 @@ package untamedwilds.item;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.apache.logging.log4j.Level;
+import untamedwilds.UntamedWilds;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -43,11 +46,15 @@ public class ItemOwnershipDeed extends Item {
         }
     }
 
+    public boolean hasEffect(ItemStack stack) {
+        return stack.hasTag();
+    }
+
     @Nonnull
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
 
-        if (itemstack.hasTag() ) {
+        if (itemstack.hasTag()) {
             CompoundNBT nbt = itemstack.getTag();
             if (!nbt.getString("entityid").isEmpty()) {
                 List<LivingEntity> list = worldIn.getEntitiesWithinAABB(LivingEntity.class, playerIn.getBoundingBox().grow(8.0D));
@@ -62,8 +69,10 @@ public class ItemOwnershipDeed extends Item {
     }
 
 
-    /*@Override
+    @Override
     public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
+        UntamedWilds.LOGGER.log(Level.INFO, "Trying to get entity");
+
         ItemStack itemstack = playerIn.getHeldItem(hand);
         if (target instanceof TameableEntity) {
             TameableEntity entity_target = (TameableEntity) target;
@@ -99,5 +108,5 @@ public class ItemOwnershipDeed extends Item {
             }
         }
         return ActionResultType.FAIL;
-    }*/
+    }
 }

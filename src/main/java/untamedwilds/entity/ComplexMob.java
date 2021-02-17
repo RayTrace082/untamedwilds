@@ -285,7 +285,7 @@ public abstract class ComplexMob extends TameableEntity {
         this.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
         itemstack.shrink(1);
         ItemStack newitem = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase())));
-        newitem.setTag(this.writeEntityToNBT(this));
+        newitem.setTag(writeEntityToNBT(this));
         if (this.hasCustomName()) {
             newitem.setDisplayName(this.getCustomName());
         }

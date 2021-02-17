@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "package": "untamedwilds.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "untamedwilds.refmap.json",
+  "mixins": [
+  ],
+  "minVersion": "0.8"
+}
