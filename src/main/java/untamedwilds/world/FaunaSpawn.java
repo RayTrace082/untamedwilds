@@ -130,12 +130,12 @@ public class FaunaSpawn {
                                     if (mobentity instanceof ComplexMob) {
                                         if (mobentity instanceof ISpecies) {
                                             if (species == -1) {
-                                                species = ((ComplexMob)mobentity).getSpecies();
+                                                species = ((ComplexMob)mobentity).getVariant();
                                             } else {
-                                                ((ComplexMob)mobentity).setSpecies(species);
+                                                ((ComplexMob)mobentity).setVariant(species);
                                             }
                                         }
-                                        if (((ComplexMob)mobentity).getSpecies() == 99) {
+                                        if (((ComplexMob)mobentity).getVariant() == 99) {
                                             mobentity.remove();
                                             return false;
                                         }

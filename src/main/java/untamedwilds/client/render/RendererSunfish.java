@@ -28,13 +28,13 @@ public class RendererSunfish extends MobRenderer<Sunfish, EntityModel<Sunfish>> 
         float f = 0.6F;
         f += (entity.getMobSize() * 0.3f);
         f *= entity.getRenderScale();
-        f *= (Sunfish.SpeciesSunfish.values()[entity.getSpecies()].scale);
+        f *= (Sunfish.SpeciesSunfish.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
     }
 
     @Override
     public ResourceLocation getEntityTexture(@Nonnull Sunfish entity) {
-        switch (entity.getSpecies()) {
+        switch (entity.getVariant()) {
             default:
             case 0: return SUNFISH;
             case 1: return SOUTHERN;

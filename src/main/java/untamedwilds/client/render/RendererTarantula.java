@@ -36,7 +36,7 @@ public class RendererTarantula extends MobRenderer<Tarantula, EntityModel<Tarant
         float f = 0.5F;
         f += (entity.getMobSize() * 0.2f);
         f *= entity.getRenderScale();
-        f *= (Tarantula.SpeciesTarantula.values()[entity.getSpecies()].scale);
+        f *= (Tarantula.SpeciesTarantula.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
     }
 
@@ -44,7 +44,7 @@ public class RendererTarantula extends MobRenderer<Tarantula, EntityModel<Tarant
         if (entity.getGrowingAge() < 0) {
             return SLING;
         }
-        switch (entity.getSpecies()) {
+        switch (entity.getVariant()) {
             default:
             case 0: return BLACK;
             case 1: return BLACK_AND_WHITE;

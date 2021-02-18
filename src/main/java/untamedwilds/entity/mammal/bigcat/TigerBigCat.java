@@ -90,7 +90,7 @@ public class TigerBigCat extends AbstractBigCat {
 
     public TigerBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
         TigerBigCat bear = new TigerBigCat(ModEntity.TIGER, this.world);
-        bear.setSpecies(this.getSpecies());
+        bear.setVariant(this.getVariant());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());
         return bear;

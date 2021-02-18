@@ -125,7 +125,7 @@ public class Trevally extends ComplexMobAquatic implements ISpecies, IPackEntity
 
     @Override
     public int getMaxPackSize(IPackEntity entity) {
-        return SpeciesTrevally.values()[this.getSpecies()].schoolSize;
+        return SpeciesTrevally.values()[this.getVariant()].schoolSize;
     }
 
     @Override
@@ -140,7 +140,7 @@ public class Trevally extends ComplexMobAquatic implements ISpecies, IPackEntity
     }
 
     public String getSpeciesName() { return new TranslationTextComponent("entity.untamedwilds.trevally_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return Trevally.SpeciesTrevally.values()[this.getSpecies()].name().toLowerCase(); }
+    public String getRawSpeciesName() { return Trevally.SpeciesTrevally.values()[this.getVariant()].name().toLowerCase(); }
 
     public enum SpeciesTrevally implements IStringSerializable {
 

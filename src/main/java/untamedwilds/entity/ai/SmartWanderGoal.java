@@ -32,7 +32,7 @@ public class SmartWanderGoal extends Goal {
     public SmartWanderGoal(ComplexMobTerrestrial creatureIn, double speedIn, int chance, int runChance, boolean avoidWater) {
         this.creature = creatureIn;
         this.speed = speedIn;
-        this.executionChance = chance;
+        this.executionChance = this.creature.isActive() ? chance : chance * 5;
         this.runChance = runChance;
         this.avoidWater = avoidWater;
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
@@ -40,7 +40,7 @@ public class SmartWanderGoal extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.creature.isActive() || this.creature.isBeingRidden() || !this.creature.canMove() || !this.creature.getNavigator().noPath() || this.creature.getCommandInt() != 0) {
+        if (this.creature.isBeingRidden() || !this.creature.canMove() || !this.creature.getNavigator().noPath() || this.creature.getCommandInt() != 0) {
             return false;
         } else {
             if (this.creature.getRNG().nextInt(this.executionChance) != 0) { return false; }

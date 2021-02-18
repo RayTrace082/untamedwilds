@@ -78,7 +78,7 @@ public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
         if (!this.isCannibal) {
             if (entity instanceof ComplexMob) {
                 ComplexMob ctarget = (ComplexMob)entity;
-                return (goalOwner.getClass() == entity.getClass() && ((ComplexMob)goalOwner).getSpecies() == ctarget.getSpecies()) || !ctarget.canBeTargeted();
+                return (goalOwner.getClass() == entity.getClass() && ((ComplexMob)goalOwner).getVariant() == ctarget.getVariant()) || !ctarget.canBeTargeted();
             }
         }
         return false;

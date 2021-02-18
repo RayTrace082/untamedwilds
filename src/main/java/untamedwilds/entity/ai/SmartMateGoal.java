@@ -101,7 +101,7 @@ public class SmartMateGoal extends Goal {
         if (father.getGender() == mother.getGender()) {
             return false;
         }
-        else if (!(father instanceof ISkins) && father.getSpecies() != mother.getSpecies()) {
+        else if (!(father instanceof ISkins) && father.getVariant() != mother.getVariant()) {
             return false;
         }
         else {

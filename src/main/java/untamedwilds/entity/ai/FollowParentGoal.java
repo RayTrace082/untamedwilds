@@ -28,7 +28,7 @@ public class FollowParentGoal extends Goal {
         double d0 = Double.MAX_VALUE;
 
         for (ComplexMob entityanimal1 : list) {
-            if (!entityanimal1.isChild() && (entityanimal1.getSpecies() == this.taskOwner.getSpecies())) {
+            if (!entityanimal1.isChild() && (entityanimal1.getVariant() == this.taskOwner.getVariant())) {
                 double d1 = this.taskOwner.getDistanceSq(entityanimal1);
 
                 if (d1 <= d0) {

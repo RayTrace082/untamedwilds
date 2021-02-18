@@ -107,7 +107,7 @@ public class GiantClam extends ComplexMob implements ISpecies {
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
             List<GiantClam> list = this.world.getEntitiesWithinAABB(GiantClam.class, this.getBoundingBox().grow(12.0D, 6.0D, 12.0D));
-            list.removeIf(input -> input.getSpecies() != this.getSpecies());
+            list.removeIf(input -> input.getVariant() != this.getVariant());
             list.removeIf(input -> input == this || input.getGrowingAge() != 0);
             if (list.size() >= 1) {
                 this.setGrowingAge(GROWING);
@@ -158,7 +158,7 @@ public class GiantClam extends ComplexMob implements ISpecies {
         return 99;
     }
     public String getSpeciesName() { return new TranslationTextComponent("item.untamedwilds.giant_clam_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return SpeciesGiantClam.values()[this.getSpecies()].name().toLowerCase(); }
+    public String getRawSpeciesName() { return SpeciesGiantClam.values()[this.getVariant()].name().toLowerCase(); }
 
     public boolean canBeTargeted() { return false; }
     private boolean isOpen(){ return (this.dataManager.get(CLAM_OPEN)); }

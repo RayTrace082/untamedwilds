@@ -23,7 +23,6 @@ public class SmartAvoidGoal <T extends LivingEntity> extends AvoidEntityGoal<T> 
         super(entityIn, classToAvoidIn, avoidDistanceIn, farSpeedIn, nearSpeedIn, EntityPredicates.CAN_AI_TARGET::test);
         this.taskOwner = entityIn;
         this.avoidDistance = avoidDistanceIn;
-        Predicate<LivingEntity> SHOULD_AVOID = (entity) -> !entity.isDiscrete() && EntityPredicates.CAN_AI_TARGET.test(entity);
         this.builtTargetSelector = (new EntityPredicate()).setDistance(avoidDistanceIn).setCustomPredicate(targetSelector);
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }

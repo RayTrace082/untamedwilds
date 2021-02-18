@@ -61,7 +61,7 @@ public class ItemMobEgg extends Item {
                     ComplexMob entitySpawn = (ComplexMob) spawn;
                     entitySpawn.setRandomMobSize();
                     entitySpawn.setGender(worldIn.rand.nextInt(2));
-                    entitySpawn.setSpecies(this.species);
+                    entitySpawn.setVariant(this.species);
                     entitySpawn.setGrowingAge(entitySpawn.getAdulthoodTime() * -1);
                 }
             }

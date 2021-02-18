@@ -119,7 +119,7 @@ public class BrownBear extends AbstractBear implements ISkins {
     public int getAdulthoodTime() { return GROWING; }
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
-    public ResourceLocation getTexture() { return TEXTURES.get(this.getSpecies()); }
+    public ResourceLocation getTexture() { return TEXTURES.get(this.getVariant()); }
     public int getSkinNumber() { return SKIN_NUMBER; }
     public boolean hasHump() { return true; }
     protected int getOffspring() { return 1; }

@@ -90,7 +90,7 @@ public class CaveLionBigCat extends AbstractBigCat {
 
     public CaveLionBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
         CaveLionBigCat bear = new CaveLionBigCat(ModEntity.CAVE_LION, this.world);
-        bear.setSpecies(this.getSpecies());
+        bear.setVariant(this.getVariant());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());
         return bear;

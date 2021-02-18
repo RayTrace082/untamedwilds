@@ -7,14 +7,17 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAmphibious;
-import untamedwilds.entity.ICritter;
+import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.unique.HippoTerritoryTargetGoal;
 import untamedwilds.init.ModEntity;
@@ -28,8 +31,7 @@ import java.util.Random;
 
 public class EntityHippo extends ComplexMobAmphibious {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/hippo/common.png");
-    private static final float SIZE = 1.3f;
+    private static final float SIZE = 1.1f;
     private static final String BREEDING = "EARLY_SUMMER";
     private static final int GESTATION = 8 * ConfigGamerules.cycleLength.get();
     private static final int GROWING = 12 * ConfigGamerules.cycleLength.get();
@@ -66,7 +68,7 @@ public class EntityHippo extends ComplexMobAmphibious {
         this.goalSelector.addGoal(5, new AmphibiousRandomSwimGoal(this, 1, 120));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
-        this.targetSelector.addGoal(3, new HippoTerritoryTargetGoal<>(this, LivingEntity.class, true, false, input -> !(input instanceof EntityHippo || input instanceof ICritter || this.getEcoLevel(input) > 5)));
+        this.targetSelector.addGoal(3, new HippoTerritoryTargetGoal<>(this, LivingEntity.class, true, false, input -> !(input instanceof EntityHippo || input instanceof ISpecies || this.getEcoLevel(input) > 5)));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -200,7 +202,6 @@ public class EntityHippo extends ComplexMobAmphibious {
     public int getAdulthoodTime() { return GROWING; }
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
-    public ResourceLocation getTexture() { return TEXTURE; }
     protected int getOffspring() { return 1; }
 
     // Species available, referenced to properly distribute Hippos in the world

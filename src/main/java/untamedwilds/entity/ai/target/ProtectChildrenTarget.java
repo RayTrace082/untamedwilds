@@ -46,7 +46,7 @@ public class ProtectChildrenTarget<T extends LivingEntity> extends HuntMobTarget
             }
 
             for (MobEntity child : this.goalOwner.world.getEntitiesWithinAABB(this.goalOwner.getClass(), goalOwner.getBoundingBox().grow(8.0D, 4.0D, 8.0D))) {
-                if (child.isChild() && ((ComplexMob)child).getSpecies() == ((ComplexMob)this.goalOwner).getSpecies()) {
+                if (child.isChild() && ((ComplexMob)child).getVariant() == ((ComplexMob)this.goalOwner).getVariant()) {
                     if (this.goalOwner.getRNG().nextInt(this.executionChance) != 0) {
                         return false;
                         //TODO: Have mobs threaten if the execution chance fails

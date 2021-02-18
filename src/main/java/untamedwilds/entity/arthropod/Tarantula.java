@@ -96,7 +96,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && !this.isSleeping() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
             List<Tarantula> list = this.world.getEntitiesWithinAABB(Tarantula.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
-            list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getSpecies() != this.getSpecies()) || input.getGrowingAge() != 0);
+            list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getVariant() != this.getVariant()) || input.getGrowingAge() != 0);
             if (list.size() >= 1) {
                 this.setGrowingAge(GROWING);
                 list.get(0).setGrowingAge(GROWING);
@@ -172,7 +172,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
         return SpeciesTarantula.getSpeciesByBiome(biome);
     }
     public String getSpeciesName() { return new TranslationTextComponent("item.untamedwilds.tarantula_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return SpeciesTarantula.values()[this.getSpecies()].name().toLowerCase(); }
+    public String getRawSpeciesName() { return SpeciesTarantula.values()[this.getVariant()].name().toLowerCase(); }
 
     public enum SpeciesTarantula implements IStringSerializable {
 

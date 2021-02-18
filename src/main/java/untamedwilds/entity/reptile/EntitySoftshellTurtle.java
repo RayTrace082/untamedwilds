@@ -109,7 +109,7 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && !this.isSleeping() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
             List<EntitySoftshellTurtle> list = this.world.getEntitiesWithinAABB(EntitySoftshellTurtle.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
-            list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getSpecies() != this.getSpecies()) || input.getGrowingAge() != 0);
+            list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getVariant() != this.getVariant()) || input.getGrowingAge() != 0);
             if (list.size() >= 1) {
                 this.setGrowingAge(GROWING);
                 list.get(0).setGrowingAge(GROWING);
@@ -172,7 +172,7 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         return new TranslationTextComponent("item.untamedwilds.softshell_turtle_" + this.getRawSpeciesName()).getString();
     }
 
-    public String getRawSpeciesName() { return SpeciesSoftshellTurtle.values()[this.getSpecies()].name().toLowerCase(); }
+    public String getRawSpeciesName() { return SpeciesSoftshellTurtle.values()[this.getVariant()].name().toLowerCase(); }
 
     public enum SpeciesSoftshellTurtle implements IStringSerializable {
 

@@ -111,7 +111,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && !this.isSleeping() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
             List<EntitySnake> list = this.world.getEntitiesWithinAABB(EntitySnake.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
-            list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getSpecies() != this.getSpecies()) || input.getGrowingAge() != 0);
+            list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getVariant() != this.getVariant()) || input.getGrowingAge() != 0);
             if (list.size() >= 1) {
                 this.setGrowingAge(GROWING);
                 list.get(0).setGrowingAge(GROWING);
@@ -176,9 +176,9 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
     }
 
     public String getSpeciesName() { return new TranslationTextComponent("item.untamedwilds.snake_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return EntitySnake.SpeciesSnake.values()[this.getSpecies()].name().toLowerCase(); }
+    public String getRawSpeciesName() { return EntitySnake.SpeciesSnake.values()[this.getVariant()].name().toLowerCase(); }
 
-    public boolean isRattler() { return SpeciesSnake.values()[this.getSpecies()].isRattler(); }
+    public boolean isRattler() { return SpeciesSnake.values()[this.getVariant()].isRattler(); }
 
     @Override
     public Animation[] getAnimations() {
@@ -188,9 +188,9 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
     public boolean attackEntityAsMob(Entity entityIn) {
         float f = (float)this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
         boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), f);
-        if (flag && SpeciesSnake.values()[this.getSpecies()].getVenomTier() > 0) {
+        if (flag && SpeciesSnake.values()[this.getVariant()].getVenomTier() > 0) {
             if (entityIn instanceof LivingEntity) {
-                ((LivingEntity)entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 200, SpeciesSnake.values()[this.getSpecies()].getVenomTier() - 1));
+                ((LivingEntity)entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 200, SpeciesSnake.values()[this.getVariant()].getVenomTier() - 1));
             }
             return true;
         }

@@ -41,7 +41,7 @@ import java.util.Optional;
 public abstract class ComplexMob extends TameableEntity {
 
     private static final DataParameter<BlockPos> HOME_POS = EntityDataManager.createKey(ComplexMob.class, DataSerializers.BLOCK_POS);
-    private static final DataParameter<Integer> SPECIES = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT);
     private static final DataParameter<Float> SIZE = EntityDataManager.createKey(ComplexMob.class, DataSerializers.FLOAT);
     private static final DataParameter<Integer> GENDER = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT); // 0 - Male, 1 - Female
     private static final DataParameter<Boolean> IS_ANGRY = EntityDataManager.createKey(ComplexMob.class, DataSerializers.BOOLEAN);
@@ -59,7 +59,7 @@ public abstract class ComplexMob extends TameableEntity {
     protected void registerData(){
         super.registerData();
         this.dataManager.register(HOME_POS, BlockPos.ZERO);
-        this.dataManager.register(SPECIES, 0);
+        this.dataManager.register(VARIANT, 0);
         this.dataManager.register(SIZE, 0F);
         this.dataManager.register(GENDER, 0);
         this.dataManager.register(IS_ANGRY, false);
@@ -94,9 +94,8 @@ public abstract class ComplexMob extends TameableEntity {
     public boolean canBeTargeted() { return true; }
     public double getSpeed() { return Math.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z); }
 
-    public int getSpecies(){ return (this.dataManager.get(SPECIES)); }
-    public void setSpecies(int species){ this.dataManager.set(SPECIES, species); }
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) { return 0; }
+    public int getVariant(){ return (this.dataManager.get(VARIANT)); }
+    public void setVariant(int variant){ this.dataManager.set(VARIANT, variant); }
 
     public float getModelScale() { return 1f; }
     public float getMobSize(){ return (this.dataManager.get(SIZE)); }
@@ -132,7 +131,7 @@ public abstract class ComplexMob extends TameableEntity {
                 child.setGrowingAge(this.getGrowingAge() * -1);
                 child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
                 if (this instanceof ISkins) {
-                    child.setSpecies(this.getSpecies());
+                    child.setVariant(this.getVariant());
                 }
                 if (this.getOwner() != null) {
                     child.setTamedBy((PlayerEntity) this.getOwner());
@@ -145,8 +144,8 @@ public abstract class ComplexMob extends TameableEntity {
         entity.setGender(this.rand.nextInt(2));
         entity.setMobSize(this.rand.nextFloat());
         entity.setGrowingAge(entity.getAdulthoodTime() * -2);
-        if (entity.getSkinNumber() != 0) {
-            entity.setSpecies(this.getSpecies());
+        if (entity instanceof ISkins) {
+            entity.setVariant(this.getVariant());
         }
         return entity;
     }
@@ -225,7 +224,7 @@ public abstract class ComplexMob extends TameableEntity {
         if (this.isTamed()) {
             compound.putInt("Command", this.getCommandInt());
         }
-        compound.putInt("Species", this.getSpecies());
+        compound.putInt("Variant", this.getVariant());
         compound.putFloat("Size", this.getMobSize());
         compound.putInt("Gender", this.getGender());
         compound.putBoolean("isAngry", this.isAngry());
@@ -242,7 +241,12 @@ public abstract class ComplexMob extends TameableEntity {
         if (compound.contains("OwnerUUID")) {
             this.setCommandInt(compound.getInt("Command"));
         }
-        this.setSpecies(compound.getInt("Species"));
+        if (compound.contains("Species")) { // TODO: Compatibility code
+            this.setVariant(compound.getInt("Species"));
+        }
+        else {
+            this.setVariant(compound.getInt("Variant"));
+        }
         this.setMobSize(compound.getFloat("Size"));
         this.setGender(compound.getInt("Gender"));
         this.setAngry(compound.getBoolean("isAngry"));
@@ -308,8 +312,8 @@ public abstract class ComplexMob extends TameableEntity {
             this.setGender(this.rand.nextInt(2));
             if (this instanceof ISpecies) {
                 Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(this.getPosition());
-                int i = this.setSpeciesByBiome(optional.get(), worldIn.getBiome(this.getPosition()), reason);
-                this.setSpecies(i);
+                int i = ((ISpecies)this).setSpeciesByBiome(optional.get(), worldIn.getBiome(this.getPosition()), reason);
+                this.setVariant(i);
                 if (i == 99) {
                     this.remove();
                     return null;
@@ -321,7 +325,7 @@ public abstract class ComplexMob extends TameableEntity {
                 UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + this.getName().getString());
             }
             if (this instanceof ISkins) {
-                this.setSpecies(this.rand.nextInt(getSkinNumber()));
+                this.setVariant(this.rand.nextInt(((ISkins)this).getSkinNumber()));
             }
             if (this instanceof IPackEntity) {
                 this.initPack();
@@ -341,10 +345,5 @@ public abstract class ComplexMob extends TameableEntity {
 
     public boolean canCombineWith(HerdEntity otherPack) {
         return this.herd.creatureList.size() + otherPack.creatureList.size() <= this.herd.getMaxSize();
-    }
-
-    // Method exclusive for classes inheriting ISkins
-    public int getSkinNumber() {
-        return 0;
     }
 }

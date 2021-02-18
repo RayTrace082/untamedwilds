@@ -7,6 +7,8 @@ package untamedwilds.entity;
  */
 
 public interface ISkins {
+
     int getSkinNumber();
-    //void registerTexturesW(int i);
+
+    //static void registerTextures(int i) { }
 }

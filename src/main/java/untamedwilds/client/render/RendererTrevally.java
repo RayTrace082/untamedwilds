@@ -31,12 +31,12 @@ public class RendererTrevally extends MobRenderer<Trevally, EntityModel<Trevally
         float f = 1F;
         f += (entity.getMobSize() * 0.2f);
         f *= entity.getRenderScale();
-        f *= (Trevally.SpeciesTrevally.values()[entity.getSpecies()].scale);
+        f *= (Trevally.SpeciesTrevally.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
     }
 
     public ResourceLocation getEntityTexture(@Nonnull Trevally entity) {
-        switch (entity.getSpecies()) {
+        switch (entity.getVariant()) {
             default:
             case 0: return BIGEYE;
             case 1: return BLUESPOTTED;

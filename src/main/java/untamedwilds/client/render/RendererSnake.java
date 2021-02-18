@@ -43,14 +43,14 @@ public class RendererSnake extends MobRenderer<EntitySnake, EntityModel<EntitySn
         float f = 0.8F;
         f += (entity.getMobSize() * 0.3f);
         f *= entity.getRenderScale();
-        f *= (EntitySnake.SpeciesSnake.values()[entity.getSpecies()].scale);
+        f *= (EntitySnake.SpeciesSnake.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
     }
 
     @Override
     public ResourceLocation getEntityTexture(@Nonnull EntitySnake entity) {
 
-        switch (entity.getSpecies()) {
+        switch (entity.getVariant()) {
             default:
             case 0: return ADDER;
             case 1: return BALL_PYTHON;

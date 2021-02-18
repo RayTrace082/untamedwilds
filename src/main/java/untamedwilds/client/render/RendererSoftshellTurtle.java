@@ -34,13 +34,13 @@ public class RendererSoftshellTurtle extends MobRenderer<EntitySoftshellTurtle, 
         float f = 1F;
         f += (entity.getMobSize() * 0.2f);
         f *= entity.getRenderScale();
-        f *= (EntitySoftshellTurtle.SpeciesSoftshellTurtle.values()[entity.getSpecies()].scale);
+        f *= (EntitySoftshellTurtle.SpeciesSoftshellTurtle.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntitySoftshellTurtle entity) {
 
-        switch (entity.getSpecies()) {
+        switch (entity.getVariant()) {
             default:
             case 0: return BLACK;
             case 1: return CHINESE;

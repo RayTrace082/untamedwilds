@@ -121,7 +121,7 @@ public abstract class EntityUtils {
                 }
                 if (spawn instanceof ComplexMob) {
                     ComplexMob entitySpawn = (ComplexMob) spawn;
-                    entitySpawn.setSpecies(species);
+                    entitySpawn.setVariant(species);
                     if (itemstack.hasDisplayName()) {
                         entitySpawn.setCustomName(itemstack.getDisplayName());
                     }
@@ -130,4 +130,5 @@ public abstract class EntityUtils {
             }
         }
     }
+
 }

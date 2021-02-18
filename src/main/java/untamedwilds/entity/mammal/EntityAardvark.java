@@ -30,7 +30,6 @@ import java.util.Random;
 
 public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/aardvark/common.png");
     private static final float SIZE = 1.0f;
     private static final String BREEDING = "LATE_SPRING";
     private static final int GESTATION = 7 * ConfigGamerules.cycleLength.get();
@@ -151,7 +150,7 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
     }
 
     public String getSpeciesName() { return new TranslationTextComponent("entity.untamedwilds.aardvark_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return EntityAardvark.SpeciesAardvark.values()[this.getSpecies()].name().toLowerCase(); }
+    public String getRawSpeciesName() { return EntityAardvark.SpeciesAardvark.values()[this.getVariant()].name().toLowerCase(); }
 
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == ModItems.VEGETABLE_AARDVARK_CUCUMBER.get(); }
     public String getBreedingSeason() { return BREEDING; }
@@ -159,7 +158,6 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
     public int getAdulthoodTime() { return GROWING; }
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
-    public ResourceLocation getTexture() { return TEXTURE; }
     protected int getOffspring() { return 1; }
 
     // Species available, referenced to properly distribute Aardvarks in the world. if any is ever added

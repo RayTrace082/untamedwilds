@@ -89,7 +89,7 @@ public class SabertoothBigCat extends AbstractBigCat {
 
     public SabertoothBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
         SabertoothBigCat bear = new SabertoothBigCat(ModEntity.SABERTOOTH, this.world);
-        bear.setSpecies(this.getSpecies());
+        bear.setVariant(this.getVariant());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());
         return bear;

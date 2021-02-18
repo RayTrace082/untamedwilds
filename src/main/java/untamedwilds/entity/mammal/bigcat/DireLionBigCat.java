@@ -89,7 +89,7 @@ public class DireLionBigCat extends AbstractBigCat {
 
     public DireLionBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
         DireLionBigCat bear = new DireLionBigCat(ModEntity.DIRE_LION, this.world);
-        bear.setSpecies(this.getSpecies());
+        bear.setVariant(this.getVariant());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());
         return bear;

@@ -93,7 +93,7 @@ public class PumaBigCat extends AbstractBigCat {
 
     public PumaBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
         PumaBigCat bear = new PumaBigCat(ModEntity.PUMA, this.world);
-        bear.setSpecies(this.getSpecies());
+        bear.setVariant(this.getVariant());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());
         return bear;

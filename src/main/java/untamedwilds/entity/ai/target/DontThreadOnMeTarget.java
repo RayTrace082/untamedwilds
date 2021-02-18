@@ -8,7 +8,7 @@ import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.util.EntityPredicates;
 import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ICritter;
+import untamedwilds.entity.ISpecies;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -38,10 +38,10 @@ public class DontThreadOnMeTarget<T extends LivingEntity> extends TargetGoal {
                 return false;
             }
             if (this.goalOwner.getClass() == entity.getClass()) {
-                if (this.goalOwner instanceof ICritter && entity instanceof ICritter) {
+                if (this.goalOwner instanceof ISpecies && entity instanceof ISpecies) {
                     ComplexMob attacker = ((ComplexMob)this.goalOwner);
                     ComplexMob defender = ((ComplexMob)entity);
-                    if (attacker.getSpecies() == defender.getSpecies()) {
+                    if (attacker.getVariant() == defender.getVariant()) {
                         return false;
                     }
                 }
@@ -65,9 +65,6 @@ public class DontThreadOnMeTarget<T extends LivingEntity> extends TargetGoal {
         }
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting() {
         this.goalOwner.setAttackTarget(this.nearestTarget);
         super.startExecuting();

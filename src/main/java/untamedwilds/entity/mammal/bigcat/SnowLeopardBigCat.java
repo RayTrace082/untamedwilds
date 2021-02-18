@@ -90,7 +90,7 @@ public class SnowLeopardBigCat extends AbstractBigCat {
 
     public SnowLeopardBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
         SnowLeopardBigCat bear = new SnowLeopardBigCat(ModEntity.SNOW_LEOPARD, this.world);
-        bear.setSpecies(this.getSpecies());
+        bear.setVariant(this.getVariant());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());
         return bear;

@@ -92,7 +92,7 @@ public class MarsupialLionBigCat extends AbstractBigCat {
 
     public MarsupialLionBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
         MarsupialLionBigCat bear = new MarsupialLionBigCat(ModEntity.MARSUPIAL_LION, this.world);
-        bear.setSpecies(this.getSpecies());
+        bear.setVariant(this.getVariant());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());
         return bear;

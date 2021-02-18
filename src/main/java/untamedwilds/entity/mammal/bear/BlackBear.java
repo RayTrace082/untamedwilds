@@ -120,7 +120,7 @@ public class BlackBear extends AbstractBear implements ISkins {
     public int getAdulthoodTime() { return GROWING; }
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
-    public ResourceLocation getTexture() { return TEXTURES.get(this.getSpecies()); }
+    public ResourceLocation getTexture() { return TEXTURES.get(this.getVariant()); }
     public int getSkinNumber() { return SKIN_NUMBER; }
     protected int getOffspring() { return 2; }
 }
