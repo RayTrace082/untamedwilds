@@ -33,8 +33,6 @@ public class UntamedWilds {
     // TODO: Define list of diggables, maybe extend it to it's own weighted list and include Truffles and funsies
     // TODO: setupTamedAI() function is promising to trim unnecessary tasks from Tameable Mobs
     // TODO: Store the children's UUID in their mother's NBT, to allow checking for Children without constant AABB checking
-    // BUG: Minecraft will complain about duplicate UUIDs when using Mob Spawn items in Creative mode (since they are not used up)
-    // BUG: Creative/Sneaking players standing closest to an angry sleeper will cause other nearby players to be ignored
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";
