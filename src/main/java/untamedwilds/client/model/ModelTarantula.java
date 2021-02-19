@@ -6,10 +6,10 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import untamedwilds.entity.arthropod.Tarantula;
+import untamedwilds.entity.arthropod.EntityTarantula;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelTarantula extends AdvancedEntityModel<Tarantula>
+public class ModelTarantula extends AdvancedEntityModel<EntityTarantula>
 {
     public AdvancedModelBox mainbody;
     public AdvancedModelBox abdomen;
@@ -148,7 +148,7 @@ public class ModelTarantula extends AdvancedEntityModel<Tarantula>
         );
     }
 
-    public void setRotationAngles(Tarantula tarantula, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setRotationAngles(EntityTarantula tarantula, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
         limbSwing = ageInTicks;

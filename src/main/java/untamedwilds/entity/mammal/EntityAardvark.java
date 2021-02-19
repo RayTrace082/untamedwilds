@@ -120,7 +120,7 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return null;
+        return SoundEvents.ENTITY_PIG_AMBIENT;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package untamedwilds.entity.mammal.bear;
+package untamedwilds.entity.mammal.bigcat;
 
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
@@ -22,7 +22,6 @@ import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
-import untamedwilds.entity.ai.unique.BearRaidChestsGoal;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 
@@ -30,66 +29,63 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlackBear extends AbstractBear implements ISkins {
+public class EntityJaguar extends AbstractBigCat implements ISkins {
 
-    public static final int SKIN_NUMBER = 5;
+    public static final int SKIN_NUMBER = 3;
     private static final List<ResourceLocation> TEXTURES = new ArrayList<>();
-    private static final float SIZE = 0.8f;
-    private static final String BREEDING = "EARLY_SUMMER";
-    private static final int GESTATION = 8 * ConfigGamerules.cycleLength.get();
-    private static final int GROWING = 8 * ConfigGamerules.cycleLength.get();
+    private static final float SIZE = 0.9f;
+    private static final String BREEDING = "ALL";
+    private static final int GESTATION = 4 * ConfigGamerules.cycleLength.get();
+    private static final int GROWING = 10 * ConfigGamerules.cycleLength.get();
     private static final int RARITY = 5;
 
-    public BlackBear(EntityType<? extends AbstractBear> type, World worldIn) {
+    public EntityJaguar(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void registerTextures(int count) {
-        for(int i = 1; i < count + 1; i++)
-            BlackBear.TEXTURES.add(new ResourceLocation(UntamedWilds.MOD_ID, String.format("textures/entity/bear/black_%d.png", i)));
     }
 
     public void registerGoals() {
         this.goalSelector.addGoal(1, new SmartSwimGoal(this));
-        this.goalSelector.addGoal(2, new FindItemsGoal(this, 12));
-        this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 2.3D, false, 1));
+        this.goalSelector.addGoal(2, new FindItemsGoal(this, 12, true));
+        this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 2.3D, false, 1, false));
         this.goalSelector.addGoal(3, new SmartFollowOwnerGoal(this, 2.3D, 12.0F, 3.0F));
         this.goalSelector.addGoal(3, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 6));
         this.goalSelector.addGoal(4, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(5, new RaidCropsGoal(this));
-        this.goalSelector.addGoal(5, new BearRaidChestsGoal(this, 120));
-        this.goalSelector.addGoal(6, new SmartWanderGoal(this, 1D, true));
-        this.goalSelector.addGoal(7, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
-        //this.goalSelector.addGoal(7, new SmartLookRandomlyGoal(this));
+        this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, true));
+        this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof BlackBear)));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntityJaguar)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) <= 5));
+        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 5));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void registerTextures(int count) {
+        for(int i = 1; i < count + 1; i++)
+            EntityJaguar.TEXTURES.add(new ResourceLocation(UntamedWilds.MOD_ID, String.format("textures/entity/big_cat/jaguar_%d.png", i)));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 24D)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.16D)
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 32D)
                 .createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
-                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1D)
-                .createMutableAttribute(Attributes.ARMOR, 4D);
+                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.8D)
+                .createMutableAttribute(Attributes.ARMOR, 0D);
     }
 
-    /* Crepuscular: Active between 10:00 and 22:00 */
+    /* Crepuscular: Active between 10:00 and 1:00 */
     public boolean isActive() {
         super.isActive();
         long time = this.world.getDayTime();
-        return time > 4000 && time < 16000;
+        return time > 4000 && time < 19000;
     }
 
-    /* Breeding conditions for the Black Bear are:
-     * Temperate Biome (T between 0.2 and 0.7)
+    /* Breeding conditions for the Jaguar are:
+     * Warm Biome (T higher than 0.6)
      * No other entities nearby */
     public boolean wantsToBreed() {
         if (super.wantsToBreed()) {
@@ -97,7 +93,7 @@ public class BlackBear extends AbstractBear implements ISkins {
                 if (ConfigGamerules.hardcoreBreeding.get()) {
                     List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                     float i = this.world.getBiome(this.getPosition()).getTemperature(this.getPosition());
-                    return i >= 0.2 && i <= 0.7 && list.size() < 3;
+                    return i >= 0.6 && list.size() < 3;
                 }
                 return true;
             }
@@ -106,15 +102,15 @@ public class BlackBear extends AbstractBear implements ISkins {
     }
 
     @Nullable
-    public BlackBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new BlackBear(ModEntity.BLACK_BEAR, this.world));
+    public EntityJaguar func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
+        return create_offspring(new EntityJaguar(ModEntity.JAGUAR, this.world));
     }
 
     @Override
     protected ResourceLocation getLootTable() {
-        return ModLootTables.BEAR_LOOT_BLACK;
+        return ModLootTables.BIGCAT_LOOT_JAGUAR;
     }
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.SWEET_BERRIES; }
+    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.PORKCHOP; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }
     public int getAdulthoodTime() { return GROWING; }

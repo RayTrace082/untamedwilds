@@ -13,7 +13,11 @@ import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
+import untamedwilds.entity.ISkins;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
@@ -21,18 +25,21 @@ import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class SnowLeopardBigCat extends AbstractBigCat {
+public class EntityLeopard extends AbstractBigCat implements ISkins {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/snow_leopard.png");
-    private static final float SIZE = 0.8f;
+    public static final int SKIN_NUMBER = 3;
+    private static final List<ResourceLocation> TEXTURES = new ArrayList<>();
+    private static final float SIZE = 0.9f;
     private static final String BREEDING = "ALL";
     private static final int GESTATION = 4 * ConfigGamerules.cycleLength.get();
     private static final int GROWING = 10 * ConfigGamerules.cycleLength.get();
     private static final int RARITY = 5;
 
-    public SnowLeopardBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
+    public EntityLeopard(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
     }
 
@@ -49,30 +56,30 @@ public class SnowLeopardBigCat extends AbstractBigCat {
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof SnowLeopardBigCat)));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntityLeopard)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 5));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 7.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.16D)
                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 32D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
+                .createMutableAttribute(Attributes.MAX_HEALTH, 35.0D)
                 .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.8D)
                 .createMutableAttribute(Attributes.ARMOR, 0D);
     }
 
-    /* Nocturnal: Active between 19:00 and 10:00 */
+    /* Diurnal: Active between 7:00 and 22:00 */
     public boolean isActive() {
         super.isActive();
         long time = this.world.getDayTime();
-        return time > 13000 || time < 4000;
+        return time > 1000 && time < 16000;
     }
 
-    /* Breeding conditions for the Snow Leopard are:
-     * Cold Biome (T between -1.0 and 0.4)
+    /* Breeding conditions for the Leopard are:
+     * Warm Biome (T higher than 0.6)
      * No other entities nearby */
     public boolean wantsToBreed() {
         if (super.wantsToBreed()) {
@@ -80,7 +87,7 @@ public class SnowLeopardBigCat extends AbstractBigCat {
                 if (ConfigGamerules.hardcoreBreeding.get()) {
                     List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                     float i = this.world.getBiome(this.getPosition()).getTemperature(this.getPosition());
-                    return i <= 0.4 && list.size() < 3;
+                    return i >= 0.6 && list.size() < 3;
                 }
                 return true;
             }
@@ -88,23 +95,27 @@ public class SnowLeopardBigCat extends AbstractBigCat {
         return false;
     }
 
-    public SnowLeopardBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        SnowLeopardBigCat bear = new SnowLeopardBigCat(ModEntity.SNOW_LEOPARD, this.world);
-        bear.setVariant(this.getVariant());
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        return bear;
+    @OnlyIn(Dist.CLIENT)
+    public static void registerTextures(int count) {
+        for(int i = 1; i < count + 1; i++)
+            EntityLeopard.TEXTURES.add(new ResourceLocation(UntamedWilds.MOD_ID, String.format("textures/entity/big_cat/leopard_%d.png", i)));
+    }
+
+    @Nullable
+    public EntityLeopard func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
+        return create_offspring(new EntityLeopard(ModEntity.LEOPARD, this.world));
     }
 
     protected ResourceLocation getLootTable() {
-        return ModLootTables.BIGCAT_LOOT_SNOW_LEOPARD;
+        return ModLootTables.BIGCAT_LOOT_LEOPARD;
     }
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEEF; }
+    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.PORKCHOP; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }
     public int getAdulthoodTime() { return GROWING; }
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
-    public ResourceLocation getTexture() { return TEXTURE; }
-    protected int getOffspring() { return 3; }
+    public ResourceLocation getTexture() { return TEXTURES.get(this.getVariant()); }
+    public int getSkinNumber() { return SKIN_NUMBER; }
+    protected int getOffspring() { return 2; }
 }

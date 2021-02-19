@@ -6,10 +6,10 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import untamedwilds.entity.mollusk.GiantClam;
+import untamedwilds.entity.mollusk.EntityGiantClam;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelGiantClam extends AdvancedEntityModel<GiantClam> {
+public class ModelGiantClam extends AdvancedEntityModel<EntityGiantClam> {
     public AdvancedModelBox mantle;
     public AdvancedModelBox shell_2;
     public AdvancedModelBox shell_1;
@@ -43,7 +43,7 @@ public class ModelGiantClam extends AdvancedEntityModel<GiantClam> {
         return ImmutableList.of(this.mantle, this.shell_1, this.shell_2);
     }
 
-    public void setRotationAngles(GiantClam clam, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setRotationAngles(EntityGiantClam clam, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
         this.mantle.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.08F), (float) (1F + Math.sin(ageInTicks / 16) * 0.08F), 1.0F);
         walk(shell_1, 0.2f, 0.1f, true, 0.5F, 0f, ageInTicks / 20, 0.5F);

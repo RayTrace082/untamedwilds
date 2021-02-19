@@ -29,14 +29,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Sunfish extends ComplexMobAquatic implements ISpecies {
+public class EntitySunfish extends ComplexMobAquatic implements ISpecies {
 
     private static final String BREEDING = "EARLY_AUTUMN";
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
 
     public int baskProgress;
 
-    public Sunfish(EntityType<? extends ComplexMob> type, World worldIn) {
+    public EntitySunfish(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
         this.experienceValue = 5;
     }
@@ -80,7 +80,7 @@ public class Sunfish extends ComplexMobAquatic implements ISpecies {
      * A nearby Sunfish */
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
-            List<Sunfish> list = this.world.getEntitiesWithinAABB(Sunfish.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
+            List<EntitySunfish> list = this.world.getEntitiesWithinAABB(EntitySunfish.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
             list.removeIf(input -> (input.getGender() == this.getGender()) || input.getGrowingAge() != 0);
             if (list.size() >= 1) {
                 this.setGrowingAge(GROWING);
@@ -113,18 +113,18 @@ public class Sunfish extends ComplexMobAquatic implements ISpecies {
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (biomekey.equals(Biomes.DEEP_LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_OCEAN) || biomekey.equals(Biomes.DEEP_COLD_OCEAN)) {
             //if (ConfigGamerules.randomSpecies.get()) {
-            return this.rand.nextInt(Sunfish.SpeciesSunfish.values().length);
+            return this.rand.nextInt(EntitySunfish.SpeciesSunfish.values().length);
             //}
             //return Sunfish.SpeciesSunfish.getSpeciesByBiome(biome);
         }
         if (reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET) {
-            return this.rand.nextInt(Sunfish.SpeciesSunfish.values().length);
+            return this.rand.nextInt(EntitySunfish.SpeciesSunfish.values().length);
         }
         return 99;
     }
 
     public String getSpeciesName() { return new TranslationTextComponent("entity.untamedwilds.sunfish_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return Sunfish.SpeciesSunfish.values()[this.getVariant()].name().toLowerCase(); }
+    public String getRawSpeciesName() { return EntitySunfish.SpeciesSunfish.values()[this.getVariant()].name().toLowerCase(); }
 
     public enum SpeciesSunfish implements IStringSerializable {
 
@@ -150,9 +150,9 @@ public class Sunfish extends ComplexMobAquatic implements ISpecies {
         }
 
         public static int getSpeciesByBiome(Biome biome) {
-            List<Sunfish.SpeciesSunfish> types = new ArrayList<>();
+            List<EntitySunfish.SpeciesSunfish> types = new ArrayList<>();
 
-            for (Sunfish.SpeciesSunfish type : values()) {
+            for (EntitySunfish.SpeciesSunfish type : values()) {
                 for(Biome.Category biomeTypes : type.spawnBiomes) {
                     if(biome.getCategory() == biomeTypes){
                         for (int i=0; i < type.rolls; i++) {

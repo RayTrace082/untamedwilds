@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Tarantula extends ComplexMob implements ISpecies {
+public class EntityTarantula extends ComplexMob implements ISpecies {
 
     private static final String BREEDING = "EARLY_SUMMER";
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
@@ -40,7 +40,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
     public int aggroProgress;
     //public int webProgress;
 
-    public Tarantula(EntityType<? extends Tarantula> type, World worldIn) {
+    public EntityTarantula(EntityType<? extends EntityTarantula> type, World worldIn) {
         super(type, worldIn);
     }
 
@@ -95,7 +95,7 @@ public class Tarantula extends ComplexMob implements ISpecies {
      * A nearby Tarantula of the opposite gender and the same species */
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && !this.isSleeping() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
-            List<Tarantula> list = this.world.getEntitiesWithinAABB(Tarantula.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
+            List<EntityTarantula> list = this.world.getEntitiesWithinAABB(EntityTarantula.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
             list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getVariant() != this.getVariant()) || input.getGrowingAge() != 0);
             if (list.size() >= 1) {
                 this.setGrowingAge(GROWING);

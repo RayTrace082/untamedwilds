@@ -19,20 +19,20 @@ import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
 import untamedwilds.init.ModEntity;
+import untamedwilds.init.ModLootTables;
 
 import java.util.List;
 
-public class CaveLionBigCat extends AbstractBigCat {
+public class EntitySnowLeopard extends AbstractBigCat {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/cave_lion_male.png");
-    private static final ResourceLocation TEXTURE_FEMALE = new ResourceLocation("untamedwilds:textures/entity/big_cat/cave_lion_female.png");
-    private static final float SIZE = 1.1f;
+    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/snow_leopard.png");
+    private static final float SIZE = 0.8f;
     private static final String BREEDING = "ALL";
-    private static final int GESTATION = 5 * ConfigGamerules.cycleLength.get();
-    private static final int GROWING = 11 * ConfigGamerules.cycleLength.get();
-    private static final int RARITY = 1;
+    private static final int GESTATION = 4 * ConfigGamerules.cycleLength.get();
+    private static final int GROWING = 10 * ConfigGamerules.cycleLength.get();
+    private static final int RARITY = 5;
 
-    public CaveLionBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
+    public EntitySnowLeopard(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
     }
 
@@ -41,7 +41,7 @@ public class CaveLionBigCat extends AbstractBigCat {
         this.goalSelector.addGoal(2, new FindItemsGoal(this, 12, true));
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 2.3D, false, 1));
         this.goalSelector.addGoal(3, new SmartFollowOwnerGoal(this, 2.3D, 12.0F, 3.0F));
-        this.goalSelector.addGoal(3, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 9));
+        this.goalSelector.addGoal(3, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 6));
         this.goalSelector.addGoal(4, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
@@ -49,9 +49,9 @@ public class CaveLionBigCat extends AbstractBigCat {
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof CaveLionBigCat)));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntitySnowLeopard)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 8));
+        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 5));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -59,16 +59,16 @@ public class CaveLionBigCat extends AbstractBigCat {
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.16D)
                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 32D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 40.0D)
+                .createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
                 .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.8D)
                 .createMutableAttribute(Attributes.ARMOR, 0D);
     }
 
-    /* Diurnal: Active between 7:00 and 22:00 */
+    /* Nocturnal: Active between 19:00 and 10:00 */
     public boolean isActive() {
         super.isActive();
         long time = this.world.getDayTime();
-        return time > 1000 && time < 16000;
+        return time > 13000 || time < 4000;
     }
 
     /* Breeding conditions for the Snow Leopard are:
@@ -88,22 +88,23 @@ public class CaveLionBigCat extends AbstractBigCat {
         return false;
     }
 
-    public CaveLionBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        CaveLionBigCat bear = new CaveLionBigCat(ModEntity.CAVE_LION, this.world);
+    public EntitySnowLeopard func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
+        EntitySnowLeopard bear = new EntitySnowLeopard(ModEntity.SNOW_LEOPARD, this.world);
         bear.setVariant(this.getVariant());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());
         return bear;
     }
 
+    protected ResourceLocation getLootTable() {
+        return ModLootTables.BIGCAT_LOOT_SNOW_LEOPARD;
+    }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEEF; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }
     public int getAdulthoodTime() { return GROWING; }
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
-    public ResourceLocation getTexture() {
-        return this.isMale() ? TEXTURE : TEXTURE_FEMALE;
-    }
-    protected int getOffspring() { return 2; }
+    public ResourceLocation getTexture() { return TEXTURE; }
+    protected int getOffspring() { return 3; }
 }

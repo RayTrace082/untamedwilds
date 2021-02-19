@@ -1,4 +1,4 @@
-package untamedwilds.block.tileentity;
+package untamedwilds.block.blockentity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;

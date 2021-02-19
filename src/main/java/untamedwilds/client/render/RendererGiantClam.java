@@ -8,12 +8,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.client.model.ModelGiantClam;
-import untamedwilds.entity.mollusk.GiantClam;
+import untamedwilds.entity.mollusk.EntityGiantClam;
 
 import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
-public class RendererGiantClam extends MobRenderer<GiantClam, EntityModel<GiantClam>> {
+public class RendererGiantClam extends MobRenderer<EntityGiantClam, EntityModel<EntityGiantClam>> {
 
     private static final ModelGiantClam GIANT_CLAM_MODEL = new ModelGiantClam();
 
@@ -27,15 +27,15 @@ public class RendererGiantClam extends MobRenderer<GiantClam, EntityModel<GiantC
     }
 
     @Override
-    protected void preRenderCallback(GiantClam entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = GiantClam.SpeciesGiantClam.values()[entity.getVariant()].scale;
+    protected void preRenderCallback(EntityGiantClam entity, MatrixStack matrixStackIn, float partialTickTime) {
+        float f = EntityGiantClam.SpeciesGiantClam.values()[entity.getVariant()].scale;
         f += (entity.getMobSize() * 0.25f);
         f *= entity.getRenderScale();
         matrixStackIn.scale(f, f, f);
-        this.shadowSize = GiantClam.SpeciesGiantClam.values()[entity.getVariant()].scale * 0.8f;
+        this.shadowSize = EntityGiantClam.SpeciesGiantClam.values()[entity.getVariant()].scale * 0.8f;
     }
 
-    public ResourceLocation getEntityTexture(@Nonnull GiantClam entity) {
+    public ResourceLocation getEntityTexture(@Nonnull EntityGiantClam entity) {
         switch (entity.getVariant()) {
             default:
             case 0: return DERASA;

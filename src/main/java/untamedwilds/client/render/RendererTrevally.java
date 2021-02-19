@@ -8,12 +8,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.client.model.ModelTrevally;
-import untamedwilds.entity.fish.Trevally;
+import untamedwilds.entity.fish.EntityTrevally;
 
 import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
-public class RendererTrevally extends MobRenderer<Trevally, EntityModel<Trevally>> {
+public class RendererTrevally extends MobRenderer<EntityTrevally, EntityModel<EntityTrevally>> {
 
     private static final ModelTrevally TREVALLY_MODEL = new ModelTrevally();
 
@@ -27,15 +27,15 @@ public class RendererTrevally extends MobRenderer<Trevally, EntityModel<Trevally
         super(rendermanager, TREVALLY_MODEL, 0.2F);
     }
     @Override
-    protected void preRenderCallback(Trevally entity, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void preRenderCallback(EntityTrevally entity, MatrixStack matrixStackIn, float partialTickTime) {
         float f = 1F;
         f += (entity.getMobSize() * 0.2f);
         f *= entity.getRenderScale();
-        f *= (Trevally.SpeciesTrevally.values()[entity.getVariant()].scale);
+        f *= (EntityTrevally.SpeciesTrevally.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
     }
 
-    public ResourceLocation getEntityTexture(@Nonnull Trevally entity) {
+    public ResourceLocation getEntityTexture(@Nonnull EntityTrevally entity) {
         switch (entity.getVariant()) {
             default:
             case 0: return BIGEYE;

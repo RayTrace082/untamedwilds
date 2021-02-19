@@ -126,7 +126,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
             this.playSound(SoundEvents.ENTITY_HORSE_EAT,1.5F, 0.8F);
         }
         if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-            SoundEvent sound = this instanceof PumaBigCat ? SoundEvents.ENTITY_OCELOT_AMBIENT : ModSounds.ENTITY_BIG_CAT_AMBIENT;
+            SoundEvent sound = this instanceof EntityPuma ? SoundEvents.ENTITY_OCELOT_AMBIENT : ModSounds.ENTITY_BIG_CAT_AMBIENT;
             this.playSound(sound, 1F, 1);
         }
         if (this.world.isRemote && this.isAngry() && this.aggroProgress < 40) {
@@ -237,12 +237,12 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
 
     public enum SpeciesBigCat implements IStringSerializable {
 
-        JAGUAR		(ModEntity.JAGUAR, JaguarBigCat.getRarity(), Biome.Category.JUNGLE),
-        LEOPARD		(ModEntity.LEOPARD, LeopardBigCat.getRarity(), Biome.Category.SAVANNA, Biome.Category.TAIGA),
-        LION		(ModEntity.LION, LionBigCat.getRarity(), Biome.Category.SAVANNA),
-        PUMA		(ModEntity.PUMA, PumaBigCat.getRarity(), Biome.Category.MESA, Biome.Category.FOREST, Biome.Category.TAIGA),
-        SNOW_LEOPARD(ModEntity.SNOW_LEOPARD, SnowLeopardBigCat.getRarity(), Biome.Category.ICY, Biome.Category.TAIGA),
-        TIGER		(ModEntity.TIGER, TigerBigCat.getRarity(), Biome.Category.JUNGLE, Biome.Category.TAIGA);
+        JAGUAR		(ModEntity.JAGUAR, EntityJaguar.getRarity(), Biome.Category.JUNGLE),
+        LEOPARD		(ModEntity.LEOPARD, EntityLeopard.getRarity(), Biome.Category.SAVANNA, Biome.Category.TAIGA),
+        LION		(ModEntity.LION, EntityLion.getRarity(), Biome.Category.SAVANNA),
+        PUMA		(ModEntity.PUMA, EntityPuma.getRarity(), Biome.Category.MESA, Biome.Category.FOREST, Biome.Category.TAIGA),
+        SNOW_LEOPARD(ModEntity.SNOW_LEOPARD, EntitySnowLeopard.getRarity(), Biome.Category.ICY, Biome.Category.TAIGA),
+        TIGER		(ModEntity.TIGER, EntityTiger.getRarity(), Biome.Category.JUNGLE, Biome.Category.TAIGA);
 
         public EntityType<? extends AbstractBigCat> type;
         public int rarity;

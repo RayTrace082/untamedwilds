@@ -6,10 +6,10 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import untamedwilds.entity.fish.Trevally;
+import untamedwilds.entity.fish.EntityTrevally;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelTrevally extends AdvancedEntityModel<Trevally> {
+public class ModelTrevally extends AdvancedEntityModel<EntityTrevally> {
     public AdvancedModelBox body_main;
     public AdvancedModelBox head_main;
     public AdvancedModelBox body_tail;
@@ -95,7 +95,7 @@ public class ModelTrevally extends AdvancedEntityModel<Trevally> {
         );
     }
 
-    public void setRotationAngles(Trevally tarantula, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setRotationAngles(EntityTrevally tarantula, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
         float globalSpeed = 0.8f;

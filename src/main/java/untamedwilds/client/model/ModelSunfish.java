@@ -6,10 +6,10 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import untamedwilds.entity.fish.Sunfish;
+import untamedwilds.entity.fish.EntitySunfish;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelSunfish extends AdvancedEntityModel<Sunfish> {
+public class ModelSunfish extends AdvancedEntityModel<EntitySunfish> {
     public AdvancedModelBox body_main;
     public AdvancedModelBox body_head;
     public AdvancedModelBox body_tail;
@@ -79,7 +79,7 @@ public class ModelSunfish extends AdvancedEntityModel<Sunfish> {
         );
     }
 
-    public void setRotationAngles(Sunfish sunfish, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setRotationAngles(EntitySunfish sunfish, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         float f = ageInTicks - (float)sunfish.ticksExisted / 10;
         resetToDefaultPose();
 

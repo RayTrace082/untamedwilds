@@ -32,12 +32,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Trevally extends ComplexMobAquatic implements ISpecies, IPackEntity {
+public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPackEntity {
 
     private static final String BREEDING = "MID_SUMMER";
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
 
-    public Trevally(EntityType<? extends ComplexMob> type, World worldIn) {
+    public EntityTrevally(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
         this.experienceValue = 3;
     }
@@ -98,7 +98,7 @@ public class Trevally extends ComplexMobAquatic implements ISpecies, IPackEntity
      * A nearby Trevally of different gender */
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
-            List<Trevally> list = this.world.getEntitiesWithinAABB(Trevally.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
+            List<EntityTrevally> list = this.world.getEntitiesWithinAABB(EntityTrevally.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
             list.removeIf(input -> (input.getGender() == this.getGender()) || input.getGrowingAge() != 0);
             if (list.size() >= 1) {
                 this.setGrowingAge(GROWING);
@@ -134,13 +134,13 @@ public class Trevally extends ComplexMobAquatic implements ISpecies, IPackEntity
             return 99;
         }
         if (reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET || ConfigGamerules.randomSpecies.get()) {
-            return this.rand.nextInt(Trevally.SpeciesTrevally.values().length);
+            return this.rand.nextInt(EntityTrevally.SpeciesTrevally.values().length);
         }
-        return Trevally.SpeciesTrevally.getSpeciesByBiome(biome);
+        return EntityTrevally.SpeciesTrevally.getSpeciesByBiome(biome);
     }
 
     public String getSpeciesName() { return new TranslationTextComponent("entity.untamedwilds.trevally_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return Trevally.SpeciesTrevally.values()[this.getVariant()].name().toLowerCase(); }
+    public String getRawSpeciesName() { return EntityTrevally.SpeciesTrevally.values()[this.getVariant()].name().toLowerCase(); }
 
     public enum SpeciesTrevally implements IStringSerializable {
 
@@ -171,9 +171,9 @@ public class Trevally extends ComplexMobAquatic implements ISpecies, IPackEntity
         }
 
         public static int getSpeciesByBiome(Biome biome) {
-            List<Trevally.SpeciesTrevally> types = new ArrayList<>();
+            List<EntityTrevally.SpeciesTrevally> types = new ArrayList<>();
 
-            for (Trevally.SpeciesTrevally type : values()) {
+            for (EntityTrevally.SpeciesTrevally type : values()) {
                 for(Biome.Category biomeTypes : type.spawnBiomes) {
                     if(biome.getCategory() == biomeTypes){
                         for (int i=0; i < type.rolls; i++) {

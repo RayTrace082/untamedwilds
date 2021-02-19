@@ -41,7 +41,7 @@ public abstract class EntityUtils {
         }
     }
 
-    // Spawn particles throughout the entity. Features safe casting of worldIn
+    // Spawn particles throughout the entity
     public static <T extends IParticleData> void spawnParticlesOnEntity(World worldIn, LivingEntity entityIn, T particle, int count, int iter) {
         if (worldIn.isRemote) {
             return;
@@ -52,7 +52,7 @@ public abstract class EntityUtils {
     }
 
     // Self explanatory
-    public static EntityType<?> getEntityTypeFromTag(@Nullable CompoundNBT nbt, EntityType<?> alt) {
+    public static EntityType<?> getEntityTypeFromTag(CompoundNBT nbt, @Nullable EntityType<?> alt) {
         if (nbt != null && nbt.contains("EntityTag", 10)) {
             CompoundNBT entityNBT = nbt.getCompound("EntityTag");
             if (entityNBT.contains("id", 8)) {
@@ -130,5 +130,4 @@ public abstract class EntityUtils {
             }
         }
     }
-
 }

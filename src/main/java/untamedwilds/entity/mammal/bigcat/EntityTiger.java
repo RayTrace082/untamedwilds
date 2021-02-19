@@ -19,19 +19,20 @@ import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
 import untamedwilds.init.ModEntity;
+import untamedwilds.init.ModLootTables;
 
 import java.util.List;
 
-public class SabertoothBigCat extends AbstractBigCat {
+public class EntityTiger extends AbstractBigCat {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/sabertooth.png");
-    private static final float SIZE = 1.0F;
+    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/tiger.png");
+    private static final float SIZE = 1.1F;
     private static final String BREEDING = "ALL";
     private static final int GESTATION = 5 * ConfigGamerules.cycleLength.get();
     private static final int GROWING = 11 * ConfigGamerules.cycleLength.get();
-    private static final int RARITY = 1;
+    private static final int RARITY = 3;
 
-    public SabertoothBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
+    public EntityTiger(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
     }
 
@@ -48,7 +49,7 @@ public class SabertoothBigCat extends AbstractBigCat {
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof SabertoothBigCat)));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntityTiger)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 8));
     }
@@ -56,7 +57,7 @@ public class SabertoothBigCat extends AbstractBigCat {
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MobEntity.func_233666_p_()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 9.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.13D)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.16D)
                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 32D)
                 .createMutableAttribute(Attributes.MAX_HEALTH, 40.0D)
                 .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.8D)
@@ -70,7 +71,7 @@ public class SabertoothBigCat extends AbstractBigCat {
         return time > 1000 && time < 16000;
     }
 
-    /* Breeding conditions for the Sabertooth are:
+    /* Breeding conditions for the Tiger are:
      * Warm Biome (T higher than 0.6)
      * No other entities nearby */
     public boolean wantsToBreed() {
@@ -87,14 +88,17 @@ public class SabertoothBigCat extends AbstractBigCat {
         return false;
     }
 
-    public SabertoothBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        SabertoothBigCat bear = new SabertoothBigCat(ModEntity.SABERTOOTH, this.world);
+    public EntityTiger func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
+        EntityTiger bear = new EntityTiger(ModEntity.TIGER, this.world);
         bear.setVariant(this.getVariant());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());
         return bear;
     }
 
+    protected ResourceLocation getLootTable() {
+        return ModLootTables.BIGCAT_LOOT_TIGER;
+    }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEEF; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }

@@ -25,7 +25,7 @@ import untamedwilds.init.ModLootTables;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlindBear extends AbstractBear {
+public class EntityBlindBear extends AbstractBear {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/bear/blind.png");
     private static final float SIZE = 1.1f;
@@ -34,7 +34,7 @@ public class BlindBear extends AbstractBear {
     private static final int GROWING = 8 * ConfigGamerules.cycleLength.get();
     private static final int RARITY = ConfigGamerules.fantasyMobs.get() ? 1 : 0;
 
-    public BlindBear(EntityType<? extends AbstractBear> type, World worldIn) {
+    public EntityBlindBear(EntityType<? extends AbstractBear> type, World worldIn) {
         super(type, worldIn);
     }
 
@@ -53,7 +53,7 @@ public class BlindBear extends AbstractBear {
         //this.goalSelector.addGoal(7, new SmartLookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof BlindBear)));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntityBlindBear)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 8));
     }
@@ -93,8 +93,8 @@ public class BlindBear extends AbstractBear {
     }
 
     @Nullable
-    public BlindBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new BlindBear(ModEntity.BLIND_BEAR, this.world));
+    public EntityBlindBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
+        return create_offspring(new EntityBlindBear(ModEntity.BLIND_BEAR, this.world));
     }
 
 

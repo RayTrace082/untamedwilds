@@ -22,25 +22,26 @@ import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
 import untamedwilds.init.ModEntity;
+import untamedwilds.init.ModLootTables;
 
 import java.util.List;
 
-public class MarsupialLionBigCat extends AbstractBigCat {
+public class EntityPuma extends AbstractBigCat {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/marsupial_lion.png");
-    private static final float SIZE = 0.8F;
+    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/puma.png");
+    private static final float SIZE = 0.7f;
     private static final String BREEDING = "ALL";
-    private static final int GESTATION = 8 * ConfigGamerules.cycleLength.get();
-    private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
-    private static final int RARITY = 1;
+    private static final int GESTATION = 3 * ConfigGamerules.cycleLength.get();
+    private static final int GROWING = 9 * ConfigGamerules.cycleLength.get();
+    private static final int RARITY = 8;
 
-    public MarsupialLionBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
+    public EntityPuma(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
     }
 
     public void registerGoals() {
         this.goalSelector.addGoal(1, new SmartSwimGoal(this));
-        this.goalSelector.addGoal(2, new FindItemsGoal(this, 12)); // This is purely speculative, but Marsupial Lions are able to eat Veggies
+        this.goalSelector.addGoal(2, new FindItemsGoal(this, 12, true));
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 2.3D, false, 1));
         this.goalSelector.addGoal(3, new SmartFollowOwnerGoal(this, 2.3D, 12.0F, 3.0F));
         this.goalSelector.addGoal(3, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 6));
@@ -51,7 +52,7 @@ public class MarsupialLionBigCat extends AbstractBigCat {
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof MarsupialLionBigCat)));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntityPuma)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 6));
     }
@@ -59,22 +60,22 @@ public class MarsupialLionBigCat extends AbstractBigCat {
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MobEntity.func_233666_p_()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.13D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 24D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 25.0D)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.16D)
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 32D)
+                .createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
                 .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.8D)
                 .createMutableAttribute(Attributes.ARMOR, 0D);
     }
 
-    /* Nocturnal: Active between 19:00 and 10:00 */
+    /* Crepuscular: Active between 10:00 and 1:00 */
     public boolean isActive() {
         super.isActive();
         long time = this.world.getDayTime();
-        return time > 13000 || time < 4000;
+        return time > 4000 && time < 19000;
     }
 
-    /* Breeding conditions for the Marsupial Lion are:
-     * Warm Biome (T higher than 0.6)
+    /* Breeding conditions for the Mountain Lion are:
+     * Temperate Biome (T between 0.2 and 0.7)
      * No other entities nearby */
     public boolean wantsToBreed() {
         if (super.wantsToBreed()) {
@@ -82,7 +83,7 @@ public class MarsupialLionBigCat extends AbstractBigCat {
                 if (ConfigGamerules.hardcoreBreeding.get()) {
                     List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                     float i = this.world.getBiome(this.getPosition()).getTemperature(this.getPosition());
-                    return i >= 0.6 && list.size() < 3;
+                    return i >= 0.2 && i <= 0.7 && list.size() < 3;
                 }
                 return true;
             }
@@ -90,8 +91,8 @@ public class MarsupialLionBigCat extends AbstractBigCat {
         return false;
     }
 
-    public MarsupialLionBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        MarsupialLionBigCat bear = new MarsupialLionBigCat(ModEntity.MARSUPIAL_LION, this.world);
+    public EntityPuma func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
+        EntityPuma bear = new EntityPuma(ModEntity.PUMA, this.world);
         bear.setVariant(this.getVariant());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());
@@ -99,21 +100,26 @@ public class MarsupialLionBigCat extends AbstractBigCat {
     }
 
     protected SoundEvent getAmbientSound() {
-        return !this.isChild() ? null : SoundEvents.ENTITY_PANDA_AMBIENT;
+        return SoundEvents.ENTITY_OCELOT_AMBIENT;
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
-        return !this.isChild() ? SoundEvents.ENTITY_PANDA_WORRIED_AMBIENT : SoundEvents.ENTITY_PANDA_HURT;
+        return SoundEvents.ENTITY_OCELOT_HURT;
     }
 
-    protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_PANDA_DEATH; }
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_OCELOT_DEATH;
+    }
 
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.CHICKEN; }
+    protected ResourceLocation getLootTable() {
+        return ModLootTables.BIGCAT_LOOT_PUMA;
+    }
+    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.RABBIT; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }
     public int getAdulthoodTime() { return GROWING; }
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
     public ResourceLocation getTexture() { return TEXTURE; }
-    protected int getOffspring() { return 1; }
+    protected int getOffspring() { return 3; }
 }

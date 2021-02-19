@@ -6,6 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -13,28 +14,25 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
-import untamedwilds.entity.IPackEntity;
 import untamedwilds.entity.ai.*;
-import untamedwilds.entity.ai.target.HuntPackMobTarget;
-import untamedwilds.entity.ai.target.HurtPackByTargetGoal;
+import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
 import untamedwilds.init.ModEntity;
-import untamedwilds.init.ModLootTables;
 
 import java.util.List;
 
-public class LionBigCat extends AbstractBigCat implements IPackEntity {
+public class EntityCaveLion extends AbstractBigCat {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/lion_male.png");
-    private static final ResourceLocation TEXTURE_FEMALE = new ResourceLocation("untamedwilds:textures/entity/big_cat/lion_female.png");
-    private static final float SIZE = 1F;
+    private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/cave_lion_male.png");
+    private static final ResourceLocation TEXTURE_FEMALE = new ResourceLocation("untamedwilds:textures/entity/big_cat/cave_lion_female.png");
+    private static final float SIZE = 1.1f;
     private static final String BREEDING = "ALL";
     private static final int GESTATION = 5 * ConfigGamerules.cycleLength.get();
     private static final int GROWING = 11 * ConfigGamerules.cycleLength.get();
-    private static final int RARITY = 3;
+    private static final int RARITY = 1;
 
-    public LionBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
+    public EntityCaveLion(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
     }
 
@@ -47,13 +45,13 @@ public class LionBigCat extends AbstractBigCat implements IPackEntity {
         this.goalSelector.addGoal(4, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(5, new SmartWanderHerdGoal(this, 1D, true));
+        this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, true));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new HurtPackByTargetGoal(this));
-        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof LionBigCat)));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntityCaveLion)));
         this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new HuntPackMobTarget<>(this, LivingEntity.class, true, 30, false, input -> this.getEcoLevel(input) < 8));
+        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 8));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -73,16 +71,16 @@ public class LionBigCat extends AbstractBigCat implements IPackEntity {
         return time > 1000 && time < 16000;
     }
 
-    /* Breeding conditions for the Lion are:
-     * Warm Biome (T higher than 0.6)
-     * No more than 3 other entities nearby */
+    /* Breeding conditions for the Snow Leopard are:
+     * Cold Biome (T between -1.0 and 0.4)
+     * No other entities nearby */
     public boolean wantsToBreed() {
         if (super.wantsToBreed()) {
             if (!this.isSleeping() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth() && this.getHunger() >= 80) {
                 if (ConfigGamerules.hardcoreBreeding.get()) {
                     List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                     float i = this.world.getBiome(this.getPosition()).getTemperature(this.getPosition());
-                    return i >= 0.6 && list.size() < 6;
+                    return i <= 0.4 && list.size() < 3;
                 }
                 return true;
             }
@@ -90,31 +88,14 @@ public class LionBigCat extends AbstractBigCat implements IPackEntity {
         return false;
     }
 
-    public void livingTick() {
-        if (this.herd == null) {
-            this.initPack();
-        }
-        else {
-            this.herd.tick();
-        }
-        super.livingTick();
-    }
-
-    public LionBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        LionBigCat bear = new LionBigCat(ModEntity.LION, this.world);
+    public EntityCaveLion func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
+        EntityCaveLion bear = new EntityCaveLion(ModEntity.CAVE_LION, this.world);
         bear.setVariant(this.getVariant());
         bear.setGender(this.rand.nextInt(2));
         bear.setMobSize(this.rand.nextFloat());
         return bear;
     }
 
-    public boolean shouldLeavePack() {
-        return false;
-    }
-
-    protected ResourceLocation getLootTable() {
-        return ModLootTables.BIGCAT_LOOT_LION;
-    }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEEF; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }
@@ -125,8 +106,4 @@ public class LionBigCat extends AbstractBigCat implements IPackEntity {
         return this.isMale() ? TEXTURE : TEXTURE_FEMALE;
     }
     protected int getOffspring() { return 2; }
-    @Override
-    public int getMaxPackSize(IPackEntity entity) {
-        return 8;
-    }
 }

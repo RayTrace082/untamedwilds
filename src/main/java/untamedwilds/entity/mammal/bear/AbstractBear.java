@@ -257,14 +257,14 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
     // Species available, referenced to properly distribute Bears in the world
     public enum SpeciesBear implements IStringSerializable {
 
-        BLACK		(ModEntity.BLACK_BEAR, BlackBear.getRarity(), Biome.Category.FOREST, Biome.Category.TAIGA),
-        BLIND		(ModEntity.BLIND_BEAR, BlindBear.getRarity()),
-        BROWN		(ModEntity.BROWN_BEAR, BrownBear.getRarity(), Biome.Category.TAIGA, Biome.Category.EXTREME_HILLS),
-        CAVE		(ModEntity.CAVE_BEAR, CaveBear.getRarity(), Biome.Category.TAIGA, Biome.Category.EXTREME_HILLS),
-        PANDA		(ModEntity.PANDA_BEAR, PandaBear.getRarity(), Biome.Category.JUNGLE),
-        POLAR		(ModEntity.POLAR_BEAR, PolarBear.getRarity(), Biome.Category.ICY),
-        SPECTACLED	(ModEntity.SPECTACLED_BEAR, SpectacledBear.getRarity(), Biome.Category.EXTREME_HILLS),
-        SUN 		(ModEntity.SUN_BEAR, SunBear.getRarity(), Biome.Category.JUNGLE);
+        BLACK		(ModEntity.BLACK_BEAR, EntityBlackBear.getRarity(), Biome.Category.FOREST, Biome.Category.TAIGA),
+        BLIND		(ModEntity.BLIND_BEAR, EntityBlindBear.getRarity()),
+        BROWN		(ModEntity.BROWN_BEAR, EntityBrownBear.getRarity(), Biome.Category.TAIGA, Biome.Category.EXTREME_HILLS),
+        CAVE		(ModEntity.CAVE_BEAR, EntityCaveBear.getRarity(), Biome.Category.TAIGA, Biome.Category.EXTREME_HILLS),
+        PANDA		(ModEntity.PANDA_BEAR, EntityGiantPanda.getRarity(), Biome.Category.JUNGLE),
+        POLAR		(ModEntity.POLAR_BEAR, EntityPolarBear.getRarity(), Biome.Category.ICY),
+        SPECTACLED	(ModEntity.SPECTACLED_BEAR, EntitySpectacledBear.getRarity(), Biome.Category.EXTREME_HILLS),
+        SUN 		(ModEntity.SUN_BEAR, EntitySunBear.getRarity(), Biome.Category.JUNGLE);
         public EntityType<? extends AbstractBear> type;
         public int rarity;
         public Biome.Category[] spawnBiomes;

@@ -17,7 +17,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.block.*;
-import untamedwilds.block.tileentity.BlockEntityCage;
+import untamedwilds.block.blockentity.BlockEntityCage;
 import untamedwilds.config.ConfigFeatureControl;
 import untamedwilds.config.ConfigMobControl;
 

@@ -16,7 +16,6 @@ public class ModLootTables {
     public static ResourceLocation BIGCAT_LOOT_JAGUAR = new ResourceLocation(UntamedWilds.MOD_ID, "entities/big_cat/jaguar");
     public static ResourceLocation BIGCAT_LOOT_LEOPARD = new ResourceLocation(UntamedWilds.MOD_ID, "entities/big_cat/leopard");
     public static ResourceLocation BIGCAT_LOOT_LION = new ResourceLocation(UntamedWilds.MOD_ID, "entities/big_cat/lion");
-    public static ResourceLocation BIGCAT_LOOT_PANTHER = new ResourceLocation(UntamedWilds.MOD_ID, "entities/big_cat/panther");
     public static ResourceLocation BIGCAT_LOOT_PUMA= new ResourceLocation(UntamedWilds.MOD_ID, "entities/big_cat/puma");
     public static ResourceLocation BIGCAT_LOOT_SNOW_LEOPARD = new ResourceLocation(UntamedWilds.MOD_ID, "entities/big_cat/snow_leopard");
     public static ResourceLocation BIGCAT_LOOT_TIGER = new ResourceLocation(UntamedWilds.MOD_ID, "entities/big_cat/tiger");
