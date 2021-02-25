@@ -1,6 +1,7 @@
 {
     "name": "Southern Sunfish" , 
     "icon": "untamedwilds:textures/icon/sunfish/southern.png" , 
+    "category": "sunfish_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:sunfish{Species: 1}" , 
+            "entity": "untamedwilds:sunfish{Variant: 1}" , 
             "text": "A Southern Sunfish"
         }
     ]

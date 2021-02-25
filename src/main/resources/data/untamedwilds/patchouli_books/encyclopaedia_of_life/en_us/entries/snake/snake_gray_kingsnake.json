@@ -1,6 +1,7 @@
 {
     "name": "Gray-Banded Kingsnake" , 
     "icon": "untamedwilds:textures/icon/snake/gray_kingsnake.png" , 
+    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:snake{Species: 10}" , 
+            "entity": "untamedwilds:snake{Variant: 10}" , 
             "text": "A Gray-Banded Kingsnake"
         }
     ]

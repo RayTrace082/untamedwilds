@@ -1,6 +1,7 @@
 {
     "name": "Ocean Sunfish" , 
     "icon": "untamedwilds:textures/icon/sunfish/sunfish.png" , 
+    "category": "sunfish_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:sunfish{Species: 0}" , 
+            "entity": "untamedwilds:sunfish{Variant: 0}" , 
             "text": "A Ocean Sunfish"
         }
     ]

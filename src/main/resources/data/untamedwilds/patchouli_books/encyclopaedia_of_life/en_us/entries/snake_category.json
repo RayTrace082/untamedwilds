@@ -1,34 +1,40 @@
 {
-    "name": "Hub snake" , 
-    "icon": "untamedwilds:textures/icon/snake/western_rattlesnake.png" , 
-    "category": "taxon_mammal" , 
+    "name": "Small Snakes" ,
+    "icon": "untamedwilds:textures/icon/snake/adder.png" ,
+    "category": "taxon_reptile" ,
     "pages": [
         {
-            "type": "relations" , 
-            "title": "snake" , 
-            "text": "lorem ipsum"
+            "type": "text" , 
+            "title": "Snakes" ,
+            "text": "Snakes are elongated, legless, carnivorous reptiles that can be found in every non-cold biome. $(br2)Snakes have forked tongues, which they use to smell their surroundings. That lets them know when danger—or food—is nearby. $(br2)Snakes are normally passive animals, but will attack if threaded on."
         } , 
         {
             "type": "relations" , 
-            "title": "snake" , 
+            "title": "Snake species (1/2)" ,
             "entries": [
-                "Adder" , 
-                "Ball Python" , 
-                "Black Mamba" , 
-                "Carpet Python" , 
-                "Cave Racer" , 
-                "Coral Snake" , 
-                "Blue Coral Snake" , 
-                "Corn Snake" , 
-                "Emerald Tree Boa" , 
-                "Grass Snake" , 
-                "Gray-Banded Kingsnake" , 
-                "Green Mamba" , 
-                "Timber Rattlesnake" , 
-                "Rice Paddy Snake" , 
-                "Swamp Moccasin" , 
-                "Inland Taipan" , 
-                "Prairie Rattlesnake"
+                "untamedwilds:snake/snake_adder" , 
+                "untamedwilds:snake/snake_ball_python" , 
+                "untamedwilds:snake/snake_black_mamba" , 
+                "untamedwilds:snake/snake_carpet_python" , 
+                "untamedwilds:snake/snake_cave_racer" , 
+                "untamedwilds:snake/snake_coral" , 
+                "untamedwilds:snake/snake_coral_blue" , 
+                "untamedwilds:snake/snake_corn" , 
+                "untamedwilds:snake/snake_emerald" , 
+                "untamedwilds:snake/snake_grass_snake"
+            ]
+        },
+        {
+            "type": "relations" ,
+            "title": "Snake species (2/2)" ,
+            "entries": [
+                "untamedwilds:snake/snake_gray_kingsnake" ,
+                "untamedwilds:snake/snake_green_mamba" ,
+                "untamedwilds:snake/snake_rattlesnake" ,
+                "untamedwilds:snake/snake_rice_paddy" ,
+                "untamedwilds:snake/snake_swamp_moccasin" ,
+                "untamedwilds:snake/snake_taipan" ,
+                "untamedwilds:snake/snake_western_rattlesnake"
             ]
         }
     ]

@@ -1,6 +1,7 @@
 {
     "name": "Spiny Softshell Turtle" , 
-    "icon": "untamedwilds:textures/icon/softshell_turtle/_spiny.png" , 
+    "icon": "untamedwilds:textures/icon/softshell_turtle/spiny.png" , 
+    "category": "softshell_turtle_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:softshell_turtle{Species: 6}" , 
+            "entity": "untamedwilds:softshell_turtle{Variant: 6}" , 
             "text": "A Spiny Softshell Turtle"
         }
     ]

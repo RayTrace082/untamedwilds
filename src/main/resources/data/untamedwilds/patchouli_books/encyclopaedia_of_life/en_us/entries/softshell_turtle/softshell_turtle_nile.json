@@ -1,6 +1,7 @@
 {
     "name": "African Softshell Turtle" , 
-    "icon": "untamedwilds:textures/icon/softshell_turtle/_nile.png" , 
+    "icon": "untamedwilds:textures/icon/softshell_turtle/nile.png" , 
+    "category": "softshell_turtle_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:softshell_turtle{Species: 3}" , 
+            "entity": "untamedwilds:softshell_turtle{Variant: 3}" , 
             "text": "A African Softshell Turtle"
         }
     ]

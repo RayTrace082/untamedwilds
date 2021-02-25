@@ -1,23 +1,23 @@
 {
-    "name": "Hub big_cat" , 
-    "icon": "untamedwilds:textures/icon/big_cat/tiger.png" , 
+    "name": "Big Cats" ,
+    "icon": "untamedwilds:textures/icon/big_cat/tiger.png" ,
     "category": "taxon_mammal" , 
     "pages": [
         {
-            "type": "relations" , 
-            "title": "big_cat" , 
-            "text": "lorem ipsum"
+            "type": "text" , 
+            "title": "Big Cats" ,
+            "text": "The term Big Cat is typically used to refer to any Feline carnivore of large size. $(br2)Despite their differences in size, various big cat species are quite similar in both structure and behaviour. All big cats are carnivores and some are efficient apex predators. $(br2)Big Cats can be found in most biomes."
         } , 
         {
             "type": "relations" , 
-            "title": "big_cat" , 
+            "title": "Big Cat species" ,
             "entries": [
-                "Jaguar" , 
-                "Leopard" , 
-                "Lion" , 
-                "Mountain Lion" , 
-                "Snow Leopard" , 
-                "Tiger"
+                "untamedwilds:big_cat/bigcat_jaguar" , 
+                "untamedwilds:big_cat/bigcat_leopard" , 
+                "untamedwilds:big_cat/bigcat_lion" , 
+                "untamedwilds:big_cat/bigcat_puma" , 
+                "untamedwilds:big_cat/bigcat_snow_leopard" , 
+                "untamedwilds:big_cat/bigcat_tiger"
             ]
         }
     ]

@@ -1,6 +1,7 @@
 {
     "name": "Ball Python" , 
     "icon": "untamedwilds:textures/icon/snake/ball_python.png" , 
+    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:snake{Species: 1}" , 
+            "entity": "untamedwilds:snake{Variant: 1}" , 
             "text": "A Ball Python"
         }
     ]

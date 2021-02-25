@@ -1,16 +1,17 @@
 {
     "name": "Brown Bear" , 
     "icon": "untamedwilds:textures/icon/bear/brown.png" , 
+    "category": "bear_category" , 
     "pages": [
         {
             "type": "text" , 
             "title": "Brown Bear" , 
-            "text": "The brown bear (Ursus arctos) is a large bear species found across Eurasia and North America. One of the smaller-bodied forms, the Himalayan brown bear, is critically endangered, occupying only 2% of its former range and threatened by uncontrolled poaching for its body parts. As of 2012, this and the American black bear are the only bear species not classified as threatened by the IUCN. In North America, the populations of brown bears are called grizzly bears. Many of the populations in the southern parts of Eurasia are highly endangered as well."
+            "text": "The Brown/Grizzly Bear ($(o)Ursus arctos$()) is a large-sized bear, and the second most common bear species. $(br2)Brown bears are omnivores, but they are mostly known for hunting Salmon during their spawning migration. $(br2)They typically live in mountainous areas, albeit they can also be found in cold forests."
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:bear_brown" , 
-            "text": "A Brown Bear"
+            "title": "",
+            "entity": "untamedwilds:bear_brown"
         }
     ]
 }

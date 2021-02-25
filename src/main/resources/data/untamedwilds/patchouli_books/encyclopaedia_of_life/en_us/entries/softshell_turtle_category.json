@@ -1,24 +1,24 @@
 {
-    "name": "Hub softshell_turtle" , 
-    "icon": "untamedwilds:textures/icon/softshell_turtle/spiny.png" ,
-    "category": "taxon_mammal" , 
+    "name": "Softshell Turtles" ,
+    "icon": "untamedwilds:textures/icon/softshell_turtle/spiny.png" , 
+    "category": "taxon_reptile" ,
     "pages": [
         {
-            "type": "relations" , 
-            "title": "softshell_turtle" , 
-            "text": "lorem ipsum"
+            "type": "text" , 
+            "title": "Softshell Turtles" ,
+            "text": "Softshell Turtles live in most non-cold bodies of freshwater and earn this name because their carapaces lack horny scutes, instead, being leathery and pliable, particularly at the sides. $(br2)The light and flexible shell of these turtles allows them to move easily in open water or in muddy lake bottoms."
         } , 
         {
             "type": "relations" , 
-            "title": "softshell_turtle" , 
+            "title": "Softshell Turtle species" ,
             "entries": [
-                "Black Softshell Turtle" , 
-                "Chinese Softshell Turtle" , 
-                "Flapshell Turtle" , 
-                "African Softshell Turtle" , 
-                "Peacock Softshell Turtle" , 
-                "Pig-nosed Turtle" , 
-                "Spiny Softshell Turtle"
+                "untamedwilds:softshell_turtle/softshell_turtle_black" , 
+                "untamedwilds:softshell_turtle/softshell_turtle_chinese" , 
+                "untamedwilds:softshell_turtle/softshell_turtle_flapshell" , 
+                "untamedwilds:softshell_turtle/softshell_turtle_nile" , 
+                "untamedwilds:softshell_turtle/softshell_turtle_peacock" , 
+                "untamedwilds:softshell_turtle/softshell_turtle_pig_nose" , 
+                "untamedwilds:softshell_turtle/softshell_turtle_spiny"
             ]
         }
     ]

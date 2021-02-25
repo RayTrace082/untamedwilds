@@ -1,16 +1,17 @@
 {
     "name": "Polar Bear" , 
     "icon": "untamedwilds:textures/icon/bear/polar.png" , 
+    "category": "bear_category" , 
     "pages": [
         {
             "type": "text" , 
-            "title": "Polar Bear" , 
-            "text": "The polar bear (Ursus maritimus) is a hypercarnivorous bear whose native range lies largely within the Arctic Circle, encompassing the Arctic Ocean, its surrounding seas and surrounding land masses. Polar bears hunt their preferred food of seals from the edge of sea ice, often living off fat reserves when no sea ice is present. Historically, the polar bear has also been known as the \"white bear\". It is the largest extant bear species, as well as the largest extant land carnivore. Although most polar bears are born on land, they spend most of their time on the sea ice. For decades, large-scale hunting raised international concern for the future of the species, but populations rebounded after controls and quotas began to take effect. Their scientific name means \"maritime bear\" and derives from this fact."
-        } , 
+            "title": "Polar Bear" ,
+            "text": "The Polar Bear ($(o)Ursus maritimus$()) is one of the largest species of bear, found rarely in frozen biomes and commonly prowling the ice sheets of frozen oceans. $(br2)Polar Bears are hypercarnivorous often hunting from the edge of sea ice, living off fat reserves when no sea ice is present."
+        } ,
         {
             "type": "entity" , 
-            "entity": "untamedwilds:bear_polar" , 
-            "text": "A Polar Bear"
+            "title": "",
+            "entity": "untamedwilds:bear_polar"
         }
     ]
 }

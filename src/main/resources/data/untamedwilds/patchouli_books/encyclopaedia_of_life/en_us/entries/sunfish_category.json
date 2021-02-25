@@ -1,19 +1,19 @@
 {
-    "name": "Hub sunfish" , 
+    "name": "Sunfish" ,
     "icon": "untamedwilds:textures/icon/sunfish/southern.png" , 
-    "category": "taxon_mammal" , 
+    "category": "taxon_fish" ,
     "pages": [
         {
-            "type": "relations" , 
-            "title": "sunfish" , 
-            "text": "lorem ipsum"
+            "type": "text" , 
+            "title": "Sunfish" ,
+            "text": "Sunfish are an unusual group of fish whose bodies come to an end just behind the dorsal and anal fins, giving them a ″half-fish″ appearance. They are also the largest of the ray-finned bony fish. $(br2)Sunfish can be found, usually basking in the surface of any deep Ocean."
         } , 
         {
             "type": "relations" , 
-            "title": "sunfish" , 
+            "title": "Sunfish Species" ,
             "entries": [
-                "Ocean Sunfish" , 
-                "Southern Sunfish"
+                "untamedwilds:sunfish/sunfish_sunfish" , 
+                "untamedwilds:sunfish/sunfish_southern"
             ]
         }
     ]

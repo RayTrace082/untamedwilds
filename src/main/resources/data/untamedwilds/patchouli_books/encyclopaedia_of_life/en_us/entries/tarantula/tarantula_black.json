@@ -1,6 +1,7 @@
 {
     "name": "Black Tarantula" , 
     "icon": "untamedwilds:textures/icon/tarantula/black.png" , 
+    "category": "tarantula_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:tarantula{Species: 0}" , 
+            "entity": "untamedwilds:tarantula{Variant: 0}" , 
             "text": "A Black Tarantula"
         }
     ]

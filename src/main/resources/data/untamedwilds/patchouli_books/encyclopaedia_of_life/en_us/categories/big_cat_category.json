@@ -1,6 +1,6 @@
 {
     "name": "big_cat" , 
     "description": "List of all discovered Big cat species" , 
-    "icon": "minecraft:writable_book" , 
+    "icon": "minecraft:writable_book" ,
     "parent": "taxon_mammal"
 }

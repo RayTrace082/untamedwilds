@@ -1,6 +1,7 @@
 {
     "name": "Blue Coral Snake" , 
     "icon": "untamedwilds:textures/icon/snake/coral_blue.png" , 
+    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:snake{Species: 6}" , 
+            "entity": "untamedwilds:snake{Variant: 6}" , 
             "text": "A Blue Coral Snake"
         }
     ]

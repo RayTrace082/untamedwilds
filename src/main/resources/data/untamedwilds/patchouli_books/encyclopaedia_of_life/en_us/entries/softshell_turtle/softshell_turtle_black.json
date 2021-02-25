@@ -1,6 +1,7 @@
 {
     "name": "Black Softshell Turtle" , 
-    "icon": "untamedwilds:textures/icon/softshell_turtle/_black.png" , 
+    "icon": "untamedwilds:textures/icon/softshell_turtle/black.png" , 
+    "category": "softshell_turtle_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:softshell_turtle{Species: 0}" , 
+            "entity": "untamedwilds:softshell_turtle{Variant: 0}" , 
             "text": "A Black Softshell Turtle"
         }
     ]

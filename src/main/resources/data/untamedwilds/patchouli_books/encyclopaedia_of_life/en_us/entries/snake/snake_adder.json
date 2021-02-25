@@ -1,6 +1,7 @@
 {
     "name": "Adder" , 
     "icon": "untamedwilds:textures/icon/snake/adder.png" , 
+    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:snake{Species: 0}" , 
+            "entity": "untamedwilds:snake{Variant: 0}" , 
             "text": "A Adder"
         }
     ]

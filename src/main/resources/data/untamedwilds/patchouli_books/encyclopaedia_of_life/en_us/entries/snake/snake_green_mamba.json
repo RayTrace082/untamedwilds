@@ -1,6 +1,7 @@
 {
     "name": "Green Mamba" , 
     "icon": "untamedwilds:textures/icon/snake/green_mamba.png" , 
+    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:snake{Species: 11}" , 
+            "entity": "untamedwilds:snake{Variant: 11}" , 
             "text": "A Green Mamba"
         }
     ]

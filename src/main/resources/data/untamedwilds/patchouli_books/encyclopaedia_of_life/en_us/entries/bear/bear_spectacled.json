@@ -1,16 +1,17 @@
 {
     "name": "Spectacled Bear" , 
     "icon": "untamedwilds:textures/icon/bear/spectacled.png" , 
+    "category": "bear_category" , 
     "pages": [
         {
             "type": "text" , 
-            "title": "Spectacled Bear" , 
-            "text": "Spectacled bears are the only surviving species of bear native to South America, and the only surviving member of the subfamily Tremarctinae. Its closest relatives are the extinct Florida spectacled bear, and the giant short-faced bears of the Middle to Late Pleistocene age (Arctodus and Arctotherium). The species is classified as Vulnerable by the IUCN because of habitat loss."
-        } , 
+            "title": "Spectacled Bear" ,
+            "text": "The spectacled bear ($(o)Tremarctos ornatus$()) is a mid-sized species of bear, most known by its distinctive beige or ginger-coloured markings across its face and upper chest. $(br2)Spectacled bears can be rarely found in mountainous biomes and in tropical forests"
+        } ,
         {
             "type": "entity" , 
-            "entity": "untamedwilds:bear_spectacled" , 
-            "text": "A Spectacled Bear"
+            "title": "",
+            "entity": "untamedwilds:bear_spectacled"
         }
     ]
 }

@@ -1,6 +1,7 @@
 {
     "name": "Smooth Clam" , 
-    "icon": "untamedwilds:textures/icon/giant_clam/_derasa.png" , 
+    "icon": "untamedwilds:textures/icon/giant_clam/derasa.png" , 
+    "category": "giant_clam_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:giant_clam{Species: 0}" , 
+            "entity": "untamedwilds:giant_clam{Variant: 0}" , 
             "text": "A Smooth Clam"
         }
     ]

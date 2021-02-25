@@ -1,25 +1,25 @@
 {
-    "name": "Hub bear" , 
-    "icon": "untamedwilds:textures/icon/bear/sun.png" , 
+    "name": "Bears" ,
+    "icon": "untamedwilds:textures/icon/bear/brown.png" ,
     "category": "taxon_mammal" , 
     "pages": [
         {
-            "type": "relations" , 
-            "title": "bear" , 
-            "text": "lorem ipsum"
+            "type": "text" , 
+            "title": "Bears" ,
+            "text": "Bears are large omnivore Mammals, and one of the most common Apex predators. $(br2)Common characteristics of modern bears include large bodies with stocky legs, small rounded ears, shaggy hair, plantigrade paws with five nonretractile claws, and short tails. $(br2)Bears can be reliably found in most non-arid biomes."
         } , 
         {
             "type": "relations" , 
-            "title": "bear" , 
+            "title": "Bear species" ,
             "entries": [
-                "Black Bear" , 
-                "Brown Bear" , 
-                "Blind Cave Bear" , 
-                "Cave Bear" , 
-                "Giant Panda" , 
-                "Polar Bear" , 
-                "Spectacled Bear" , 
-                "Sun Bear"
+                "untamedwilds:bear/bear_black" , 
+                "untamedwilds:bear/bear_brown" , 
+                "untamedwilds:bear/bear_blind" , 
+                "untamedwilds:bear/bear_cave" , 
+                "untamedwilds:bear/bear_panda" , 
+                "untamedwilds:bear/bear_polar" , 
+                "untamedwilds:bear/bear_spectacled" , 
+                "untamedwilds:bear/bear_sun"
             ]
         }
     ]

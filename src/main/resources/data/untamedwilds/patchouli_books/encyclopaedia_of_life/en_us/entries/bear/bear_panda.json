@@ -1,16 +1,17 @@
 {
     "name": "Giant Panda" , 
     "icon": "untamedwilds:textures/icon/bear/panda.png" , 
+    "category": "bear_category" , 
     "pages": [
         {
             "type": "text" , 
             "title": "Giant Panda" , 
-            "text": "The giant panda (Ailuropoda melanoleuca; Chinese: \u5927\u718a\u732b; pinyin: d\u00e0xi\u00f3ngm\u0101o), also known as the panda bear or simply the panda, is a bear native to south central China. The name \"giant panda\" is sometimes used to distinguish it from the red panda, a neighboring musteloid. In March 2015, conservation news site Mongabay stated that the wild giant panda population had increased by 268, or 16.8%, to 1,864. Giant pandas in the wild will occasionally eat other grasses, wild tubers, or even meat in the form of birds, rodents, or carrion. While the dragon has often served as China's national symbol, internationally the giant panda has often filled this role. Though it belongs to the order Carnivora, the giant panda is a folivore, with bamboo shoots and leaves making up more than 99% of its diet. As of December 2014, 49 giant pandas lived in captivity outside China, living in 18 zoos in 13 different countries."
+            "text": "The Giant Panda ($(o)Ailuropoda melanoleuca$()), also known as the Panda Bear, is a medium-sized Bear that can be found in Bamboo forests. $(br2)Despite bamboo shoots and leaves making up more than 99% of its diet, giant pandas in the wild will occasionally eat other grasses, tubers, or meat."
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:bear_panda" , 
-            "text": "A Giant Panda"
+            "title": "",
+            "entity": "untamedwilds:bear_panda"
         }
     ]
 }

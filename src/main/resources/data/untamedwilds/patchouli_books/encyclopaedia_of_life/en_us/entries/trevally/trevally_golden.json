@@ -1,6 +1,7 @@
 {
     "name": "Golden Trevally" , 
     "icon": "untamedwilds:textures/icon/trevally/golden.png" , 
+    "category": "trevally_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:trevally{Species: 3}" , 
+            "entity": "untamedwilds:trevally{Variant: 3}" , 
             "text": "A Golden Trevally"
         }
     ]

@@ -1,6 +1,7 @@
 {
     "name": "Scaly Clam" , 
-    "icon": "untamedwilds:textures/icon/giant_clam/_squamosa.png" , 
+    "icon": "untamedwilds:textures/icon/giant_clam/squamosa.png" , 
+    "category": "giant_clam_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:giant_clam{Species: 3}" , 
+            "entity": "untamedwilds:giant_clam{Variant: 3}" , 
             "text": "A Scaly Clam"
         }
     ]

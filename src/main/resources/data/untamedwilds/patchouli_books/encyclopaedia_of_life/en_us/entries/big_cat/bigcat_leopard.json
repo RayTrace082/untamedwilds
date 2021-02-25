@@ -1,16 +1,17 @@
 {
     "name": "Leopard" , 
     "icon": "untamedwilds:textures/icon/big_cat/leopard.png" , 
+    "category": "big_cat_category" , 
     "pages": [
         {
             "type": "text" , 
             "title": "Leopard" , 
-            "text": "The earliest known leopard fossils excavated in Europe are estimated 600,000 years old, dating to the late Early Pleistocene. It is similar in appearance to the jaguar, but has a smaller, lighter physique, and its rosettes are generally smaller, more densely packed and without central spots. The leopard (Panthera pardus) is one of the five extant species in the genus Panthera, a member of the Felidae. Leopard fossils were also found in Japan and Sumatra. Both leopards and jaguars that are melanistic are known as black panthers. It can run at speeds of up to 58 kilometres per hour (36 mph). Its fur is marked with rosettes."
+            "text": "The Leopard ($(o)Panthera pardus$()) is similar in appearance to the jaguar, but has a smaller, lighter physique, and its rosettes are generally smaller, more densely packed and without central spots. $(br2)Leopards have one of the widest distributions, and can be found in Savanna, Tropical and Taiga biomes."
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:bigcat_leopard" , 
-            "text": "A Leopard"
+            "title": "",
+            "entity": "untamedwilds:bigcat_leopard"
         }
     ]
 }

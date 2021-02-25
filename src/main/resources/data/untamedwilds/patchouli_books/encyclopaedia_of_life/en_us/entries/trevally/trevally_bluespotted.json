@@ -1,6 +1,7 @@
 {
     "name": "Bluespotted Trevally" , 
     "icon": "untamedwilds:textures/icon/trevally/bluespotted.png" , 
+    "category": "trevally_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:trevally{Species: 1}" , 
+            "entity": "untamedwilds:trevally{Variant: 1}" , 
             "text": "A Bluespotted Trevally"
         }
     ]

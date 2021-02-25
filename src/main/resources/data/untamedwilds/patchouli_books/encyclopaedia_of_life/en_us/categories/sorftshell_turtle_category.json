@@ -1,6 +1,0 @@
-{
-    "name": "sorftshell_turtle" , 
-    "description": "List of all discovered Sorftshell turtle species" , 
-    "icon": "minecraft:writable_book" , 
-    "parent": "test_category"
-}

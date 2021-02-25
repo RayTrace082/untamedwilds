@@ -1,6 +1,7 @@
 {
     "name": "Black Mamba" , 
     "icon": "untamedwilds:textures/icon/snake/black_mamba.png" , 
+    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:snake{Species: 2}" , 
+            "entity": "untamedwilds:snake{Variant: 2}" , 
             "text": "A Black Mamba"
         }
     ]

@@ -1,6 +1,0 @@
-{
-    "name": "hippo" , 
-    "description": "List of all discovered Hippo species" , 
-    "icon": "minecraft:writable_book" , 
-    "parent": "taxon_mammal"
-}

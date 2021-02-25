@@ -1,16 +1,17 @@
 {
     "name": "Sun Bear" , 
     "icon": "untamedwilds:textures/icon/bear/sun.png" , 
+    "category": "bear_category" , 
     "pages": [
         {
             "type": "text" , 
             "title": "Sun Bear" , 
-            "text": "Sun bears tend to remain solitary but sometimes occur in pairs (such as a mother and her cub). Sun bears get their name from the characteristic orange to cream coloured chest patch. The sun bear (Helarctos malayanus) is a species in the family Ursidae occurring in the tropical forests of Southeast Asia. They breed throughout the year; individuals become sexually mature at two to four years of age. It is stockily built, with large paws, strongly curved claws, small rounded ears and a short snout. They do not seem to hibernate, possibly because food resources are available the whole year throughout the range. Litters comprise one or two cubs that remain with their mother for around three years."
+            "text": "The Sun Bear ($(o)Helarctos malayanus$()) is the smallest species of Bear, and get their name from the characteristic orange to cream coloured chest patch. $(br2)Sun Bears are the most arboreal of all bears, and as such, are excellent climbers, an adaptation from living in tropical rainforests."
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:bear_sun" , 
-            "text": "A Sun Bear"
+            "title": "",
+            "entity": "untamedwilds:bear_sun"
         }
     ]
 }

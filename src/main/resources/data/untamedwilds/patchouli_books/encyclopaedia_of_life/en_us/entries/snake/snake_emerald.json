@@ -1,6 +1,7 @@
 {
     "name": "Emerald Tree Boa" , 
     "icon": "untamedwilds:textures/icon/snake/emerald.png" , 
+    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:snake{Species: 8}" , 
+            "entity": "untamedwilds:snake{Variant: 8}" , 
             "text": "A Emerald Tree Boa"
         }
     ]

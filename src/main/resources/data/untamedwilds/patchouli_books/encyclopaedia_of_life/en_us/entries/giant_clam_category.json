@@ -1,21 +1,21 @@
 {
-    "name": "Hub giant_clam" , 
-    "icon": "untamedwilds:textures/icon/giant_clam/squamosa.png" ,
-    "category": "taxon_mammal" , 
+    "name": "Giant Clams" ,
+    "icon": "untamedwilds:textures/icon/giant_clam/squamosa.png" , 
+    "category": "taxon_mollusk" ,
     "pages": [
         {
-            "type": "relations" , 
-            "title": "giant_clam" , 
-            "text": "lorem ipsum"
+            "type": "text" , 
+            "title": "Giant Clams" ,
+            "text": "Giant Clams encompass the largest bivalve molluscs. $(br2)They have heavy shells, fluted with 4 to 6 folds, and feature a brightly coloured mantle, due to symbiotic photosynthetic algae. $(br2)Giant Clams can be found in shallow waters of coral reefs in warm/lukewarm oceans. "
         } , 
         {
             "type": "relations" , 
-            "title": "giant_clam" , 
+            "title": "Giant Clam species" ,
             "entries": [
-                "Smooth Clam" , 
-                "Giant Clam" , 
-                "Maxima Clam" , 
-                "Scaly Clam"
+                "untamedwilds:giant_clam/giant_clam_derasa" , 
+                "untamedwilds:giant_clam/giant_clam_gigas" , 
+                "untamedwilds:giant_clam/giant_clam_maxima" , 
+                "untamedwilds:giant_clam/giant_clam_squamosa"
             ]
         }
     ]

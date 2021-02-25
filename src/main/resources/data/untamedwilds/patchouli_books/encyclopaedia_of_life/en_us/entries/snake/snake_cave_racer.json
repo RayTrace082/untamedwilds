@@ -1,6 +1,7 @@
 {
     "name": "Cave Racer" , 
     "icon": "untamedwilds:textures/icon/snake/cave_racer.png" , 
+    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:snake{Species: 4}" , 
+            "entity": "untamedwilds:snake{Variant: 4}" , 
             "text": "A Cave Racer"
         }
     ]

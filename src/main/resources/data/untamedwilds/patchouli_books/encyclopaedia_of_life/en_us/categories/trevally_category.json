@@ -2,5 +2,5 @@
     "name": "trevally" , 
     "description": "List of all discovered Trevally species" , 
     "icon": "minecraft:writable_book" , 
-    "parent": "test_category"
+    "parent": "taxon_fish"
 }

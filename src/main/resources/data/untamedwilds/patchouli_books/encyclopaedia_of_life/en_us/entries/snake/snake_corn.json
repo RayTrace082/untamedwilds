@@ -1,6 +1,7 @@
 {
     "name": "Corn Snake" , 
     "icon": "untamedwilds:textures/icon/snake/corn.png" , 
+    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:snake{Species: 7}" , 
+            "entity": "untamedwilds:snake{Variant: 7}" , 
             "text": "A Corn Snake"
         }
     ]

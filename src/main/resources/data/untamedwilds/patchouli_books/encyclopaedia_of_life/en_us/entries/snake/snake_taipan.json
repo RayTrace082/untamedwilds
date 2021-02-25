@@ -1,6 +1,7 @@
 {
     "name": "Inland Taipan" , 
     "icon": "untamedwilds:textures/icon/snake/taipan.png" , 
+    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 
@@ -9,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:snake{Species: 15}" , 
+            "entity": "untamedwilds:snake{Variant: 15}" , 
             "text": "A Inland Taipan"
         }
     ]

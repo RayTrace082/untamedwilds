@@ -1,22 +1,22 @@
 {
-    "name": "Hub trevally" , 
+    "name": "Trevallies" ,
     "icon": "untamedwilds:textures/icon/trevally/jack.png" , 
-    "category": "taxon_mammal" , 
+    "category": "taxon_fish" ,
     "pages": [
         {
-            "type": "relations" , 
-            "title": "trevally" , 
-            "text": "lorem ipsum"
+            "type": "text" , 
+            "title": "Trevally" ,
+            "text": "Trevallies, also known as jacks or kingfishes, is a group made up by deep-bodied and schooling tropical and subtropical marine fishes. $(br2)All species are powerful predators, taking a variety of fish, crustaceans and cephalopods, while they in turn are prey to larger pelagic fishes and sharks."
         } , 
         {
             "type": "relations" , 
-            "title": "trevally" , 
+            "title": "Trevally species" ,
             "entries": [
-                "Bigeye Trevally" , 
-                "Bluespotted Trevally" , 
-                "Giant Trevally" , 
-                "Golden Trevally" , 
-                "Common Jack"
+                "untamedwilds:trevally/trevally_bigeye" , 
+                "untamedwilds:trevally/trevally_bluespotted" , 
+                "untamedwilds:trevally/trevally_giant" , 
+                "untamedwilds:trevally/trevally_golden" , 
+                "untamedwilds:trevally/trevally_jack"
             ]
         }
     ]
