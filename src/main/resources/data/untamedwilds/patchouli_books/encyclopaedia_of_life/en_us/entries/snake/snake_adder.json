@@ -1,12 +1,11 @@
 {
     "name": "Adder" , 
     "icon": "untamedwilds:textures/icon/snake/adder.png" , 
-    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 
             "title": "Adder" , 
-            "text": "Known by a host of common names including common adder and common viper, adders have been the subject of much folklore in Britain and other European countries. Three subspecies are recognized, including the nominate subspecies, Vipera berus berus described here. They are not regarded as especially dangerous; the snake is not aggressive and usually bites only when really provoked, stepped on, or picked up. The common adder, like most other vipers, is ovoviviparous. Females breed once every two or three years, with litters usually being born in late summer to early autumn in the Northern Hemisphere. Adults grow to a total length (including tail) of 60 to 90 cm (24 to 35 in) and a mass of 50 to 180 g (1.8 to 6.3 oz). The snake is not considered to be threatened, though it is protected in some countries."
+            "text": "Known by a host of common names including common adder and common viper, adders have been the subject of much folklore in Britain and other European countries. Three subspecies are recognized, including the nominate subspecies, Vipera berus berus described here. They are not regarded as especially dangerous; the snake is not aggressive and usually bites only when really provoked, stepped on, or picked up. The common adder, like most other vipers, is ovoviviparous. Females breed once every two or three years, with litters usually being born in late summer to early autumn in the Northern Hemisphere. The snake is not considered to be threatened, though it is protected in some countries. The species is also the only venomous snake native to Great Britain."
         } , 
         {
             "type": "entity" , 

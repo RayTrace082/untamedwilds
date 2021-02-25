@@ -1,7 +1,6 @@
 {
     "name": "Giant Panda" , 
     "icon": "untamedwilds:textures/icon/bear/panda.png" , 
-    "category": "bear_category" , 
     "pages": [
         {
             "type": "text" , 

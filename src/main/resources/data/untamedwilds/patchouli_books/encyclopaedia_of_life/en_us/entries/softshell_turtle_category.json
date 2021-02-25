@@ -1,0 +1,25 @@
+{
+    "name": "Hub softshell_turtle" , 
+    "icon": "untamedwilds:textures/icon/softshell_turtle/spiny.png" ,
+    "category": "taxon_mammal" , 
+    "pages": [
+        {
+            "type": "relations" , 
+            "title": "softshell_turtle" , 
+            "text": "lorem ipsum"
+        } , 
+        {
+            "type": "relations" , 
+            "title": "softshell_turtle" , 
+            "entries": [
+                "Black Softshell Turtle" , 
+                "Chinese Softshell Turtle" , 
+                "Flapshell Turtle" , 
+                "African Softshell Turtle" , 
+                "Peacock Softshell Turtle" , 
+                "Pig-nosed Turtle" , 
+                "Spiny Softshell Turtle"
+            ]
+        }
+    ]
+}

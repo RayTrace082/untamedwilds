@@ -1,7 +1,6 @@
 {
     "name": "Black Tarantula" , 
     "icon": "untamedwilds:textures/icon/tarantula/black.png" , 
-    "category": "tarantula_category" , 
     "pages": [
         {
             "type": "text" , 

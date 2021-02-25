@@ -1,7 +1,6 @@
 {
     "name": "Southern Sunfish" , 
     "icon": "untamedwilds:textures/icon/sunfish/southern.png" , 
-    "category": "sunfish_category" , 
     "pages": [
         {
             "type": "text" , 

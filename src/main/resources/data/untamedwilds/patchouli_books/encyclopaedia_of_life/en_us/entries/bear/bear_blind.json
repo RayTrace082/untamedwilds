@@ -1,7 +1,6 @@
 {
     "name": "Blind Cave Bear" , 
     "icon": "untamedwilds:textures/icon/bear/blind.png" , 
-    "category": "bear_category" , 
     "pages": [
         {
             "type": "text" , 

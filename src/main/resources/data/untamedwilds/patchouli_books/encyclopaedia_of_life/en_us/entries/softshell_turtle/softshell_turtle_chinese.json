@@ -1,12 +1,11 @@
 {
     "name": "Chinese Softshell Turtle" , 
-    "icon": "untamedwilds:textures/icon/softshell_turtle/chinese.png" , 
-    "category": "softshell_turtle_category" , 
+    "icon": "untamedwilds:textures/icon/softshell_turtle/_chinese.png" , 
     "pages": [
         {
             "type": "text" , 
             "title": "Chinese Softshell Turtle" , 
-            "text": "Millions are now farmed, especially in China, to support the food industry, and it is the world's economically most important turtle."
+            "text": "Millions are now farmed, especially in China, to support the food industry, and it is the world's most economically important turtle."
         } , 
         {
             "type": "entity" , 

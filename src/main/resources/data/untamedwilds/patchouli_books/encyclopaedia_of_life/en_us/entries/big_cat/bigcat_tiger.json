@@ -1,7 +1,6 @@
 {
     "name": "Tiger" , 
     "icon": "untamedwilds:textures/icon/big_cat/tiger.png" , 
-    "category": "big_cat_category" , 
     "pages": [
         {
             "type": "text" , 

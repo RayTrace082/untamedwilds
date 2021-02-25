@@ -1,7 +1,6 @@
 {
     "name": "Ocean Sunfish" , 
     "icon": "untamedwilds:textures/icon/sunfish/sunfish.png" , 
-    "category": "sunfish_category" , 
     "pages": [
         {
             "type": "text" , 

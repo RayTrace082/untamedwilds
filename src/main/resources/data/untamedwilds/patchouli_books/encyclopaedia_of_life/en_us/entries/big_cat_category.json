@@ -1,0 +1,24 @@
+{
+    "name": "Hub big_cat" , 
+    "icon": "untamedwilds:textures/icon/big_cat/tiger.png" , 
+    "category": "taxon_mammal" , 
+    "pages": [
+        {
+            "type": "relations" , 
+            "title": "big_cat" , 
+            "text": "lorem ipsum"
+        } , 
+        {
+            "type": "relations" , 
+            "title": "big_cat" , 
+            "entries": [
+                "Jaguar" , 
+                "Leopard" , 
+                "Lion" , 
+                "Mountain Lion" , 
+                "Snow Leopard" , 
+                "Tiger"
+            ]
+        }
+    ]
+}

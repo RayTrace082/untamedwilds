@@ -1,7 +1,6 @@
 {
     "name": "Pig-nosed Turtle" , 
-    "icon": "untamedwilds:textures/icon/softshell_turtle/pig_nose.png" , 
-    "category": "softshell_turtle_category" , 
+    "icon": "untamedwilds:textures/icon/softshell_turtle/_pig_nose.png" , 
     "pages": [
         {
             "type": "text" , 

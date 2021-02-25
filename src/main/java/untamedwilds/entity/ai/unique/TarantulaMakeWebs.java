@@ -6,20 +6,20 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.entity.arthropod.Tarantula;
+import untamedwilds.entity.arthropod.EntityTarantula;
 
 import java.util.EnumSet;
 
 public class TarantulaMakeWebs extends Goal {
     private BlockPos targetPos;
     private BlockPos movementPos;
-    private final Tarantula taskOwner;
+    private final EntityTarantula taskOwner;
     private BlockPos foundWebs;
     private final int executionChance;
     private int searchCooldown;
     private boolean continueTask;
 
-    public TarantulaMakeWebs(Tarantula entityIn, int chance) {
+    public TarantulaMakeWebs(EntityTarantula entityIn, int chance) {
         this.taskOwner = entityIn;
         this.executionChance = chance;
         this.searchCooldown = 100;

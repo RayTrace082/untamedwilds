@@ -1,0 +1,26 @@
+{
+    "name": "Hub tarantula" , 
+    "icon": "untamedwilds:textures/icon/tarantula/tiger.png" , 
+    "category": "taxon_mammal" , 
+    "pages": [
+        {
+            "type": "relations" , 
+            "title": "tarantula" , 
+            "text": "lorem ipsum"
+        } , 
+        {
+            "type": "relations" , 
+            "title": "tarantula" , 
+            "entries": [
+                "Black Tarantula" , 
+                "Black & White Tarantula" , 
+                "Cobalt Tarantula" , 
+                "King baboon Spider " , 
+                "Red Knee Tarantula" , 
+                "Ornamental Tree Spider" , 
+                "Rose Hair Tarantula" , 
+                "Tiger Rump Tarantula"
+            ]
+        }
+    ]
+}

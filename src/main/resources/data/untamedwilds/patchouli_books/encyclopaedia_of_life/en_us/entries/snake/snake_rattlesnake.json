@@ -1,7 +1,6 @@
 {
     "name": "Timber Rattlesnake" , 
     "icon": "untamedwilds:textures/icon/snake/rattlesnake.png" , 
-    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 

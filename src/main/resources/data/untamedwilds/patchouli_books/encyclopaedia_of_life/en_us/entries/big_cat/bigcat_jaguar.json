@@ -1,12 +1,11 @@
 {
     "name": "Jaguar" , 
     "icon": "untamedwilds:textures/icon/big_cat/jaguar.png" , 
-    "category": "big_cat_category" , 
     "pages": [
         {
             "type": "text" , 
             "title": "Jaguar" , 
-            "text": "Overall, the jaguar is the largest native cat species of the New World and the third largest in the world. It ranges across a variety of forested and open terrains, but its preferred habitat is tropical and subtropical moist broadleaf forest, swamps and wooded regions. The jaguar (Panthera onca) is a large felid species and the only extant member of the genus Panthera native to the Americas. While international trade in jaguars or their body parts is prohibited, the cat is still frequently killed, particularly in conflicts with ranchers and farmers in South America. The jaguar enjoys swimming and is largely a solitary, opportunistic, stalk-and-ambush predator at the top of the food chain. Given its historical distribution, the jaguar has featured prominently in the mythology of numerous indigenous peoples of the Americas, including those of the Maya and Aztec civilizations. Though there are single cats now living within Arizona, the species has largely been extirpated from the United States since the early 20th century."
+            "text": "The jaguar is the largest cat species in the New World and the third largest in the world. The jaguar (Panthera onca) is a large felid species and the only extant member of the genus Panthera native to the Americas. It ranges across a variety of forested and open terrains, but its preferred habitat is tropical and subtropical moist broadleaf forest, swamps, and wooded regions. The jaguar enjoys swimming and is largely a solitary, opportunistic, stalk-and-ambush predator at the top of the food chain. While international trade in jaguars or their body parts is prohibited, the cat is still frequently killed, particularly in conflicts with ranchers and farmers in South America. The jaguar has developed an exceptionally powerful bite, even relative to the other big cats. Though there are single cats now living within Arizona, the species has largely been extirpated from the United States since the early 20th century."
         } , 
         {
             "type": "entity" , 

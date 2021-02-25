@@ -1,12 +1,11 @@
 {
     "name": "Maxima Clam" , 
-    "icon": "untamedwilds:textures/icon/giant_clam/maxima.png" , 
-    "category": "giant_clam_category" , 
+    "icon": "untamedwilds:textures/icon/giant_clam/_maxima.png" , 
     "pages": [
         {
             "type": "text" , 
             "title": "Maxima Clam" , 
-            "text": "No data is available about this creature"
+            "text": "The maxima clam (Tridacna maxima), also known as the small giant clam, is a species of bivalve mollusc found throughout the Indo-Pacific region."
         } , 
         {
             "type": "entity" , 

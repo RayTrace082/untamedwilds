@@ -1,12 +1,11 @@
 {
     "name": "Giant Clam" , 
-    "icon": "untamedwilds:textures/icon/giant_clam/gigas.png" , 
-    "category": "giant_clam_category" , 
+    "icon": "untamedwilds:textures/icon/giant_clam/_gigas.png" , 
     "pages": [
         {
             "type": "text" , 
             "title": "Giant Clam" , 
-            "text": "No data is available about this creature"
+            "text": "The maxima clam has the largest geographical distribution among giant clam species; it can be found off high- or low-elevation islands, in lagoons or fringing reefs. The giant clam lives in flat coral sand or broken coral and can be found at depths of as much as 20 m (66 ft). The giant clams are the members of the clam genus Tridacna that are the largest living bivalve mollusks. Its range covers the Indo-Pacific, but populations are diminishing quickly, and the giant clam has become extinct in many areas where it was once common. By day, the clam opens its shell and extends its mantle tissue so that the algae receive the sunlight they need to photosynthesise. Its rapid growth rate is likely due to its ability to cultivate algae in its body tissue.Although larval clams are planktonic, they become sessile in adulthood. The creature's mantle tissues act as a habitat for the symbiotic single-celled dinoflagellate algae (zooxanthellae) from which the adult clams get most of their nutrition."
         } , 
         {
             "type": "entity" , 

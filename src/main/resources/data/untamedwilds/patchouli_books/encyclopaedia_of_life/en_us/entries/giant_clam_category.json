@@ -1,0 +1,22 @@
+{
+    "name": "Hub giant_clam" , 
+    "icon": "untamedwilds:textures/icon/giant_clam/squamosa.png" ,
+    "category": "taxon_mammal" , 
+    "pages": [
+        {
+            "type": "relations" , 
+            "title": "giant_clam" , 
+            "text": "lorem ipsum"
+        } , 
+        {
+            "type": "relations" , 
+            "title": "giant_clam" , 
+            "entries": [
+                "Smooth Clam" , 
+                "Giant Clam" , 
+                "Maxima Clam" , 
+                "Scaly Clam"
+            ]
+        }
+    ]
+}

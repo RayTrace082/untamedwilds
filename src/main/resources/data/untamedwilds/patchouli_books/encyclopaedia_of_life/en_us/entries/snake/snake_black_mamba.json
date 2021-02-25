@@ -1,12 +1,11 @@
 {
     "name": "Black Mamba" , 
     "icon": "untamedwilds:textures/icon/snake/black_mamba.png" , 
-    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 
             "title": "Black Mamba" , 
-            "text": "The black mamba (Dendroaspis polylepis) is a species of large, extremely venomous snake belonging to the family Elapidae. Despite its reputation as a formidable and highly aggressive species, the black mamba attacks humans only if it is threatened or cornered. In a threat display, the black mamba usually opens its inky-black mouth, spreads its narrow neck-flap and sometimes hisses. Its venom is primarily composed of neurotoxins that often induce symptoms within ten minutes, and is frequently fatal unless antivenom is administered. Juvenile black mambas tend to be paler than adults and darken with age. The species is both terrestrial (ground-living) and arboreal (tree-living); it inhabits savannah, woodland, rocky slopes and in some regions, dense forest. Specimens of 4.3 to 4.5 m (14 ft 1 in to 14 ft 9 in) have been reported."
+            "text": "The black mamba (Dendroaspis polylepis) is a species of highly venomous snake belonging to the family Elapidae. Despite its reputation as a formidable and highly aggressive species, the black mamba attacks humans only if it is threatened or cornered. In a threat display, the black mamba usually opens its inky-black mouth, spreads its narrow neck-flap and sometimes hisses. Its venom is primarily composed of neurotoxins that often induce symptoms within ten minutes, and is frequently fatal unless antivenom is administered. Juvenile black mambas tend to be paler than adults and darken with age. The species is both terrestrial (ground-living) and arboreal (tree-living); it inhabits savannah, woodland, rocky slopes and in some regions, dense forest. Specimens of 4.3 to 4.5 m (14 ft 1 in to 14 ft 9 in) have been reported."
         } , 
         {
             "type": "entity" , 

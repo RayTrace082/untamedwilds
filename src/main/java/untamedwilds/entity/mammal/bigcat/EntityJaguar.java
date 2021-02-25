@@ -13,8 +13,6 @@ import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ISkins;
@@ -61,7 +59,6 @@ public class EntityJaguar extends AbstractBigCat implements ISkins {
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 5));
     }
 
-    @OnlyIn(Dist.CLIENT)
     public static void registerTextures(int count) {
         for(int i = 1; i < count + 1; i++)
             EntityJaguar.TEXTURES.add(new ResourceLocation(UntamedWilds.MOD_ID, String.format("textures/entity/big_cat/jaguar_%d.png", i)));

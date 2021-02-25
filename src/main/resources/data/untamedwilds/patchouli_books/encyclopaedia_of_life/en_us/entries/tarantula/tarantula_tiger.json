@@ -1,7 +1,6 @@
 {
     "name": "Tiger Rump Tarantula" , 
     "icon": "untamedwilds:textures/icon/tarantula/tiger.png" , 
-    "category": "tarantula_category" , 
     "pages": [
         {
             "type": "text" , 

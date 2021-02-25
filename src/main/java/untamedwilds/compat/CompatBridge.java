@@ -6,12 +6,12 @@ import untamedwilds.UntamedWilds;
 
 public class CompatBridge {
 
-    private static final String SS_MOD_ID = "sereneseasons";
+    private static final String SERENSEASONS_MODID = "sereneseasons";
 
     public static boolean SereneSeasons = false;
 
     public static void RegisterCompat() {
-        if (ModList.get().isLoaded(SS_MOD_ID)) {
+        if (ModList.get().isLoaded(SERENSEASONS_MODID)) {
             SereneSeasons = true;
             UntamedWilds.LOGGER.log(Level.INFO, "Loading compatibility module with SereneSeasons");
         }

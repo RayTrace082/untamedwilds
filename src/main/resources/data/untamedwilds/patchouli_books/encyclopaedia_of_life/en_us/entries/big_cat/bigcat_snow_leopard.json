@@ -1,12 +1,11 @@
 {
     "name": "Snow Leopard" , 
     "icon": "untamedwilds:textures/icon/big_cat/snow_leopard.png" , 
-    "category": "big_cat_category" , 
     "pages": [
         {
             "type": "text" , 
             "title": "Snow Leopard" , 
-            "text": "In the northern range countries, it also lives at lower elevations.Taxonomically, the snow leopard was long classified in the monotypic genus Uncia. The snow leopard (Panthera uncia), also known as the ounce, is a large cat native to the mountain ranges of Central and South Asia. Two subspecies were described based on morphological differences, but genetic differences between the two have not been confirmed. Since phylogenetic studies revealed the relationships among Panthera species, it is considered a member of this genus. It is threatened by poaching and habitat destruction following infrastructural developments. It is therefore regarded a monotypic species."
+            "text": "In the countries in the northern part of its range, it also lives at lower elevations.Taxonomically, the snow leopard was long classified in the monotypic genus Uncia. The snow leopard (Panthera uncia), also known as the ounce, is a large cat native to the mountain ranges of Central and South Asia. Two subspecies were described based on morphological differences, but genetic differences between the two have not been confirmed. Since phylogenetic studies revealed the relationships among Panthera species, it is considered a member of this genus. It is threatened by poaching and habitat destruction following infrastructural developments. It is therefore regarded as a monotypic species."
         } , 
         {
             "type": "entity" , 

@@ -6,11 +6,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.reptile.EntitySnake;
 
-@OnlyIn(Dist.CLIENT)
 public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
     
     public AdvancedModelBox main_neck;

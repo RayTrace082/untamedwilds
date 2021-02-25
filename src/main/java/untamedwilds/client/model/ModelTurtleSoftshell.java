@@ -5,12 +5,10 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.reptile.EntitySoftshellTurtle;
 
-@OnlyIn(Dist.CLIENT)
 public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTurtle> {
+
     public AdvancedModelBox main_body;
     public AdvancedModelBox body_shell;
     public AdvancedModelBox hand_right;

@@ -1,7 +1,6 @@
 {
     "name": "Rice Paddy Snake" , 
     "icon": "untamedwilds:textures/icon/snake/rice_paddy.png" , 
-    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 

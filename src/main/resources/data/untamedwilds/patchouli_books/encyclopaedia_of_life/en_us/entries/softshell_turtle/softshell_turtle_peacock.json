@@ -1,7 +1,6 @@
 {
     "name": "Peacock Softshell Turtle" , 
-    "icon": "untamedwilds:textures/icon/softshell_turtle/peacock.png" , 
-    "category": "softshell_turtle_category" , 
+    "icon": "untamedwilds:textures/icon/softshell_turtle/_peacock.png" , 
     "pages": [
         {
             "type": "text" , 

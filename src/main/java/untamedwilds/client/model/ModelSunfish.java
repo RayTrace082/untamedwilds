@@ -4,12 +4,10 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.fish.EntitySunfish;
 
-@OnlyIn(Dist.CLIENT)
 public class ModelSunfish extends AdvancedEntityModel<EntitySunfish> {
+
     public AdvancedModelBox body_main;
     public AdvancedModelBox body_head;
     public AdvancedModelBox body_tail;

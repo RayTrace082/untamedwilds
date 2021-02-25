@@ -1,0 +1,19 @@
+{
+    "name": "Hub aardvark" , 
+    "icon": "untamedwilds:textures/icon/aardvark/common.png" , 
+    "category": "taxon_mammal" , 
+    "pages": [
+        {
+            "type": "relations" , 
+            "title": "aardvark" , 
+            "text": "lorem ipsum"
+        } , 
+        {
+            "type": "relations" , 
+            "title": "aardvark" , 
+            "entries": [
+                "Aardvark"
+            ]
+        }
+    ]
+}

@@ -5,14 +5,11 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.client.model.ModelTarantula;
 import untamedwilds.entity.arthropod.EntityTarantula;
 
 import javax.annotation.Nonnull;
 
-@OnlyIn(Dist.CLIENT)
 public class RendererTarantula extends MobRenderer<EntityTarantula, EntityModel<EntityTarantula>> {
 
     private static final ModelTarantula TARANTULA_MODEL = new ModelTarantula();

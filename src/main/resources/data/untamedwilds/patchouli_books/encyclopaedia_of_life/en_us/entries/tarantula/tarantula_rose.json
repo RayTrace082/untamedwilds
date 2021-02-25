@@ -1,7 +1,6 @@
 {
     "name": "Rose Hair Tarantula" , 
     "icon": "untamedwilds:textures/icon/tarantula/rose.png" , 
-    "category": "tarantula_category" , 
     "pages": [
         {
             "type": "text" , 

@@ -1,12 +1,11 @@
 {
     "name": "Smooth Clam" , 
-    "icon": "untamedwilds:textures/icon/giant_clam/derasa.png" , 
-    "category": "giant_clam_category" , 
+    "icon": "untamedwilds:textures/icon/giant_clam/_derasa.png" , 
     "pages": [
         {
             "type": "text" , 
             "title": "Smooth Clam" , 
-            "text": "No data is available about this creature"
+            "text": "Tridacna derasa, the southern giant clam or smooth giant clam, is a species of extremely large marine clam in the family Cardiidae."
         } , 
         {
             "type": "entity" , 

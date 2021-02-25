@@ -5,14 +5,11 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.client.model.ModelTrevally;
 import untamedwilds.entity.fish.EntityTrevally;
 
 import javax.annotation.Nonnull;
 
-@OnlyIn(Dist.CLIENT)
 public class RendererTrevally extends MobRenderer<EntityTrevally, EntityModel<EntityTrevally>> {
 
     private static final ModelTrevally TREVALLY_MODEL = new ModelTrevally();

@@ -1,7 +1,6 @@
 {
     "name": "King baboon Spider " , 
     "icon": "untamedwilds:textures/icon/tarantula/king.png" , 
-    "category": "tarantula_category" , 
     "pages": [
         {
             "type": "text" , 

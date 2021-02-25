@@ -1,0 +1,6 @@
+{
+    "name": "aardvark" , 
+    "description": "List of all discovered Aardvark species" , 
+    "icon": "minecraft:writable_book" , 
+    "parent": "taxon_mammal"
+}

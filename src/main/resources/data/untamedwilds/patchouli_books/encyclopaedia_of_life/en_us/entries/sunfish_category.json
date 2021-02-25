@@ -1,0 +1,20 @@
+{
+    "name": "Hub sunfish" , 
+    "icon": "untamedwilds:textures/icon/sunfish/southern.png" , 
+    "category": "taxon_mammal" , 
+    "pages": [
+        {
+            "type": "relations" , 
+            "title": "sunfish" , 
+            "text": "lorem ipsum"
+        } , 
+        {
+            "type": "relations" , 
+            "title": "sunfish" , 
+            "entries": [
+                "Ocean Sunfish" , 
+                "Southern Sunfish"
+            ]
+        }
+    ]
+}

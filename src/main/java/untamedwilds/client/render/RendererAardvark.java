@@ -6,12 +6,9 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.client.model.ModelAardvark;
 import untamedwilds.entity.mammal.EntityAardvark;
 
-@OnlyIn(Dist.CLIENT)
 public class RendererAardvark extends MobRenderer<EntityAardvark, EntityModel<EntityAardvark>> {
 
     private static final ModelAardvark AARDVARK_MODEL = new ModelAardvark();

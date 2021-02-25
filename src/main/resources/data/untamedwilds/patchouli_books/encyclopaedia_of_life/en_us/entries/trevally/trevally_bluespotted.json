@@ -1,0 +1,16 @@
+{
+    "name": "Bluespotted Trevally" , 
+    "icon": "untamedwilds:textures/icon/trevally/bluespotted.png" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Bluespotted Trevally" , 
+            "text": "The bluespotted trevally (Caranx bucculentus), also known as the wide-mouthed trevally, is a species of moderately large marine fish in the jack family Carangidae. Bluespotted trevally are commonly taken as bycatch in prawn fisheries, however are of little commercial value and often discarded. Sexual maturity is reached at 110 mm in length and one year of age, with spawning occurring year round with a peak in spring. The bluespotted trevally is distinguished by dark blue spots on its upper body, as well as a number of more detailed anatomical features. It is one of the most common predators in the Gulf of Carpentaria of northern Australia, and is considered the most important predator of commercially important prawn species. The bluespotted trevally is distributed through the tropical east Indian and west Pacific Oceans, ranging from Taiwan in the north to Australia in the south. Growth is estimated to be 82.2 mm per year for both sexes, reaching a maximum known length of 66 cm."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:trevally{Species: 1}" , 
+            "text": "A Bluespotted Trevally"
+        }
+    ]
+}

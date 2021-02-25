@@ -4,13 +4,10 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.arthropod.EntityTarantula;
 
-@OnlyIn(Dist.CLIENT)
-public class ModelTarantula extends AdvancedEntityModel<EntityTarantula>
-{
+public class ModelTarantula extends AdvancedEntityModel<EntityTarantula> {
+
     public AdvancedModelBox mainbody;
     public AdvancedModelBox abdomen;
     public AdvancedModelBox legR4;

@@ -1,7 +1,6 @@
 {
     "name": "Black & White Tarantula" , 
     "icon": "untamedwilds:textures/icon/tarantula/black_and_white.png" , 
-    "category": "tarantula_category" , 
     "pages": [
         {
             "type": "text" , 

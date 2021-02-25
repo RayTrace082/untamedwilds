@@ -1,7 +1,6 @@
 {
     "name": "Cave Bear" , 
     "icon": "untamedwilds:textures/icon/bear/cave.png" , 
-    "category": "bear_category" , 
     "pages": [
         {
             "type": "text" , 

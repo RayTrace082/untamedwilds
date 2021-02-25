@@ -1,7 +1,6 @@
 {
     "name": "Brown Bear" , 
     "icon": "untamedwilds:textures/icon/bear/brown.png" , 
-    "category": "bear_category" , 
     "pages": [
         {
             "type": "text" , 

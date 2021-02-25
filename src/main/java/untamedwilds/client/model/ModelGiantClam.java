@@ -4,12 +4,10 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mollusk.EntityGiantClam;
 
-@OnlyIn(Dist.CLIENT)
 public class ModelGiantClam extends AdvancedEntityModel<EntityGiantClam> {
+
     public AdvancedModelBox mantle;
     public AdvancedModelBox shell_2;
     public AdvancedModelBox shell_1;

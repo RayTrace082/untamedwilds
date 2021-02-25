@@ -5,13 +5,10 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mammal.bear.AbstractBear;
 
-@OnlyIn(Dist.CLIENT)
-public class ModelBearCub extends AdvancedEntityModel<AbstractBear>
-{
+public class ModelBearCub extends AdvancedEntityModel<AbstractBear> {
+
     private final AdvancedModelBox body_main;
     private final AdvancedModelBox body_buttocks;
     private final AdvancedModelBox head_face;

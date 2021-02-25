@@ -5,13 +5,10 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mammal.bigcat.AbstractBigCat;
 
-@OnlyIn(Dist.CLIENT)
-public class ModelBigCatCub extends AdvancedEntityModel<AbstractBigCat>
-{
+public class ModelBigCatCub extends AdvancedEntityModel<AbstractBigCat> {
+
     private final AdvancedModelBox main_body;
     private final AdvancedModelBox main_buttocks;
     private final AdvancedModelBox head_face;

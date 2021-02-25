@@ -1,12 +1,11 @@
 {
     "name": "Flapshell Turtle" , 
-    "icon": "untamedwilds:textures/icon/softshell_turtle/flapshell.png" , 
-    "category": "softshell_turtle_category" , 
+    "icon": "untamedwilds:textures/icon/softshell_turtle/_flapshell.png" , 
     "pages": [
         {
             "type": "text" , 
             "title": "Flapshell Turtle" , 
-            "text": "The Indian flapshell turtle (Lissemys punctata) is a freshwater species of turtle found in South Asia. The \"flap-shelled\" name stems from the presence of femoral flaps located on the plastron. These flaps of skin cover the limbs when they retract into the shell. It is unclear what protection the flaps offer against predators. Indian flapshell turtles are widespread and common in the South Asian provinces."
+            "text": "The Indian flapshell turtle (Lissemys punctata) is a freshwater species of turtle found in South Asia. The \"flap-shelled\" name stems from the presence of femoral flaps located on the plastron. These flaps of skin cover the limbs when they retract into the shell. It is unclear what protection the flaps offer against predators. Indian flapshell turtles are widespread and common in the South Asian provinces. Exploitation for profit and habitat change are threats to their survival."
         } , 
         {
             "type": "entity" , 

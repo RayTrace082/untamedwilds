@@ -1,7 +1,6 @@
 {
     "name": "Grass Snake" , 
     "icon": "untamedwilds:textures/icon/snake/grass_snake.png" , 
-    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 

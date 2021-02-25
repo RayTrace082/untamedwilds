@@ -1,7 +1,6 @@
 {
     "name": "Sun Bear" , 
     "icon": "untamedwilds:textures/icon/bear/sun.png" , 
-    "category": "bear_category" , 
     "pages": [
         {
             "type": "text" , 

@@ -1,0 +1,23 @@
+{
+    "name": "Hub trevally" , 
+    "icon": "untamedwilds:textures/icon/trevally/jack.png" , 
+    "category": "taxon_mammal" , 
+    "pages": [
+        {
+            "type": "relations" , 
+            "title": "trevally" , 
+            "text": "lorem ipsum"
+        } , 
+        {
+            "type": "relations" , 
+            "title": "trevally" , 
+            "entries": [
+                "Bigeye Trevally" , 
+                "Bluespotted Trevally" , 
+                "Giant Trevally" , 
+                "Golden Trevally" , 
+                "Common Jack"
+            ]
+        }
+    ]
+}

@@ -7,11 +7,8 @@ import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mammal.bear.AbstractBear;
 
-@OnlyIn(Dist.CLIENT)
 public class ModelBear extends AdvancedEntityModel<AbstractBear> {
 
     private final AdvancedModelBox body_main;

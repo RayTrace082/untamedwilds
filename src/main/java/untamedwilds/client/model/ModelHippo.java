@@ -7,13 +7,11 @@ import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.mammal.EntityHippo;
 import untamedwilds.entity.mammal.bear.AbstractBear;
 
-@OnlyIn(Dist.CLIENT)
 public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
+
     public AdvancedModelBox body_main;
     public AdvancedModelBox head_neck;
     public AdvancedModelBox arm_right;

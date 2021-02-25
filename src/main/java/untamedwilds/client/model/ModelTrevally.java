@@ -4,12 +4,10 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.fish.EntityTrevally;
 
-@OnlyIn(Dist.CLIENT)
 public class ModelTrevally extends AdvancedEntityModel<EntityTrevally> {
+
     public AdvancedModelBox body_main;
     public AdvancedModelBox head_main;
     public AdvancedModelBox body_tail;

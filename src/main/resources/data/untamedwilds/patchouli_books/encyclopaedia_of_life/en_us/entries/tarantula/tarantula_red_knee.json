@@ -1,7 +1,6 @@
 {
     "name": "Red Knee Tarantula" , 
     "icon": "untamedwilds:textures/icon/tarantula/red_knee.png" , 
-    "category": "tarantula_category" , 
     "pages": [
         {
             "type": "text" , 

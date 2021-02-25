@@ -1,7 +1,6 @@
 {
     "name": "Ornamental Tree Spider" , 
     "icon": "untamedwilds:textures/icon/tarantula/regalis.png" , 
-    "category": "tarantula_category" , 
     "pages": [
         {
             "type": "text" , 

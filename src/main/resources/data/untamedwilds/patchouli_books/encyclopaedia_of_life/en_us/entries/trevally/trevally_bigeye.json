@@ -1,0 +1,16 @@
+{
+    "name": "Bigeye Trevally" , 
+    "icon": "untamedwilds:textures/icon/trevally/bigeye.png" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Bigeye Trevally" , 
+            "text": "The bigeye trevally is of moderate importance to fisheries throughout its range, and being of high importance to some artisanal fisheries. The fish is known to move from a more crustacean dominated diet as a juvenile to a nearly completely fish dominated diet as an adult. The species is also considered a good gamefish, taken by lure, bait and spear throughout its range. Sexual maturity is reached at 42 cm, with spawning occurring in large aggregations occurring at different periods throughout its range, generally between July and March. Other more detailed anatomical features also set the species apart from other members of Caranx. The species is known to grow to a length of 120 cm and 18 kg. It is taken by gill net, purse seine, hook and line and other artisanal fishing methods."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:trevally{Species: 0}" , 
+            "text": "A Bigeye Trevally"
+        }
+    ]
+}

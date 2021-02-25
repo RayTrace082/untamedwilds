@@ -1,7 +1,6 @@
 {
     "name": "Cobalt Tarantula" , 
     "icon": "untamedwilds:textures/icon/tarantula/cobalt.png" , 
-    "category": "tarantula_category" , 
     "pages": [
         {
             "type": "text" , 

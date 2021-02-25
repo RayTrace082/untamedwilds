@@ -13,8 +13,6 @@ import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ISkins;
@@ -95,7 +93,6 @@ public class EntityLeopard extends AbstractBigCat implements ISkins {
         return false;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public static void registerTextures(int count) {
         for(int i = 1; i < count + 1; i++)
             EntityLeopard.TEXTURES.add(new ResourceLocation(UntamedWilds.MOD_ID, String.format("textures/entity/big_cat/leopard_%d.png", i)));

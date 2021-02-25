@@ -1,0 +1,35 @@
+{
+    "name": "Hub snake" , 
+    "icon": "untamedwilds:textures/icon/snake/western_rattlesnake.png" , 
+    "category": "taxon_mammal" , 
+    "pages": [
+        {
+            "type": "relations" , 
+            "title": "snake" , 
+            "text": "lorem ipsum"
+        } , 
+        {
+            "type": "relations" , 
+            "title": "snake" , 
+            "entries": [
+                "Adder" , 
+                "Ball Python" , 
+                "Black Mamba" , 
+                "Carpet Python" , 
+                "Cave Racer" , 
+                "Coral Snake" , 
+                "Blue Coral Snake" , 
+                "Corn Snake" , 
+                "Emerald Tree Boa" , 
+                "Grass Snake" , 
+                "Gray-Banded Kingsnake" , 
+                "Green Mamba" , 
+                "Timber Rattlesnake" , 
+                "Rice Paddy Snake" , 
+                "Swamp Moccasin" , 
+                "Inland Taipan" , 
+                "Prairie Rattlesnake"
+            ]
+        }
+    ]
+}

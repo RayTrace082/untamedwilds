@@ -1,7 +1,6 @@
 {
     "name": "Coral Snake" , 
     "icon": "untamedwilds:textures/icon/snake/coral.png" , 
-    "category": "snake_category" , 
     "pages": [
         {
             "type": "text" , 
