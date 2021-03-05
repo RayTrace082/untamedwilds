@@ -413,7 +413,7 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
             limbSwing = ageInTicks / 3;
             limbSwingAmount = 0.5f;
             this.setRotateAngle(head_face, -0.22759093446006054F, 0.0F, 0.0F);
-            float pitch = MathHelper.clamp(bear.rotationPitch, -45F, 45.0F) - 10;
+            float pitch = MathHelper.clamp(bear.rotationPitch - 10, -25F, 25.0F);
             this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 

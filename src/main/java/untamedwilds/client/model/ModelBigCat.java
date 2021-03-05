@@ -419,7 +419,7 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat> {
             limbSwingAmount = 0.5f;
             this.body_main.rotationPointY += 4; // Model offset to make the Big Cat "sink" in water (while not drowning)
             this.setRotateAngle(head_neck, -0.18203784098300857F, 0.0F, 0.0F);
-            float pitch = MathHelper.clamp(big_cat.rotationPitch, -45F, 45.0F) - 10;
+            float pitch = MathHelper.clamp(big_cat.rotationPitch - 10, -25F, 25.0F);
             this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 
