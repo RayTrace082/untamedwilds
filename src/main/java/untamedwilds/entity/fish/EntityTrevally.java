@@ -59,12 +59,11 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
 
     public void livingTick() {
         if (this.herd == null) {
-            this.initPack();
+            IPackEntity.initPack(this);
         }
         else {
             this.herd.tick();
         }
-        super.livingTick();
         if (!this.world.isRemote) {
             if (this.ticksExisted % 1000 == 0) {
                 if (this.wantsToBreed() && !this.isMale()) {
@@ -75,6 +74,7 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
                 this.heal(1.0F);
             }
         }
+        super.livingTick();
     }
 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
@@ -123,9 +123,12 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
     public int getAdulthoodTime() { return GROWING; }
     public String getBreedingSeason() { return BREEDING; }
 
-    @Override
-    public int getMaxPackSize(IPackEntity entity) {
+    public int getMaxPackSize() {
         return SpeciesTrevally.values()[this.getVariant()].schoolSize;
+    }
+
+    public boolean shouldLeavePack() {
+        return this.rand.nextInt(120) == 0;
     }
 
     @Override

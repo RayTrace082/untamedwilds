@@ -29,7 +29,8 @@ import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.entity.ComplexMobAquatic;
 import untamedwilds.init.ModBlock;
-import untamedwilds.init.ModTags.UTBlockTags;
+import untamedwilds.init.ModTags;
+import untamedwilds.init.ModTags.BlockTags;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -81,7 +82,7 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
          BlockState blockstate1 = world.getBlockState(pos.up());
          return blockstate1.getBlock() != ModBlock.COMMON_REED.get() ? ModBlock.COMMON_REED.get().getDefaultState().with(PROPERTY_AGE, 0).with(WATERLOGGED, isWaterLogged) : this.getDefaultState().with(PROPERTY_AGE, 1).with(WATERLOGGED, isWaterLogged);
       }
-      if (blockstate.isIn(UTBlockTags.REEDS_PLANTABLE_ON)) {
+      if (blockstate.isIn(BlockTags.REEDS_PLANTABLE_ON)) {
          return this.getDefaultState().with(PROPERTY_AGE, isWaterLogged ? 2 : 0).with(WATERLOGGED, isWaterLogged);
       }
       else {
@@ -100,7 +101,7 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
          BlockState blockstate1 = context.getWorld().getBlockState(context.getPos().up());
          return blockstate1.getBlock() != ModBlock.COMMON_REED.get() ? ModBlock.COMMON_REED.get().getDefaultState().with(PROPERTY_AGE, 0).with(WATERLOGGED, isWaterLogged) : this.getDefaultState().with(PROPERTY_AGE, 1).with(WATERLOGGED, isWaterLogged);
       }
-      if (blockstate.isIn(UTBlockTags.REEDS_PLANTABLE_ON)) {
+      if (blockstate.isIn(ModTags.BlockTags.REEDS_PLANTABLE_ON)) {
          return this.getDefaultState().with(PROPERTY_AGE, isWaterLogged ? 2 : 0).with(WATERLOGGED, isWaterLogged);
       }
       else {
@@ -131,7 +132,7 @@ public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
    }
 
    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-      return worldIn.getBlockState(pos.down()).isIn(UTBlockTags.REEDS_PLANTABLE_ON) || worldIn.getBlockState(pos.down()).getBlock() == ModBlock.COMMON_REED.get();
+      return worldIn.getBlockState(pos.down()).isIn(ModTags.BlockTags.REEDS_PLANTABLE_ON) || worldIn.getBlockState(pos.down()).getBlock() == ModBlock.COMMON_REED.get();
    }
 
    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {

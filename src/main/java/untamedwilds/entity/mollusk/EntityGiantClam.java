@@ -53,7 +53,6 @@ public class EntityGiantClam extends ComplexMob implements ISpecies {
     protected void registerData() {
         super.registerData();
         this.entityCollisionReduction = 1F;
-        // this.dataManager.register(CLAM_OPEN, true);
     }
 
     public void applyEntityCollision(Entity entityIn) {
@@ -67,7 +66,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies {
     public void baseTick() {
         int i = this.getAir();
         super.baseTick();
-        if (this.isAlive() && !this.isInWater()) {
+        if (this.isAlive() && !this.isInWaterOrBubbleColumn()) {
             --i;
             this.setAir(i);
 
@@ -107,8 +106,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies {
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
             List<EntityGiantClam> list = this.world.getEntitiesWithinAABB(EntityGiantClam.class, this.getBoundingBox().grow(12.0D, 6.0D, 12.0D));
-            list.removeIf(input -> input.getVariant() != this.getVariant());
-            list.removeIf(input -> input == this || input.getGrowingAge() != 0);
+            list.removeIf(input -> input == this || input.getGrowingAge() != 0 || input.getVariant() != this.getVariant());
             if (list.size() >= 1) {
                 this.setGrowingAge(GROWING);
                 list.get(0).setGrowingAge(GROWING);

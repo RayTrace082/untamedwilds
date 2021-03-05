@@ -1,7 +1,6 @@
 package untamedwilds.init;
 
 import net.minecraft.block.Block;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import untamedwilds.UntamedWilds;
@@ -13,7 +12,7 @@ public class ModTags {
         public static final ResourceLocation CAGE_BLACKLIST = new ResourceLocation(UntamedWilds.MOD_ID, "cage_trap_blacklist");
     }
 
-    public static class UTBlockTags {
-        public static final ITag.INamedTag<Block> REEDS_PLANTABLE_ON = BlockTags.makeWrapperTag(UntamedWilds.MOD_ID + ":reeds_plantable_on");
+    public static class BlockTags {
+        public static final ITag.INamedTag<Block> REEDS_PLANTABLE_ON = net.minecraft.tags.BlockTags.makeWrapperTag(UntamedWilds.MOD_ID + ":reeds_plantable_on");
     }
 }

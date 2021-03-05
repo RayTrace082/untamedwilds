@@ -122,10 +122,6 @@ public class EntityTarantula extends ComplexMob implements ISpecies {
             itemstack.shrink(1);
             return ActionResultType.func_233537_a_(this.world.isRemote);
         }
-        /*if (itemstack.isEmpty() && this.isAlive()) {
-            turnEntityIntoItem("tarantula_" + this.getRawSpeciesName().toLowerCase());
-            return ActionResultType.func_233537_a_(this.world.isRemote);
-        }*/
         return super.func_230254_b_(player, hand);
     }
 

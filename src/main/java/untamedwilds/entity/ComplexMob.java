@@ -49,7 +49,6 @@ public abstract class ComplexMob extends TameableEntity {
     private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     public HerdEntity herd = null;
-    int maxHerdSize = 8;
 
     public ComplexMob(EntityType<? extends ComplexMob> type, World worldIn){
         super(type, worldIn);
@@ -241,12 +240,7 @@ public abstract class ComplexMob extends TameableEntity {
         if (compound.contains("OwnerUUID")) {
             this.setCommandInt(compound.getInt("Command"));
         }
-        if (compound.contains("Species")) { // TODO: Compatibility code
-            this.setVariant(compound.getInt("Species"));
-        }
-        else {
-            this.setVariant(compound.getInt("Variant"));
-        }
+        this.setVariant(compound.getInt("Variant"));
         this.setMobSize(compound.getFloat("Size"));
         this.setGender(compound.getInt("Gender"));
         this.setAngry(compound.getBoolean("isAngry"));
@@ -256,7 +250,7 @@ public abstract class ComplexMob extends TameableEntity {
     public static CompoundNBT writeEntityToNBT(LivingEntity entity) {
         CompoundNBT baseTag = new CompoundNBT();
         CompoundNBT entityTag = new CompoundNBT();
-        entity.writeUnlessRemoved(entityTag); // Write the entity into NBT
+        entity.writeUnlessRemoved(entityTag);
         entityTag.remove("Pos"); // Remove the Position from the NBT data, as it would fuck things up later on
         entityTag.remove("Motion");
         baseTag.put("EntityTag", entityTag); // Put the entity in the Tag
@@ -328,22 +322,10 @@ public abstract class ComplexMob extends TameableEntity {
                 this.setVariant(this.rand.nextInt(((ISkins)this).getSkinNumber()));
             }
             if (this instanceof IPackEntity) {
-                this.initPack();
+                IPackEntity.initPack(this);
             }
             this.setGrowingAge(0);
         }
         return spawnDataIn;
-    }
-
-    public void initPack() {
-        this.herd = new HerdEntity(this, this.maxHerdSize);
-    }
-
-    public boolean shouldLeavePack() {
-        return this.rand.nextInt(120) == 0;
-    }
-
-    public boolean canCombineWith(HerdEntity otherPack) {
-        return this.herd.creatureList.size() + otherPack.creatureList.size() <= this.herd.getMaxSize();
     }
 }

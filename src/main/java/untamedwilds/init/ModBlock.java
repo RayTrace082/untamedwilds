@@ -54,6 +54,7 @@ public class ModBlock {
     public static RegistryObject<Block> ANEMONE_SEBAE  = createBlock("anemone_sebae", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.RED).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS, ConfigFeatureControl.addAnemones.get());
     public static RegistryObject<Block> ORCHID_RED = createBlock("flora_orchid_red", () -> new BlockPlantEpyphite(Block.Properties.create(Material.PLANTS, MaterialColor.RED).hardnessAndResistance(0.0F).sound(SoundType.PLANT)), ItemGroup.DECORATIONS);
     public static RegistryObject<Block> COMMON_REED = createBlock("flora_common_reed", () -> new FloraReeds(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(0.1F).sound(SoundType.VINE).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addReeds.get(), 100);
+    public static RegistryObject<Block> AMAZON_SWORD = createBlock("flora_amazon_sword", () -> new AlgaeBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(0).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addReeds.get());
 
     public static RegistryObject<TileEntityType<BlockEntityCage>> BLOCKENTITY_CAGE = TILE_ENTITY_TYPES.register("trap_cage", () -> new TileEntityType<>(BlockEntityCage::new, Sets.newHashSet(ModBlock.TRAP_CAGE.get()), null));
 
@@ -83,6 +84,7 @@ public class ModBlock {
     public static void registerRendering() {
         if (ConfigFeatureControl.addReeds.get()) {
             RenderTypeLookup.setRenderLayer(ModBlock.COMMON_REED.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlock.AMAZON_SWORD.get(), RenderType.getCutout());
         }
         if (ConfigFeatureControl.addAnemones.get()) {
             RenderTypeLookup.setRenderLayer(ModBlock.ANEMONE_SEBAE.get(), RenderType.getCutout());

@@ -37,6 +37,7 @@ public class UntamedWildsGenerator {
 
     private static final RegistryObject<Feature<FeatureSpreadConfig>> SEA_ANEMONE = regFeature("sea_anemone", () -> new FeatureSeaAnemone(FeatureSpreadConfig.CODEC));
     private static final RegistryObject<Feature<NoFeatureConfig>> REEDS = regFeature("reeds", () -> new FeatureReedClusters(NoFeatureConfig.field_236558_a_));
+    private static final RegistryObject<Feature<NoFeatureConfig>> ALGAE = regFeature("algae", () -> new FeatureUnderwaterAlgae(NoFeatureConfig.field_236558_a_));
 
     //public static final TreeDecoratorType<TreeOrchidDecorator> TREE_ORCHID = regTreeDecorator("orchid", () -> new TreeOrchidDecorator(TreeOrchidDecorator.field_236874_c_));
 
@@ -67,11 +68,15 @@ public class UntamedWildsGenerator {
                 }
             }
         }
-        if (event.getCategory() == Biome.Category.RIVER || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) {
-            if (ConfigFeatureControl.addReeds.get()) {
+        if (ConfigFeatureControl.addReeds.get()) {
+            if (event.getCategory() == Biome.Category.RIVER || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) {
                 registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(ConfigFeatureControl.loadsOfReeds.get() ? Features.Placements.KELP_PLACEMENT : Features.Placements.PATCH_PLACEMENT).chance(1), REEDS.get().getRegistryName());
             }
+            if (event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) {
+                registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, ALGAE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).chance(1), ALGAE.get().getRegistryName());
+            }
         }
+
         event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.1F)).chance(10)));
         event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(24));
         event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(3));
@@ -99,9 +104,7 @@ public class UntamedWildsGenerator {
     // Returns the biodiversity level of a biome. Values are data-driven, defaulting to 0.6 if no key is found.
     public static float getBioDiversityLevel(ResourceLocation biome) {
         String key = biome.toString();
-        // UntamedWilds.LOGGER.info(key);
         if (biodiversity_levels.containsKey(key)) {
-            // UntamedWilds.LOGGER.info("Gottem " + biodiversity_levels.get(key));
             return biodiversity_levels.get(key);
         }
         return 0.6F;

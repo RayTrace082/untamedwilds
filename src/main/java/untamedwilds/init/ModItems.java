@@ -85,8 +85,6 @@ public class ModItems {
         if (ConfigMobControl.addTarantula.get()) {
             for (int i = 0; i < EntityTarantula.SpeciesTarantula.values().length; i++) {
                 int tarantulaSpecies = i;
-                // TODO: Non-bottled tarantulas are Deprecated and will probably be removed in the future
-                ModItems.ITEMS.register("tarantula_" + EntityTarantula.SpeciesTarantula.values()[i].name().toLowerCase(), () -> new ItemMobSpawn(ModEntity.TARANTULA, tarantulaSpecies, EntityTarantula.SpeciesTarantula.values()[tarantulaSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
                 ModItems.ITEMS.register("egg_tarantula_" + EntityTarantula.SpeciesTarantula.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.TARANTULA, tarantulaSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
                 ModItems.ITEMS.register("bottle_tarantula_" + EntityTarantula.SpeciesTarantula.values()[i].name().toLowerCase(), () -> new ItemMobBottled(ModEntity.TARANTULA, tarantulaSpecies, EntityTarantula.SpeciesTarantula.values()[tarantulaSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             }

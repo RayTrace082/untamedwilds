@@ -92,7 +92,7 @@ public class EntityLion extends AbstractBigCat implements IPackEntity {
 
     public void livingTick() {
         if (this.herd == null) {
-            this.initPack();
+            IPackEntity.initPack(this);
         }
         else {
             this.herd.tick();
@@ -108,10 +108,6 @@ public class EntityLion extends AbstractBigCat implements IPackEntity {
         return bear;
     }
 
-    public boolean shouldLeavePack() {
-        return false;
-    }
-
     protected ResourceLocation getLootTable() {
         return ModLootTables.BIGCAT_LOOT_LION;
     }
@@ -125,8 +121,5 @@ public class EntityLion extends AbstractBigCat implements IPackEntity {
         return this.isMale() ? TEXTURE : TEXTURE_FEMALE;
     }
     protected int getOffspring() { return 2; }
-    @Override
-    public int getMaxPackSize(IPackEntity entity) {
-        return 8;
-    }
+    public int getMaxPackSize() { return 8; }
 }

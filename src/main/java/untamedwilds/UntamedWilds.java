@@ -1,7 +1,6 @@
 package untamedwilds;
 
 import net.minecraft.block.DispenserBlock;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -11,8 +10,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import untamedwilds.block.BlockCage;
@@ -30,21 +27,22 @@ public class UntamedWilds {
 
     // TODO: Migration AI, rare events executed by hungry mobs where they will choose a direction and keep moving there
     // TODO: Make use of Tags to make animal's diets data-driven?
-    // TODO: Define list of diggables, maybe extend it to it's own weighted list and include Truffles and funsies
-    // TODO: setupTamedAI() function is promising to trim unnecessary tasks from Tameable Mobs
+    // TODO: Abstract Herd logic to be functional with any LivingEntity (instead of being limited to IPackEntity ComplexMob)
+    // TODO: Define list of diggable items, maybe extend it to it's own weighted list and include Truffles and funsies
+    // TODO: setupTamedAI() function is promising to trim unnecessary tasks from Tamable Mobs
     // TODO: Store the children's UUID in their mother's NBT, to allow checking for Children without constant AABB checking
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";
     public static final boolean DEBUG = false;
 
-    private static final String PROTOCOL_VERSION = "1";
+    /*private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(MOD_ID, "main"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals
-    );
+    );*/
 
     public UntamedWilds() {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();

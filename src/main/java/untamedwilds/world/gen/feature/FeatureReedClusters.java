@@ -10,7 +10,7 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import untamedwilds.block.FloraReeds;
 import untamedwilds.init.ModBlock;
-import untamedwilds.init.ModTags.UTBlockTags;
+import untamedwilds.init.ModTags.BlockTags;
 
 import java.util.Random;
 
@@ -25,7 +25,7 @@ public class FeatureReedClusters extends Feature<NoFeatureConfig> {
 
         for(int i = 0; i < 64; ++i) {
             BlockPos blockpos = pos.add(rand.nextInt(6) - rand.nextInt(6), rand.nextInt(2) - rand.nextInt(2), rand.nextInt(6) - rand.nextInt(6));
-            if(world.getBlockState(blockpos.down()).getBlock().isIn(UTBlockTags.REEDS_PLANTABLE_ON)) {
+            if(world.getBlockState(blockpos.down()).getBlock().isIn(BlockTags.REEDS_PLANTABLE_ON)) {
                 if(world.isAirBlock(blockpos) || (world.getBlockState(blockpos).getBlock() == Blocks.WATER && world.isAirBlock(blockpos.up()))) {
                     int height = rand.nextInt(4);
                     for (int j = 0; j <= height; ++j) {

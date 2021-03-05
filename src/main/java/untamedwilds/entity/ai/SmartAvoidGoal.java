@@ -35,14 +35,12 @@ public class SmartAvoidGoal <T extends LivingEntity> extends AvoidEntityGoal<T> 
         if (this.taskOwner.getAttackTarget() != null || this.taskOwner.isSleeping() || this.taskOwner.getCommandInt() != 0 || this.taskOwner.isTamed()) {
             return false;
         }
-        //List<T> list = this.taskOwner.world.getEntitiesWithinAABB(classToAvoid, this.taskOwner.getBoundingBox().grow(avoidDistance, 4f, avoidDistance), this.targetEntitySelector);
-        List<LivingEntity> list = this.taskOwner.world.getTargettableEntitiesWithinAABB(LivingEntity.class, this.builtTargetSelector, this.taskOwner, this.taskOwner.getBoundingBox().grow(avoidDistance, 4f, avoidDistance));
 
-        //this.avoidTarget = this.entity.world.func_225318_b(this.classToAvoid, this.builtTargetSelector, this.entity, this.entity.getPosX(), this.entity.getPosY(), this.entity.getPosZ(), this.entity.getBoundingBox().grow(this.avoidDistance, 3.0D, this.avoidDistance));
+        List<T> list = this.taskOwner.world.getTargettableEntitiesWithinAABB(classToAvoid, this.builtTargetSelector, this.taskOwner, this.taskOwner.getBoundingBox().grow(avoidDistance, 4f, avoidDistance));
         if (list.isEmpty()) {
             return false;
         } else {
-            this.avoidTarget = (T) list.get(0); // TODO: Suspect
+            this.avoidTarget = list.get(0);
             Vector3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.taskOwner, 16, 7, new Vector3d(this.avoidTarget.getPosX(), this.avoidTarget.getPosY(), this.avoidTarget.getPosZ()));
             if (vec3d == null) {
                 return false;

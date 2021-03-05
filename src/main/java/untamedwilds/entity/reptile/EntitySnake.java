@@ -241,9 +241,6 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
 
         public static int getSpeciesByBiome(Biome biome) {
             List<SpeciesSnake> types = new ArrayList<>();
-            /*if (biome.getDefaultTemperature() < 0.2F) {
-                return 99;
-            }*/
             for (SpeciesSnake type : values()) {
                 for(Biome.Category biomeTypes : type.spawnBiomes) {
                     if(biome.getCategory() == biomeTypes){
