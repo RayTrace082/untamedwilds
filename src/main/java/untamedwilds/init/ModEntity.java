@@ -44,7 +44,7 @@ import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = UntamedWilds.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEntity {
-    private final static List<EntityType<?>> entities = Lists.newArrayList();
+    private final static List<EntityType<? extends Entity>> entities = Lists.newArrayList();
     private final static List<Item> spawnEggs = Lists.newArrayList();
     public static final Map<String, Integer> eco_levels = new java.util.HashMap<>();
 

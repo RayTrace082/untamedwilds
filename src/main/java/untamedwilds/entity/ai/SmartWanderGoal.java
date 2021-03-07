@@ -4,6 +4,7 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.vector.Vector3d;
 import untamedwilds.entity.ComplexMobTerrestrial;
+import untamedwilds.entity.IPackEntity;
 
 import java.util.EnumSet;
 
@@ -59,6 +60,11 @@ public class SmartWanderGoal extends Goal {
     }
 
     private Vector3d getPosition() {
+        // If this AI goal runs on an IPackEntity, use Herd-specific behavior
+        if (this.creature instanceof IPackEntity && this.creature.herd != null && this.creature.herd.getLeader() != this.creature) {
+            Vector3d vec3d = RandomPositionGenerator.getLandPos(this.creature.herd.getLeader(), 7, 3);
+            return vec3d == null ? RandomPositionGenerator.findRandomTarget(this.creature.herd.getLeader(), 5, 2) : vec3d;
+        }
         if (this.avoidWater) {
             Vector3d vec3d = RandomPositionGenerator.getLandPos(this.creature, 15, 7);
             return vec3d == null ? RandomPositionGenerator.findRandomTarget(this.creature, 10, 4) : vec3d;
