@@ -29,7 +29,6 @@ public class UntamedWilds {
     // TODO: Make use of Tags to make animal's diets data-driven?
     // TODO: Abstract Herd logic to be functional with any LivingEntity (instead of being limited to IPackEntity ComplexMob)
     // TODO: Define list of diggable items, maybe extend it to it's own weighted list and include Truffles and funsies
-    // TODO: setupTamedAI() function is promising to trim unnecessary tasks from Tamable Mobs
     // TODO: Store the children's UUID in their mother's NBT, to allow checking for Children without constant AABB checking
 
     public static final Logger LOGGER = LogManager.getLogger();

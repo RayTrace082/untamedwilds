@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
+import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
@@ -20,7 +21,10 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
+import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMobTerrestrial;
+import untamedwilds.entity.ai.SmartFollowOwnerGoal;
+import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
@@ -152,6 +156,18 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
         super.livingTick();
     }
 
+    @Override
+    protected void setupTamedAI() {
+        if (this.isTamed()) {
+            if (UntamedWilds.DEBUG) {
+                UntamedWilds.LOGGER.info("Updating AI tasks for tamed mob");
+            }
+            this.goalSelector.addGoal(3, new SmartFollowOwnerGoal(this, 2.3D, 12.0F, 3.0F));
+            this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+            this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
+        }
+    }
+
     public double getMountedYOffset() { return getModelScale() + 0.5f * this.getMobSize(); }
 
     protected SoundEvent getAmbientSound() {
@@ -200,7 +216,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
             if (this.isTamed() && this.getOwner() == player) {
                 if (itemstack.isEmpty()) {
                     this.setCommandInt(this.getCommandInt() + 1);
-                    player.sendMessage(new TranslationTextComponent("entity.untamedwilds.command." + this.getCommandInt()), null);
+                    player.sendMessage(new TranslationTextComponent("entity.untamedwilds.command." + this.getCommandInt()), Util.DUMMY_UUID);
                     if (this.getCommandInt() > 1) {
                         this.getNavigator().clearPath();
                         this.setSitting(true);

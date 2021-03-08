@@ -7,7 +7,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.LightType;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
@@ -35,17 +34,14 @@ public class GotoSleepGoal extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        if (this.creature.isTamed() && this.creature.getCommandInt() != 0) {
-            return false;
-        }
-        if (this.creature.isActive() || this.creature.isBeingRidden() || !ConfigGamerules.sleepBehaviour.get() || !this.creature.canMove() || !this.creature.getNavigator().noPath()) {
+        if (this.creature.getCommandInt() != 0 || this.creature.isActive() || this.creature.isBeingRidden() || !ConfigGamerules.sleepBehaviour.get() || !this.creature.canMove() || !this.creature.getNavigator().noPath()) {
             return false;
         }
         /*if (this.creature.getIdleTime() >= 100) {
                 return false;
         }*/
         if (this.creature.getRNG().nextInt(this.executionChance) != 0) { return false; }
-        UntamedWilds.LOGGER.info("Trying to Sleep");
+        //UntamedWilds.LOGGER.info("Trying to Sleep");
         if (this.creature.getHome() == BlockPos.ZERO || !canEasilyReach(this.creature.getHome()) || this.creature.getDistanceSq(this.creature.getHomeAsVec()) > 100000) {
             this.creature.setHome(BlockPos.ZERO);
             BlockPos pos = this.checkForNewHome();

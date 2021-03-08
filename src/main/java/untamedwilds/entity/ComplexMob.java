@@ -210,6 +210,7 @@ public abstract class ComplexMob extends TameableEntity {
     // 1 - Follow: The mob will follow it's owner, occasionally teleporting
     // 2 - Sit: The mob will sit in place
     // 3 - Guard: The mob will sit in place and attack nearby mobs (NIY)
+    // Commands can be implicitly used to check if a mob is tamed or not
     public void setCommandInt(int command) { this.dataManager.set(COMMAND, command % 3); }
     public int getCommandInt() { return (this.dataManager.get(COMMAND)); }
 
@@ -306,14 +307,16 @@ public abstract class ComplexMob extends TameableEntity {
             this.setGender(this.rand.nextInt(2));
             if (this instanceof ISpecies) {
                 Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(this.getPosition());
-                int i = ((ISpecies)this).setSpeciesByBiome(optional.get(), worldIn.getBiome(this.getPosition()), reason);
-                this.setVariant(i);
-                if (i == 99) {
-                    this.remove();
-                    return null;
-                }
-                if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
-                    UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + ((ISpecies) this).getSpeciesName());
+                if (optional.isPresent()) {
+                    int i = ((ISpecies)this).setSpeciesByBiome(optional.get(), worldIn.getBiome(this.getPosition()), reason);
+                    this.setVariant(i);
+                    if (i == 99) {
+                        this.remove();
+                        return null;
+                    }
+                    if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
+                        UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + ((ISpecies) this).getSpeciesName());
+                    }
                 }
             } else if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
                 UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + this.getName().getString());

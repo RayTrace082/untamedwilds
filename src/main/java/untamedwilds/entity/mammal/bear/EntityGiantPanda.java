@@ -7,7 +7,6 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
@@ -15,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.*;
-import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
 import untamedwilds.entity.ai.unique.PandaBreakBamboo;
 import untamedwilds.entity.ai.unique.PandaEatBamboo;
 import untamedwilds.init.ModEntity;
@@ -41,7 +39,6 @@ public class EntityGiantPanda extends AbstractBear {
         this.goalSelector.addGoal(1, new SmartSwimGoal(this));
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 2.3D, false, 1));
         this.goalSelector.addGoal(2, new PandaEatBamboo(this, 40, 16));
-        this.goalSelector.addGoal(3, new SmartFollowOwnerGoal(this, 2.3D, 12.0F, 3.0F));
         this.goalSelector.addGoal(3, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 6));
         this.goalSelector.addGoal(3, new PandaBreakBamboo(this, 200));
         this.goalSelector.addGoal(4, new SmartMateGoal(this, 1D));
@@ -49,10 +46,7 @@ public class EntityGiantPanda extends AbstractBear {
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, true));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
-        //this.goalSelector.addGoal(7, new SmartLookRandomlyGoal(this));
-        this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

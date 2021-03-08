@@ -60,9 +60,7 @@ public class SmartOwnerHurtTargetGoal extends TargetGoal {
 
             if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canAttackPlayer((PlayerEntity)owner)) {
                 return false;
-            } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTame()) {
-                return false;
-            }
+            } else return !(target instanceof AbstractHorseEntity) || !((AbstractHorseEntity) target).isTame();
         }
         return false;
     }
