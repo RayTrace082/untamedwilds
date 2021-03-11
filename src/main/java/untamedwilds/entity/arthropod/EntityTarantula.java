@@ -26,6 +26,7 @@ import untamedwilds.entity.ai.SmartSwimGoal;
 import untamedwilds.entity.ai.target.DontThreadOnMeTarget;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.init.ModSounds;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -109,7 +110,7 @@ public class EntityTarantula extends ComplexMob implements ISpecies {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        dropEggs("egg_tarantula_" + this.getRawSpeciesName().toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_tarantula_" + this.getRawSpeciesName().toLowerCase(), 4);
         return null;
     }
 
@@ -118,7 +119,7 @@ public class EntityTarantula extends ComplexMob implements ISpecies {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
 
         if (itemstack.getItem() == Items.GLASS_BOTTLE && this.isAlive()) {
-            turnEntityIntoItem("bottle_tarantula_" + this.getRawSpeciesName().toLowerCase());
+            EntityUtils.turnEntityIntoItem(this, "bottle_tarantula_" + this.getRawSpeciesName().toLowerCase());
             itemstack.shrink(1);
             return ActionResultType.func_233537_a_(this.world.isRemote);
         }

@@ -23,13 +23,11 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EntityBrownBear extends AbstractBear implements ISkins {
 
     public static final int SKIN_NUMBER = 4;
-    private static final List<ResourceLocation> TEXTURES = new ArrayList<>();
     private static final float SIZE = 1.1f; // Was 1f
     private static final String BREEDING = "EARLY_SUMMER";
     private static final int GESTATION = 8 * ConfigGamerules.cycleLength.get();

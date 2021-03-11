@@ -12,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
-import untamedwilds.entity.ComplexMob;
 import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModTags;
 import untamedwilds.util.EntityUtils;
@@ -36,7 +35,7 @@ public class BlockEntityCage extends TileEntity {
     public boolean cageEntity(Entity entity) {
         if (!this.hasCagedEntity()) {
             if (!isBlacklisted(entity)) {
-                this.setTagCompound(ComplexMob.writeEntityToNBT((LivingEntity) entity));
+                this.setTagCompound(EntityUtils.writeEntityToNBT((LivingEntity) entity));
                 this.setCagedEntity(true);
                 entity.remove();
                 markDirty();

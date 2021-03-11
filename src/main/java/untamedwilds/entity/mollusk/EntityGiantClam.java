@@ -119,7 +119,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        dropEggs("egg_giant_clam_" + this.getRawSpeciesName().toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_giant_clam_" + this.getRawSpeciesName().toLowerCase(), 4);
         return null;
     }
 
@@ -131,7 +131,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies {
             if (this.rand.nextInt(4) == 0) {
                 // Advancement Trigger: "Clam Digger"
                 world.playSound(null, this.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.BLOCKS, 1.0F, 0.8F);
-                turnEntityIntoItem("giant_clam_" + this.getRawSpeciesName().toLowerCase());
+                EntityUtils.turnEntityIntoItem(this, "giant_clam_" + this.getRawSpeciesName().toLowerCase());
                 return ActionResultType.func_233537_a_(this.world.isRemote);
             }
             else {

@@ -315,10 +315,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
                     }
                 }
             }
-            if (types.isEmpty()) {
-                return null;
-            }
-            return types.get(new Random().nextInt(types.size())).type;
+            return !types.isEmpty() ? types.get(new Random().nextInt(types.size())).type : null;
         }
     }
 }

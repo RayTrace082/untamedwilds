@@ -23,13 +23,11 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EntityBlackBear extends AbstractBear implements ISkins {
 
     public static final int SKIN_NUMBER = 5;
-    private static final List<ResourceLocation> TEXTURES = new ArrayList<>();
     private static final float SIZE = 0.8f;
     private static final String BREEDING = "EARLY_SUMMER";
     private static final int GESTATION = 8 * ConfigGamerules.cycleLength.get();
@@ -57,7 +55,6 @@ public class EntityBlackBear extends AbstractBear implements ISkins {
         this.goalSelector.addGoal(5, new BearRaidChestsGoal(this, 120));
         this.goalSelector.addGoal(6, new SmartWanderGoal(this, 1D, true));
         this.goalSelector.addGoal(7, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
-        //this.goalSelector.addGoal(7, new SmartLookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntityBlackBear)));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) <= 5));

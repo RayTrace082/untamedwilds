@@ -34,6 +34,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import untamedwilds.config.ConfigGamerules;
+import untamedwilds.util.EntityUtils;
 
 public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnimatedEntity {
 
@@ -80,7 +81,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
             if (!this.isSleeping() && this.forceSleep > 0) {
                 this.setSleeping(true);
             }
-            if (this.getAir() < 40 && this.ticksExisted % 10 == 0) { // TODO: There's probably a better place to dump this, but it refuses to work everywhere else
+            if (this.getAir() < 40 && this.ticksExisted % 10 == 0) { // TODO: There's probably a better place to dump this (mobs about to drown will go to the surface for air), but it refuses to work everywhere else
                 this.jump();
             }
             if (this.ticksExisted % 200 == 0) {
@@ -119,12 +120,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
             }
             if (ConfigGamerules.playerBreeding.get() && this.growingAge == 0) {
                 this.setInLove(player);
-                for (int i = 0; i < 7; ++i) {
-                    double d0 = this.rand.nextGaussian() * 0.02D;
-                    double d1 = this.rand.nextGaussian() * 0.02D;
-                    double d2 = this.rand.nextGaussian() * 0.02D;
-                    this.world.addParticle(ParticleTypes.HEART, this.getPosX() + (double)(this.rand.nextFloat() * this.getWidth() * 2.0F) - (double)this.getWidth(), this.getPosY() + 0.5D + (double)(this.rand.nextFloat() * this.getHeight()), this.getPosZ() + (double)(this.rand.nextFloat() * this.getWidth() * 2.0F) - (double)this.getWidth(), d0, d1, d2);
-                }
+                EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.HEART, 7, 1);
             }
             this.setAnimation(this.getAnimationEat());
             this.world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_GENERIC_EAT, this.getSoundCategory(), 1F, 1, true);

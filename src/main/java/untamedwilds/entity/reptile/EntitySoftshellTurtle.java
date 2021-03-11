@@ -23,6 +23,7 @@ import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.init.ModItems;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -122,7 +123,7 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        dropEggs("egg_softshell_turtle_" + this.getRawSpeciesName().toLowerCase(), 5);
+        EntityUtils.dropEggs(this, "egg_softshell_turtle_" + this.getRawSpeciesName().toLowerCase(), 5);
         return null;
     }
 
@@ -131,7 +132,7 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
 
         if (itemstack.isEmpty() && this.isAlive()) {
-            turnEntityIntoItem("softshell_turtle_" + this.getRawSpeciesName().toLowerCase());
+            EntityUtils.turnEntityIntoItem(this, "softshell_turtle_" + this.getRawSpeciesName().toLowerCase());
             return ActionResultType.func_233537_a_(this.world.isRemote);
         }
         return super.func_230254_b_(player, hand);

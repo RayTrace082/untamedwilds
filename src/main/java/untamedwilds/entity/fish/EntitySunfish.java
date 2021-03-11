@@ -23,6 +23,7 @@ import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
 import untamedwilds.entity.ISpecies;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class EntitySunfish extends ComplexMobAquatic implements ISpecies {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        dropEggs("egg_sunfish_" + this.getRawSpeciesName().toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_sunfish_" + this.getRawSpeciesName().toLowerCase(), 4);
         return null;
     }
 

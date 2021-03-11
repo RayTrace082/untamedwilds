@@ -26,6 +26,7 @@ import untamedwilds.entity.IPackEntity;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.FishReturnToSchoolGoal;
 import untamedwilds.entity.ai.FishWanderAsSchoolGoal;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -87,7 +88,7 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
                 }
             }
             if (itemstack.getItem().equals(Items.WATER_BUCKET) && this.isAlive()) {
-                mutateEntityIntoItem(player, hand, "bucket_trevally_" + this.getRawSpeciesName().toLowerCase(), itemstack);
+                EntityUtils.mutateEntityIntoItem(this, player, hand, "bucket_trevally_" + this.getRawSpeciesName().toLowerCase(), itemstack);
                 return ActionResultType.func_233537_a_(this.world.isRemote);
             }
         }
@@ -112,7 +113,7 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        dropEggs("egg_trevally_" + this.getRawSpeciesName().toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_trevally_" + this.getRawSpeciesName().toLowerCase(), 4);
         return null;
     }
 

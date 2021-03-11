@@ -27,6 +27,7 @@ import untamedwilds.entity.ai.SmartWanderGoal;
 import untamedwilds.entity.ai.target.DontThreadOnMeTarget;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.init.ModSounds;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
         this.goalSelector.addGoal(1, new SmartSwimGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.3D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 1D));
-        this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 8));
+        this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 6));
         this.goalSelector.addGoal(3, new SmartWanderGoal(this, 1.0D, true));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 4));
@@ -145,7 +146,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        dropEggs("egg_snake_" + this.getRawSpeciesName().toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_snake_" + this.getRawSpeciesName().toLowerCase(), 4);
         return null;
     }
 
@@ -154,7 +155,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
 
         if (itemstack.isEmpty() && this.isAlive()) {
-            turnEntityIntoItem("snake_" + this.getRawSpeciesName().toLowerCase());
+            EntityUtils.turnEntityIntoItem(this,"snake_" + this.getRawSpeciesName().toLowerCase());
             return ActionResultType.func_233537_a_(this.world.isRemote);
         }
         return super.func_230254_b_(player, hand);

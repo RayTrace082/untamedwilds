@@ -54,7 +54,7 @@ public class HerdEntity {
         }
         if (creature instanceof IPackEntity) {
             IPackEntity.initPack(creature);
-            creature.herd.setLeader(creature);
+            creature.herd.setLeader(creature); // TODO: Remove ???
             creature.herd.setOpenToCombine(false);
         }
     }

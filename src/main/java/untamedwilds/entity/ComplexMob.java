@@ -1,24 +1,19 @@
 package untamedwilds.entity;
 
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.Hand;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
@@ -27,7 +22,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
@@ -245,58 +239,6 @@ public abstract class ComplexMob extends TameableEntity {
         this.setMobSize(compound.getFloat("Size"));
         this.setGender(compound.getInt("Gender"));
         this.setAngry(compound.getBoolean("isAngry"));
-    }
-
-    // This method writes this entity into a CompoundNBT Tag
-    public static CompoundNBT writeEntityToNBT(LivingEntity entity) {
-        CompoundNBT baseTag = new CompoundNBT();
-        CompoundNBT entityTag = new CompoundNBT();
-        entity.writeUnlessRemoved(entityTag);
-        entityTag.remove("Pos"); // Remove the Position from the NBT data, as it would fuck things up later on
-        entityTag.remove("Motion");
-        baseTag.put("EntityTag", entityTag); // Put the entity in the Tag
-        return baseTag;
-    }
-
-    // This function makes the entity drop some Eggs of the given item_name, and with random stacksize between 1 and number
-    protected void dropEggs(String item_name, int number) {
-        ItemEntity entityitem = this.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase()))), 0.2F);
-        if (entityitem != null) {
-            entityitem.getItem().setCount(1 + this.rand.nextInt(number - 1));
-        }
-    }
-
-    // This function turns the entity into an item with item_name registry name, and removes the entity from the world
-    protected void turnEntityIntoItem(String item_name) {
-        ItemEntity entityitem = this.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase()))), 0.2F);
-        if (entityitem != null) {
-            entityitem.setMotion((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F, this.rand.nextFloat() * 0.05F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
-            entityitem.getItem().setTag(writeEntityToNBT(this));
-            if (this.hasCustomName()) {
-                entityitem.getItem().setDisplayName(this.getCustomName());
-            }
-            this.remove();
-        }
-    }
-
-    // This function replaces a given ItemStack with a new item with item_name registry name, and removes the entity from the world
-    protected void mutateEntityIntoItem(PlayerEntity player, Hand hand, String item_name, ItemStack itemstack) {
-        this.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
-        itemstack.shrink(1);
-        ItemStack newitem = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase())));
-        newitem.setTag(writeEntityToNBT(this));
-        if (this.hasCustomName()) {
-            newitem.setDisplayName(this.getCustomName());
-        }
-        if (!this.world.isRemote) {
-            CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity)player, newitem);
-        }
-        if (itemstack.isEmpty()) {
-            player.setHeldItem(hand, newitem);
-        } else if (!player.inventory.addItemStackToInventory(newitem)) {
-            player.dropItem(newitem, false);
-        }
-        this.remove();
     }
 
     @Nullable
