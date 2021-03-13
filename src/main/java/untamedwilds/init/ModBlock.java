@@ -50,9 +50,12 @@ public class ModBlock {
     public static RegistryObject<Block> PEARL_BLOCK  = createBlock("block_pearl", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.CYAN).hardnessAndResistance(5.0F, 6.0F).sound(SoundType.STONE)), ItemGroup.BUILDING_BLOCKS, ConfigMobControl.addGiantClam.get());
     
     public static RegistryObject<Block> ANEMONE_ROSE_BULB  = createBlock("anemone_rose_bulb", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.RED).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS, ConfigFeatureControl.addAnemones.get());
-    public static RegistryObject<Block> ANEMONE_SAND  = createBlock("anemone_sand", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.RED).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS, ConfigFeatureControl.addAnemones.get());
-    public static RegistryObject<Block> ANEMONE_SEBAE  = createBlock("anemone_sebae", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.RED).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS, ConfigFeatureControl.addAnemones.get());
-    public static RegistryObject<Block> ORCHID_RED = createBlock("flora_orchid_red", () -> new BlockPlantEpyphite(Block.Properties.create(Material.PLANTS, MaterialColor.RED).hardnessAndResistance(0.0F).sound(SoundType.PLANT)), ItemGroup.DECORATIONS);
+    public static RegistryObject<Block> ANEMONE_SAND  = createBlock("anemone_sand", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.PINK).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS, ConfigFeatureControl.addAnemones.get());
+    public static RegistryObject<Block> ANEMONE_SEBAE  = createBlock("anemone_sebae", () -> new BlockFaunaAnemone(Block.Properties.create(Material.OCEAN_PLANT, MaterialColor.WHITE_TERRACOTTA).hardnessAndResistance(0.1F).sound(SoundType.SLIME)), ItemGroup.DECORATIONS, ConfigFeatureControl.addAnemones.get());
+    public static RegistryObject<Block> ORCHID_MAGENTA = createBlock("flora_orchid_magenta", () -> new BlockPlantEpyphite(Block.Properties.create(Material.PLANTS, MaterialColor.MAGENTA).hardnessAndResistance(0.0F).sound(SoundType.PLANT)), ItemGroup.DECORATIONS, ConfigFeatureControl.addTreeOrchids.get());
+    public static RegistryObject<Block> ORCHID_PURPLE = createBlock("flora_orchid_purple", () -> new BlockPlantEpyphite(Block.Properties.create(Material.PLANTS, MaterialColor.PURPLE).hardnessAndResistance(0.0F).sound(SoundType.PLANT)), ItemGroup.DECORATIONS, ConfigFeatureControl.addTreeOrchids.get());
+    public static RegistryObject<Block> ORCHID_PINK = createBlock("flora_orchid_pink", () -> new BlockPlantEpyphite(Block.Properties.create(Material.PLANTS, MaterialColor.PINK).hardnessAndResistance(0.0F).sound(SoundType.PLANT)), ItemGroup.DECORATIONS, ConfigFeatureControl.addTreeOrchids.get());
+    public static RegistryObject<Block> ORCHID_RED = createBlock("flora_orchid_red", () -> new BlockPlantEpyphite(Block.Properties.create(Material.PLANTS, MaterialColor.RED).hardnessAndResistance(0.0F).sound(SoundType.PLANT)), ItemGroup.DECORATIONS, ConfigFeatureControl.addTreeOrchids.get());
     public static RegistryObject<Block> COMMON_REED = createBlock("flora_common_reed", () -> new FloraReeds(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(0.1F).sound(SoundType.VINE).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addReeds.get(), 100);
     public static RegistryObject<Block> AMAZON_SWORD = createBlock("flora_amazon_sword", () -> new AlgaeBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(0).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addReeds.get());
 
@@ -91,6 +94,11 @@ public class ModBlock {
             RenderTypeLookup.setRenderLayer(ModBlock.ANEMONE_SAND.get(), RenderType.getCutout());
             RenderTypeLookup.setRenderLayer(ModBlock.ANEMONE_ROSE_BULB.get(), RenderType.getCutout());
         }
-        RenderTypeLookup.setRenderLayer(ModBlock.ORCHID_RED.get(), RenderType.getCutout());
+        if (ConfigFeatureControl.addTreeOrchids.get()) {
+            RenderTypeLookup.setRenderLayer(ModBlock.ORCHID_MAGENTA.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlock.ORCHID_PINK.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlock.ORCHID_PURPLE.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlock.ORCHID_RED.get(), RenderType.getCutout());
+        }
     }
 }

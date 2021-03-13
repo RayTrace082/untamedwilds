@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=east": { 
+			"model": "untamedwilds:block/flora_orchid_purple",
+			"y": 270
+		},
+        "facing=south": { 
+			"model": "untamedwilds:block/flora_orchid_purple"
+		},
+        "facing=west": { 
+			"model": "untamedwilds:block/flora_orchid_purple",
+			"y": 90
+		},
+        "facing=north": { 
+			"model": "untamedwilds:block/flora_orchid_purple",
+			"y": 180
+		}
+    }
+}
