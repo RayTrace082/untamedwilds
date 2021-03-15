@@ -9,7 +9,7 @@ This mod requires [Citadel](https://www.curseforge.com/minecraft/mc-mods/citadel
 
 - All mobs/features are created as part of Worldgen. They also will not respawn (outside of breeding/growing)
 * Mobs featured in this list encompass a multitude of Species; Species are dynamically assigned to each Biome depending on its features from a list of weighted entries, providing out of the box compatibility.
-- Smaller mobs can be picked up (depending on the mob) to ease their transportation, larger mobs can be transported by using Cage Traps. 
+- Smaller mobs can be picked up (depending on the mob) to ease their transportation, larger mobs need to be transported by using Cage Traps. 
 * While the default parameters aim to be "believable", a plethora of Config options allow the user to replicate Vanilla behaviours (such as breeding being triggered through the favourite item)
 - A very WIP guidebook is provided through [Patchouli](https://www.curseforge.com/minecraft/mc-mods/patchouli) (book + any piece of hide). Content in the book has been generated from data sourced from Wikipedia, processed through the NLTK Python library and manually edited.
 
@@ -27,13 +27,13 @@ Aardvarks provide an alternative source of Rabbit Hide in a biome where it can n
 
 There are currently 8 different species of Bear, ranging from the humble Black Bear to the elusive Cave Bear. Bears can be found in Jungles and most Cold and Temperate biomes, expect to find Polar Bears in snowy biomes, Brown Bears in mountains and Black Bears in Forests
 
-Bears are potentially dangerous mobs, as players disturbing sleeping Bears, or trying to approach Bear cubs in the presence of an adult Bear will result in a mauling, furthermore, some of the bigger Bears may actively hunt Players for food too. Additionally, some hungry Bears may raid your chests (or any inventory) in search of food, so protect your supplies carefully.
+Bears are dangerous mobs, as players disturbing sleeping Bears, or trying to approach Bear cubs in the presence of an adult Bear will result in a mauling, furthermore, some of the bigger Bears may actively hunt Players for food too. Additionally, some hungry Bears may raid your chests (or any inventory) in search of food, so protect your supplies carefully.
 
 On death, Bears drop meat, fat, bones and their fur
 
 ###🐅 Big Cat
 
-7 species of Big Cat can be found in the wild (with a few more NYI). Big Cats can be found in most Land Biomes and are hypercarnivorous predators (that is, they can only eat meat/fish).
+7 species of Big Cat can be found in the wild (with a few more NYI). Big Cats can be found in most Land Biomes.
 
 Many species of Big Cat will actively hunt players if hungry enough, albeit their elusive nature should make these events rare. Furthermore, approaching Big Cat cubs will enrage their mother.
 
