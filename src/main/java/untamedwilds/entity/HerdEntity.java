@@ -3,7 +3,6 @@ package untamedwilds.entity;
 import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -145,9 +144,5 @@ public class HerdEntity {
             herd1.setRadius(herd2.getRadius());
         }
         herd1.creatureList.addAll(herd2.creatureList);
-        ComplexMob creature;
-        for (Iterator<ComplexMob> i$ = herd2.creatureList.iterator(); i$.hasNext(); creature.herd = herd1) {
-            creature = i$.next();
-        }
     }
 }

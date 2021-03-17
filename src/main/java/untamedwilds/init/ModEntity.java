@@ -23,6 +23,7 @@ import untamedwilds.client.render.*;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.arthropod.EntityTarantula;
+import untamedwilds.entity.fish.EntityArowana;
 import untamedwilds.entity.fish.EntitySunfish;
 import untamedwilds.entity.fish.EntityTrevally;
 import untamedwilds.entity.mammal.EntityAardvark;
@@ -85,6 +86,7 @@ public class ModEntity {
     // Fish
     public static EntityType<EntitySunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), EntitySunfish::new,  "sunfish",  1.6F, 1.6F, 0x2C545B, 0xB6D0D3, animalType.LARGE_OCEAN, 1);
     public static EntityType<EntityTrevally> TREVALLY = createEntity(ConfigMobControl.addTrevally.get(), EntityTrevally::new,  "trevally",  1.0F, 1.0F, 0xA5B4AF, 0xC89D17, animalType.LARGE_OCEAN, 2, 8);
+    public static EntityType<EntityArowana> AROWANA = createEntity(ConfigMobControl.addArowana.get(), EntityArowana::new,  "arowana",  1.0F, 0.6F, 0x645C45, 0xB29F52, animalType.CRITTER, 1);
 
     @SubscribeEvent
     public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
@@ -167,6 +169,7 @@ public class ModEntity {
 
         event.put(SUNFISH, EntitySunfish.registerAttributes().create());
         event.put(TREVALLY, EntityTrevally.registerAttributes().create());
+        event.put(AROWANA, EntityArowana.registerAttributes().create());
     }
 
     @SubscribeEvent
@@ -226,6 +229,9 @@ public class ModEntity {
         }
         if (ConfigMobControl.addTrevally.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.TREVALLY, RendererTrevally::new);
+        }
+        if (ConfigMobControl.addArowana.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.AROWANA, RendererArowana::new);
         }
     }
 

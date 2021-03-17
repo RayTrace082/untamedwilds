@@ -93,16 +93,15 @@ public class ModelTrevally extends AdvancedEntityModel<EntityTrevally> {
         );
     }
 
-    public void setRotationAngles(EntityTrevally tarantula, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setRotationAngles(EntityTrevally trevally, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
         float globalSpeed = 0.8f;
         float globalDegree = 1f;
-        float f = ageInTicks;
 
         this.head_main.scaleX = 1.1F;
-
-        if (!tarantula.isInWater()) {
+        this.body_main.defaultPositionY =+ 8;
+        if (!trevally.isInWater()) {
             body_main.defaultPositionY =+ 25;
             this.setRotateAngle(body_main, 0, 0, (float)Math.toRadians(90D));
         }
@@ -110,11 +109,11 @@ public class ModelTrevally extends AdvancedEntityModel<EntityTrevally> {
         swing(body_tail, globalSpeed * 0.4F, globalDegree * 0.8f, false, 0.0f, 0, limbSwing, limbSwingAmount);
         swing(fin_tail, globalSpeed * 0.4F, globalDegree * 0.8f, false, 0.8f, 0, limbSwing, limbSwingAmount);
 
-        float speed = Math.min((float)tarantula.getSpeed(), 0.08F);
+        float speed = Math.min((float)trevally.getSpeed(), 0.08F);
         this.fin_dorsal.rotateAngleX = this.fin_dorsal.defaultRotationX + speed * -8;
         this.fin_top.rotateAngleX = this.fin_top.defaultRotationX + speed * -3;
         this.fin_bottom.rotateAngleX = this.fin_bottom.defaultRotationX + speed * 3;
-        swing(fin_left, globalSpeed, globalDegree * 0.8f, false, 0, 0.2f, f / 6, 0.6F);
-        swing(fin_right, globalSpeed, globalDegree * 0.8f, true, 0, 0.2f, f / 6, 0.6F);
+        swing(fin_left, globalSpeed, globalDegree * 0.8f, false, 0, 0.2f, ageInTicks / 6, 0.6F);
+        swing(fin_right, globalSpeed, globalDegree * 0.8f, true, 0, 0.2f, ageInTicks / 6, 0.6F);
     }
 }

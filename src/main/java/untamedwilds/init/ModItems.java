@@ -10,6 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.arthropod.EntityTarantula;
+import untamedwilds.entity.fish.EntityArowana;
 import untamedwilds.entity.fish.EntitySunfish;
 import untamedwilds.entity.fish.EntityTrevally;
 import untamedwilds.entity.mollusk.EntityGiantClam;
@@ -126,6 +127,14 @@ public class ModItems {
                 int trevallySpecies = i;
                 ModItems.ITEMS.register("egg_trevally_" + EntityTrevally.SpeciesTrevally.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.TREVALLY, trevallySpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
                 ModItems.ITEMS.register("bucket_trevally_" + EntityTrevally.SpeciesTrevally.values()[i].name().toLowerCase(), () -> new ItemMobBucketed(ModEntity.TREVALLY, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), trevallySpecies, EntityTrevally.SpeciesTrevally.values()[trevallySpecies].name().toLowerCase()));
+            }
+        }
+        // Arowana Items
+        if (ConfigMobControl.addArowana.get()) {
+            for (int i = 0; i < EntityArowana.SpeciesArowana.values().length; i++) {
+                int arowanaSpecies = i;
+                ModItems.ITEMS.register("egg_arowana_" + EntityArowana.SpeciesArowana.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.AROWANA, arowanaSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("bucket_arowana_" + EntityArowana.SpeciesArowana.values()[i].name().toLowerCase(), () -> new ItemMobBucketed(ModEntity.AROWANA, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), arowanaSpecies, EntityArowana.SpeciesArowana.values()[arowanaSpecies].name().toLowerCase()));
             }
         }
     }
