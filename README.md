@@ -61,6 +61,14 @@ Trevallies are schooling fish, and can be bucketed up for transportation.
 
 While they mostly provide ambience, they drop some Fish on death.
 
+###🐟 Arowana
+
+6 Species of Arowana can be found in jungles (and as a temporary measure, in Swamps), including 2 rare variants.
+
+Arowana are fancy predatory fish with a tendency to leap out of water, and can be bucketed up for transportation.
+
+Arowana provide ambience and are fit for aquariums, but also drop some Tropical Fish on death.
+
 ###🕷️ Tarantula
 
 8 Species of Tarantula will populate the warm biomes of Minecraft, and as Critters, can be picked up by right-clicking with an empty bottle.

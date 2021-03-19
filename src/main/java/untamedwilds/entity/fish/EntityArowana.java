@@ -11,12 +11,12 @@ import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
+import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
@@ -67,9 +67,11 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies {
             }
         }
 
-        if (this.getAttackTarget() == null && this.isInWater()) {
-            double eyeHeight = (double) this.getEyeHeight() + 0.4F;
-            if (this.func_233571_b_(FluidTags.WATER) < eyeHeight) {
+        if (this.getAttackTarget() == null && this.isInWater() && this.ticksExisted % 10 == 0) {
+            //double eyeHeight = (double) this.getEyeHeight() + 1.6F;
+            //((ServerWorld)this.world).spawnParticle(ParticleTypes.FLAME, this.getPosX(), this.getPosY() + eyeHeight, this.getPosZ(), 1, 0, 0, 0, 0);
+            if (world.hasWater(this.getPosition().up().up())) {
+                UntamedWilds.LOGGER.info("JUMPING");
                 this.getJumpController().setJumping();
             }
         }

@@ -107,11 +107,9 @@ public abstract class EntityUtils {
                         itemstack.getChildTag("EntityTag").putUniqueId("UUID", MathHelper.getRandomUUID(worldIn.rand));
                     }
                 }
-                itemstack.getChildTag("EntityTag").remove("Pos"); // TODO: Temporary solution to prevent loss of mobs with Pos tag
-                
+
                 spawn = entity.spawn(worldIn, itemstack, player, spawnPos, SpawnReason.BUCKET, true, offset);
                 if (spawn != null) {
-                    //spawn.setLocationAndAngles(spawnPos.getX() + 0.5F, spawnPos.getY(), spawnPos.getZ() + 0.5F, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
                     if (itemstack.hasDisplayName()) {
                         spawn.setCustomName(itemstack.getDisplayName());
                     }

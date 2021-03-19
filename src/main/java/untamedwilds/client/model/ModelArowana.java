@@ -111,9 +111,8 @@ public class ModelArowana extends AdvancedEntityModel<EntityArowana> {
         float globalDegree = 1f;
 
         this.body_head.scaleX = 1.1F;
-        this.body_main.defaultPositionY =+ 12;
+        this.head_mouth.scaleX = 1.1F;
         if (!arowana.isInWater()) {
-            body_main.defaultPositionY =+ 25;
             this.setRotateAngle(body_main, 0, 0, (float)Math.toRadians(90D));
         }
         else {

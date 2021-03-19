@@ -100,9 +100,7 @@ public class ModelTrevally extends AdvancedEntityModel<EntityTrevally> {
         float globalDegree = 1f;
 
         this.head_main.scaleX = 1.1F;
-        this.body_main.defaultPositionY =+ 8;
         if (!trevally.isInWater()) {
-            body_main.defaultPositionY =+ 25;
             this.setRotateAngle(body_main, 0, 0, (float)Math.toRadians(90D));
         }
         swing(body_main, globalSpeed * 0.4F, globalDegree * 0.8f, false, -0.8f, 0, limbSwing, limbSwingAmount);
