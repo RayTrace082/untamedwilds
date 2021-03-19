@@ -1,17 +1,17 @@
 {
-    "name": "Northern Saratoga" , 
+    "name": "Jardini Arowana" ,
     "icon": "untamedwilds:textures/icon/arowana/jardini.png" , 
     "category": "arowana_category" , 
     "pages": [
         {
             "type": "text" , 
-            "title": "Northern Saratoga" , 
+            "title": "Jardini Arowana" ,
             "text": "It has numerous other common names, including northern saratoga, toga and barramundi (not to be confused with the barramundi perch, Lates calcarifer). Its scientific name is sometimes spelled S. jardini. It is a member of the subfamily Osteoglossinae, a (basal) teleost group."
         } , 
         {
             "type": "entity" , 
             "entity": "untamedwilds:arowana{Variant: 4}" , 
-            "text": "A Northern Saratoga"
+            "text": "A Jardini Arowana"
         }
     ]
 }
