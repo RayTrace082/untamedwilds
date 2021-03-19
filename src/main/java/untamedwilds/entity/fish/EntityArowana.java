@@ -72,7 +72,7 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies {
             //((ServerWorld)this.world).spawnParticle(ParticleTypes.FLAME, this.getPosX(), this.getPosY() + eyeHeight, this.getPosZ(), 1, 0, 0, 0, 0);
             if (world.hasWater(this.getPosition().up().up())) {
                 UntamedWilds.LOGGER.info("JUMPING");
-                this.getJumpController().setJumping();
+                this.setMotion(this.getMotion().add(0, 0.1F, 0)); // Coerces the Arowana to stay at the surface
             }
         }
         super.livingTick();

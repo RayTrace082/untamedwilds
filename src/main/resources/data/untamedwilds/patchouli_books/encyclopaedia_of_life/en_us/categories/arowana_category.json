@@ -1,0 +1,6 @@
+{
+    "name": "arowana" ,
+    "description": "List of all discovered Arowana species" ,
+    "icon": "minecraft:writable_book" ,
+    "parent": "taxon_mammal"
+}

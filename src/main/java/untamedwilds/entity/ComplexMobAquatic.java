@@ -159,7 +159,7 @@ public abstract class ComplexMobAquatic extends ComplexMob {
     protected static class SwimGoal extends RandomSwimmingGoal {
 
         public SwimGoal(ComplexMobAquatic entity) {
-            super(entity, 1.0D, 40);
+            super(entity, 1.0D, 20);
         }
 
         public boolean shouldExecute() {
