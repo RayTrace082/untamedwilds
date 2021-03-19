@@ -11,6 +11,8 @@ public abstract class FaunaHandler {
     private final static List<SpawnListEntry> spawnCritter = Lists.newArrayList();
     private final static List<SpawnListEntry> spawnUndergroundLarge = Lists.newArrayList();
     private final static List<SpawnListEntry> spawnLargePrey = Lists.newArrayList();
+    // This list is meant to populate rivers and water bodies with fish, and has higher density to compensate for the scarcity of water
+    private final static List<SpawnListEntry> spawnDenseWater = Lists.newArrayList();
     private final static List<SpawnListEntry> spawnOcean = Lists.newArrayList();
     private final static List<SpawnListEntry> spawnSessile = Lists.newArrayList();
     private final static List<SpawnListEntry> spawnSmallPred = Lists.newArrayList();
@@ -27,6 +29,8 @@ public abstract class FaunaHandler {
                 return spawnCritter;
             case SESSILE:
                 return spawnSessile;
+            case DENSE_WATER:
+                return spawnDenseWater;
             case LARGE_OCEAN:
                 return spawnOcean;
             case LARGE_HERB:
@@ -60,6 +64,7 @@ public abstract class FaunaHandler {
     public enum animalType {
         CRITTER,
         SESSILE,
+        DENSE_WATER,
         LARGE_OCEAN,
         LARGE_HERB,
         SMALL_PRED,

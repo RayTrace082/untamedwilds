@@ -46,7 +46,8 @@ public class UntamedWildsGenerator {
     private static final RegistryObject<Feature<NoFeatureConfig>> CRITTERS = regFeature("critter", () -> new FeatureCritters(NoFeatureConfig.field_236558_a_));
     private static final RegistryObject<Feature<NoFeatureConfig>> SESSILE = regFeature("sessile", () -> new FeatureOceanSessileSpawns(NoFeatureConfig.field_236558_a_));
 
-    private static final RegistryObject<Feature<NoFeatureConfig>> OCEAN_RARE = regFeature("ocean_rare", () -> new FeatureOceanSwimming(NoFeatureConfig.field_236558_a_));
+    private static final RegistryObject<Feature<NoFeatureConfig>> OCEAN = regFeature("ocean_rare", () -> new FeatureOceanSwimming(NoFeatureConfig.field_236558_a_));
+    private static final RegistryObject<Feature<NoFeatureConfig>> DENSE_WATER = regFeature("dense_water", () -> new FeatureDenseWater(NoFeatureConfig.field_236558_a_));
 
     private static <B extends Feature<?>> RegistryObject<B> regFeature(String name, Supplier<? extends B> supplier) {
         return FEATURES.register(name, supplier);
@@ -61,7 +62,7 @@ public class UntamedWildsGenerator {
         // Thanks Mojang, very cool 😎
         if (event.getCategory() == Biome.Category.OCEAN) {
             registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SESSILE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(4), SESSILE.get().getRegistryName());
-            registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, OCEAN_RARE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(16), OCEAN_RARE.get().getRegistryName());
+            registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, OCEAN.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(16), OCEAN.get().getRegistryName());
             if (!event.getName().toString().equals("minecraft:frozen_ocean") && !event.getName().toString().equals("minecraft:deep_frozen_ocean")) {
                 if (ConfigFeatureControl.addAnemones.get()) {
                     registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, SEA_ANEMONE.get().withConfiguration(new FeatureSpreadConfig(4)).withPlacement(Features.Placements.PATCH_PLACEMENT).chance(16), SEA_ANEMONE.get().getRegistryName());
@@ -76,6 +77,7 @@ public class UntamedWildsGenerator {
                 registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, ALGAE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).chance(1), ALGAE.get().getRegistryName());
             }
         }
+        registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, DENSE_WATER.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(2), DENSE_WATER.get().getRegistryName());
 
         event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.1F)).chance(10)));
         event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(24));

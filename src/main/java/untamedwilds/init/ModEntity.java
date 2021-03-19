@@ -86,7 +86,7 @@ public class ModEntity {
     // Fish
     public static EntityType<EntitySunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), EntitySunfish::new,  "sunfish",  1.6F, 1.6F, 0x2C545B, 0xB6D0D3, animalType.LARGE_OCEAN, 1);
     public static EntityType<EntityTrevally> TREVALLY = createEntity(ConfigMobControl.addTrevally.get(), EntityTrevally::new,  "trevally",  0.8F, 0.8F, 0xA5B4AF, 0xC89D17, animalType.LARGE_OCEAN, 2, 8);
-    public static EntityType<EntityArowana> AROWANA = createEntity(ConfigMobControl.addArowana.get(), EntityArowana::new,  "arowana",  0.6F, 0.6F, 0x645C45, 0xB29F52, animalType.CRITTER, 1);
+    public static EntityType<EntityArowana> AROWANA = createEntity(ConfigMobControl.addArowana.get(), EntityArowana::new,  "arowana",  0.6F, 0.6F, 0x645C45, 0xB29F52, animalType.DENSE_WATER, 1);
 
     @SubscribeEvent
     public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {

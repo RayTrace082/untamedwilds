@@ -14,16 +14,16 @@ import untamedwilds.world.FaunaSpawn;
 
 import java.util.Random;
 
-public class FeatureOceanSwimming extends Feature<NoFeatureConfig> {
+public class FeatureDenseWater extends Feature<NoFeatureConfig> {
 
-    public FeatureOceanSwimming(Codec<NoFeatureConfig> codec) {
+    public FeatureDenseWater(Codec<NoFeatureConfig> codec) {
         super(codec);
     }
 
     public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        pos = world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.add(0, 4 + rand.nextInt(world.getSeaLevel() - (pos.getY() - 4)), 0));
+        pos = world.getHeight(Heightmap.Type.WORLD_SURFACE, pos);
         for (int i = 0; i < 5; i++) {
-            FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_OCEAN));
+            FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.DENSE_WATER));
             if (FaunaSpawn.performWorldGenSpawning(entry.entityType, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, world, pos, rand, entry.groupCount)) {
                 return true;
             }
