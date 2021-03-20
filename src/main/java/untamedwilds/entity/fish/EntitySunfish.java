@@ -95,7 +95,7 @@ public class EntitySunfish extends ComplexMobAquatic implements ISpecies {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_sunfish_" + this.getRawSpeciesName().toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_sunfish_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 4);
         return null;
     }
 
@@ -124,8 +124,8 @@ public class EntitySunfish extends ComplexMobAquatic implements ISpecies {
         return 99;
     }
 
-    public String getSpeciesName() { return new TranslationTextComponent("entity.untamedwilds.sunfish_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return EntitySunfish.SpeciesSunfish.values()[this.getVariant()].name().toLowerCase(); }
+    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.sunfish_" + getRawSpeciesName(i)).getString(); }
+    public String getRawSpeciesName(int i) { return SpeciesSunfish.values()[i].name().toLowerCase(); }
 
     public enum SpeciesSunfish implements IStringSerializable {
 

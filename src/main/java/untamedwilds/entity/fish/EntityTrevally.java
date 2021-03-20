@@ -88,7 +88,7 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
                 }
             }
             if (itemstack.getItem().equals(Items.WATER_BUCKET) && this.isAlive()) {
-                EntityUtils.mutateEntityIntoItem(this, player, hand, "bucket_trevally_" + this.getRawSpeciesName().toLowerCase(), itemstack);
+                EntityUtils.mutateEntityIntoItem(this, player, hand, "bucket_trevally_" + getRawSpeciesName(this.getVariant()).toLowerCase(), itemstack);
                 return ActionResultType.func_233537_a_(this.world.isRemote);
             }
         }
@@ -113,7 +113,7 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_trevally_" + this.getRawSpeciesName().toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_trevally_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 4);
         return null;
     }
 
@@ -143,8 +143,8 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
         return EntityTrevally.SpeciesTrevally.getSpeciesByBiome(biome);
     }
 
-    public String getSpeciesName() { return new TranslationTextComponent("entity.untamedwilds.trevally_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return EntityTrevally.SpeciesTrevally.values()[this.getVariant()].name().toLowerCase(); }
+    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.trevally_" + getRawSpeciesName(i)).getString(); }
+    public String getRawSpeciesName(int i) { return SpeciesTrevally.values()[i].name().toLowerCase(); }
 
     public enum SpeciesTrevally implements IStringSerializable {
 

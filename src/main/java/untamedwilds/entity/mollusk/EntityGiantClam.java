@@ -119,7 +119,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_giant_clam_" + this.getRawSpeciesName().toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_giant_clam_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 4);
         return null;
     }
 
@@ -131,7 +131,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies {
             if (this.rand.nextInt(4) == 0) {
                 // Advancement Trigger: "Clam Digger"
                 world.playSound(null, this.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.BLOCKS, 1.0F, 0.8F);
-                EntityUtils.turnEntityIntoItem(this, "giant_clam_" + this.getRawSpeciesName().toLowerCase());
+                EntityUtils.turnEntityIntoItem(this, "giant_clam_" + getRawSpeciesName(this.getVariant()).toLowerCase());
                 return ActionResultType.func_233537_a_(this.world.isRemote);
             }
             else {
@@ -155,8 +155,8 @@ public class EntityGiantClam extends ComplexMob implements ISpecies {
         }
         return 99;
     }
-    public String getSpeciesName() { return new TranslationTextComponent("item.untamedwilds.giant_clam_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return SpeciesGiantClam.values()[this.getVariant()].name().toLowerCase(); }
+    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.giant_clam_" + getRawSpeciesName(i)).getString(); }
+    public String getRawSpeciesName(int i) { return SpeciesGiantClam.values()[i].name().toLowerCase(); }
 
     public boolean canBeTargeted() { return false; }
     private boolean isOpen(){ return (this.dataManager.get(CLAM_OPEN)); }

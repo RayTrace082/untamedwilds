@@ -110,7 +110,7 @@ public class EntityTarantula extends ComplexMob implements ISpecies {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_tarantula_" + this.getRawSpeciesName().toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_tarantula_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 4);
         return null;
     }
 
@@ -119,7 +119,7 @@ public class EntityTarantula extends ComplexMob implements ISpecies {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
 
         if (itemstack.getItem() == Items.GLASS_BOTTLE && this.isAlive()) {
-            EntityUtils.turnEntityIntoItem(this, "bottle_tarantula_" + this.getRawSpeciesName().toLowerCase());
+            EntityUtils.turnEntityIntoItem(this, "bottle_tarantula_" + getRawSpeciesName(this.getVariant()).toLowerCase());
             itemstack.shrink(1);
             return ActionResultType.func_233537_a_(this.world.isRemote);
         }
@@ -168,8 +168,9 @@ public class EntityTarantula extends ComplexMob implements ISpecies {
         }
         return SpeciesTarantula.getSpeciesByBiome(biome);
     }
-    public String getSpeciesName() { return new TranslationTextComponent("item.untamedwilds.tarantula_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return SpeciesTarantula.values()[this.getVariant()].name().toLowerCase(); }
+
+    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.tarantula_" + getRawSpeciesName(i)).getString(); }
+    public String getRawSpeciesName(int i) { return SpeciesTarantula.values()[i].name().toLowerCase(); }
 
     public enum SpeciesTarantula implements IStringSerializable {
 

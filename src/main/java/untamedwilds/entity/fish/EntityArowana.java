@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-;
-
 public class EntityArowana extends ComplexMobAquatic implements ISpecies {
 
     private static final String BREEDING = "MID_SUMMER";
@@ -78,7 +76,7 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
         if (hand == Hand.MAIN_HAND) {
             if (itemstack.getItem().equals(Items.WATER_BUCKET) && this.isAlive()) {
-                EntityUtils.mutateEntityIntoItem(this, player, hand, "bucket_arowana_" + this.getRawSpeciesName().toLowerCase(), itemstack);
+                EntityUtils.mutateEntityIntoItem(this, player, hand, "bucket_arowana_" + getRawSpeciesName(this.getVariant()).toLowerCase(), itemstack);
                 return ActionResultType.func_233537_a_(this.world.isRemote);
             }
         }
@@ -103,13 +101,13 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_arowana_" + this.getRawSpeciesName().toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_arowana_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 4);
         return null;
     }
 
     @Override
     protected SoundEvent getFlopSound() {
-        return SoundEvents.ENTITY_GUARDIAN_FLOP;
+        return SoundEvents.ENTITY_COD_FLOP;
     }
     public int getAdulthoodTime() { return GROWING; }
     public String getBreedingSeason() { return BREEDING; }
@@ -122,8 +120,8 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies {
         return EntityArowana.SpeciesArowana.getSpeciesByBiome(biome);
     }
 
-    public String getSpeciesName() { return new TranslationTextComponent("entity.untamedwilds.arowana_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return EntityArowana.SpeciesArowana.values()[this.getVariant()].name().toLowerCase(); }
+    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.arowana_" + getRawSpeciesName(i)).getString(); }
+    public String getRawSpeciesName(int i) { return SpeciesArowana.values()[i].name().toLowerCase(); }
 
     public enum SpeciesArowana implements IStringSerializable {
 

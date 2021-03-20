@@ -38,7 +38,7 @@ public class ItemAnalyzer extends Item {
 
             if (ConfigGamerules.scientificNames.get()) {
                 if (entity instanceof ISpecies) {
-                    playerIn.sendMessage(new TranslationTextComponent(entity.getType().getTranslationKey() + "_" + ((ISpecies) entity).getRawSpeciesName() + ".sciname").mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
+                    playerIn.sendMessage(new TranslationTextComponent(entity.getType().getTranslationKey() + "_" + ((ISpecies) entity).getRawSpeciesName(entity.getVariant()) + ".sciname").mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
                 }
                 else {
                     playerIn.sendMessage(new TranslationTextComponent(entity.getType().getTranslationKey() + ".sciname").mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());

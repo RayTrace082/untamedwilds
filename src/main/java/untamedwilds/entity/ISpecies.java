@@ -15,7 +15,11 @@ public interface ISpecies {
 
     int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason);
 
-    String getRawSpeciesName();
+    String getRawSpeciesName(int i);
 
-    String getSpeciesName();
+    String getSpeciesName(int i);
+
+    default String getSpeciesName() {
+        return this instanceof ComplexMob ? getSpeciesName(((ComplexMob)this).getVariant()) : "";
+    }
 }

@@ -146,7 +146,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_snake_" + this.getRawSpeciesName().toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_snake_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 4);
         return null;
     }
 
@@ -155,7 +155,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
 
         if (itemstack.isEmpty() && this.isAlive()) {
-            EntityUtils.turnEntityIntoItem(this,"snake_" + this.getRawSpeciesName().toLowerCase());
+            EntityUtils.turnEntityIntoItem(this,"snake_" + getRawSpeciesName(this.getVariant()).toLowerCase());
             return ActionResultType.func_233537_a_(this.world.isRemote);
         }
         return super.func_230254_b_(player, hand);
@@ -176,8 +176,8 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
         return EntitySnake.SpeciesSnake.getSpeciesByBiome(biome);
     }
 
-    public String getSpeciesName() { return new TranslationTextComponent("item.untamedwilds.snake_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return EntitySnake.SpeciesSnake.values()[this.getVariant()].name().toLowerCase(); }
+    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.snake_" + getRawSpeciesName(i)).getString(); }
+    public String getRawSpeciesName(int i) { return SpeciesSnake.values()[i].name().toLowerCase(); }
 
     public boolean isRattler() { return SpeciesSnake.values()[this.getVariant()].isRattler(); }
 

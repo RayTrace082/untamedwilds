@@ -73,6 +73,10 @@ public class ItemMobEgg extends Item {
         return ActionResultType.CONSUME;
     }
 
+    public String getTranslationKey() {
+        return new TranslationTextComponent("item.untamedwilds.egg_" + this.entity.getRegistryName().getPath()).getString();
+    }
+
     // TODO: Have dropped eggs eventually hatch into baby mobs
     /*@Override
     public boolean onEntityItemUpdate(EntityItem entityItem) {

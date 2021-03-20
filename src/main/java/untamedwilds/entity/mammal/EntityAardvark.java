@@ -149,8 +149,9 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
         return EntityAardvark.SpeciesAardvark.getSpeciesByBiome(biome);
     }
 
-    public String getSpeciesName() { return new TranslationTextComponent("entity.untamedwilds.aardvark_" + this.getRawSpeciesName()).getString(); }
-    public String getRawSpeciesName() { return EntityAardvark.SpeciesAardvark.values()[this.getVariant()].name().toLowerCase(); }
+
+    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.aardvark_" + getRawSpeciesName(i)).getString(); }
+    public String getRawSpeciesName(int i) { return SpeciesAardvark.values()[i].name().toLowerCase(); }
 
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == ModItems.VEGETABLE_AARDVARK_CUCUMBER.get(); }
     public String getBreedingSeason() { return BREEDING; }
