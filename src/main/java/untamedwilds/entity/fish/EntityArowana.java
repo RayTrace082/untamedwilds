@@ -16,7 +16,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
@@ -68,10 +67,7 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies {
         }
 
         if (this.getAttackTarget() == null && this.isInWater() && this.ticksExisted % 10 == 0) {
-            //double eyeHeight = (double) this.getEyeHeight() + 1.6F;
-            //((ServerWorld)this.world).spawnParticle(ParticleTypes.FLAME, this.getPosX(), this.getPosY() + eyeHeight, this.getPosZ(), 1, 0, 0, 0, 0);
             if (world.hasWater(this.getPosition().up().up())) {
-                UntamedWilds.LOGGER.info("JUMPING");
                 this.setMotion(this.getMotion().add(0, 0.1F, 0)); // Coerces the Arowana to stay at the surface
             }
         }
