@@ -70,14 +70,17 @@ public class ModBlock {
     }
 
     public static <B extends Block> RegistryObject<B> createBlock(String name, Supplier<? extends B> supplier, @Nullable ItemGroup group, boolean add, int burnTime) {
-        RegistryObject<B> block = ModBlock.BLOCKS.register(name, supplier);
-        if (burnTime != 0) {
-            ModItems.ITEMS.register(name, () -> new FuelBlockItem(block.get(), burnTime, new Item.Properties().group(group)));
+        if (add) {
+            RegistryObject<B> block = ModBlock.BLOCKS.register(name, supplier);
+            if (burnTime != 0) {
+                ModItems.ITEMS.register(name, () -> new FuelBlockItem(block.get(), burnTime, new Item.Properties().group(group)));
+            }
+            else {
+                ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(group)));
+            }
+            return block;
         }
-        else {
-            ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(group)));
-        }
-        return block;
+        return null;
     }
 
     public static <B extends Block> RegistryObject<B> createItemlessBlock(String name, Supplier<? extends B> supplier) {

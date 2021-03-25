@@ -29,20 +29,12 @@ public class ItemAnalyzer extends Item {
         if (world.isRemote) return ActionResultType.PASS;
         if (target instanceof ComplexMob) {
             ComplexMob entity = (ComplexMob)target;
-            if (entity instanceof ISpecies) {
-                playerIn.sendMessage(new StringTextComponent("Diagnose: " + entity.getGenderString() + " " + ((ISpecies) entity).getSpeciesName() + " " + entity.getHealth() + "/" + entity.getMaxHealth() + " HP"), playerIn.getUniqueID());
-            }
-            else {
-                playerIn.sendMessage(new StringTextComponent("Diagnose: " + entity.getGenderString() + " " + entity.getName().getString() + " " + entity.getHealth() + "/" + entity.getMaxHealth() + " HP"), playerIn.getUniqueID());
-            }
+            String entityName = entity instanceof ISpecies ? ((ISpecies) entity).getSpeciesName() : entity.getName().getString();
+            playerIn.sendMessage(new StringTextComponent("Diagnose: " + entity.getGenderString() + " " + entityName + " " + entity.getHealth() + "/" + entity.getMaxHealth() + " HP"), playerIn.getUniqueID());
 
             if (ConfigGamerules.scientificNames.get()) {
-                if (entity instanceof ISpecies) {
-                    playerIn.sendMessage(new TranslationTextComponent(entity.getType().getTranslationKey() + "_" + ((ISpecies) entity).getRawSpeciesName(entity.getVariant()) + ".sciname").mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
-                }
-                else {
-                    playerIn.sendMessage(new TranslationTextComponent(entity.getType().getTranslationKey() + ".sciname").mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
-                }
+                String useVarName = entity instanceof ISpecies ? "_" + ((ISpecies) entity).getRawSpeciesName(entity.getVariant()) : "";
+                playerIn.sendMessage(new TranslationTextComponent(entity.getType().getTranslationKey() + useVarName + ".sciname").mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
             }
             if (target instanceof ComplexMobTerrestrial) {
                 playerIn.sendMessage(new StringTextComponent("Hunger: " + ((ComplexMobTerrestrial)entity).getHunger() + "/100 Hunger"), playerIn.getUniqueID());

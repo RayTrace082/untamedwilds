@@ -79,7 +79,6 @@ public class ModItems {
         return null;
     }
 
-
     public static void registerSpawnItems() {
         // These items have no associated objects, as they are not supposed to be accessed, and I do not want to register each variant
         // Tarantula Items

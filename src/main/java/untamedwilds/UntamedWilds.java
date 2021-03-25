@@ -28,6 +28,7 @@ public class UntamedWilds {
     // TODO: Abstract Herd logic to be functional with any LivingEntity (instead of being limited to IPackEntity ComplexMob)
     // TODO: Define list of diggable items, maybe extend it to it's own weighted list and include Truffles and funsies
     // TODO: Store the children's UUID in their mother's NBT, to allow checking for Children without constant AABB checking
+    // TODO: Cut down on model .json files by replacing entries in "ItemModelMesher.register"
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";
@@ -43,12 +44,10 @@ public class UntamedWilds {
 
     public UntamedWilds() {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ConfigBase.server_config);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigBase.client_config);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigBase.common_config);
+        ConfigBase.loadConfig(ConfigBase.common_config, FMLPaths.CONFIGDIR.get().resolve("untamedwilds-server.toml").toString());
         eventBus.addListener(this::setupCommon);
         eventBus.addListener(this::setupClient);
-        ConfigBase.loadConfig(ConfigBase.server_config, FMLPaths.CONFIGDIR.get().resolve("untamedwilds-server.toml").toString());
-        ConfigBase.loadConfig(ConfigBase.client_config, FMLPaths.CONFIGDIR.get().resolve("untamedwilds-client.toml").toString());
         ModBlock.BLOCKS.register(eventBus);
         ModBlock.TILE_ENTITY_TYPES.register(eventBus);
         ModItems.registerSpawnItems();

@@ -195,7 +195,6 @@
   "entity.untamedwilds.snake": "Snake",
   "entity.untamedwilds.snake_adder": "Adder",
   "entity.untamedwilds.snake_adder.sciname": "Vipera berus",
-  "item.untamedwilds.snake_adder": "Adder",
   "entity.untamedwilds.snake_ball_python": "Ball Python",
   "entity.untamedwilds.snake_ball_python.sciname": "Python regius",
   "entity.untamedwilds.snake_black_mamba": "Black Mamba",
@@ -244,7 +243,6 @@
   "mobspawn.tooltip.unknown": "???",
   "mobspawn.tooltip.male": "Male",
   "mobspawn.tooltip.female": "Female",
-  "mobspawn.tooltip.dead": "Dead",
   "item.untamedwilds.debug_love_potion": "Love Potion",
   "item.untamedwilds.debug_ipecac": "Ipecac",
   "item.untamedwilds.debug_eraser": "Giant Eraser",
@@ -272,7 +270,6 @@
   "block.untamedwilds.flora_common_reed": "Common Reed",
   "block.untamedwilds.flora_amazon_sword": "Amazon Sword",
 
-  "block.untamedwilds.brazier": "Brazier",
   "block.untamedwilds.block_lard": "Block of Lard",
   "block.untamedwilds.block_pearl": "Pearl Block",
   "block.untamedwilds.carpet_straw": "Straw Carpet",

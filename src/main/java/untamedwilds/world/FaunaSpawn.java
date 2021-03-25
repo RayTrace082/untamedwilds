@@ -6,7 +6,6 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockReader;
@@ -17,7 +16,6 @@ import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ISpecies;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -53,7 +51,7 @@ public class FaunaSpawn {
         BlockPos blockpos1 = pos.down();
         switch(placeType) {
             case IN_WATER:
-                return ifluidstate.isTagged(FluidTags.WATER) && worldIn.getFluidState(blockpos1).isTagged(FluidTags.WATER) && !worldIn.getBlockState(blockpos).isNormalCube(worldIn, blockpos);
+                return ifluidstate.isTagged(FluidTags.WATER) /*&& worldIn.getFluidState(blockpos1).isTagged(FluidTags.WATER)*/ && !worldIn.getBlockState(blockpos).isNormalCube(worldIn, blockpos);
             case IN_LAVA:
                 return ifluidstate.isTagged(FluidTags.LAVA);
             case ON_GROUND:
@@ -64,13 +62,6 @@ public class FaunaSpawn {
                 } else {
                     return isSpawnableSpace(worldIn, pos, blockstate, ifluidstate, entityTypeIn); /* && isSpawnableSpace(worldIn, blockpos, worldIn.getBlockState(blockpos), worldIn.getFluidState(blockpos)*/
                 }
-        }
-    }
-
-    public static void performWorldGenSpawning(List<FaunaHandler.SpawnListEntry> list, EntitySpawnPlacementRegistry.PlacementType spawnType, ISeedReader worldIn, BlockPos pos, Random rand) {
-        if (list.size() != 0) {
-            FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, list);
-            performWorldGenSpawning(entry.entityType, spawnType, worldIn, pos, rand, entry.groupCount);
         }
     }
 

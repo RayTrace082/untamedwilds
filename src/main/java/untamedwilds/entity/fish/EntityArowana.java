@@ -126,11 +126,11 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies {
     public enum SpeciesArowana implements IStringSerializable {
 
         BLACK		(0, 0.8F, 10, Biome.Category.JUNGLE),
-        DRAGON	(1, 1.1F, 1, Biome.Category.SWAMP, Biome.Category.JUNGLE),
+        DRAGON	    (1, 1.1F, 1, Biome.Category.SWAMP, Biome.Category.JUNGLE),
         GOLDEN    	(2, 1.1F,  1, Biome.Category.SWAMP, Biome.Category.JUNGLE),
         GREEN		(3, 1.1F, 8, Biome.Category.SWAMP, Biome.Category.JUNGLE),
-        JARDINI		(3, 1F, 6, Biome.Category.SWAMP),
-        SILVER    	(4, 1F, 10, Biome.Category.JUNGLE);
+        JARDINI		(4, 1F, 6, Biome.Category.SWAMP),
+        SILVER    	(5, 1F, 10, Biome.Category.JUNGLE);
 
         public Float scale;
         public int species;

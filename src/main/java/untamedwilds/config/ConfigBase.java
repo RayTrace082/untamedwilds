@@ -6,29 +6,26 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;
 import untamedwilds.UntamedWilds;
 
-import java.io.File;
-
 @Mod.EventBusSubscriber(modid = UntamedWilds.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ConfigBase {
-    private static final ForgeConfigSpec.Builder server_builder = new ForgeConfigSpec.Builder();
-    public static final ForgeConfigSpec server_config;
+    private static final ForgeConfigSpec.Builder common_builder = new ForgeConfigSpec.Builder();
+    public static final ForgeConfigSpec common_config;
 
-    private static final ForgeConfigSpec.Builder client_builder = new ForgeConfigSpec.Builder();
-    public static final ForgeConfigSpec client_config;
+    public static final ConfigFeatureControl FEATURES;
+    public static final ConfigGamerules GAMERULES;
+    public static final ConfigMobControl MOBS;
 
     static {
-        ConfigGamerules.init(server_builder);
-        ConfigMobControl.init(server_builder, client_builder);
-        ConfigFeatureControl.init(server_builder, client_builder);
+        FEATURES = new ConfigFeatureControl(common_builder);
+        GAMERULES = new ConfigGamerules(common_builder);
+        MOBS = new ConfigMobControl(common_builder);
 
-        server_config = server_builder.build();
-        client_config = client_builder.build();
+        common_config = common_builder.build();
     }
 
     public static void loadConfig(ForgeConfigSpec config, String path) {
-        UntamedWilds.LOGGER.info("Loading Config: " + path);
-        final CommentedFileConfig file = CommentedFileConfig.builder(new File(path)).sync().autosave().writingMode(WritingMode.REPLACE).build();
-        file.load();
-        config.setConfig(file);
+        final CommentedFileConfig configData = CommentedFileConfig.builder(path).sync().autosave().writingMode(WritingMode.REPLACE).build();
+        configData.load();
+        config.setConfig(configData);
     }
 }

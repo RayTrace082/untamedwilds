@@ -35,7 +35,7 @@ public class SmartSwimGoal extends Goal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return !(this.entity.isOnGround() || !this.entity.isInWater() || this.entity.getAttackTarget() == null);
+        return !this.entity.isOnGround() && this.entity.isInWater() && this.entity.getAttackTarget() == null;
     }
 
     @Override
