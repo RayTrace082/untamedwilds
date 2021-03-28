@@ -25,6 +25,7 @@ public class ModelTrevally extends AdvancedEntityModel<EntityTrevally> {
         this.head_main = new AdvancedModelBox(this, 0, 18);
         this.head_main.setRotationPoint(0.0F, 1.57F, -2.53F);
         this.head_main.addBox(-1.5F, -3.5F, -5.0F, 3, 6, 5, 0.0F);
+        this.head_main.scaleX = 1.1F;
         this.setRotateAngle(head_main, -0.5462880558742251F, 0.0F, 0.0F);
         this.body_tail = new AdvancedModelBox(this, 18, 0);
         this.body_tail.setRotationPoint(0.0F, 0.0F, 5.0F);
@@ -96,16 +97,14 @@ public class ModelTrevally extends AdvancedEntityModel<EntityTrevally> {
     public void setRotationAngles(EntityTrevally trevally, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
-        float globalSpeed = 0.8f;
+        float globalSpeed = 0.6f;
         float globalDegree = 1f;
 
-        this.head_main.scaleX = 1.1F;
         if (!trevally.isInWater()) {
             this.setRotateAngle(body_main, 0, 0, (float)Math.toRadians(90D));
         }
-        swing(body_main, globalSpeed * 0.4F, globalDegree * 0.8f, false, -0.8f, 0, limbSwing, limbSwingAmount);
-        swing(body_tail, globalSpeed * 0.4F, globalDegree * 0.8f, false, 0.0f, 0, limbSwing, limbSwingAmount);
-        swing(fin_tail, globalSpeed * 0.4F, globalDegree * 0.8f, false, 0.8f, 0, limbSwing, limbSwingAmount);
+        AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{head_main, body_main, body_tail, fin_tail};
+        chainSwing(bodyParts, globalSpeed, globalDegree * 1.3f, -5, limbSwing, limbSwingAmount);
 
         float speed = Math.min((float)trevally.getSpeed(), 0.08F);
         this.fin_dorsal.rotateAngleX = this.fin_dorsal.defaultRotationX + speed * -8;

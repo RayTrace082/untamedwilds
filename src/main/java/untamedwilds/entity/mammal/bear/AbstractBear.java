@@ -10,6 +10,7 @@ import net.minecraft.entity.Pose;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -214,6 +215,9 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
         if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
             if (this.isTamed() && this.getOwner() == player) {
+                if (itemstack.getItem() == Items.BLAZE_ROD) {
+                    this.setAnimation(this.chooseAttackAnimation());
+                }
                 if (itemstack.isEmpty()) {
                     this.setCommandInt(this.getCommandInt() + 1);
                     player.sendMessage(new TranslationTextComponent("entity.untamedwilds.command." + this.getCommandInt()), Util.DUMMY_UUID);

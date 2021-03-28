@@ -10,6 +10,7 @@ import net.minecraft.entity.Pose;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -48,6 +49,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     public AbstractBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
         super(type, worldIn);
         ATTACK_POUNCE = Animation.create(42);
+        ATTACK_MAUL = Animation.create(22);
         IDLE_TALK = Animation.create(20);
         IDLE_STRETCH = Animation.create(110);
         this.stepHeight = 1;
@@ -124,10 +126,17 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
             if (this.ticksExisted % 80 == 2 && this.getAttackTarget() != null && this.getAnimation() == NO_ANIMATION) {
                 this.setAnimation(ANIMATION_ROAR);
             }
+            if (this.getAnimation() == ATTACK_POUNCE && this.getAnimationTick() == 10) {
+                this.getMoveHelper().strafe(2F, 0);
+                this.getJumpController().setJumping();
+            }
             this.setAngry(this.getAttackTarget() != null);
         }
         if (this.getAnimation() == ANIMATION_EAT && (this.getAnimationTick() == 10 || this.getAnimationTick() == 20 || this.getAnimationTick() == 30)) {
             this.playSound(SoundEvents.ENTITY_HORSE_EAT,1.5F, 0.8F);
+        }
+        if (this.getAnimation() == ATTACK_MAUL && this.getAnimationTick() == 10) {
+            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP,1.5F, 0.8F);
         }
         if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
             SoundEvent sound = this instanceof EntityPuma ? SoundEvents.ENTITY_OCELOT_AMBIENT : ModSounds.ENTITY_BIG_CAT_AMBIENT;
@@ -181,6 +190,10 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
                 }
             }
 
+            if (itemstack.getItem() == Items.BLAZE_ROD) {
+                this.setAnimation(ATTACK_POUNCE);
+            }
+
             if (this.isTamed() && this.getOwner() == player) {
                 if (itemstack.isEmpty()) {
                     this.setCommandInt(this.getCommandInt() + 1);
@@ -230,21 +243,24 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     public boolean attackEntityAsMob(Entity entityIn) {
         boolean flag = super.attackEntityAsMob(entityIn);
         if (flag && this.getAnimation() == NO_ANIMATION && !this.isChild()) {
-            Animation anim = chooseAttackAnimation(this);
+            Animation anim = chooseAttackAnimation(entityIn);
             this.setAnimation(anim);
             this.setAnimationTick(0);
         }
         return flag;
     }
 
-    private Animation chooseAttackAnimation(Entity entityIn) {
+    private Animation chooseAttackAnimation(Entity target) {
+        if (target.getHeight() < this.getHeight()) {
+            return ATTACK_MAUL;
+        }
         return ATTACK_POUNCE;
     }
 
     //public Animation getAnimationEat() { return ANIMATION_EAT; }
     @Override
     public Animation[] getAnimations() {
-        return new Animation[]{NO_ANIMATION, ATTACK_POUNCE, IDLE_TALK, IDLE_STRETCH};
+        return new Animation[]{NO_ANIMATION, ATTACK_POUNCE, ATTACK_MAUL, IDLE_TALK, IDLE_STRETCH};
     }
 
     protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {

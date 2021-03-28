@@ -16,6 +16,8 @@ public class SmartLookAtGoal extends Goal {
     protected final float maxDistance;
     private int lookTime;
     private final int chance;
+    private double lookX;
+    private double lookZ;
     protected final Class<? extends LivingEntity> watchedClass;
     protected final EntityPredicate SHOULD_LOOK;
 
@@ -55,20 +57,26 @@ public class SmartLookAtGoal extends Goal {
                 this.closestEntity = this.taskOwner.world.func_225318_b(this.watchedClass, this.SHOULD_LOOK, this.taskOwner, this.taskOwner.getPosX(), this.taskOwner.getPosY() + (double)this.taskOwner.getEyeHeight(), this.taskOwner.getPosZ(), this.taskOwner.getBoundingBox().grow(this.maxDistance, 3.0D, this.maxDistance));
             }
 
-            return this.closestEntity != null;
+            return this.closestEntity != null || this.taskOwner.getRNG().nextInt(20) != 0;
         }
     }
 
     @Override
     public boolean shouldContinueExecuting() {
-        if (!this.closestEntity.isAlive() || this.taskOwner.getDistanceSq(this.closestEntity) > (double)(this.maxDistance * this.maxDistance)) {
+        /*if (!this.closestEntity.isAlive() || this.taskOwner.getDistanceSq(this.closestEntity) > (double)(this.maxDistance * this.maxDistance)) {
             return false;
-        }
+        }*/
         return this.lookTime > 0;
     }
 
     @Override
     public void startExecuting() {
+        if (this.closestEntity == null) {
+            double d0 = (Math.PI * 2D) * this.taskOwner.getRNG().nextDouble();
+            this.lookX = Math.cos(d0);
+            this.lookZ = Math.sin(d0);
+            this.lookTime = 20 + this.taskOwner.getRNG().nextInt(20);
+        }
         this.lookTime = 40 + this.taskOwner.getRNG().nextInt(40);
     }
 
@@ -79,7 +87,12 @@ public class SmartLookAtGoal extends Goal {
 
     @Override
     public void tick() {
-        this.taskOwner.getLookController().setLookPosition(this.closestEntity.getPosX(), this.closestEntity.getPosY() + (double)this.closestEntity.getEyeHeight(), this.closestEntity.getPosZ());
+        if (this.closestEntity == null) {
+            this.taskOwner.getLookController().setLookPosition(this.taskOwner.getPosX() + this.lookX, this.taskOwner.getPosY() + (double)this.taskOwner.getEyeHeight(), this.taskOwner.getPosZ());
+        }
+        else {
+            this.taskOwner.getLookController().setLookPosition(this.closestEntity.getPosX(), this.closestEntity.getPosY() + (double)this.closestEntity.getEyeHeight(), this.closestEntity.getPosZ(), 20, this.taskOwner.getVerticalFaceSpeed());
+        }
         --this.lookTime;
     }
 }

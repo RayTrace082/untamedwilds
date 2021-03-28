@@ -119,6 +119,7 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat> {
         this.head_jaw.setRotationPoint(0.0F, 1.9F, -3.5F);
         this.head_jaw.addBox(-2.0F, 0.0F, -3.5F, 4, 1, 3, 0.0F);
         this.setRotateAngle(head_jaw, 0.136659280431156F, 0.0F, 0.0F);
+        this.head_jaw.scaleX = 0.95F;
         this.leg_left_upper = new AdvancedModelBox(this, 38, 46);
         this.leg_left_upper.mirror = true;
         this.leg_left_upper.setRotationPoint(2.0F, 0.0F, 6.0F);
@@ -303,7 +304,7 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat> {
         animator.endKeyframe();
         animator.startKeyframe(6);
         this.rotate(animator, body_main, 2.61F, 0, 0);
-        animator.move(body_main, 0, -6, 0);
+        //animator.move(body_main, 0, -6, 0);
         this.rotate(animator, body_abdomen, -7.83F, 0, 0);
         this.rotate(animator, head_neck, -10.43F, -5.22F, 7.83F);
         this.rotate(animator, head_main, 0, 2.61F, -18.26F);
@@ -338,10 +339,10 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat> {
         animator.move(arm_right_upper, 0, 1F, 0);
         this.rotate(animator, arm_right_paw, 23.48F, 0, 0);
         this.rotate(animator, leg_left_upper, 2.61F, -5.22F, -10.43F);
-        this.rotate(animator, leg_left_paw, 78.26F, 0, 0);
+        //this.rotate(animator, leg_left_paw, 78.26F, 0, 0);
         animator.move(leg_left_paw, 0, 1F, 1F);
         this.rotate(animator, leg_right_upper, 2.61F, 5.22F, 10.43F);
-        this.rotate(animator, leg_right_paw, 78.26F, 0, 0);
+        //this.rotate(animator, leg_right_paw, 78.26F, 0, 0);
         animator.move(leg_right_paw, 0, 1F, 1F);
         this.rotate(animator, tail_1, -15.65F, 0, 0);
         animator.endKeyframe();
@@ -361,6 +362,43 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat> {
         this.rotate(animator, leg_left_upper, -5.22F, 0, -2.61F);
         this.rotate(animator, leg_right_upper, -5.22F, 0, 2.61F);
         this.rotate(animator, tail_1, -15.65F, 0, 0);
+        animator.endKeyframe();
+        animator.resetKeyframe(8);
+
+        animator.setAnimation(AbstractBigCat.ATTACK_MAUL);
+        animator.startKeyframe(8);
+        animator.move(body_main, 0, -0.7F, 0);
+        this.rotate(animator, body_main, -5.22F, -10.43F, 7.83F);
+        this.rotate(animator, body_abdomen, -5.22F, 10.43F, -7.83F);
+        this.rotate(animator, head_main, 31.30F, -13.04F, 23.48F);
+        animator.move(arm_right_upper, -1, -1, 0);
+        this.rotate(animator, arm_right_upper, -78.26F, 33.91F, -10.43F);
+        this.rotate(animator, arm_right_lower, -62.61F, -5.22F, -5.22F);
+        animator.move(arm_right_paw, 0, 2F, 1.4F);
+        this.rotate(animator, arm_right_paw, 164.35F, 0, 0);
+        animator.move(arm_left_upper, 0, 0.9F, 0);
+        this.rotate(animator, arm_left_upper, 23.48F, 10.43F, -10.43F);
+        this.rotate(animator, leg_right_upper, -2.61F, 0, 2.61F);
+        this.rotate(animator, leg_left_upper, -2.61F, 0, -2.61F);
+        animator.endKeyframe();
+        animator.startKeyframe(6);
+        animator.move(body_main, 0, 1.9F, 0);
+        this.rotate(animator, body_main, 13.04F, -10.43F, 7.83F);
+        this.rotate(animator, body_abdomen, -23.48F, 10.43F, -7.83F);
+        this.rotate(animator, head_main, 39.13F, 7.83F, 0);
+        this.rotate(animator, head_jaw, 33.91F, 0, 0);
+        this.rotate(animator, head_neck, -54.78F, 0, 0);
+        animator.move(arm_right_upper, 0, 0, -2);
+        this.rotate(animator, arm_right_upper, -73.04F, 13.04F, -10.43F);
+        this.rotate(animator, arm_right_lower, -13.04F, -5.22F, -5.22F);
+        animator.move(arm_right_paw, 0, 0, -0.7F);
+        this.rotate(animator, arm_right_paw, 117.39F, 0, 0);
+        animator.move(arm_left_upper, 0, -1.2F, 0);
+        this.rotate(animator, arm_left_upper, 15.65F, 10.43F, -10.43F);
+        this.rotate(animator, arm_left_lower, -60, 0, 5.22F);
+        this.rotate(animator, arm_left_paw, 31.30F, 0, 0);
+        this.rotate(animator, leg_right_upper, -2.61F, 0, 2.61F);
+        this.rotate(animator, leg_left_upper, -2.61F, 0, -2.61F);
         animator.endKeyframe();
         animator.resetKeyframe(8);
 
@@ -439,7 +477,6 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat> {
         else {
             this.head_snout_teeth.scaleX = 0.9F;
         }
-        this.head_jaw.scaleX = 0.95F;
 
         // Controls the head tracking
         if (!big_cat.isSleeping()) {

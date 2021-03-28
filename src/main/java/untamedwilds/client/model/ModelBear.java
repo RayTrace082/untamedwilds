@@ -422,6 +422,7 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
         float globalDegree = 1f;
         limbSwingAmount *= 2;
         limbSwing *= 0.5F;
+
         if (limbSwingAmount > 0.3F) {
             limbSwingAmount = 0.3F;
         }

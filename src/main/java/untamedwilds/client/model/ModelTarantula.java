@@ -151,7 +151,7 @@ public class ModelTarantula extends AdvancedEntityModel<EntityTarantula> {
         limbSwing = ageInTicks;
 
         float globalSpeed = 1.2f;
-        float globalDegree = 0.6f;
+        float globalDegree = 1.4f;
 
         this.abdomen.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F));
         bob(mainbody, 0.4F * 1.5f, 0.03F, false, ageInTicks / 20, 2);
@@ -170,30 +170,21 @@ public class ModelTarantula extends AdvancedEntityModel<EntityTarantula> {
             this.progressRotation(legL1, tarantula.aggroProgress, (float)Math.toRadians(41.74D), (float)Math.toRadians(-180D), (float)Math.toRadians(-75.65F), 40);
         }
         else {
-            swing(legL1, globalSpeed, globalDegree * 1.2f, false, 0 + 1.57f*2, 0.1f, limbSwing, limbSwingAmount);
-            flap(legL1, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*2, 0.2f, limbSwing, limbSwingAmount);
-            flap(legL12, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*2, 0f, limbSwing, limbSwingAmount);
-            swing(legR1, globalSpeed, globalDegree * 1.2f, false, 0, -0.1f, limbSwing, limbSwingAmount);
-            flap(legR1, globalSpeed, globalDegree * 0.8f, true, 1.57f, -0.2f, limbSwing, limbSwingAmount);
-            flap(legR12, globalSpeed, globalDegree * 0.8f, true, 1.57f, 0f, limbSwing, limbSwingAmount);
+            animateArthropodLeg(legL1, legL12, globalSpeed, globalDegree, 3, limbSwing, limbSwingAmount);
+            animateArthropodLeg(legR1, legR12, globalSpeed, globalDegree, 0, limbSwing, limbSwingAmount);
         }
-        swing(legL2, globalSpeed, globalDegree * 1.2f, false, 0 + 1.57f*3, 0.1f, limbSwing, limbSwingAmount);
-        flap(legL2, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*3, 0.2f, limbSwing, limbSwingAmount);
-        flap(legL22, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*3, 0f, limbSwing, limbSwingAmount);
-        swing(legL3, globalSpeed, globalDegree * 1.2f, false, 0, 0.1f, limbSwing, limbSwingAmount);
-        flap(legL3, globalSpeed, globalDegree * 0.8f, true, 1.57f, 0.2f, limbSwing, limbSwingAmount);
-        flap(legL32, globalSpeed, globalDegree * 0.8f, true, 1.57f, 0f, limbSwing, limbSwingAmount);
-        swing(legL4, globalSpeed, globalDegree * 1.2f, false, 0 + 1.57f, 0.1f, limbSwing, limbSwingAmount);
-        flap(legL4, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f, 0.2f, limbSwing, limbSwingAmount);
-        flap(legL42, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f, 0f, limbSwing, limbSwingAmount);
-        swing(legR2, globalSpeed, globalDegree * 1.2f, false, 0 + 1.57f, -0.1f, limbSwing, limbSwingAmount);
-        flap(legR2, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f, -0.2f, limbSwing, limbSwingAmount);
-        flap(legR22, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f, 0f, limbSwing, limbSwingAmount);
-        swing(legR3, globalSpeed, globalDegree * 1.2f, false, 0 + 1.57f*2, -0.1f, limbSwing, limbSwingAmount);
-        flap(legR3, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*2, -0.2f, limbSwing, limbSwingAmount);
-        flap(legR32, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*2, 0f, limbSwing, limbSwingAmount);
-        swing(legR4, globalSpeed, globalDegree * 1.2f, false, 0 + 1.57f*3, -0.1f, limbSwing, limbSwingAmount);
-        flap(legR4, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*3, -0.2f, limbSwing, limbSwingAmount);
-        flap(legR42, globalSpeed, globalDegree * 0.8f, true, 1.57f + 1.57f*3, 0f, limbSwing, limbSwingAmount);
+        animateArthropodLeg(legL2, legL22, globalSpeed, globalDegree, 4, limbSwing, limbSwingAmount);
+        animateArthropodLeg(legL3, legL32, globalSpeed, globalDegree, 0, limbSwing, limbSwingAmount);
+        animateArthropodLeg(legL4, legL42, globalSpeed, globalDegree, 1, limbSwing, limbSwingAmount);
+
+        animateArthropodLeg(legR2, legR22, globalSpeed, globalDegree, 2, limbSwing, limbSwingAmount);
+        animateArthropodLeg(legR3, legR32, globalSpeed, globalDegree, 3, limbSwing, limbSwingAmount);
+        animateArthropodLeg(legR4, legR42, globalSpeed, globalDegree, 5, limbSwing, limbSwingAmount);
+    }
+
+    private void animateArthropodLeg(AdvancedModelBox limb_1, AdvancedModelBox limb_2, float speed, float degree, int offset, float limbSwing, float limbSwingAmount) {
+        swing(limb_1, speed, degree * 1.2f, false, offset, 0.1f, limbSwing, limbSwingAmount);
+        flap(limb_1, speed, degree * 0.8f, true, offset + 1.5F, 0.2f, limbSwing, limbSwingAmount);
+        flap(limb_2, speed, degree * 0.8f, true, offset + 1.5F, 0f, limbSwing, limbSwingAmount);
     }
 }
