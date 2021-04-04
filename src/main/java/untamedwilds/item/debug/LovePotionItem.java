@@ -9,9 +9,9 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import untamedwilds.entity.ComplexMob;
 
-public class ItemLovePotion extends Item {
+public class LovePotionItem extends Item {
 
-    public ItemLovePotion(Properties properties) {
+    public LovePotionItem(Properties properties) {
         super(properties);
     }
 

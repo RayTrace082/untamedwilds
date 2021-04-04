@@ -17,9 +17,9 @@ import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.util.TimeUtils;
 
-public class ItemAnalyzer extends Item {
+public class AnalyzerItem extends Item {
 
-    public ItemAnalyzer(Properties properties) {
+    public AnalyzerItem(Properties properties) {
         super(properties);
     }
 

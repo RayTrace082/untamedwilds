@@ -1,4 +1,4 @@
-package untamedwilds.block;
+package untamedwilds.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;

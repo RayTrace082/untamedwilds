@@ -22,12 +22,12 @@ import untamedwilds.util.EntityUtils;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemMobBucketed  extends BucketItem {
+public class MobBucketedItem extends BucketItem {
     private final EntityType<? extends ComplexMob> entity;
     private final int species;
     private final String sciname;
 
-    public ItemMobBucketed(EntityType<? extends ComplexMob> typeIn, Fluid fluid, Item.Properties builder, int species, String sciname) {
+    public MobBucketedItem(EntityType<? extends ComplexMob> typeIn, Fluid fluid, Item.Properties builder, int species, String sciname) {
         super(fluid, builder);
         this.entity = typeIn;
         this.species = species;

@@ -23,9 +23,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class ItemOwnershipDeed extends Item {
+public class OwnershipDeedItem extends Item {
     
-    public ItemOwnershipDeed(Properties properties) {
+    public OwnershipDeedItem(Properties properties) {
         super(properties);
     }
 

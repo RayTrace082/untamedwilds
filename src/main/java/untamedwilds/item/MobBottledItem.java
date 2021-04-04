@@ -22,12 +22,12 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class ItemMobBottled extends Item {
+public class MobBottledItem extends Item {
     private final EntityType<? extends ComplexMob> entity;
     private final int species;
     private final String sciname;
 
-    public ItemMobBottled(EntityType<? extends ComplexMob> typeIn, int species, String sciname, Properties properties) {
+    public MobBottledItem(EntityType<? extends ComplexMob> typeIn, int species, String sciname, Properties properties) {
         super(properties);
         this.entity = typeIn;
         this.species = species;

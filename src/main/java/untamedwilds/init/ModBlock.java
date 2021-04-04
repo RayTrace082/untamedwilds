@@ -20,6 +20,7 @@ import untamedwilds.block.*;
 import untamedwilds.block.blockentity.CageBlockEntity;
 import untamedwilds.config.ConfigFeatureControl;
 import untamedwilds.config.ConfigMobControl;
+import untamedwilds.item.FuelBlockItem;
 
 import javax.annotation.Nullable;
 import java.util.function.Supplier;

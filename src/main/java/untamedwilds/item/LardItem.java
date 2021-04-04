@@ -7,8 +7,8 @@ import net.minecraft.item.UseAction;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
-public class ItemLard extends Item {
-    public ItemLard(Item.Properties builder) {
+public class LardItem extends Item {
+    public LardItem(Item.Properties builder) {
         super(builder);
     }
 

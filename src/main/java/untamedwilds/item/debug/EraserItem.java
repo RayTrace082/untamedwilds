@@ -7,9 +7,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 
-public class ItemEraser extends Item {
+public class EraserItem extends Item {
 
-    public ItemEraser(Properties properties) {
+    public EraserItem(Properties properties) {
         super(properties);
     }
 

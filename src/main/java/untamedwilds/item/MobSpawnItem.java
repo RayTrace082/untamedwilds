@@ -22,12 +22,12 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class ItemMobSpawn extends Item {
+public class MobSpawnItem extends Item {
     private final EntityType<? extends ComplexMob> entity;
     private final int species;
     private final String species_name;
 
-    public ItemMobSpawn(EntityType<? extends ComplexMob> typeIn, int species, String sciname, Properties properties) {
+    public MobSpawnItem(EntityType<? extends ComplexMob> typeIn, int species, String sciname, Properties properties) {
         super(properties);
         this.entity = typeIn;
         this.species = species;

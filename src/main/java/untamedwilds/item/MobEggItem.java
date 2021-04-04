@@ -25,11 +25,11 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class ItemMobEgg extends Item {
+public class MobEggItem extends Item {
     private final EntityType<? extends ComplexMob> entity;
     public int species;
 
-    public ItemMobEgg(EntityType<? extends ComplexMob> typeIn, int species, Properties properties) {
+    public MobEggItem(EntityType<? extends ComplexMob> typeIn, int species, Properties properties) {
         super(properties);
         this.entity = typeIn;
         this.species = species;

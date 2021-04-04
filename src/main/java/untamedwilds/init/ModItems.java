@@ -33,15 +33,15 @@ public class ModItems {
     // Wild World Item instances
 
     // Debug Tools
-    public static RegistryObject<Item> OWNERSHIP_DEED = createItem("ownership_deed", () -> new ItemOwnershipDeed(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> DEBUG_ERASER = createItem("debug_eraser", () -> new ItemEraser(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
-    public static RegistryObject<Item> DEBUG_ANALYZER = createItem("debug_analyzer", () -> new ItemAnalyzer(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
-    public static RegistryObject<Item> DEBUG_IPECAC = createItem("debug_ipecac", () -> new ItemIpecac(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
-    public static RegistryObject<Item> DEBUG_LOVE_POTION = createItem("debug_love_potion", () -> new ItemLovePotion(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
-    public static RegistryObject<Item> DEBUG_GROWTH_TONIC = createItem("debug_growth_tonic", () -> new ItemGrowthTonic(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
+    public static RegistryObject<Item> OWNERSHIP_DEED = createItem("ownership_deed", () -> new OwnershipDeedItem(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> DEBUG_ERASER = createItem("debug_eraser", () -> new EraserItem(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
+    public static RegistryObject<Item> DEBUG_ANALYZER = createItem("debug_analyzer", () -> new AnalyzerItem(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
+    public static RegistryObject<Item> DEBUG_IPECAC = createItem("debug_ipecac", () -> new IpecacItem(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
+    public static RegistryObject<Item> DEBUG_LOVE_POTION = createItem("debug_love_potion", () -> new LovePotionItem(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
+    public static RegistryObject<Item> DEBUG_GROWTH_TONIC = createItem("debug_growth_tonic", () -> new GrowthTonicItem(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
 
     // Materials
-    public static RegistryObject<Item> MATERIAL_FAT = createItem("material_fat", () -> new ItemLard(new Item.Properties().food((new Food.Builder()).hunger(1).saturation(1F).meat().build()).group(ItemGroup.FOOD)));
+    public static RegistryObject<Item> MATERIAL_FAT = createItem("material_fat", () -> new LardItem(new Item.Properties().food((new Food.Builder()).hunger(1).saturation(1F).meat().build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> MATERIAL_PEARL = createItem(ConfigMobControl.addGiantClam.get(),"material_pearl", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
     public static RegistryObject<Item> RARE_GIANT_PEARL = createItem(ConfigMobControl.addGiantClam.get(), "material_giant_pearl", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON).group(ItemGroupUT.untamedwilds_items)));
 
@@ -85,55 +85,55 @@ public class ModItems {
         if (ConfigMobControl.addTarantula.get()) {
             for (int i = 0; i < EntityTarantula.SpeciesTarantula.values().length; i++) {
                 int tarantulaSpecies = i;
-                ModItems.ITEMS.register("egg_tarantula_" + EntityTarantula.SpeciesTarantula.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.TARANTULA, tarantulaSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-                ModItems.ITEMS.register("bottle_tarantula_" + EntityTarantula.SpeciesTarantula.values()[i].name().toLowerCase(), () -> new ItemMobBottled(ModEntity.TARANTULA, tarantulaSpecies, EntityTarantula.SpeciesTarantula.values()[tarantulaSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("egg_tarantula_" + EntityTarantula.SpeciesTarantula.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.TARANTULA, tarantulaSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("bottle_tarantula_" + EntityTarantula.SpeciesTarantula.values()[i].name().toLowerCase(), () -> new MobBottledItem(ModEntity.TARANTULA, tarantulaSpecies, EntityTarantula.SpeciesTarantula.values()[tarantulaSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             }
         }
         // Small Snake Items
         if (ConfigMobControl.addSnake.get()) {
             for (int i = 0; i < EntitySnake.SpeciesSnake.values().length; i++) {
                 int snake = i;
-                ModItems.ITEMS.register("snake_" + EntitySnake.SpeciesSnake.values()[i].name().toLowerCase(), () -> new ItemMobSpawn(ModEntity.SNAKE, snake, EntitySnake.SpeciesSnake.values()[snake].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-                ModItems.ITEMS.register("egg_snake_" + EntitySnake.SpeciesSnake.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.SNAKE, snake, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("snake_" + EntitySnake.SpeciesSnake.values()[i].name().toLowerCase(), () -> new MobSpawnItem(ModEntity.SNAKE, snake, EntitySnake.SpeciesSnake.values()[snake].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("egg_snake_" + EntitySnake.SpeciesSnake.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.SNAKE, snake, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             }
         }
         // Softshell Turtle Items
         if (ConfigMobControl.addSoftshellTurtle.get()) {
             for (int i = 0; i < EntitySoftshellTurtle.SpeciesSoftshellTurtle.values().length; i++) {
                 int softshell_turtleSpecies = i;
-                ModItems.ITEMS.register("softshell_turtle_" + EntitySoftshellTurtle.SpeciesSoftshellTurtle.values()[i].name().toLowerCase(), () -> new ItemMobSpawn(ModEntity.SOFTSHELL_TURTLE, softshell_turtleSpecies, EntitySoftshellTurtle.SpeciesSoftshellTurtle.values()[softshell_turtleSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-                ModItems.ITEMS.register("egg_softshell_turtle_" + EntitySoftshellTurtle.SpeciesSoftshellTurtle.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.SOFTSHELL_TURTLE, softshell_turtleSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("softshell_turtle_" + EntitySoftshellTurtle.SpeciesSoftshellTurtle.values()[i].name().toLowerCase(), () -> new MobSpawnItem(ModEntity.SOFTSHELL_TURTLE, softshell_turtleSpecies, EntitySoftshellTurtle.SpeciesSoftshellTurtle.values()[softshell_turtleSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("egg_softshell_turtle_" + EntitySoftshellTurtle.SpeciesSoftshellTurtle.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.SOFTSHELL_TURTLE, softshell_turtleSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             }
         }
         // Giant Clam Items
         if (ConfigMobControl.addGiantClam.get()) {
             for (int i = 0; i < EntityGiantClam.SpeciesGiantClam.values().length; i++) {
                 int giant_clamSpecies = i;
-                ModItems.ITEMS.register("giant_clam_" + EntityGiantClam.SpeciesGiantClam.values()[i].name().toLowerCase(), () -> new ItemMobSpawn(ModEntity.GIANT_CLAM, giant_clamSpecies, EntityGiantClam.SpeciesGiantClam.values()[giant_clamSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-                ModItems.ITEMS.register("egg_giant_clam_" + EntityGiantClam.SpeciesGiantClam.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.GIANT_CLAM, giant_clamSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("giant_clam_" + EntityGiantClam.SpeciesGiantClam.values()[i].name().toLowerCase(), () -> new MobSpawnItem(ModEntity.GIANT_CLAM, giant_clamSpecies, EntityGiantClam.SpeciesGiantClam.values()[giant_clamSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("egg_giant_clam_" + EntityGiantClam.SpeciesGiantClam.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.GIANT_CLAM, giant_clamSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             }
         }
         // Sunfish Items
         if (ConfigMobControl.addSunfish.get()) {
             for (int i = 0; i < EntitySunfish.SpeciesSunfish.values().length; i++) {
                 int sunfishSpecies = i;
-                ModItems.ITEMS.register("egg_sunfish_" + EntitySunfish.SpeciesSunfish.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.SUNFISH, sunfishSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("egg_sunfish_" + EntitySunfish.SpeciesSunfish.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.SUNFISH, sunfishSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             }
         }
         // Trevally Items
         if (ConfigMobControl.addTrevally.get()) {
             for (int i = 0; i < EntityTrevally.SpeciesTrevally.values().length; i++) {
                 int trevallySpecies = i;
-                ModItems.ITEMS.register("egg_trevally_" + EntityTrevally.SpeciesTrevally.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.TREVALLY, trevallySpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-                ModItems.ITEMS.register("bucket_trevally_" + EntityTrevally.SpeciesTrevally.values()[i].name().toLowerCase(), () -> new ItemMobBucketed(ModEntity.TREVALLY, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), trevallySpecies, EntityTrevally.SpeciesTrevally.values()[trevallySpecies].name().toLowerCase()));
+                ModItems.ITEMS.register("egg_trevally_" + EntityTrevally.SpeciesTrevally.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.TREVALLY, trevallySpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("bucket_trevally_" + EntityTrevally.SpeciesTrevally.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.TREVALLY, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), trevallySpecies, EntityTrevally.SpeciesTrevally.values()[trevallySpecies].name().toLowerCase()));
             }
         }
         // Arowana Items
         if (ConfigMobControl.addArowana.get()) {
             for (int i = 0; i < EntityArowana.SpeciesArowana.values().length; i++) {
                 int arowanaSpecies = i;
-                ModItems.ITEMS.register("egg_arowana_" + EntityArowana.SpeciesArowana.values()[i].name().toLowerCase(), () -> new ItemMobEgg(ModEntity.AROWANA, arowanaSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-                ModItems.ITEMS.register("bucket_arowana_" + EntityArowana.SpeciesArowana.values()[i].name().toLowerCase(), () -> new ItemMobBucketed(ModEntity.AROWANA, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), arowanaSpecies, EntityArowana.SpeciesArowana.values()[arowanaSpecies].name().toLowerCase()));
+                ModItems.ITEMS.register("egg_arowana_" + EntityArowana.SpeciesArowana.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.AROWANA, arowanaSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("bucket_arowana_" + EntityArowana.SpeciesArowana.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.AROWANA, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), arowanaSpecies, EntityArowana.SpeciesArowana.values()[arowanaSpecies].name().toLowerCase()));
             }
         }
     }
