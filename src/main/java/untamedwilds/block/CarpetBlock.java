@@ -11,11 +11,11 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 
-public class BlockCarpet extends Block {
+public class CarpetBlock extends Block {
 
     protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
-    public BlockCarpet(Properties p_i48290_2_) {
+    public CarpetBlock(Properties p_i48290_2_) {
         super(p_i48290_2_);
     }
 

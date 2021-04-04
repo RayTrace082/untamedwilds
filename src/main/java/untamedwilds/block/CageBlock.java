@@ -37,7 +37,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import untamedwilds.block.blockentity.BlockEntityCage;
+import untamedwilds.block.blockentity.CageBlockEntity;
 import untamedwilds.init.ModBlock;
 import untamedwilds.util.EntityUtils;
 
@@ -45,13 +45,13 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockCage extends Block implements IWaterLoggable {
+public class CageBlock extends Block implements IWaterLoggable {
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final VoxelShape CAGE_COLLISION_AABB_EMPTY = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 2.0D, 15.0D);
     private static final VoxelShape CAGE_COLLISION_AABB_FULL = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 15.0D, 15.0D);
 
-    public BlockCage(Block.Properties properties) {
+    public CageBlock(Block.Properties properties) {
         super(properties);
         this.setDefaultState(this.stateContainer.getBaseState().with(OPEN, Boolean.FALSE).with(WATERLOGGED, Boolean.FALSE));
     }
@@ -67,9 +67,9 @@ public class BlockCage extends Block implements IWaterLoggable {
     public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
         if (!worldIn.isRemote) {
             TileEntity tileentity = worldIn.getTileEntity(pos);
-            if (tileentity instanceof BlockEntityCage) {
+            if (tileentity instanceof CageBlockEntity) {
 
-                BlockEntityCage te = (BlockEntityCage)tileentity;
+                CageBlockEntity te = (CageBlockEntity)tileentity;
 
                 ItemStack itemstack = new ItemStack(ModBlock.TRAP_CAGE.get());
                 CompoundNBT compound = new CompoundNBT();
@@ -106,7 +106,7 @@ public class BlockCage extends Block implements IWaterLoggable {
             TileEntity te = worldIn.getTileEntity(pos);
             if (stack.getTag() != null && te != null) {
                 te.read(state, stack.getTag());
-                BlockEntityCage tileentity = (BlockEntityCage)worldIn.getTileEntity(pos);
+                CageBlockEntity tileentity = (CageBlockEntity)worldIn.getTileEntity(pos);
                 if (tileentity.hasCagedEntity() && tileentity.hasTagCompound()) {
                     worldIn.setBlockState(pos, state.with(OPEN, Boolean.FALSE));
                 }
@@ -147,7 +147,7 @@ public class BlockCage extends Block implements IWaterLoggable {
     }
 
     private boolean trySpawningEntity(BlockState state, ServerWorld worldIn, BlockPos pos) {
-        BlockEntityCage te = (BlockEntityCage)worldIn.getTileEntity(pos);
+        CageBlockEntity te = (CageBlockEntity)worldIn.getTileEntity(pos);
         BlockPos check = pos.down();
         if (te != null) {
             BlockPos spawnpos = !worldIn.getBlockState(check).isSolid() ? pos : new BlockPos(pos.getX(), pos.getY() + 1F, pos.getZ());
@@ -176,7 +176,7 @@ public class BlockCage extends Block implements IWaterLoggable {
 
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        BlockEntityCage te = (BlockEntityCage)world.getTileEntity(pos);
+        CageBlockEntity te = (CageBlockEntity)world.getTileEntity(pos);
         if (!world.isRemote && !(entity instanceof PlayerEntity) && entity.isAlive() && entity.isNonBoss() && entity instanceof LivingEntity) {
             if (te != null && !te.hasCagedEntity()) {
                 if (te.cageEntity(entity)) {
@@ -215,7 +215,7 @@ public class BlockCage extends Block implements IWaterLoggable {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader worldIn) {
-        return new BlockEntityCage();
+        return new CageBlockEntity();
     }
 
     public static class DispenserBehaviorTrapCage extends DefaultDispenseItemBehavior implements IDispenseItemBehavior {

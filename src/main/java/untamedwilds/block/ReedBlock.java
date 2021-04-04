@@ -35,13 +35,13 @@ import untamedwilds.init.ModTags.BlockTags;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class FloraReeds extends Block implements IGrowable, IWaterLoggable {
+public class ReedBlock extends Block implements IGrowable, IWaterLoggable {
    protected static final VoxelShape SHAPE_NORMAL = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
    public static final IntegerProperty PROPERTY_AGE = BlockStateProperties.AGE_0_2;
    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
    public static final IntegerProperty PROPERTY_STAGE = BlockStateProperties.STAGE_0_1;
 
-   public FloraReeds(Properties properties) {
+   public ReedBlock(Properties properties) {
       super(properties);
       this.setDefaultState(this.stateContainer.getBaseState().with(PROPERTY_AGE, 0).with(PROPERTY_STAGE, 0).with(WATERLOGGED, Boolean.FALSE));
    }

@@ -21,9 +21,9 @@ import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
-public class BlockUndergrowth extends BushBlock implements IGrowable, net.minecraftforge.common.IForgeShearable {
+public class UndergrowthBlock extends BushBlock implements IGrowable, net.minecraftforge.common.IForgeShearable {
 
-    public BlockUndergrowth(Properties properties) {
+    public UndergrowthBlock(Properties properties) {
         super(properties);
     }
 

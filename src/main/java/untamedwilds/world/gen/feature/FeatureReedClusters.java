@@ -8,7 +8,7 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import untamedwilds.block.FloraReeds;
+import untamedwilds.block.ReedBlock;
 import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModTags.BlockTags;
 
@@ -30,9 +30,9 @@ public class FeatureReedClusters extends Feature<NoFeatureConfig> {
                     int height = rand.nextInt(4);
                     for (int j = 0; j <= height; ++j) {
                         int fluidstate = world.getFluidState(blockpos.up(j)).isEmpty() ? 1 : 2;
-                        BlockState blockstate = ((FloraReeds) ModBlock.COMMON_REED.get()).getStateForWorldgen(world, blockpos.up(j));
+                        BlockState blockstate = ((ReedBlock) ModBlock.COMMON_REED.get()).getStateForWorldgen(world, blockpos.up(j));
                         if (blockstate != null) {
-                            world.setBlockState(blockpos.up(j), blockstate.with(FloraReeds.PROPERTY_AGE, j == height ? 0 : fluidstate), 2);
+                            world.setBlockState(blockpos.up(j), blockstate.with(ReedBlock.PROPERTY_AGE, j == height ? 0 : fluidstate), 2);
                         }
                     }
                     flag = true;

@@ -12,7 +12,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import untamedwilds.block.BlockCage;
+import untamedwilds.block.CageBlock;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.config.ConfigBase;
 import untamedwilds.init.ModBlock;
@@ -61,7 +61,7 @@ public class UntamedWilds {
     }
 
     private void setupCommon(final FMLCommonSetupEvent event) {
-        DispenserBlock.registerDispenseBehavior(ModBlock.TRAP_CAGE.get().asItem(), new BlockCage.DispenserBehaviorTrapCage());
+        DispenserBlock.registerDispenseBehavior(ModBlock.TRAP_CAGE.get().asItem(), new CageBlock.DispenserBehaviorTrapCage());
     }
 
     private void setupClient(final FMLClientSetupEvent event) {

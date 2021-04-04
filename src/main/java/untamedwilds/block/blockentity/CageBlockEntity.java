@@ -19,12 +19,12 @@ import untamedwilds.util.EntityUtils;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public class BlockEntityCage extends TileEntity {
+public class CageBlockEntity extends TileEntity {
 
     private CompoundNBT spawndata;
     private boolean caged;
 
-    public BlockEntityCage() {
+    public CageBlockEntity() {
         super(ModBlock.BLOCKENTITY_CAGE.get());
     }
 

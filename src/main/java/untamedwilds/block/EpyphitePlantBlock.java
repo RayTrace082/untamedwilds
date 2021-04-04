@@ -21,7 +21,7 @@ import net.minecraft.world.IWorldReader;
 import javax.annotation.Nullable;
 import java.util.Map;
 
-public class BlockPlantEpyphite extends HorizontalBlock {
+public class EpyphitePlantBlock extends HorizontalBlock {
 
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
@@ -30,7 +30,7 @@ public class BlockPlantEpyphite extends HorizontalBlock {
             Direction.WEST, Block.makeCuboidShape(15D, 1D, 15D, 16D, 15D, 1D),
             Direction.EAST, Block.makeCuboidShape(0.0D, 1D, 1D, 1D, 15D, 15D)));
 
-    public BlockPlantEpyphite(Properties properties) {
+    public EpyphitePlantBlock(Properties properties) {
         super(properties);
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
     }

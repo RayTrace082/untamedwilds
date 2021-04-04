@@ -14,11 +14,11 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockLard extends BreakableBlock {
+public class LardBlock extends BreakableBlock {
 
     protected static final VoxelShape SHAPE = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 15.0D, 15.0D);
 
-    public BlockLard(Properties properties) {
+    public LardBlock(Properties properties) {
         super(properties);
     }
 

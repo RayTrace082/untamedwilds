@@ -9,7 +9,7 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.treedecorator.TreeDecorator;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
-import untamedwilds.block.BlockPlantEpyphite;
+import untamedwilds.block.EpyphitePlantBlock;
 import untamedwilds.init.ModBlock;
 import untamedwilds.world.UntamedWildsGenerator;
 
@@ -40,7 +40,7 @@ public class TreeOrchidDecorator extends TreeDecorator {
                   Direction direction1 = direction.getOpposite();
                   BlockPos blockpos = p_242865_5_.add(direction1.getXOffset(), 0, direction1.getZOffset());
                   if (Feature.isAirAt(worldIn, blockpos)) {
-                     BlockState blockstate = ModBlock.ORCHID_RED.get().getDefaultState().with(BlockPlantEpyphite.HORIZONTAL_FACING, direction);
+                     BlockState blockstate = ModBlock.ORCHID_RED.get().getDefaultState().with(EpyphitePlantBlock.HORIZONTAL_FACING, direction);
                      this.func_227423_a_(worldIn, blockpos, blockstate, blockPosSet, boundingBox);
                   }
                }
