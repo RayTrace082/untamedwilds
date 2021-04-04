@@ -103,13 +103,13 @@ public class HerdEntity {
             ComplexMob creature;
             for (ComplexMob complexMob : this.creatureList) {
                 creature = complexMob;
-                if (creature instanceof IPackEntity) {
+                /*if (creature instanceof IPackEntity) {
                     IPackEntity packCreature = (IPackEntity)creature;
                     if (packCreature.shouldLeavePack()) {
                         toRemove.add(creature);
                         continue;
                     }
-                }
+                }*/
                 if (creature.isAlive() && creature.getDistanceSq(this.leader) <= 1024.0D) {
                     if (creature != this.leader) {
                         if (creature.getDistanceSq(this.leader) <= (double) (this.radius * this.radius)) {

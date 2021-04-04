@@ -57,7 +57,8 @@ public class ModBlock {
     public static RegistryObject<Block> ORCHID_PINK = createBlock("flora_orchid_pink", () -> new BlockPlantEpyphite(Block.Properties.create(Material.PLANTS, MaterialColor.PINK).hardnessAndResistance(0.0F).sound(SoundType.PLANT)), ItemGroup.DECORATIONS, ConfigFeatureControl.addTreeOrchids.get());
     public static RegistryObject<Block> ORCHID_RED = createBlock("flora_orchid_red", () -> new BlockPlantEpyphite(Block.Properties.create(Material.PLANTS, MaterialColor.RED).hardnessAndResistance(0.0F).sound(SoundType.PLANT)), ItemGroup.DECORATIONS, ConfigFeatureControl.addTreeOrchids.get());
     public static RegistryObject<Block> COMMON_REED = createBlock("flora_common_reed", () -> new FloraReeds(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(0.1F).sound(SoundType.VINE).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addReeds.get(), 100);
-    public static RegistryObject<Block> AMAZON_SWORD = createBlock("flora_amazon_sword", () -> new AlgaeBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(0).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addReeds.get());
+    public static RegistryObject<Block> AMAZON_SWORD = createBlock("flora_amazon_sword", () -> new AlgaeBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(0).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addAlgae.get());
+    public static RegistryObject<Block> BUSH_TEMPERATE = createBlock("flora_bush_temperate", () -> new BlockUndergrowth(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addBushes.get());
 
     public static RegistryObject<TileEntityType<BlockEntityCage>> BLOCKENTITY_CAGE = TILE_ENTITY_TYPES.register("trap_cage", () -> new TileEntityType<>(BlockEntityCage::new, Sets.newHashSet(ModBlock.TRAP_CAGE.get()), null));
 
@@ -102,6 +103,9 @@ public class ModBlock {
             RenderTypeLookup.setRenderLayer(ModBlock.ORCHID_PINK.get(), RenderType.getCutout());
             RenderTypeLookup.setRenderLayer(ModBlock.ORCHID_PURPLE.get(), RenderType.getCutout());
             RenderTypeLookup.setRenderLayer(ModBlock.ORCHID_RED.get(), RenderType.getCutout());
+        }
+        if (ConfigFeatureControl.addBushes.get()) {
+            RenderTypeLookup.setRenderLayer(ModBlock.BUSH_TEMPERATE.get(), RenderType.getCutout());
         }
     }
 }

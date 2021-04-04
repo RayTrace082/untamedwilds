@@ -11,6 +11,7 @@ import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placement.CaveEdgeConfig;
 import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
@@ -20,6 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigFeatureControl;
 import untamedwilds.world.gen.feature.*;
+import untamedwilds.world.gen.treedecorator.TreeOrchidDecorator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,13 +35,15 @@ public class UntamedWildsGenerator {
 
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, UntamedWilds.MOD_ID);
     public static final Map<String, Float> biodiversity_levels = new java.util.HashMap<>();
-    //public static final DeferredRegister<TreeDecoratorType<?>> TREE_DECORATION = DeferredRegister.create(ForgeRegistries.TREE_DECORATOR_TYPES, UntamedWilds.MOD_ID);
+    public static final DeferredRegister<TreeDecoratorType<?>> TREE_DECORATION = DeferredRegister.create(ForgeRegistries.TREE_DECORATOR_TYPES, UntamedWilds.MOD_ID);
 
     private static final RegistryObject<Feature<FeatureSpreadConfig>> SEA_ANEMONE = regFeature("sea_anemone", () -> new FeatureSeaAnemone(FeatureSpreadConfig.CODEC));
     private static final RegistryObject<Feature<NoFeatureConfig>> REEDS = regFeature("reeds", () -> new FeatureReedClusters(NoFeatureConfig.field_236558_a_));
     private static final RegistryObject<Feature<NoFeatureConfig>> ALGAE = regFeature("algae", () -> new FeatureUnderwaterAlgae(NoFeatureConfig.field_236558_a_));
+    private static final RegistryObject<Feature<FeatureSpreadConfig>> VEGETATION = regFeature("vegetation", () -> new FeatureVegetation(FeatureSpreadConfig.CODEC));
 
-    //public static final TreeDecoratorType<TreeOrchidDecorator> TREE_ORCHID = regTreeDecorator("orchid", () -> new TreeOrchidDecorator(TreeOrchidDecorator.field_236874_c_));
+    // TODO: Unused because can't attach decorators to vanilla features. If I ever implement trees, this will go there
+    public static final RegistryObject<TreeDecoratorType<?>> TREE_ORCHID = TREE_DECORATION.register("orchid", () -> new TreeDecoratorType<>(TreeOrchidDecorator.CODEC));
 
     private static final RegistryObject<Feature<NoFeatureConfig>> UNDERGROUND = regFeature("underground", () -> new FeatureUndergroundFaunaLarge(NoFeatureConfig.field_236558_a_));
     private static final RegistryObject<Feature<NoFeatureConfig>> APEX = regFeature("apex_predator", () -> new FeatureApexPredators(NoFeatureConfig.field_236558_a_));
@@ -52,10 +56,6 @@ public class UntamedWildsGenerator {
     private static <B extends Feature<?>> RegistryObject<B> regFeature(String name, Supplier<? extends B> supplier) {
         return FEATURES.register(name, supplier);
     }
-
-    /*private static <P extends TreeDecorator> TreeDecoratorType<P> regTreeDecorator(String name, Supplier<? extends B> supplie) {
-        return TREE_DECORATION.register(name, supplier);
-    }*/
 
     @SubscribeEvent
     public static void onBiomesLoad(BiomeLoadingEvent event) {
@@ -71,11 +71,13 @@ public class UntamedWildsGenerator {
         }
         if (ConfigFeatureControl.addReeds.get()) {
             if (event.getCategory() == Biome.Category.RIVER || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) {
-                registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(ConfigFeatureControl.loadsOfReeds.get() ? Features.Placements.KELP_PLACEMENT : Features.Placements.PATCH_PLACEMENT).chance(1), REEDS.get().getRegistryName());
+                registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.KELP_PLACEMENT).chance(4), REEDS.get().getRegistryName());
             }
             if (event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) {
                 registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, ALGAE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).chance(1), ALGAE.get().getRegistryName());
             }
+            registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, VEGETATION.get().withConfiguration(new FeatureSpreadConfig(4)).withPlacement(Features.Placements.KELP_PLACEMENT).chance(4), VEGETATION.get().getRegistryName());
+
         }
         registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, DENSE_WATER.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(4), DENSE_WATER.get().getRegistryName());
 

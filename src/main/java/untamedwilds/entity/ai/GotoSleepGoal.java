@@ -84,27 +84,6 @@ public class GotoSleepGoal extends Goal {
 
     @Nullable
     public BlockPos checkForNewHome() {
-        /*Random random = this.creature.getRNG();
-        BlockPos blockpos = new BlockPos(this.creature.getPosition());
-        UntamedWilds.LOGGER.info("Trying to find new home");
-        for(int i = 0; i < 10; ++i) {
-            int perception = (int) this.creature.getAttribute(Attributes.FOLLOW_RANGE).getValue() / 2;
-            int offsetX = random.nextInt(perception * 2) - perception;
-            int offsetY = random.nextInt(4) - 2;
-            int offsetZ = random.nextInt(perception * 2) - perception;
-
-            BlockPos blockpos1 = blockpos.add(offsetX, offsetY, offsetZ);
-            if (!this.creature.world.getBlockState(blockpos1).isSolid() && this.creature.world.getBlockState(blockpos1.down()).isSolid()) {
-                this.creature.world.setBlockState(blockpos1, Blocks.TORCH.getDefaultState(), 11);
-                if (this.isValidShelter(blockpos1) && this.creature.getBlockPathWeight(blockpos1) < 0.0F) {
-                    this.creature.world.setBlockState(blockpos1, Blocks.LANTERN.getDefaultState(), 11);
-                    // This comment shall become a reminder about how fucking trash this piece of code has consistently been
-                    UntamedWilds.LOGGER.info("Found new home");
-                    return new BlockPos(Vector3d.copyCenteredHorizontally(blockpos1));
-                }
-            }
-        }
-        return null;*/
         Random random = this.creature.getRNG();
         BlockPos blockpos = this.creature.getPosition();
 

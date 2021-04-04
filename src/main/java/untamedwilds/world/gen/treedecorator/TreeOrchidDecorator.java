@@ -11,27 +11,26 @@ import net.minecraft.world.gen.treedecorator.TreeDecorator;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
 import untamedwilds.block.BlockPlantEpyphite;
 import untamedwilds.init.ModBlock;
+import untamedwilds.world.UntamedWildsGenerator;
 
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 public class TreeOrchidDecorator extends TreeDecorator {
-    public static final Codec<TreeOrchidDecorator> field_236866_a_ = Codec.floatRange(0.0F, 1.0F).fieldOf("probability").xmap(TreeOrchidDecorator::new, (p_236868_0_) -> {
-        return p_236868_0_.chance;
-    }).codec();
-    public final float chance;
-
-    public TreeOrchidDecorator(float chance) {
-        this.chance = chance;
-    }
+    public static final Codec<TreeOrchidDecorator> CODEC;
+    public static final TreeOrchidDecorator field_236871_b_ = new TreeOrchidDecorator();
 
     protected TreeDecoratorType<?> func_230380_a_() {
-        return TreeDecoratorType.COCOA;
+        return UntamedWildsGenerator.TREE_ORCHID.get();
+    }
+
+    static {
+        CODEC = Codec.unit(() -> field_236871_b_);
     }
 
     public void func_225576_a_(ISeedReader worldIn, Random rand, List<BlockPos> posList, List<BlockPos> p_225576_4_, Set<BlockPos> blockPosSet, MutableBoundingBox boundingBox) {
-      if (!(rand.nextFloat() >= this.chance)) {
+      if (!(rand.nextFloat() >= 0.95)) {
          int i = posList.get(0).getY();
          posList.stream().filter((p_236867_1_) -> {
             return p_236867_1_.getY() - i <= 2;

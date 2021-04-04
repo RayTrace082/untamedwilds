@@ -84,11 +84,11 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies {
     }
 
     /* Breeding conditions for the Trevally are:
-     * A nearby Trevally of different gender */
+     * A nearby Arowana of different gender */
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
             List<EntityArowana> list = this.world.getEntitiesWithinAABB(EntityArowana.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
-            list.removeIf(input -> (input.getGender() == this.getGender()) || input.getGrowingAge() != 0);
+            list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getVariant() != this.getVariant()) || input.getGrowingAge() != 0);
             if (list.size() >= 1) {
                 this.setGrowingAge(GROWING);
                 list.get(0).setGrowingAge(GROWING);

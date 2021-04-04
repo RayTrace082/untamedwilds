@@ -2,11 +2,9 @@ package untamedwilds.entity.ai.target;
 
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.TargetGoal;
-import net.minecraft.world.GameRules;
 import untamedwilds.entity.ComplexMob;
 
 import java.util.EnumSet;
@@ -28,17 +26,12 @@ public class HurtPackByTargetGoal extends TargetGoal {
         int i = this.goalOwner.getRevengeTimer();
         LivingEntity livingentity = this.goalOwner.getRevengeTarget();
         if (i != this.revengeTimerOld && livingentity != null) {
-            if (livingentity.getType() == EntityType.PLAYER && this.goalOwner.world.getGameRules().getBoolean(GameRules.UNIVERSAL_ANGER)) {
-                return false;
-            } else {
-                for(Class<?> oclass : this.excludedReinforcementTypes) {
-                    if (oclass.isAssignableFrom(livingentity.getClass())) {
-                        return false;
-                    }
+            for(Class<?> oclass : this.excludedReinforcementTypes) {
+                if (oclass.isAssignableFrom(livingentity.getClass())) {
+                    return false;
                 }
-
-                return this.isSuitableTarget(livingentity, field_220795_a);
             }
+            return this.isSuitableTarget(livingentity, field_220795_a);
         } else {
             return false;
         }

@@ -359,13 +359,13 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
 
             } else if (this.action == MovementController.Action.MOVE_TO) {
                 this.action = MovementController.Action.WAIT;
-                if (this.entity.getAttackTarget() != null) {
+                /*if (this.entity.getAttackTarget() != null) {
                     if (this.entity.canEntityBeSeen(this.entity.getAttackTarget())) {
                         this.posX = this.entity.getAttackTarget().getPosX();
                         this.posY = this.entity.getAttackTarget().getPosY();
                         this.posZ = this.entity.getAttackTarget().getPosZ();
                     }
-                }
+                }*/
                 double d0 = this.posX - this.entity.getPosX();
                 double d1 = this.posZ - this.entity.getPosZ();
                 double d2 = this.posY - this.entity.getPosY();

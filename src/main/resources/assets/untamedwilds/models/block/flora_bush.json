@@ -1,0 +1,42 @@
+{
+	"parent": "block/block",
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "untamedwilds:block/flora/bush",
+		"plant": "untamedwilds:block/flora/bush",
+		"top": "untamedwilds:block/flora/bush_top",
+		"leaves": "untamedwilds:block/flora/bush_leaves"
+	},
+	"elements": [
+		{
+			"from": [0, 5, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 11], "texture": "#plant", "cullface": "north"},
+				"east": {"uv": [0, 0, 16, 11], "texture": "#plant", "cullface": "east"},
+				"south": {"uv": [0, 0, 16, 11], "texture": "#plant", "cullface": "south"},
+				"west": {"uv": [16, 0, 0, 11], "texture": "#plant", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#top"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#top"}
+			}
+		},
+		{
+			"from": [8, -1, -8],
+			"to": [8, 23, 24],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [8, 0, 8], "rescale": true},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#leaves"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#leaves"}
+			}
+		},
+		{
+			"from": [-8, -1, 8],
+			"to": [24, 23, 8],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [8, 0, 8], "rescale": true},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#leaves"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#leaves"}
+			}
+		}
+	]
+}

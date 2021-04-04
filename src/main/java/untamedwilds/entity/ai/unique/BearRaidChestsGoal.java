@@ -36,16 +36,7 @@ public class BearRaidChestsGoal extends Goal {
     }
 
     public boolean shouldExecute() {
-        if (this.taskOwner.isTamed()) {
-            return false;
-        }
-        if (!this.taskOwner.isOnGround() || this.taskOwner.getHunger() > 60) {
-            return false;
-        }
-        if (this.taskOwner.getRNG().nextInt(this.executionChance) != 0) {
-            return false;
-        }
-        if (this.taskOwner.getAttackTarget() != null) {
+        if (this.taskOwner.isTamed() || !this.taskOwner.isOnGround() || this.taskOwner.getHunger() > 60 || this.taskOwner.getRNG().nextInt(this.executionChance) != 0 || this.taskOwner.getAttackTarget() != null) {
             return false;
         }
         BlockPos pos = this.taskOwner.getPosition();

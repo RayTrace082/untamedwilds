@@ -23,7 +23,6 @@ public class SmartMeleeAttackGoal extends Goal {
     private double targetY;
     private double targetZ;
     private float extraReach;
-    protected final int attackInterval = 20;
     private long field_220720_k;
     private int failedPathFindingPenalty = 0;
     private boolean canPenalize = false;
@@ -72,19 +71,15 @@ public class SmartMeleeAttackGoal extends Goal {
                     }
                 }
                 this.path = this.attacker.getNavigator().getPathToEntity(livingentity, 0);
-                if (this.path != null) {
-                    return true;
-                } else {
-                    return this.getAttackReachSqr(livingentity) >= this.attacker.getDistanceSq(livingentity.getPosX(), livingentity.getBoundingBox().minY, livingentity.getPosZ());
-                }
+                return this.path != null;
             }
         }
     }
 
     @Override
     public boolean shouldContinueExecuting() {
-        // TODO: Skirmish option, where a mob low on health will retreat if targeted
-        if (this.doSkirmish && this.attacker.getHealth() != this.attacker.getMaxHealth()) {
+        // TODO: DEBUG: Skirmish option, where a mob low on health will retreat if targeted, disabled
+        if (false && this.doSkirmish && this.attacker.getHealth() != this.attacker.getMaxHealth()) {
             if (this.attacker.getAttackTarget() instanceof CreatureEntity) {
                 CreatureEntity targetEntity = (CreatureEntity) this.attacker.getAttackTarget();
                 if (Objects.equals(targetEntity.getAttackTarget(), this.attacker)) {
