@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.vector.Vector3d;
+import untamedwilds.util.EntityUtils;
 
 import java.util.EnumSet;
 import java.util.Objects;
@@ -47,7 +48,7 @@ public class SmartMeleeAttackGoal extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        if (this.attacker.isChild() || (this.doSkirmish && this.attacker.getHealth() != this.attacker.getMaxHealth())) {
+        if (this.attacker.isChild() || (this.doSkirmish && !EntityUtils.hasFullHealth(this.attacker))) {
             return false;
         }
         long i = this.attacker.world.getGameTime();
@@ -79,7 +80,7 @@ public class SmartMeleeAttackGoal extends Goal {
     @Override
     public boolean shouldContinueExecuting() {
         // TODO: DEBUG: Skirmish option, where a mob low on health will retreat if targeted, disabled
-        if (false && this.doSkirmish && this.attacker.getHealth() != this.attacker.getMaxHealth()) {
+        if (false && this.doSkirmish && !EntityUtils.hasFullHealth(this.attacker)) {
             if (this.attacker.getAttackTarget() instanceof CreatureEntity) {
                 CreatureEntity targetEntity = (CreatureEntity) this.attacker.getAttackTarget();
                 if (Objects.equals(targetEntity.getAttackTarget(), this.attacker)) {

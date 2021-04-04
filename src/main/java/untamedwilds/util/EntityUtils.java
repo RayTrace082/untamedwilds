@@ -188,4 +188,9 @@ public abstract class EntityUtils {
         baseTag.put("EntityTag", entityTag); // Put the entity in the Tag
         return baseTag;
     }
+
+    // Returns whether an entity has full HP or not (takes into account overloaded HP)
+    public static boolean hasFullHealth(LivingEntity entityIn) {
+        return entityIn.getHealth() >= entityIn.getMaxHealth();
+    }
 }

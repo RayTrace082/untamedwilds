@@ -80,7 +80,7 @@ public class EntitySunfish extends ComplexMobAquatic implements ISpecies {
     /* Breeding conditions for the Sunfish are:
      * A nearby Sunfish */
     public boolean wantsToBreed() {
-        if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
+        if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
             List<EntitySunfish> list = this.world.getEntitiesWithinAABB(EntitySunfish.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
             list.removeIf(input -> (input.getGender() == this.getGender()) || input.getGrowingAge() != 0);
             if (list.size() >= 1) {

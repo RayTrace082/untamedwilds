@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.util.EntityPredicates;
 import untamedwilds.entity.ComplexMob;
+import untamedwilds.util.EntityUtils;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -61,7 +62,7 @@ public class HuntWeakerTarget<T extends LivingEntity> extends HuntMobTarget<T> {
         }
         if (entity instanceof ComplexMob) {
             ComplexMob ctarget = (ComplexMob)entity;
-            return (this.goalOwner.getClass() == entity.getClass() && ((ComplexMob)this.goalOwner).getVariant() == ctarget.getVariant()) || !ctarget.canBeTargeted() || entity.getHealth() >= entity.getMaxHealth();
+            return (this.goalOwner.getClass() == entity.getClass() && ((ComplexMob)this.goalOwner).getVariant() == ctarget.getVariant()) || !ctarget.canBeTargeted() || EntityUtils.hasFullHealth(entity);
         }
         return false;
     }

@@ -249,7 +249,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
                     }
                 }
             }
-            if (!this.isTamed() && this.isChild() && this.getHealth() == this.getMaxHealth() && this.isFavouriteFood(itemstack)) {
+            if (!this.isTamed() && this.isChild() && EntityUtils.hasFullHealth(this) && this.isFavouriteFood(itemstack)) {
                 this.playSound(SoundEvents.ENTITY_HORSE_EAT, 1.5F, 0.8F);
                 if (this.getRNG().nextInt(3) == 0) {
                     // Advancement Trigger: "Bear Force One"

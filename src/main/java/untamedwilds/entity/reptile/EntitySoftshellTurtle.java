@@ -108,13 +108,15 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
     /* Breeding conditions for the softshell_turtle are:
      * A nearby softshell_turtle of the opposite gender and the same species */
     public boolean wantsToBreed() {
-        if (ConfigGamerules.naturalBreeding.get() && !this.isSleeping() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
-            List<EntitySoftshellTurtle> list = this.world.getEntitiesWithinAABB(EntitySoftshellTurtle.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
-            list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getVariant() != this.getVariant()) || input.getGrowingAge() != 0);
-            if (list.size() >= 1) {
-                this.setGrowingAge(GROWING);
-                list.get(0).setGrowingAge(GROWING);
-                return true;
+        if (super.wantsToBreed()) {
+            if (!this.isSleeping() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
+                List<EntitySoftshellTurtle> list = this.world.getEntitiesWithinAABB(EntitySoftshellTurtle.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
+                list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getVariant() != this.getVariant()) || input.getGrowingAge() != 0);
+                if (list.size() >= 1) {
+                    this.setGrowingAge(GROWING);
+                    list.get(0).setGrowingAge(GROWING);
+                    return true;
+                }
             }
         }
         return false;

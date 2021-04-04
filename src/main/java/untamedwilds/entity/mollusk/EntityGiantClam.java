@@ -104,7 +104,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies {
     /* Breeding conditions for the Giant Clam are:
      * A nearby Giant Clam of the same species, being hermaphrodites, they do not take Gender into account */
     public boolean wantsToBreed() {
-        if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
+        if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
             List<EntityGiantClam> list = this.world.getEntitiesWithinAABB(EntityGiantClam.class, this.getBoundingBox().grow(12.0D, 6.0D, 12.0D));
             list.removeIf(input -> input == this || input.getGrowingAge() != 0 || input.getVariant() != this.getVariant());
             if (list.size() >= 1) {

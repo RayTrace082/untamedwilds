@@ -19,6 +19,7 @@ import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.unique.BearRaidChestsGoal;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -47,7 +48,6 @@ public class EntityBlindBear extends AbstractBear {
         this.goalSelector.addGoal(4, new BearRaidChestsGoal(this, 120));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, true));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
-        //this.goalSelector.addGoal(7, new SmartLookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntityBlindBear)));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) < 8));
@@ -76,7 +76,7 @@ public class EntityBlindBear extends AbstractBear {
      * No other entities nearby */
     public boolean wantsToBreed() {
         super.wantsToBreed();
-        if (ConfigGamerules.naturalBreeding.get() && !this.isSleeping() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth() && this.getHunger() >= 80) {
+        if (!this.isSleeping() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this) && this.getHunger() >= 80) {
             if (ConfigGamerules.hardcoreBreeding.get()) {
                 List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                 float i = this.world.getBiome(this.getPosition()).getTemperature(this.getPosition());

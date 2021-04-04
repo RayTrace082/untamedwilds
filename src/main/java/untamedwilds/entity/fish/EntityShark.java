@@ -12,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -28,11 +27,11 @@ import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.HuntWeakerTarget;
 import untamedwilds.entity.ai.unique.SharkSwimmingGoal;
 import untamedwilds.init.ModEntity;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimatedEntity {
@@ -86,7 +85,7 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
     /* Breeding conditions for the Shark are:
      * A nearby Shark of different gender */
     public boolean wantsToBreed() {
-        if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
+        if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
             List<EntityShark> list = this.world.getEntitiesWithinAABB(EntityShark.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
             list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getVariant() != this.getVariant()) || input.getGrowingAge() != 0);
             if (list.size() >= 1) {
@@ -138,7 +137,7 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         if (reason == SpawnReason.SPAWN_EGG || ConfigGamerules.randomSpecies.get()) {
             return this.rand.nextInt(EntityShark.SpeciesShark.values().length);
         }
-        return EntityShark.SpeciesShark.getSpeciesByBiome(biomekey, this.world, this.getPosition());
+        return EntityShark.SpeciesShark.getSpeciesByBiome(biomekey);
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
@@ -198,12 +197,11 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
             return I18n.format("entity.shark." + this.name().toLowerCase());
         }
 
-        public static int getSpeciesByBiome(RegistryKey<Biome> biomekey, World worldIn, BlockPos spawnpos) {
+        public static int getSpeciesByBiome(RegistryKey<Biome> biomekey) {
             List<EntityShark.SpeciesShark> types = new ArrayList<>();
 
             for (EntityShark.SpeciesShark type : values()) {
                 for(RegistryKey<Biome> biomeTypes : type.spawnBiomes) {
-                    Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(spawnpos);
                     if(biomekey.equals(biomeTypes)){
                         for (int i=0; i < type.rolls; i++) {
                             types.add(type);

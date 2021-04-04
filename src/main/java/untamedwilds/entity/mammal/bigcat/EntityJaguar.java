@@ -20,6 +20,7 @@ import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class EntityJaguar extends AbstractBigCat implements ISkins {
      * No other entities nearby */
     public boolean wantsToBreed() {
         if (super.wantsToBreed()) {
-            if (!this.isSleeping() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth() && this.getHunger() >= 80) {
+            if (!this.isSleeping() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this) && this.getHunger() >= 80) {
                 if (ConfigGamerules.hardcoreBreeding.get()) {
                     List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                     float i = this.world.getBiome(this.getPosition()).getTemperature(this.getPosition());

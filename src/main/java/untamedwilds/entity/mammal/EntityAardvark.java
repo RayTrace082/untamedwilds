@@ -22,6 +22,7 @@ import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.*;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -73,10 +74,9 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
         return time > 13000 || time < 4000;
     }
 
-
     public boolean wantsToBreed() {
         if (super.wantsToBreed()) {
-            return !this.isSleeping() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth() && this.getHunger() >= 80;
+            return !this.isSleeping() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this) && this.getHunger() >= 80;
         }
         return false;
     }

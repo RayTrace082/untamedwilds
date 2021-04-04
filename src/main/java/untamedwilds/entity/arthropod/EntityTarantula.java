@@ -95,7 +95,7 @@ public class EntityTarantula extends ComplexMob implements ISpecies {
     /* Breeding conditions for the Tarantula are:
      * A nearby Tarantula of the opposite gender and the same species */
     public boolean wantsToBreed() {
-        if (ConfigGamerules.naturalBreeding.get() && !this.isSleeping() && this.getGrowingAge() == 0 && this.getHealth() == this.getMaxHealth()) {
+        if (ConfigGamerules.naturalBreeding.get() && !this.isSleeping() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
             List<EntityTarantula> list = this.world.getEntitiesWithinAABB(EntityTarantula.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
             list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getVariant() != this.getVariant()) || input.getGrowingAge() != 0);
             if (list.size() >= 1) {
