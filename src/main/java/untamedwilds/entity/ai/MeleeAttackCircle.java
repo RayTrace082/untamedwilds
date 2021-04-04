@@ -103,12 +103,12 @@ public class MeleeAttackCircle extends Goal {
             this.invert *= -1;
         }
         if (this.attacker.ticksExisted % 400 > 80) {
-            if (this.attacker.getAttackTarget() != null) {
+            if (this.attacker.getAttackTarget() != null && this.attacker.ticksExisted % 10 == 0) {
                 double x = this.attacker.getAttackTarget().getPosX() + Math.cos(this.attacker.ticksExisted / 60F) * 10 * this.invert;
                 double z = this.attacker.getAttackTarget().getPosZ() + Math.sin(this.attacker.ticksExisted / 60F) * 10 * this.invert;
-                //((ServerWorld)this.attacker.getEntityWorld()).spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, x, this.attacker.getAttackTarget().getPosY(), z, 1, 0, 0,0, 0.05D);
                 this.attacker.getNavigator().tryMoveToXYZ(x, this.attacker.getAttackTarget().getPosY(), z, 2.3F);
             }
+            this.checkAndPerformAttack(this.attacker.getAttackTarget(), this.attacker.getDistanceSq(this.attacker.getAttackTarget().getPosX(), this.attacker.getAttackTarget().getBoundingBox().minY, this.attacker.getAttackTarget().getPosZ()));
         }
         else {
             LivingEntity livingentity = this.attacker.getAttackTarget();
@@ -151,11 +151,11 @@ public class MeleeAttackCircle extends Goal {
 
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
         double d0 = this.getAttackReachSqr(enemy);
+        this.attacker.getLookController().setLookPositionWithEntity(enemy, 30.0F, 30.0F);
         if (distToEnemySqr <= d0 && this.attackTick <= 0) {
             this.attackTick = 20;
             this.attacker.attackEntityAsMob(enemy);
         }
-
     }
 
     protected double getAttackReachSqr(LivingEntity attackTarget) {

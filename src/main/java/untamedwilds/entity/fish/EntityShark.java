@@ -24,6 +24,8 @@ import untamedwilds.entity.ComplexMobAquatic;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.MeleeAttackCircle;
 import untamedwilds.entity.ai.SmartMateGoal;
+import untamedwilds.entity.ai.target.HuntMobTarget;
+import untamedwilds.entity.ai.target.HuntWeakerTarget;
 import untamedwilds.entity.ai.unique.SharkSwimmingGoal;
 import untamedwilds.init.ModEntity;
 
@@ -50,11 +52,11 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 12.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.8D)
                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D)
                 .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 40.0D);
+                .createMutableAttribute(Attributes.MAX_HEALTH, 50.0D);
     }
 
     protected void registerGoals() {
@@ -62,6 +64,8 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         this.goalSelector.addGoal(3, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(4, new SharkSwimmingGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) > 7));
+        this.targetSelector.addGoal(3, new HuntWeakerTarget<>(this, LivingEntity.class, true, true));
     }
 
     public void livingTick() {
@@ -115,7 +119,7 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         return SoundEvents.ENTITY_COD_FLOP;
     }
     public int getAdulthoodTime() { return GROWING; }
-    public int getPregnancyTime() { return 1; } // TODO: DEBUG
+    public int getPregnancyTime() { return GESTATION; }
     public String getBreedingSeason() { return BREEDING; }
     protected int getOffspring() { return 3; }
 
@@ -169,7 +173,7 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         HAMMERHEAD	(6, 1.3F, 2, false, false, Biomes.OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.WARM_OCEAN),
         LEMON   	(7, 0.9F, 1, false, false, Biomes.WARM_OCEAN),
         MAKO    	(8, 1.1F, 4, false, false, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_WARM_OCEAN),
-        TIGER	    (9, 1.5F, 2, false, false, Biomes.WARM_OCEAN, Biomes.DEEP_WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN);
+        TIGER	    (9, 1.3F, 2, false, false, Biomes.WARM_OCEAN, Biomes.DEEP_WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN);
 
         public Float scale;
         public int species;

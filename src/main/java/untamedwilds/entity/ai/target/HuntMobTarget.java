@@ -71,7 +71,7 @@ public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
         super.startExecuting();
     }
 
-    boolean shouldRemoveTarget(LivingEntity entity) {
+    public boolean shouldRemoveTarget(LivingEntity entity) {
         if (entity instanceof CreeperEntity) {
             return false; // Hardcoded Creepers out because they will absolutely destroy wildlife if targeted
         }
