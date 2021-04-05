@@ -107,7 +107,7 @@ public class ModelArowana extends AdvancedEntityModel<EntityArowana> {
     public void setRotationAngles(EntityArowana arowana, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
-        float globalSpeed = 0.6f;
+        float globalSpeed = 0.5f;
         float globalDegree = 1f;
 
         this.body_head.scaleX = 1.1F;
@@ -119,7 +119,7 @@ public class ModelArowana extends AdvancedEntityModel<EntityArowana> {
             this.setRotateAngle(body_main, netHeadYaw * 2 * ((float) Math.PI / 180F), headPitch * 2 * ((float) Math.PI / 180F), 0);
         }
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{body_head, body_main, body_tail_1, body_tail_3, body_tail_fin};
-        chainSwing(bodyParts, globalSpeed, globalDegree * 1.3F, -5, limbSwing, limbSwingAmount);
+        chainSwing(bodyParts, globalSpeed, globalDegree * 1.1F, -5, limbSwing, limbSwingAmount);
 
         swing(shape15, globalSpeed, globalDegree * 0.5f, false, 0, 0.2f, ageInTicks / 6, 0.6F);
         swing(shape16, globalSpeed, globalDegree * 0.5f, true, 0, 0.2f, ageInTicks / 6, 0.6F);

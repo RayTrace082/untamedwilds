@@ -211,7 +211,7 @@ public class ModelShark extends AdvancedEntityModel<EntityShark> {
             this.setRotateAngle(body_main, netHeadYaw * ((float) Math.PI / 180F), truePitch * ((float) Math.PI / 180F), 0);
         }
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{head_snout, body_main, body_tail_1, body_tail_2, body_tail_3};
-        chainSwing(bodyParts, globalSpeed * 0.8F, globalDegree * 0.8F, -5, limbSwing / 3, Math.max(0.3F, limbSwingAmount));
+        chainSwing(bodyParts, globalSpeed * 0.8F, globalDegree, -5, limbSwing / 3, Math.max(0.5F, limbSwingAmount));
         this.pitchBuffer = truePitch;
     }
 

@@ -269,6 +269,9 @@ public abstract class ComplexMob extends TameableEntity {
             if (this instanceof IPackEntity) {
                 IPackEntity.initPack(this);
             }
+            if (this instanceof INeedsPostUpdate) {
+                ((INeedsPostUpdate) this).updateAttributes();
+            }
             this.setGrowingAge(0);
         }
         return spawnDataIn;

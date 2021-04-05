@@ -20,6 +20,7 @@ import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
+import untamedwilds.entity.INeedsPostUpdate;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.MeleeAttackCircle;
 import untamedwilds.entity.ai.SmartMateGoal;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimatedEntity {
+public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimatedEntity, INeedsPostUpdate {
 
     public static Animation ATTACK_THRASH;
     private static final String BREEDING = "MID_SUMMER";
@@ -161,31 +162,42 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
     // Model Parameters
     public boolean hasShortFins() { return SpeciesShark.values()[this.getVariant()].shortFins; }
 
+    @Override
+    public void updateAttributes() {
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(SpeciesShark.values()[this.getVariant()].attack);
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(SpeciesShark.values()[this.getVariant()].health);
+        this.setHealth(this.getMaxHealth());
+    }
+
     public enum SpeciesShark implements IStringSerializable {
 
-        BIGEYE	    (0, 1.2F, 1, false, true, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
-        BLUNTNOSE	(1, 1.6F, 2, true, true, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
-        BULL    	(2, 1.0F, 4, false, false, Biomes.OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.WARM_OCEAN),
-        GOBLIN  	(3, 1.0F, 1, true, true, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
-        GREAT_WHITE	(4, 1.8F, 2, false, false, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
-        GREENLAND	(5, 1.8F, 1, true,false, Biomes.DEEP_COLD_OCEAN, Biomes.FROZEN_OCEAN, Biomes.DEEP_FROZEN_OCEAN),
-        HAMMERHEAD	(6, 1.3F, 2, false, false, Biomes.OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.WARM_OCEAN),
-        LEMON   	(7, 0.9F, 1, false, false, Biomes.WARM_OCEAN),
-        MAKO    	(8, 1.1F, 4, false, false, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_WARM_OCEAN),
-        TIGER	    (9, 1.3F, 2, false, false, Biomes.WARM_OCEAN, Biomes.DEEP_WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN);
+        BIGEYE	    (0, 1.2F, 1, 8, 30, false, true, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
+        BLUNTNOSE	(1, 1.6F, 2, 14, 45, true, true, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
+        BULL    	(2, 1.0F, 4, 10, 40, false, false, Biomes.OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.WARM_OCEAN),
+        GOBLIN  	(3, 1.0F, 1, 8, 30, true, true, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
+        GREAT_WHITE	(4, 1.8F, 2, 16, 50, false, false, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
+        GREENLAND	(5, 1.8F, 1, 14, 50, true,false, Biomes.DEEP_COLD_OCEAN, Biomes.FROZEN_OCEAN, Biomes.DEEP_FROZEN_OCEAN),
+        HAMMERHEAD	(6, 1.3F, 2, 10, 40, false, false, Biomes.OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.WARM_OCEAN),
+        LEMON   	(7, 0.9F, 1, 6, 25, false, false, Biomes.WARM_OCEAN),
+        MAKO    	(8, 1.1F, 4, 8, 30, false, false, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_WARM_OCEAN),
+        TIGER	    (9, 1.3F, 2, 16, 45, false, false, Biomes.WARM_OCEAN, Biomes.DEEP_WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN);
 
         public Float scale;
         public int species;
         public int rolls;
+        public float attack;
+        public float health;
         public boolean shortFins;
         public boolean bottomDweller;
         public RegistryKey<Biome>[] spawnBiomes;
 
         @SafeVarargs
-        SpeciesShark(int species, Float scale, int rolls, boolean shortFins, boolean bottomDweller, RegistryKey<Biome>... biomes) {
+        SpeciesShark(int species, Float scale, int rolls, int attack, int health, boolean shortFins, boolean bottomDweller, RegistryKey<Biome>... biomes) {
             this.species = species;
             this.scale = scale;
             this.rolls = rolls;
+            this.attack = (float)attack;
+            this.health = (float)health;
             this.shortFins = shortFins;
             this.bottomDweller = bottomDweller;
             this.spawnBiomes = biomes;
