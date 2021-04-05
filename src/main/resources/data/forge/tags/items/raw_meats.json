@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "untamedwilds:food_bear_raw",
+    "untamedwilds:food_turtle_raw",
+    "untamedwilds:food_hippo_raw",
+    "minecraft:chicken",
+    "minecraft:mutton",
+    "minecraft:porkchop",
+    "minecraft:rabbit",
+    "minecraft:beef"
+  ]
+}

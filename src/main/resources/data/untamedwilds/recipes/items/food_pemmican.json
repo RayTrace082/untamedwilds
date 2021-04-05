@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:tallow"
+    },
+    {
+      "tag": "forge:meats"
+    },
+    {
+      "tag": "forge:meats"
+    },
+    {
+      "tag": "forge:berries"
+    }
+  ],
+  "result": {
+    "item": "untamedwilds:food_pemmican",
+    "count": 2
+  }
+}
