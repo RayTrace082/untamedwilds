@@ -5,10 +5,10 @@
       "tag": "forge:tallow"
     },
     {
-      "tag": "forge:meats"
+      "tag": "forge:cooked_fish_and_meats"
     },
     {
-      "tag": "forge:meats"
+      "tag": "forge:cooked_fish_and_meats"
     },
     {
       "tag": "forge:berries"
@@ -16,6 +16,6 @@
   ],
   "result": {
     "item": "untamedwilds:food_pemmican",
-    "count": 2
+    "count": 3
   }
 }

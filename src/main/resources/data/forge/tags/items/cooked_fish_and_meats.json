@@ -1,9 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:raw_meats",
     "#forge:cooked_meats",
-    "#forge:raw_fishes",
     "#forge:cooked_fishes"
   ]
 }
