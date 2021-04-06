@@ -71,7 +71,7 @@ Arowana provide ambience and are fit for aquariums, but also drop some Tropical 
 
 ###🦈 Shark
 
-10 Species of Arowana can be found in all oceans, while most Sharks can be found in the surface, 3 variants won't leave the bottom of the Ocean.
+10 Species of Shark can be found in all oceans, while most Sharks can be found in the surface, 3 variants won't leave the bottom of the Ocean.
 
 Sharks are apex predators in the Ocean, and while not openly hostile to Players, they will hunt anything that has been wounded.
 
