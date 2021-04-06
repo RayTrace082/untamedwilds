@@ -2,5 +2,5 @@
     "name": "sunfish" , 
     "description": "List of all discovered Sunfish species" , 
     "icon": "minecraft:writable_book" , 
-    "parent": "taxon_fish"
+    "parent": "test_category"
 }

@@ -1,0 +1,6 @@
+{
+    "name": "shark" , 
+    "description": "List of all discovered Shark species" , 
+    "icon": "minecraft:writable_book" , 
+    "parent": "test_category"
+}

@@ -1,0 +1,17 @@
+{
+    "name": "Bull Shark" , 
+    "icon": "untamedwilds:textures/icon/shark/bull.png" , 
+    "category": "shark_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Bull Shark" , 
+            "text": "It is known for its aggressive nature, and presence in warm, shallow brackish and freshwater systems including estuaries and rivers. Bull sharks can thrive in both salt and fresh water and can travel far up rivers. They have been known to travel up the Mississippi River as far as Alton, Illinois, about 700 miles (1100 km) from the ocean. However, few freshwater human-shark interactions have been recorded."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:shark{Variant: 2}" , 
+            "text": "A Bull Shark"
+        }
+    ]
+}

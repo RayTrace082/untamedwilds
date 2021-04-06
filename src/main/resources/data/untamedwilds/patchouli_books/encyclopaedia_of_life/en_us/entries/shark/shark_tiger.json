@@ -1,0 +1,17 @@
+{
+    "name": "Tiger Shark" , 
+    "icon": "untamedwilds:textures/icon/shark/tiger.png" , 
+    "category": "shark_category" , 
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Tiger Shark" , 
+            "text": "Its name derives from the dark stripes down its body, which resemble a tiger's pattern, but fade as the shark matures.The tiger shark is a solitary, mostly nocturnal hunter. It is considered a near threatened species due to finning and fishing by humans.The tiger shark is second only to the great white in recorded fatal attacks on humans. The tiger shark (Galeocerdo cuvier) is a species of requiem shark and the only extant member of the genus Galeocerdo. Though apex predators, tiger sharks are sometimes taken as prey by groups of killer whales. It also has a reputation as a \"garbage eater\", consuming a variety of inedible, man-made objects that linger in its stomach. Populations are found in many tropical and temperate waters, especially around central Pacific islands. It is a large macropredator, capable of attaining a length over 5 m (16 ft 5 in)."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:shark{Variant: 9}" , 
+            "text": "A Tiger Shark"
+        }
+    ]
+}
