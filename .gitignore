@@ -16,8 +16,6 @@ out
 # gradle
 build
 .gradle
-gradle
-logs
 
 # other
 eclipse
@@ -29,3 +27,5 @@ backup
 forge*changelog.txt
 /src/main/unused/
 /src/test/
+/logs/
+/gradle/
