@@ -12,6 +12,7 @@ This mod requires [Citadel](https://www.curseforge.com/minecraft/mc-mods/citadel
 - Smaller mobs can be picked up (depending on the mob) to ease their transportation, larger mobs need to be transported by using Cage Traps. 
 * While the default parameters aim to be "believable", a plethora of Config options allow the user to replicate Vanilla behaviours (such as breeding being triggered through the favourite item)
 - A very WIP guidebook is provided through [Patchouli](https://www.curseforge.com/minecraft/mc-mods/patchouli) (book + any piece of hide). Content in the book has been generated from data sourced from Wikipedia, processed through the NLTK Python library and manually edited.
+* Various plants and blocks spawn in the world, most can be punched, but some will require Shears. Bonemeal can be used to replicate most of them
 
 ## List of Mobs:
 
