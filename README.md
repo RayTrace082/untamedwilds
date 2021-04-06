@@ -69,6 +69,14 @@ Arowana are fancy predatory fish with a tendency to leap out of water, and can b
 
 Arowana provide ambience and are fit for aquariums, but also drop some Tropical Fish on death.
 
+###🦈 Shark
+
+10 Species of Arowana can be found in all oceans, while most Sharks can be found in the surface, 3 variants won't leave the bottom of the Ocean.
+
+Sharks are apex predators in the Ocean, and while not openly hostile to Players, they will hunt anything that has been wounded.
+
+Sharks currently drop nothing.
+
 ###🕷️ Tarantula
 
 8 Species of Tarantula will populate the warm biomes of Minecraft, and as Critters, can be picked up by right-clicking with an empty bottle.
