@@ -30,7 +30,7 @@ public class FeatureVegetation extends Feature<FeatureSpreadConfig> {
         int x = rand.nextInt(16) - 8;
         int z = rand.nextInt(16) - 8;
         BlockPos pos = genPos.add(x, 0, z);
-        for(int i = 0; i < 64; ++i) {
+        for(int i = 0; i < 32; ++i) {
             BlockPos blockpos = pos.add(rand.nextInt(6) - rand.nextInt(6), rand.nextInt(2) - rand.nextInt(2), rand.nextInt(6) - rand.nextInt(6));
             if(world.getBlockState(blockpos.down()).getBlock().isIn(BlockTags.REEDS_PLANTABLE_ON)) {
                 if(world.isAirBlock(blockpos) || (world.getBlockState(blockpos).getBlock() == Blocks.WATER && world.isAirBlock(blockpos.up()))) {

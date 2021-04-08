@@ -26,7 +26,7 @@ public class FeatureApexPredators extends Feature<NoFeatureConfig> {
     }
 
     public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        pos = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos.add(8, 0, 8));
+        pos = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos);
         Biome biome = world.getBiome(pos);
         EntityType<? extends ComplexMob> type;
         int groupSize = 1;
