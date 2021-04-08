@@ -1,7 +1,10 @@
 {
 	"variants": {
-		"": {
-			"model": "untamedwilds:block/flora_elephant_ear"
-		}
+		"": [
+			{ "model": "untamedwilds:block/flora_elephant_ear" },
+			{ "model": "untamedwilds:block/flora_elephant_ear", "y": 90 },
+			{ "model": "untamedwilds:block/flora_elephant_ear", "y": 180 },
+			{ "model": "untamedwilds:block/flora_elephant_ear", "y": 270 }
+		]
 	}
 }

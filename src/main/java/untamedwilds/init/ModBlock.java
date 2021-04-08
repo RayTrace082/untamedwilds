@@ -1,6 +1,7 @@
 package untamedwilds.init;
 
 import com.google.common.collect.Sets;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -60,6 +61,7 @@ public class ModBlock {
     public static RegistryObject<Block> COMMON_REED = createBlock("flora_common_reed", () -> new ReedBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(0.1F).sound(SoundType.VINE).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addReeds.get(), 100);
     public static RegistryObject<Block> AMAZON_SWORD = createBlock("flora_amazon_sword", () -> new AlgaeBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(0).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addAlgae.get());
     public static RegistryObject<Block> BUSH_TEMPERATE = createBlock("flora_bush_temperate", () -> new UndergrowthBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addBushes.get());
+    public static RegistryObject<Block> ELEPHANT_EAR = createBlock("flora_elephant_ear", () -> new UndergrowthBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement(), AbstractBlock.OffsetType.XYZ), ItemGroup.DECORATIONS, ConfigFeatureControl.addBushes.get());
 
     public static RegistryObject<TileEntityType<CageBlockEntity>> BLOCKENTITY_CAGE = TILE_ENTITY_TYPES.register("trap_cage", () -> new TileEntityType<>(CageBlockEntity::new, Sets.newHashSet(ModBlock.TRAP_CAGE.get()), null));
 
@@ -107,6 +109,7 @@ public class ModBlock {
         }
         if (ConfigFeatureControl.addBushes.get()) {
             RenderTypeLookup.setRenderLayer(ModBlock.BUSH_TEMPERATE.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlock.ELEPHANT_EAR.get(), RenderType.getCutout());
         }
     }
 }

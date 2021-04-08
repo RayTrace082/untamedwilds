@@ -61,8 +61,8 @@ public class UntamedWildsGenerator {
     public static void onBiomesLoad(BiomeLoadingEvent event) {
         // Thanks Mojang, very cool 😎
         if (event.getCategory() == Biome.Category.OCEAN) {
-            registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SESSILE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqSessile.get());
-            registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, OCEAN.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqOcean.get());
+            registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SESSILE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), 3 /*ConfigFeatureControl.freqSessile.get()*/);
+            registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, OCEAN.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), 16 /*ConfigFeatureControl.freqOcean.get()*/);
 
             if (!event.getName().toString().equals("minecraft:frozen_ocean") && !event.getName().toString().equals("minecraft:deep_frozen_ocean")) {
                 if (ConfigFeatureControl.addAnemones.get()) {
@@ -82,8 +82,8 @@ public class UntamedWildsGenerator {
         }
         registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, DENSE_WATER.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(4), DENSE_WATER.get().getRegistryName());
 
-        registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqCritter.get());
-        registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqApex.get());
+        registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), 3 /*ConfigFeatureControl.freqCritter.get()*/);
+        registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), 24 /*ConfigFeatureControl.freqApex.get()*/);
 
         event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.1F)).chance(10)));
     }

@@ -23,8 +23,16 @@ import java.util.Random;
 
 public class UndergrowthBlock extends BushBlock implements IGrowable, net.minecraftforge.common.IForgeShearable {
 
+    private final OffsetType offset;
+
     public UndergrowthBlock(Properties properties) {
         super(properties);
+        this.offset = OffsetType.NONE;
+    }
+
+    public UndergrowthBlock(Properties properties, OffsetType type) {
+        super(properties);
+        this.offset = type;
     }
 
     protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
@@ -49,6 +57,10 @@ public class UndergrowthBlock extends BushBlock implements IGrowable, net.minecr
                 worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GRASS_STEP, SoundCategory.AMBIENT, 1, 1, true);
             }
         }
+    }
+
+    public OffsetType getOffsetType() {
+        return this.offset;
     }
 
     public boolean canGrow(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {

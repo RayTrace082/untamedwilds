@@ -49,7 +49,8 @@ public class FeatureVegetation extends Feature<FeatureSpreadConfig> {
     // Plants available, referenced to properly distribute them in the world if their conditions are filled
     public enum FloraTypes implements IStringSerializable {
 
-        TEMPERATE_BUSH	(ModBlock.BUSH_TEMPERATE.get(), 2, ConfigFeatureControl.addBushes.get(), false, Biome.Category.FOREST, Biome.Category.SWAMP, Biome.Category.EXTREME_HILLS, Biome.Category.TAIGA, Biome.Category.PLAINS);
+        TEMPERATE_BUSH	(ModBlock.BUSH_TEMPERATE.get(), 2, ConfigFeatureControl.addBushes.get(), false, Biome.Category.FOREST, Biome.Category.SWAMP, Biome.Category.EXTREME_HILLS, Biome.Category.TAIGA, Biome.Category.PLAINS),
+        ELEPHANT_EAR	(ModBlock.ELEPHANT_EAR.get(), 2, ConfigFeatureControl.addBushes.get(), false, Biome.Category.JUNGLE);
 
         public Block type;
         public int rarity;
