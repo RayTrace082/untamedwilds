@@ -89,7 +89,6 @@ public class UntamedWildsGenerator {
     }
 
     private static void registerFeatureWithFreq(BiomeLoadingEvent event, GenerationStage.Decoration decoration, ConfiguredFeature<?, ?> feature, int freq) {
-        event.getGeneration().withFeature(decoration, feature);
         if (freq > 0) {
             registerFeature(event, decoration, feature.chance(freq), CRITTERS.get().getRegistryName());
         }
