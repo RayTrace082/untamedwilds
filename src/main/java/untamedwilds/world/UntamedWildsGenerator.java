@@ -62,7 +62,8 @@ public class UntamedWildsGenerator {
         // Thanks Mojang, very cool 😎
         if (event.getCategory() == Biome.Category.OCEAN) {
             registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SESSILE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(4), SESSILE.get().getRegistryName());
-            registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, OCEAN.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(16), OCEAN.get().getRegistryName());
+            registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, OCEAN.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqOcean.get());
+
             if (!event.getName().toString().equals("minecraft:frozen_ocean") && !event.getName().toString().equals("minecraft:deep_frozen_ocean")) {
                 if (ConfigFeatureControl.addAnemones.get()) {
                     registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, SEA_ANEMONE.get().withConfiguration(new FeatureSpreadConfig(4)).withPlacement(Features.Placements.PATCH_PLACEMENT).chance(16), SEA_ANEMONE.get().getRegistryName());
@@ -81,9 +82,11 @@ public class UntamedWildsGenerator {
         }
         registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, DENSE_WATER.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(4), DENSE_WATER.get().getRegistryName());
 
+        registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqCritter.get());
+        registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqApex.get());
+
         event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.1F)).chance(10)));
         event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(24));
-        event.getGeneration().withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(3));
     }
 
     private static void registerFeature(BiomeLoadingEvent event, GenerationStage.Decoration decoration, ConfiguredFeature<?, ?> feature, ResourceLocation name) {
@@ -91,6 +94,13 @@ public class UntamedWildsGenerator {
             UntamedWilds.LOGGER.info("Adding feature " + name + " to biome " + event.getName());
         }
         event.getGeneration().withFeature(decoration, feature);
+    }
+
+    private static void registerFeatureWithFreq(BiomeLoadingEvent event, GenerationStage.Decoration decoration, ConfiguredFeature<?, ?> feature, int freq) {
+        event.getGeneration().withFeature(decoration, feature);
+        if (freq > 0) {
+            registerFeature(event, decoration, feature.chance(freq), CRITTERS.get().getRegistryName());
+        }
     }
 
     public static void readBioDiversityLevels() {
