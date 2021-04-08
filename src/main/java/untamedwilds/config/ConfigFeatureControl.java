@@ -10,6 +10,7 @@ public class ConfigFeatureControl {
     public static ForgeConfigSpec.BooleanValue addTreeOrchids;
 
     public static ForgeConfigSpec.IntValue freqCritter;
+    public static ForgeConfigSpec.IntValue freqSessile;
     public static ForgeConfigSpec.IntValue freqOcean;
     public static ForgeConfigSpec.IntValue freqApex;
 
@@ -23,6 +24,7 @@ public class ConfigFeatureControl {
         addAlgae = builder.comment("Controls whether to add Amazon Sword and their associated items").define("gencontrol.algae", true);
 
         freqCritter = builder.comment("Frequency of Critters, 1 in N chunks will generate with Critters (0 to disable)").defineInRange("gencontrol.freqcritter", 3, 0, Integer.MAX_VALUE);
+        freqSessile = builder.comment("Frequency of Sessile Ocean Mobs, 1 in N chunks will generate with Sessile Mobs (0 to disable)").defineInRange("gencontrol.freqsessile", 4, 0, Integer.MAX_VALUE);
         freqOcean = builder.comment("Frequency of Ocean Mobs, 1 in N chunks will generate with Ocean Mobs (0 to disable)").defineInRange("gencontrol.freqocean", 16, 0, Integer.MAX_VALUE);
         freqApex = builder.comment("Frequency of Apex Predators, 1 in N chunks will generate with an Apex Predator (0 to disable)").defineInRange("gencontrol.freqapex", 24, 0, Integer.MAX_VALUE);
         //builder.pop();
