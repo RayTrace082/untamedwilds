@@ -1,20 +1,8 @@
 {
-	"entity.generic.swing": {
-		"category": "neutral",
-		"sounds": [
-			"untamedwilds:generic_swing"
-		]
-	},
 	"entity.generic.bite": {
 		"category": "neutral",
 		"sounds": [
 			"untamedwilds:generic_bite"
-		]
-	},
-	"entity.generic.sniff": {
-		"category": "neutral",
-		"sounds": [
-			"untamedwilds:generic_sniff"
 		]
 	},
 	"entity.bear.ambient": {
