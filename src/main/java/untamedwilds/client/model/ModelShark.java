@@ -6,7 +6,6 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
 import untamedwilds.entity.fish.EntityShark;
 
 public class ModelShark extends AdvancedEntityModel<EntityShark> {
@@ -33,7 +32,8 @@ public class ModelShark extends AdvancedEntityModel<EntityShark> {
     private final AdvancedModelBox head_nose;
 
     private final ModelAnimator animator;
-    private float pitchBuffer = 0;
+    private static AdvancedModelBox[] bodyParts_passive;
+    private static AdvancedModelBox[] bodyParts_angry;
 
     public ModelShark() {
         this.textureWidth = 128;
@@ -139,6 +139,8 @@ public class ModelShark extends AdvancedEntityModel<EntityShark> {
         this.head_face_1.addChild(this.head_face_teeth);
         this.head_face_1.addChild(this.head_nose);
 
+        bodyParts_passive = new AdvancedModelBox[]{head_snout, body_main, body_tail_1, body_tail_2, body_tail_3};
+        bodyParts_angry = new AdvancedModelBox[]{body_main, body_tail_1, body_tail_2, body_tail_3};
         animator = ModelAnimator.create();
         updateDefaultPose();
     }
@@ -150,34 +152,14 @@ public class ModelShark extends AdvancedEntityModel<EntityShark> {
 
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
-        return ImmutableList.of(
-            body_main,
-            head_snout,
-            body_tail_1,
-            fin_dorsal,
-            fin_right,
-            fin_left,
-            head_face_1,
-            head_jaw,
-            head_face_teeth,
-            head_hammer,
-            head_jaw_teeth,
-            body_tail_2,
-            fin_pelvic_left,
-            fin_pelvic_right,
-            body_tail_3,
-            fin_what_top,
-            fin_what_bottom,
-            fin_caudal,
-            fin_caudal_2,
-            head_nose
+        return ImmutableList.of(body_main, head_snout, body_tail_1, fin_dorsal, fin_right, fin_left, head_face_1,
+            head_jaw, head_face_teeth, head_hammer, head_jaw_teeth, body_tail_2, fin_pelvic_left, fin_pelvic_right,
+            body_tail_3, fin_what_top, fin_what_bottom, fin_caudal, fin_caudal_2, head_nose
         );
     }
 
     private void animate(IAnimatedEntity entityIn) {
-        this.resetToDefaultPose();
-        EntityShark bear = (EntityShark) entityIn;
-        animator.update(bear);
+        animator.update(entityIn);
 
         animator.setAnimation(EntityShark.ATTACK_THRASH);
         animator.startKeyframe(5);
@@ -194,41 +176,31 @@ public class ModelShark extends AdvancedEntityModel<EntityShark> {
     }
 
     public void setRotationAngles(EntityShark shark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.resetToDefaultPose();
         animate(shark);
-
         float globalSpeed = 0.6f;
         float globalDegree = 1f;
-        float truePitch = limitAngle(this.pitchBuffer, headPitch, 0.05F);
-        this.head_snout.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.08F), (float) (1F + Math.sin(ageInTicks / 16) * 0.08F), 1.0F);
 
         // Model Parameters
-        boolean shortFins = shark.hasShortFins();
-        this.fin_left.scaleY = shortFins ? 0.5F : 1;
-        this.fin_right.scaleY = shortFins ? 0.5F : 1;
-        this.fin_dorsal.scaleY = shortFins ? 0.5F : 1;
+        float shortFins = shark.hasShortFins() ? 0.5F : 1;
+        this.fin_left.scaleY = shortFins;
+        this.fin_right.scaleY = shortFins;
+        this.fin_dorsal.scaleY = shortFins;
 
+        // Breathing Animation
+        this.head_snout.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.08F), (float) (1F + Math.sin(ageInTicks / 16) * 0.08F), 1.0F);
+
+        // Pitch/Yaw handler
         if (shark.isInWater()) {
-            this.setRotateAngle(body_main, netHeadYaw * ((float) Math.PI / 180F), truePitch * ((float) Math.PI / 180F), 0);
+            this.setRotateAngle(body_main, shark.rotationPitch * ((float) Math.PI / 180F), 0, 0);
         }
-        AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{head_snout, body_main, body_tail_1, body_tail_2, body_tail_3};
-        chainSwing(bodyParts, globalSpeed * 0.8F, globalDegree, -5, limbSwing / 3, Math.max(0.5F, limbSwingAmount));
-        this.pitchBuffer = truePitch;
-    }
 
-    protected float limitAngle(float sourceAngle, float targetAngle, float maximumChange) {
-        float f = MathHelper.wrapDegrees(targetAngle - sourceAngle);
-        if (f > maximumChange) {
-            f = maximumChange;
+        // Movement Animation
+        if (!shark.isAngry()) {
+            chainSwing(bodyParts_passive, globalSpeed * 0.8F, globalDegree, -5, limbSwing / 3, Math.max(0.3F, limbSwingAmount));
         }
-        if (f < -maximumChange) {
-            f = -maximumChange;
+        else {
+            chainSwing(bodyParts_angry, globalSpeed, globalDegree / 1.5F, -4, limbSwing / 3, Math.max(0.3F, limbSwingAmount));
         }
-        float f1 = sourceAngle + f;
-        if (f1 < 0.0F) {
-            f1 += 360.0F;
-        } else if (f1 > 360.0F) {
-            f1 -= 360.0F;
-        }
-        return f1;
     }
 }

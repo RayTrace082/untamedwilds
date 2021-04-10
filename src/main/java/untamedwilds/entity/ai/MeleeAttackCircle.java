@@ -75,8 +75,6 @@ public class MeleeAttackCircle extends Goal {
             return false;
         } else if (!this.longMemory) {
             return !this.attacker.getNavigator().noPath();
-        } else if (!this.attacker.isWithinHomeDistanceFromPosition(livingentity.getPosition())) {
-            return false;
         }
         else {
             return !(livingentity instanceof PlayerEntity) || !livingentity.isSpectator() && !((PlayerEntity)livingentity).isCreative();
@@ -99,27 +97,28 @@ public class MeleeAttackCircle extends Goal {
     }
 
     public void tick() {
-        if (this.attacker.ticksExisted % 400 == 0) {
-            this.invert *= -1;
-        }
-        if (this.attacker.ticksExisted % 400 > 80) {
-            if (this.attacker.getAttackTarget() != null && this.attacker.ticksExisted % 10 == 0) {
-                double x = this.attacker.getAttackTarget().getPosX() + Math.cos(this.attacker.ticksExisted / 60F) * 10 * this.invert;
-                double z = this.attacker.getAttackTarget().getPosZ() + Math.sin(this.attacker.ticksExisted / 60F) * 10 * this.invert;
-                this.attacker.getNavigator().tryMoveToXYZ(x, this.attacker.getAttackTarget().getPosY(), z, 2.3F);
-            }
-            this.checkAndPerformAttack(this.attacker.getAttackTarget(), this.attacker.getDistanceSq(this.attacker.getAttackTarget().getPosX(), this.attacker.getAttackTarget().getBoundingBox().minY, this.attacker.getAttackTarget().getPosZ()));
-        }
-        else {
-            LivingEntity livingentity = this.attacker.getAttackTarget();
-            this.attacker.getLookController().setLookPositionWithEntity(livingentity, 30.0F, 30.0F);
-            double d0 = this.attacker.getDistanceSq(livingentity.getPosX(), livingentity.getBoundingBox().minY, livingentity.getPosZ());
-            --this.delayCounter;
+        LivingEntity livingentity = this.attacker.getAttackTarget();
+        double d0 = this.attacker.getDistanceSq(livingentity.getPosX(), livingentity.getBoundingBox().minY, livingentity.getPosZ());
+        --this.delayCounter;
 
-            if ((this.longMemory || this.attacker.getEntitySenses().canSee(livingentity)) && this.delayCounter <= 0 && (this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D || livingentity.getDistanceSq(this.targetX, this.targetY, this.targetZ) >= 1.0D || this.attacker.getRNG().nextFloat() < 0.05F)) {
-                this.targetX = livingentity.getPosX();
-                this.targetY = livingentity.getBoundingBox().minY;
-                this.targetZ = livingentity.getPosZ();
+        if ((this.longMemory || this.attacker.getEntitySenses().canSee(livingentity)) && this.delayCounter <= 0 && (this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D || livingentity.getDistanceSq(this.targetX, this.targetY, this.targetZ) >= 1.0D || this.attacker.getRNG().nextFloat() < 0.05F)) {
+            this.targetX = livingentity.getPosX();
+            this.targetY = livingentity.getBoundingBox().minY;
+            this.targetZ = livingentity.getPosZ();
+            // Circling
+            if (this.attacker.ticksExisted % 400 == 0) {
+                this.invert *= -1;
+            }
+            if (this.attacker.ticksExisted % 400 > 80) {
+                if (this.attacker.getAttackTarget() != null && this.attacker.ticksExisted % 10 == 0) {
+                    double x = this.attacker.getAttackTarget().getPosX() + Math.cos(this.attacker.ticksExisted / 60F) * 10 * this.invert;
+                    double z = this.attacker.getAttackTarget().getPosZ() + Math.sin(this.attacker.ticksExisted / 60F) * 10 * this.invert;
+                    this.attacker.getNavigator().tryMoveToXYZ(x, this.attacker.getAttackTarget().getPosY(), z, 2.3F);
+                }
+            }
+            // Attacking
+            else {
+                this.attacker.getLookController().setLookPositionWithEntity(livingentity, 30.0F, 30.0F);
                 this.delayCounter = 4 + this.attacker.getRNG().nextInt(7);
                 if (this.canPenalize) {
                     this.delayCounter += failedPathFindingPenalty;
@@ -143,18 +142,17 @@ public class MeleeAttackCircle extends Goal {
                     this.delayCounter += 15;
                 }
             }
-
-            this.attackTick = Math.max(this.attackTick - 1, 0);
-            this.checkAndPerformAttack(livingentity, d0);
         }
+        this.attackTick = Math.max(this.attackTick - 1, 0);
+        this.checkAndPerformAttack(livingentity, this.attacker.getDistanceSq(this.targetX, this.targetY, this.targetZ));
     }
 
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
         double d0 = this.getAttackReachSqr(enemy);
-        this.attacker.getLookController().setLookPositionWithEntity(enemy, 30.0F, 30.0F);
         if (distToEnemySqr <= d0 && this.attackTick <= 0) {
             this.attackTick = 20;
             this.attacker.attackEntityAsMob(enemy);
+            this.attacker.getLookController().setLookPositionWithEntity(enemy, 30.0F, 30.0F);
         }
     }
 

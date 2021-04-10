@@ -71,6 +71,7 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
     public void livingTick() {
         AnimationHandler.INSTANCE.updateAnimations(this);
         if (!this.world.isRemote) {
+            this.setAngry(this.getAttackTarget() != null);
             if (this.ticksExisted % 1000 == 0) {
                 if (this.wantsToBreed() && !this.isMale()) {
                     this.setGrowingAge(this.getPregnancyTime());
