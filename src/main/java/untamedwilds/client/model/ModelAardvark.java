@@ -58,6 +58,7 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
         this.body_tail_3.setRotationPoint(0.0F, 0.4F, 5.3F);
         this.body_tail_3.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 6, 0.0F);
         this.setRotateAngle(body_tail_3, 0.8651597102135892F, 0.0F, 0.0F);
+        this.body_tail_3.scaleX = 0.7F;
         this.leg_left_1 = new AdvancedModelBox(this, 46, 15);
         this.leg_left_1.setRotationPoint(0.0F, -0.2F, 5.6F);
         this.leg_left_1.addBox(0.0F, -1.0F, -2.0F, 4, 5, 4, 0.0F);
@@ -181,9 +182,7 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
     }
 
     private void animate(IAnimatedEntity entityIn) {
-        this.resetToDefaultPose();
-        EntityAardvark bear = (EntityAardvark) entityIn;
-        animator.update(bear);
+        animator.update(entityIn);
 
         animator.setAnimation(EntityAardvark.WORK_DIG);
         animator.startKeyframe(6);
@@ -208,30 +207,14 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
         animator.resetKeyframe(10);
     }
 
-    public void setRotationAngles(EntityAardvark hippo, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        animate(hippo);
-        //limbSwing = ageInTicks / 3;
-        //limbSwingAmount = 0.5f;
+    public void setRotationAngles(EntityAardvark aardvark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.resetToDefaultPose();
+        animate(aardvark);
         float globalSpeed = 1f;
         float globalDegree = 1f;
-        float f = limbSwing / 2;
-        if (limbSwingAmount > 0.4F) {
-            limbSwingAmount = 0.4F;
-        }
-        if (!hippo.shouldRenderEyes()) {
-            this.eye_right.setRotationPoint(-0.51F, -1.0F, -3.0F);
-            this.eye_left.setRotationPoint(0.51F, -1.0F, -3.0F);
-        }
-        if (hippo.isInWater() && !hippo.isOnGround()) {
-            float pitch = MathHelper.clamp(hippo.rotationPitch, -20F, 20.0F) - 10;
-            this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
-        }
+        limbSwingAmount = Math.min(limbSwingAmount, 0.4F);
 
-        if (!hippo.isSleeping()) {
-            this.faceTarget(netHeadYaw, headPitch, 3, head_neck);
-            this.faceTarget(netHeadYaw, headPitch, 3, head_head);
-        }
-        this.body_tail_3.scaleX = 0.7F;
+        // Breathing Animation
         this.body_main.setScale((float) (1.0F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1.0F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
         bob(body_main, 0.4F * globalSpeed, 0.1F, false, ageInTicks / 20, 2);
         bob(arm_right_1, 0.4F * globalSpeed, 0.1F, false, -ageInTicks / 20, 2);
@@ -242,25 +225,27 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
         walk(head_head, 0.4f * globalSpeed, 0.03f, false, 2.8F, 0.06F, ageInTicks / 20, 2);
         this.head_snout.setScale((float) (1.0F + Math.sin(ageInTicks / 6) * 0.08F + Math.sin(ageInTicks / 2) * 0.1F), (float) (1.0F + Math.sin(ageInTicks / 8) * 0.04F), 1.0F);
 
-        // Sleeping Animation
-        if (hippo.sleepProgress > 0) {
-            this.progressPosition(body_main, hippo.sleepProgress, -3.0F, 21F, -5.0F, 40);
-            this.progressRotation(body_main, hippo.sleepProgress, (float)Math.toRadians(20.87F), 0.0F, (float)Math.toRadians(-91.30), 40);
-            this.progressRotation(head_neck, hippo.sleepProgress, (float)Math.toRadians(26.09), (float)Math.toRadians(15.65), 0, 40);
-            this.progressRotation(arm_left_1, hippo.sleepProgress, (float)Math.toRadians(5.22), 0, (float)Math.toRadians(23.48), 40);
-            this.progressRotation(leg_left_1, hippo.sleepProgress, (float)Math.toRadians(10.43), 0, (float)Math.toRadians(36.52), 40);
-            this.progressRotation(body_tail_1, hippo.sleepProgress, (float)Math.toRadians(-31.30), 0, (float)Math.toRadians(23.48), 40);
-            this.progressRotation(body_tail_2, hippo.sleepProgress, (float)Math.toRadians(-39.13), 0, (float)Math.toRadians(-10.43), 40);
-            this.progressRotation(body_tail_3, hippo.sleepProgress, (float)Math.toRadians(-52.17), 0, (float)Math.toRadians(23.48), 40);
-        }
-        else {
-            flap(body_tail_1, 0.4f * globalSpeed, 0.2f * globalDegree, true, 0F, 0f, ageInTicks / 6, 2);
-            flap(body_tail_2, 0.4f * globalSpeed, 0.2f * globalDegree, true, 0.5F, 0f, ageInTicks / 6, 2);
-            flap(body_tail_3, 0.4f * globalSpeed, 0.2f * globalDegree, true, 1.0F, 0f, ageInTicks / 6, 2);
+        // Blinking Animation
+        if (!aardvark.shouldRenderEyes()) {
+            this.eye_right.setRotationPoint(-0.51F, -1.0F, -3.0F);
+            this.eye_left.setRotationPoint(0.51F, -1.0F, -3.0F);
         }
 
-        if (hippo.canMove()) {
-            if (hippo.getSpeed() > 0.1f || hippo.isAngry()) { // Running animation
+        // Head Tracking Animation
+        if (!aardvark.isSleeping()) {
+            this.faceTarget(netHeadYaw, headPitch, 3, head_neck);
+            this.faceTarget(netHeadYaw, headPitch, 3, head_head);
+        }
+
+        // Pitch/Yaw handler
+        if (aardvark.isInWater() && !aardvark.isOnGround()) {
+            float pitch = MathHelper.clamp(aardvark.rotationPitch, -20F, 20.0F) - 10;
+            this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
+        }
+
+        // Movement Animation
+        if (aardvark.canMove()) {
+            if (aardvark.getSpeed() > 0.1f || aardvark.isAngry()) { // Running animation
                 bob(body_main, 0.5F * globalSpeed, 0.5F, false, limbSwing, limbSwingAmount);
                 walk(body_main, 0.5f * globalSpeed, 0.5f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
                 walk(head_neck, 0.5f * globalSpeed, -0.5f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
@@ -280,18 +265,35 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
                 walk(leg_left_2, 0.5f * globalSpeed, 0.6f * globalDegree, true, 2.2F, 0.2f, limbSwing, limbSwingAmount);
             } else { // Walking Animation
                 bob(arm_right_1, 0.5F * globalSpeed, 0.8F, false, limbSwing, limbSwingAmount);
-                walk(arm_right_1, 0.5f * globalSpeed, 1f * globalDegree, true, 0F, 0f, limbSwing, limbSwingAmount);
+                walk(arm_right_1, 0.5f * globalSpeed, globalDegree, true, 0F, 0f, limbSwing, limbSwingAmount);
                 walk(arm_right_2, 0.5f * globalSpeed, 0.6f * globalDegree, true, 0.2F, 0.2f, limbSwing, limbSwingAmount);
                 bob(arm_left_1, 0.5F * globalSpeed, 0.8F, false, limbSwing, limbSwingAmount);
-                walk(arm_left_1, 0.5f * globalSpeed, 1f * globalDegree, true, 2.4F, 0f, limbSwing, limbSwingAmount);
+                walk(arm_left_1, 0.5f * globalSpeed, globalDegree, true, 2.4F, 0f, limbSwing, limbSwingAmount);
                 walk(arm_left_2, 0.5f * globalSpeed, 0.6f * globalDegree, true, 2.6F, 0.2f, limbSwing, limbSwingAmount);
                 bob(leg_right_1, 0.5F * globalSpeed, 0.8F, false, limbSwing, limbSwingAmount);
-                walk(leg_right_1, 0.5f * globalSpeed, 1f * globalDegree, true, 1F, 0f, limbSwing, limbSwingAmount);
+                walk(leg_right_1, 0.5f * globalSpeed, globalDegree, true, 1F, 0f, limbSwing, limbSwingAmount);
                 walk(leg_right_2, 0.5f * globalSpeed, 0.6f * globalDegree, true, 1.2F, 0.2f, limbSwing, limbSwingAmount);
                 bob(leg_left_1, 0.5F * globalSpeed, 0.8F, false, limbSwing, limbSwingAmount);
-                walk(leg_left_1, 0.5f * globalSpeed, 1f * globalDegree, true, 3.4F, 0f, limbSwing, limbSwingAmount);
+                walk(leg_left_1, 0.5f * globalSpeed, globalDegree, true, 3.4F, 0f, limbSwing, limbSwingAmount);
                 walk(leg_left_2, 0.5f * globalSpeed, 0.6f * globalDegree, true, 3.6F, 0.2f, limbSwing, limbSwingAmount);
             }
+        }
+
+        // Sleeping Animation
+        if (aardvark.sleepProgress > 0) {
+            this.progressPosition(body_main, aardvark.sleepProgress, -3.0F, 21F, -5.0F, 40);
+            this.progressRotation(body_main, aardvark.sleepProgress, (float)Math.toRadians(20.87F), 0.0F, (float)Math.toRadians(-91.30), 40);
+            this.progressRotation(head_neck, aardvark.sleepProgress, (float)Math.toRadians(26.09), (float)Math.toRadians(15.65), 0, 40);
+            this.progressRotation(arm_left_1, aardvark.sleepProgress, (float)Math.toRadians(5.22), 0, (float)Math.toRadians(23.48), 40);
+            this.progressRotation(leg_left_1, aardvark.sleepProgress, (float)Math.toRadians(10.43), 0, (float)Math.toRadians(36.52), 40);
+            this.progressRotation(body_tail_1, aardvark.sleepProgress, (float)Math.toRadians(-31.30), 0, (float)Math.toRadians(23.48), 40);
+            this.progressRotation(body_tail_2, aardvark.sleepProgress, (float)Math.toRadians(-39.13), 0, (float)Math.toRadians(-10.43), 40);
+            this.progressRotation(body_tail_3, aardvark.sleepProgress, (float)Math.toRadians(-52.17), 0, (float)Math.toRadians(23.48), 40);
+        }
+        else {
+            flap(body_tail_1, 0.4f * globalSpeed, 0.2f * globalDegree, true, 0F, 0f, ageInTicks / 6, 2);
+            flap(body_tail_2, 0.4f * globalSpeed, 0.2f * globalDegree, true, 0.5F, 0f, ageInTicks / 6, 2);
+            flap(body_tail_3, 0.4f * globalSpeed, 0.2f * globalDegree, true, 1.0F, 0f, ageInTicks / 6, 2);
         }
     }
 }

@@ -48,7 +48,7 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
     public void registerGoals() {
         this.goalSelector.addGoal(1, new SmartSwimGoal(this));
         this.goalSelector.addGoal(2, new FindItemsGoal(this, 12, 100, false, true));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.3D, false));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.6D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> this.getEcoLevel(input) > 4));
         this.goalSelector.addGoal(3, new GotoSleepGoal(this, 1));
@@ -84,6 +84,7 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
     @Override
     public void livingTick() {
         if (!this.world.isRemote) {
+            this.setAngry(this.getAttackTarget() != null);
             if (this.ticksExisted % 600 == 0) {
                 if (this.wantsToBreed()) {
                     this.setInLove(null);

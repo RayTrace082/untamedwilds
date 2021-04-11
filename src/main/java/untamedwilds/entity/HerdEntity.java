@@ -53,7 +53,7 @@ public class HerdEntity {
         }
         if (creature instanceof IPackEntity) {
             IPackEntity.initPack(creature);
-            creature.herd.setOpenToCombine(false);
+            //creature.herd.setOpenToCombine(false);
         }
     }
 
