@@ -25,12 +25,12 @@ public class MeleeAttackCircle extends Goal {
     private boolean canPenalize = false;
     private byte invert = 1;
 
-    public MeleeAttackCircle(CreatureEntity creature, double speedIn, boolean useLongMemory) {
-        this(creature, speedIn, useLongMemory, 0);
+    public MeleeAttackCircle(CreatureEntity entityIn, double speedIn, boolean useLongMemory) {
+        this(entityIn, speedIn, useLongMemory, 0);
     }
 
-    public MeleeAttackCircle(CreatureEntity creature, double speedIn, boolean useLongMemory, float reach) {
-        this.attacker = creature;
+    public MeleeAttackCircle(CreatureEntity entityIn, double speedIn, boolean useLongMemory, float reach) {
+        this.attacker = entityIn;
         this.speedTowardsTarget = speedIn;
         this.longMemory = useLongMemory;
         this.extraReach = reach;

@@ -28,12 +28,12 @@ public class MeleeAttackCircleHerd extends Goal {
     private byte invert = 1;
     private float offset = 0;
 
-    public MeleeAttackCircleHerd(ComplexMob creature, double speedIn, boolean useLongMemory) {
-        this(creature, speedIn, useLongMemory, 0);
+    public MeleeAttackCircleHerd(ComplexMob entityIn, double speedIn, boolean useLongMemory) {
+        this(entityIn, speedIn, useLongMemory, 0);
     }
 
-    public MeleeAttackCircleHerd(ComplexMob creature, double speedIn, boolean useLongMemory, float reach) {
-        this.attacker = creature;
+    public MeleeAttackCircleHerd(ComplexMob entityIn, double speedIn, boolean useLongMemory, float reach) {
+        this.attacker = entityIn;
         this.speedTowardsTarget = speedIn;
         this.longMemory = useLongMemory;
         this.extraReach = reach;

@@ -20,15 +20,15 @@ public class SmartMateGoal extends Goal {
     private int spawnBabyDelay;
     private final double moveSpeed;
 
-    public SmartMateGoal(ComplexMob taskOwner, double speedIn) {
-        this(taskOwner, speedIn, 120, taskOwner.getClass());
+    public SmartMateGoal(ComplexMob entityIn, double speedIn) {
+        this(entityIn, speedIn, 120, entityIn.getClass());
     }
 
-    private SmartMateGoal(ComplexMob taskOwner, double speedIn, int executionChance, Class<? extends ComplexMob> mateClass) {
-        this.taskOwner = taskOwner;
-        this.world = taskOwner.world;
+    private SmartMateGoal(ComplexMob entityIn, double speedIn, int chance, Class<? extends ComplexMob> mateClass) {
+        this.taskOwner = entityIn;
+        this.world = entityIn.world;
         this.mateClass = mateClass;
-        this.executionChance = executionChance;
+        this.executionChance = chance;
         this.moveSpeed = speedIn;
         this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }

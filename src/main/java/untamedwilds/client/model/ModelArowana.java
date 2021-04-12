@@ -27,6 +27,7 @@ public class ModelArowana extends AdvancedEntityModel<EntityArowana> {
         this.head_mouth = new AdvancedModelBox(this, 0, 25);
         this.head_mouth.setRotationPoint(0.0F, 1.5F, -6.0F);
         this.head_mouth.addBox(-1.5F, -4.0F, -1.0F, 3, 5, 1, 0.0F);
+        this.head_mouth.scaleX = 1.1F;
         this.head_mouth_whisker_1 = new AdvancedModelBox(this, 16, 20);
         this.head_mouth_whisker_1.setRotationPoint(0.5F, -3.9F, 0.0F);
         this.head_mouth_whisker_1.addBox(-0.5F, 0.0F, -3.0F, 1, 0, 3, 0.0F);
@@ -38,6 +39,7 @@ public class ModelArowana extends AdvancedEntityModel<EntityArowana> {
         this.body_head.setRotationPoint(0.0F, -0.2F, -2.0F);
         this.body_head.addBox(-1.5F, -2.5F, -6.0F, 3, 5, 5, 0.0F);
         this.setRotateAngle(body_head, 0.091106186954104F, 0.0F, 0.0F);
+        this.body_head.scaleX = 1.1F;
         this.body_tail_fin_1 = new AdvancedModelBox(this, 24, 8);
         this.body_tail_fin_1.setRotationPoint(0.0F, -1.4F, 4.5F);
         this.body_tail_fin_1.addBox(0.0F, -5.0F, 0.0F, 0, 10, 4, 0.0F);
@@ -89,39 +91,30 @@ public class ModelArowana extends AdvancedEntityModel<EntityArowana> {
 
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
-        return ImmutableList.of(        body_main,
-            body_tail_1,
-            body_head,
-            body_tail_fin_1,
-            body_tail_fin_2,
-            body_tail_3,
-            body_tail_fin,
-            head_mouth,
-            shape15,
-            shape16,
-            head_mouth_whisker_1,
-            head_mouth_whisker_2
-        );
+        return ImmutableList.of(body_main, body_tail_1, body_head, body_tail_fin_1, body_tail_fin_2, body_tail_3,
+                body_tail_fin, head_mouth, shape15, shape16, head_mouth_whisker_1, head_mouth_whisker_2);
     }
 
     public void setRotationAngles(EntityArowana arowana, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
-
         float globalSpeed = 0.5f;
         float globalDegree = 1f;
 
-        this.body_head.scaleX = 1.1F;
-        this.head_mouth.scaleX = 1.1F;
+        // Breathing Animation
+        walk(head_mouth, globalSpeed, globalDegree * 0.2f, false, 0.2F, 0.2f, ageInTicks / 6, 0.6F);
+        swing(shape15, globalSpeed, globalDegree * 0.5f, false, 0, 0.2f, ageInTicks / 6, 0.6F);
+        swing(shape16, globalSpeed, globalDegree * 0.5f, true, 0, 0.2f, ageInTicks / 6, 0.6F);
+
+        // Pitch/Yaw handler
         if (!arowana.isInWater()) {
             this.setRotateAngle(body_main, 0, 0, (float)Math.toRadians(90D));
         }
         else {
             this.setRotateAngle(body_main, netHeadYaw * 2 * ((float) Math.PI / 180F), headPitch * 2 * ((float) Math.PI / 180F), 0);
         }
+
+        // Movement Animation
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{body_head, body_main, body_tail_1, body_tail_3, body_tail_fin};
         chainSwing(bodyParts, globalSpeed, globalDegree * 1.1F, -5, limbSwing, limbSwingAmount);
-
-        swing(shape15, globalSpeed, globalDegree * 0.5f, false, 0, 0.2f, ageInTicks / 6, 0.6F);
-        swing(shape16, globalSpeed, globalDegree * 0.5f, true, 0, 0.2f, ageInTicks / 6, 0.6F);
     }
 }

@@ -18,15 +18,15 @@ public class AmphibiousTransition extends Goal {
     private final World world;
     private Vector3d shelter;
 
-    public AmphibiousTransition(ComplexMobAmphibious taskOwner, double movementSpeedIn) {
-        this(taskOwner, movementSpeedIn, 120);
+    public AmphibiousTransition(ComplexMobAmphibious entityIn, double speedIn) {
+        this(entityIn, speedIn, 120);
     }
 
-    public AmphibiousTransition(ComplexMobAmphibious taskOwner, double movementSpeedIn, int chance) {
-        this.taskOwner = taskOwner;
-        this.movementSpeed = movementSpeedIn;
+    public AmphibiousTransition(ComplexMobAmphibious entityIn, double speedIn, int chance) {
+        this.taskOwner = entityIn;
+        this.movementSpeed = speedIn;
         this.executionChance = chance;
-        this.world = taskOwner.world;
+        this.world = entityIn.world;
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP));
     }
 

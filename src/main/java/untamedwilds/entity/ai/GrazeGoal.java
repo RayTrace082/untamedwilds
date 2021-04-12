@@ -21,10 +21,10 @@ public class GrazeGoal extends Goal {
     private int eatingGrassTimer;
     private final int executionChance;
 
-    public GrazeGoal(ComplexMobTerrestrial taskOwner, int executionChance) {
-        this.taskOwner = taskOwner;
-        this.entityWorld = taskOwner.world;
-        this.executionChance = executionChance;
+    public GrazeGoal(ComplexMobTerrestrial entityIn, int chance) {
+        this.taskOwner = entityIn;
+        this.entityWorld = entityIn.world;
+        this.executionChance = chance;
         this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
     }
 

@@ -12,14 +12,14 @@ public class FishWanderAsSchoolGoal extends RandomSwimmingGoal {
     private final ComplexMob taskOwner;
     private final int maxDist;
 
-    public FishWanderAsSchoolGoal(ComplexMobAquatic entity) {
-        this(entity, 1.0D, 20, 5);
+    public FishWanderAsSchoolGoal(ComplexMobAquatic entityIn) {
+        this(entityIn, 1.0D, 20, 5);
     }
 
-    public FishWanderAsSchoolGoal(ComplexMobAquatic entity, double speedIn, int chance, int maxDist) {
-        super(entity, speedIn, chance);
+    public FishWanderAsSchoolGoal(ComplexMobAquatic entityIn, double speedIn, int chance, int maxDist) {
+        super(entityIn, speedIn, chance);
         this.maxDist = maxDist;
-        this.taskOwner = entity;
+        this.taskOwner = entityIn;
     }
 
     @Override

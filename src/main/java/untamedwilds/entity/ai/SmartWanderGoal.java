@@ -18,20 +18,20 @@ public class SmartWanderGoal extends Goal {
     private final boolean avoidWater;
     private final double speed;
 
-    public SmartWanderGoal(ComplexMobTerrestrial creatureIn, double speedIn) {
-        this(creatureIn, speedIn, 120, 0,false);
+    public SmartWanderGoal(ComplexMobTerrestrial entityIn, double speedIn) {
+        this(entityIn, speedIn, 120, 0,false);
     }
 
-    public SmartWanderGoal(ComplexMobTerrestrial creatureIn, double speedIn, boolean avoidWater) {
-        this(creatureIn, speedIn, 120, 0, avoidWater);
+    public SmartWanderGoal(ComplexMobTerrestrial entityIn, double speedIn, boolean avoidWater) {
+        this(entityIn, speedIn, 120, 0, avoidWater);
     }
 
-    public SmartWanderGoal(ComplexMobTerrestrial creatureIn, double speedIn, int runChance, boolean avoidWater) {
-        this(creatureIn, speedIn, 120, runChance, avoidWater);
+    public SmartWanderGoal(ComplexMobTerrestrial entityIn, double speedIn, int runChance, boolean avoidWater) {
+        this(entityIn, speedIn, 120, runChance, avoidWater);
     }
 
-    public SmartWanderGoal(ComplexMobTerrestrial creatureIn, double speedIn, int chance, int runChance, boolean avoidWater) {
-        this.creature = creatureIn;
+    public SmartWanderGoal(ComplexMobTerrestrial entityIn, double speedIn, int chance, int runChance, boolean avoidWater) {
+        this.creature = entityIn;
         this.speed = speedIn;
         this.executionChance = this.creature.isActive() ? chance : chance * 5;
         this.runChance = runChance;

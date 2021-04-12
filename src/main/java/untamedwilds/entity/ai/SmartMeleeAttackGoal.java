@@ -29,16 +29,16 @@ public class SmartMeleeAttackGoal extends Goal {
     private boolean canPenalize = false;
     private final boolean doSkirmish;
 
-    public SmartMeleeAttackGoal(CreatureEntity creature, double speedIn, boolean useLongMemory) {
-        this(creature, speedIn, useLongMemory, 0, false);
+    public SmartMeleeAttackGoal(CreatureEntity entityIn, double speedIn, boolean useLongMemory) {
+        this(entityIn, speedIn, useLongMemory, 0, false);
     }
 
-    public SmartMeleeAttackGoal(CreatureEntity creature, double speedIn, boolean useLongMemory, float reach) {
-        this(creature, speedIn, useLongMemory, reach, false);
+    public SmartMeleeAttackGoal(CreatureEntity entityIn, double speedIn, boolean useLongMemory, float reach) {
+        this(entityIn, speedIn, useLongMemory, reach, false);
     }
 
-    public SmartMeleeAttackGoal(CreatureEntity creature, double speedIn, boolean useLongMemory, float reach, boolean doSkirmish) {
-        this.attacker = creature;
+    public SmartMeleeAttackGoal(CreatureEntity entityIn, double speedIn, boolean useLongMemory, float reach, boolean doSkirmish) {
+        this.attacker = entityIn;
         this.speedTowardsTarget = speedIn;
         this.longMemory = useLongMemory;
         this.extraReach = reach;

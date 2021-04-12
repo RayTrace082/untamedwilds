@@ -6,9 +6,9 @@ import untamedwilds.entity.ComplexMobAmphibious;
 public class AmphibiousRandomSwimGoal extends RandomSwimmingGoal {
     private final ComplexMobAmphibious fish;
 
-    public AmphibiousRandomSwimGoal(ComplexMobAmphibious entity, double speed, int chance) {
-        super(entity, speed, chance);
-        this.fish = entity;
+    public AmphibiousRandomSwimGoal(ComplexMobAmphibious entityIn, double speedIn, int chance) {
+        super(entityIn, speedIn, chance);
+        this.fish = entityIn;
     }
 
     public boolean shouldExecute() {

@@ -64,9 +64,10 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies {
             }
         }
 
+        // Coerces the Arowana to stay at the surface
         if (this.getAttackTarget() == null && this.isInWater() && this.ticksExisted % 10 == 0) {
             if (world.hasWater(this.getPosition().up().up())) {
-                this.setMotion(this.getMotion().add(0, 0.1F, 0)); // Coerces the Arowana to stay at the surface
+                this.setMotion(this.getMotion().add(0, 0.1F, 0));
             }
         }
         super.livingTick();
@@ -83,7 +84,7 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies {
         return super.func_230254_b_(player, hand);
     }
 
-    /* Breeding conditions for the Trevally are:
+    /* Breeding conditions for the Arowana are:
      * A nearby Arowana of different gender */
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {

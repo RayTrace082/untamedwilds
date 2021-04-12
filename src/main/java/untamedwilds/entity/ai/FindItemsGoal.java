@@ -24,17 +24,17 @@ public class FindItemsGoal extends Goal  {
     private final boolean hyperCarnivore;
     private final boolean hyperHerbivore;
 
-    public FindItemsGoal(ComplexMobTerrestrial creature, int distance) {
-        this(creature, distance, 100, false, false);
+    public FindItemsGoal(ComplexMobTerrestrial entityIn, int distance) {
+        this(entityIn, distance, 100, false, false);
     }
 
-    public FindItemsGoal(ComplexMobTerrestrial creature, int distance, boolean hyperCarnivore) {
-        this(creature, distance, 100, hyperCarnivore, false);
+    public FindItemsGoal(ComplexMobTerrestrial entityIn, int distance, boolean hyperCarnivore) {
+        this(entityIn, distance, 100, hyperCarnivore, false);
     }
 
-    public FindItemsGoal(ComplexMobTerrestrial creature, int distance, int chance, boolean hyperCarnivore, boolean hyperHerbivore) {
-        this.taskOwner = creature;
-        this.sorter = new ClosestSorter(creature);
+    public FindItemsGoal(ComplexMobTerrestrial entityIn, int distance, int chance, boolean hyperCarnivore, boolean hyperHerbivore) {
+        this.taskOwner = entityIn;
+        this.sorter = new ClosestSorter(entityIn);
         this.distance = distance;
         this.executionChance = chance;
         this.hyperCarnivore = hyperCarnivore;

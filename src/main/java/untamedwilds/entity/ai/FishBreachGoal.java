@@ -18,12 +18,12 @@ public class FishBreachGoal extends JumpGoal {
     private boolean inWater;
     private final boolean safeJumping;
 
-    public FishBreachGoal(ComplexMobAquatic dolphin, int chance) {
-        this(dolphin, chance, true);
+    public FishBreachGoal(ComplexMobAquatic entityIn, int chance) {
+        this(entityIn, chance, true);
     }
 
-    public FishBreachGoal(ComplexMobAquatic dolphin, int chance, boolean safeJumping) {
-        this.taskOwner = dolphin;
+    public FishBreachGoal(ComplexMobAquatic entityIn, int chance, boolean safeJumping) {
+        this.taskOwner = entityIn;
         this.chance = chance;
         this.safeJumping = safeJumping;
     }

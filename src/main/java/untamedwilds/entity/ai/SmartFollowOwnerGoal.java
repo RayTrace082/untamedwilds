@@ -25,15 +25,15 @@ public class SmartFollowOwnerGoal extends Goal {
     private final float minDist;
     private float oldWaterCost;
 
-    public SmartFollowOwnerGoal(ComplexMob taskowner, double followspeed, float minDistIn, float maxDistIn) {
-        this.taskOwner = taskowner;
+    public SmartFollowOwnerGoal(ComplexMob entityIn, double speedIn, float minDistIn, float maxDistIn) {
+        this.taskOwner = entityIn;
         this.world = taskOwner.world;
-        this.followSpeed = followspeed;
-        this.navigator = taskowner.getNavigator();
+        this.followSpeed = speedIn;
+        this.navigator = entityIn.getNavigator();
         this.minDist = minDistIn;
         this.maxDist = maxDistIn;
         this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-        if (!(taskowner.getNavigator() instanceof GroundPathNavigator) && !(taskowner.getNavigator() instanceof FlyingPathNavigator)) {
+        if (!(entityIn.getNavigator() instanceof GroundPathNavigator) && !(entityIn.getNavigator() instanceof FlyingPathNavigator)) {
             throw new IllegalArgumentException("Unsupported mob type for SmartFollowOwnerGoal");
         }
     }
