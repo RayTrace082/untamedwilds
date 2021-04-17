@@ -501,7 +501,7 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
             walk(leg_right_foot, 0.5f * globalSpeed, 0.6f * globalDegree, false, 1F, 0f, limbSwing, limbSwingAmount);
         }
 
-        // Sitting animation
+        // Sitting Animation
         if (bear.sitProgress > 0) {
             this.progressPosition(body_main, bear.sitProgress, 0.0F, 11.7F, 4.0F, 40);
             this.progressPosition(body_torso, bear.sitProgress, 0.0F, -2.5F, -1.0F, 40);

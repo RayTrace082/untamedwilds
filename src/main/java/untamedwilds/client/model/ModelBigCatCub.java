@@ -118,9 +118,9 @@ public class ModelBigCatCub extends AdvancedEntityModel<AbstractBigCat> {
     }
 
     public void setRotationAngles(AbstractBigCat big_cat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        resetToDefaultPose();
+        this.resetToDefaultPose();
 
-        this.faceTarget(netHeadYaw, headPitch, 1, head_face);
+        // Breathing Animation
         this.main_body.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
         this.main_buttocks.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
         bob(main_body, 0.4F * 1.5f, 0.03F, false, ageInTicks / 20, 2);
@@ -131,48 +131,51 @@ public class ModelBigCatCub extends AdvancedEntityModel<AbstractBigCat> {
         flap(tail_1, 0.8f, 0.4f, true, 0F, 0f, ageInTicks / 6, 2);
         flap(tail_2, 0.8f, 0.4f, true, 0.5F, 0f, ageInTicks / 6, 2);
 
+        // Blinking Animation
         if (!big_cat.shouldRenderEyes()) {
             this.eye_right.setRotationPoint(-0.49F, 0, -2F);
             this.eye_left.setRotationPoint(0.49F, 0, -2F);
         }
-        if (big_cat.sitProgress != 0) {
-            // Sitting Animation
-            if (big_cat.isSitting()) {
-                this.progressRotation(main_body, big_cat.sitProgress, -0.5462880558742251F, 0.0F, 0.0F, 40);
-                this.progressRotation(main_buttocks, big_cat.sitProgress, -0.7285004297824331F, 0.0F, 0.0F, 40);
-                this.progressRotation(arm_left, big_cat.sitProgress, 0.18203784098300857F, 0.0F, 0.0F, 40);
-                this.progressRotation(arm_right, big_cat.sitProgress, 0.18203784098300857F, 0.0F, 0.0F, 40);
-                this.progressRotation(head_face, big_cat.sitProgress, 0.36425021489121656F, 0.0F, 0.0F, 40);
-                this.progressRotation(leg_right, big_cat.sitProgress, -0.045553093477052F, 0.0F, 0.22759093446006054F, 40);
-                this.progressRotation(leg_left, big_cat.sitProgress, -0.045553093477052F, 0.0F, -0.22759093446006054F, 40);
-                this.progressRotation(tail_1, big_cat.sitProgress, 1.2685004297824331F, 0.0F, 0.0f, 40);
 
-                this.progressPosition(main_body, big_cat.sitProgress, 0.0F, 17.5F, -1.0F, 40);
-                this.progressPosition(main_buttocks, big_cat.sitProgress, 0.0F, 2.0F, 3.5F, 40);
-            }
-            // Sleeping Animation
-            if (big_cat.isSleeping()) {
-                this.progressRotation(main_buttocks, big_cat.sitProgress, -0.136659280431156F, 0.0F, 0.0F, 40);
-                this.progressRotation(leg_right, big_cat.sitProgress, 1.5025539530419183F, -0.40980330836826856F, 0.0F, 40);
-                this.progressRotation(leg_left, big_cat.sitProgress, 1.5025539530419183F, 0.40980330836826856F, 0.0F, 40);
-                this.progressRotation(arm_left, big_cat.sitProgress, -1.3658946726107624F, -0.36425021489121656F, 0.0F, 40);
-                this.progressRotation(arm_right, big_cat.sitProgress, -1.3658946726107624F, 0.36425021489121656F, 0.0F, 40);
-                this.progressPosition(main_body, big_cat.sitProgress, 0.0F, 22.0F, -2.0F, 40);
-                this.progressPosition(main_buttocks, big_cat.sitProgress, 0.0F, 0.0F, 6.0F, 40);
-                this.progressPosition(head_face, big_cat.sitProgress, 0.0F, -0.5F, -2.5F, 40);
-                this.progressPosition(arm_right, big_cat.sitProgress, -2.5F, 0.0F, -1.0F, 40);
-                this.progressPosition(arm_left, big_cat.sitProgress, 2.5F, 0.0F, -1.0F, 40);
-                this.progressPosition(leg_right, big_cat.sitProgress, -2.8F, 0.0F, 1.0F, 40);
-                this.progressPosition(leg_left, big_cat.sitProgress, 2.8F, 0.0F, 1.0F, 40);
-            }
-        }
+        // Head Tracking Animation
+        this.faceTarget(netHeadYaw, headPitch, 1, head_face);
 
-        // Controls the walking animation
+        // Movement Animation
         if (big_cat.canMove()) {
             this.arm_right.rotateAngleX = MathHelper.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
             this.arm_left.rotateAngleX = MathHelper.cos(limbSwing * 0.5F + (float)Math.PI) * 1.4F * limbSwingAmount;
             this.leg_right.rotateAngleX = MathHelper.cos(limbSwing * 0.5F + (float)Math.PI) * 1.4F * limbSwingAmount;
             this.leg_left.rotateAngleX = MathHelper.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
+        }
+
+        // Sitting Animation
+        if (big_cat.sitProgress > 0) {
+            this.progressRotation(main_body, big_cat.sitProgress, -0.5462880558742251F, 0.0F, 0.0F, 40);
+            this.progressRotation(main_buttocks, big_cat.sitProgress, -0.7285004297824331F, 0.0F, 0.0F, 40);
+            this.progressRotation(arm_left, big_cat.sitProgress, 0.18203784098300857F, 0.0F, 0.0F, 40);
+            this.progressRotation(arm_right, big_cat.sitProgress, 0.18203784098300857F, 0.0F, 0.0F, 40);
+            this.progressRotation(head_face, big_cat.sitProgress, 0.36425021489121656F, 0.0F, 0.0F, 40);
+            this.progressRotation(leg_right, big_cat.sitProgress, -0.045553093477052F, 0.0F, 0.22759093446006054F, 40);
+            this.progressRotation(leg_left, big_cat.sitProgress, -0.045553093477052F, 0.0F, -0.22759093446006054F, 40);
+            this.progressRotation(tail_1, big_cat.sitProgress, 1.2685004297824331F, 0.0F, 0.0f, 40);
+            this.progressPosition(main_body, big_cat.sitProgress, 0.0F, 17.5F, -1.0F, 40);
+            this.progressPosition(main_buttocks, big_cat.sitProgress, 0.0F, 2.0F, 3.5F, 40);
+        }
+
+        // Sleeping Animation
+        else if (big_cat.isSleeping()) {
+            this.progressRotation(main_buttocks, big_cat.sleepProgress, -0.136659280431156F, 0.0F, 0.0F, 40);
+            this.progressRotation(leg_right, big_cat.sleepProgress, 1.5025539530419183F, -0.40980330836826856F, 0.0F, 40);
+            this.progressRotation(leg_left, big_cat.sleepProgress, 1.5025539530419183F, 0.40980330836826856F, 0.0F, 40);
+            this.progressRotation(arm_left, big_cat.sleepProgress, -1.3658946726107624F, -0.36425021489121656F, 0.0F, 40);
+            this.progressRotation(arm_right, big_cat.sleepProgress, -1.3658946726107624F, 0.36425021489121656F, 0.0F, 40);
+            this.progressPosition(main_body, big_cat.sleepProgress, 0.0F, 22.0F, -2.0F, 40);
+            this.progressPosition(main_buttocks, big_cat.sleepProgress, 0.0F, 0.0F, 6.0F, 40);
+            this.progressPosition(head_face, big_cat.sleepProgress, 0.0F, -0.5F, -2.5F, 40);
+            this.progressPosition(arm_right, big_cat.sleepProgress, -2.5F, 0.0F, -1.0F, 40);
+            this.progressPosition(arm_left, big_cat.sleepProgress, 2.5F, 0.0F, -1.0F, 40);
+            this.progressPosition(leg_right, big_cat.sleepProgress, -2.8F, 0.0F, 1.0F, 40);
+            this.progressPosition(leg_left, big_cat.sleepProgress, 2.8F, 0.0F, 1.0F, 40);
         }
     }
 }

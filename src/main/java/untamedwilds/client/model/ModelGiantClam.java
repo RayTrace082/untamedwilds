@@ -42,10 +42,14 @@ public class ModelGiantClam extends AdvancedEntityModel<EntityGiantClam> {
     }
 
     public void setRotationAngles(EntityGiantClam clam, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        resetToDefaultPose();
+        this.resetToDefaultPose();
+
+        // Breathing Animation
         this.mantle.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.08F), (float) (1F + Math.sin(ageInTicks / 16) * 0.08F), 1.0F);
         walk(shell_1, 0.2f, 0.1f, true, 0.5F, 0f, ageInTicks / 20, 0.5F);
         walk(shell_2, 0.2f, 0.1f, false, 0.5F, 0f, ageInTicks / 20, 0.5F);
+
+        // Opening/Closing Animation
         this.progressRotation(shell_1, clam.closeProgress, 0, 0, 0, 200);
         this.progressRotation(shell_2, clam.closeProgress, 0, 0, 0, 200);
     }
