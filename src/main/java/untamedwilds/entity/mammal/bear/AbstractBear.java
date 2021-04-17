@@ -11,6 +11,7 @@ import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -22,6 +23,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
+import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.entity.ai.SmartFollowOwnerGoal;
@@ -92,23 +94,6 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
                     }
                 }
             }
-            /*// Crop tramplers
-            if (!this.isTamed() && this.collidedHorizontally && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this)) {
-                boolean flag = false;
-                AxisAlignedBB axisalignedbb = this.getBoundingBox().grow(0.2D);
-
-                for(BlockPos blockpos : BlockPos.getAllInBoxMutable(MathHelper.floor(axisalignedbb.minX), MathHelper.floor(axisalignedbb.minY), MathHelper.floor(axisalignedbb.minZ), MathHelper.floor(axisalignedbb.maxX), MathHelper.floor(axisalignedbb.maxY), MathHelper.floor(axisalignedbb.maxZ))) {
-                    BlockState blockstate = this.world.getBlockState(blockpos);
-                    Block block = blockstate.getBlock();
-                    if (block instanceof LeavesBlock) {
-                        flag = this.world.func_225521_a_(blockpos, true, this) || flag;
-                    }
-                }
-
-                if (!flag && this.onGround) {
-                    this.jump();
-                }
-            }*/
             this.setAngry(this.getAttackTarget() != null);
             if (this.getAnimation() == NO_ANIMATION && this.getAttackTarget() == null && !this.isSleeping()) {
                 if (this.getCommandInt() == 0) {
@@ -142,7 +127,22 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
                 this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.5F, 0.8F);
             }
             if (this.getAnimation() == ATTACK_POUND && this.getAnimationTick() == 10) {
+                this.getMoveHelper().strafe(2F, 0);
                 this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.5F, 0.8F);
+            }
+            if (this.getAnimation() == ATTACK_MAUL) {
+                if (this.getAnimationTick() == 10) {
+                    this.playSound(ModSounds.ENTITY_BEAR_WARNING, 1.5F, 1);
+                }
+                if (this.getAnimationTick() == 20) {
+                    this.playSound(SoundEvents.ENTITY_PLAYER_SMALL_FALL, 1.5F, 0.8F);
+                    if (!this.world.isRemote()) {
+                        BlockPos pos = this.getPosition().down();
+                        BlockState state = this.world.getBlockState(pos);
+                        if (!state.addLandingEffects((ServerWorld)this.world, pos, state, this, 40))
+                            ((ServerWorld)this.world).spawnParticle(new BlockParticleData(ParticleTypes.BLOCK, state), this.getPosX(), this.getPosY(), this.getPosZ(), 40, 0.0D, 0.0D, 0.0D, 99.3F);
+                    }
+                }
             }
             if (this.getAnimation() == ANIMATION_ROAR && this.getAnimationTick() == 7) {
                 this.playSound(ModSounds.ENTITY_BEAR_WARNING, 1.5F, 1);
@@ -200,9 +200,10 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
     }
 
     private Animation chooseAttackAnimation() {
-        switch (this.rand.nextInt(3)) {
+        switch (this.rand.nextInt(4)) {
             case 0: return ATTACK_SWIPE;
             case 1: return ATTACK_BITE;
+            case 2: return ATTACK_MAUL;
             default: return ATTACK_POUND;
         }
     }
@@ -216,7 +217,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
         if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
             if (this.isTamed() && this.getOwner() == player) {
                 if (itemstack.getItem() == Items.BLAZE_ROD) {
-                    this.setAnimation(this.chooseAttackAnimation());
+                    this.setAnimation(ATTACK_MAUL);
                 }
                 if (itemstack.isEmpty()) {
                     this.setCommandInt(this.getCommandInt() + 1);
@@ -273,6 +274,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
     // Model Parameters
     public boolean hasHump() { return false; }
     public boolean hasShortSnout() { return false; }
+    public boolean hasLongBody() { return false; }
 
     // Species available, referenced to properly distribute Bears in the world
     public enum SpeciesBear implements IStringSerializable {

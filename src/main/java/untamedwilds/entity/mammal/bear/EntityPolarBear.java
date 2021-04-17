@@ -93,6 +93,9 @@ public class EntityPolarBear extends AbstractBear {
         return create_offspring(new EntityPolarBear(ModEntity.POLAR_BEAR, this.world));
     }
 
+
+    public boolean hasLongBody() { return true; }
+
     @Override
     protected ResourceLocation getLootTable() {
         return ModLootTables.BEAR_LOOT_POLAR;

@@ -39,18 +39,16 @@ public class ProtectChildrenTarget<T extends LivingEntity> extends HuntMobTarget
         if (this.goalOwner.isChild()) {
             return false;
         }
+
         if (this.goalOwner instanceof ComplexMob) {
             ComplexMob temp = (ComplexMob) this.goalOwner;
-            if (temp.getGrowingAge() <= 0 || temp.isTamed()) {
+            if (temp.isTamed()) {
                 return false;
             }
 
             for (MobEntity child : this.goalOwner.world.getEntitiesWithinAABB(this.goalOwner.getClass(), goalOwner.getBoundingBox().grow(8.0D, 4.0D, 8.0D))) {
-                if (child.isChild() && ((ComplexMob)child).getVariant() == ((ComplexMob)this.goalOwner).getVariant()) {
-                    if (this.goalOwner.getRNG().nextInt(this.executionChance) != 0) {
-                        return false;
-                        //TODO: Have mobs threaten if the execution chance fails
-                    }
+                if (child.isChild() && ((ComplexMob)child).getVariant() == temp.getVariant()) {
+
                     List<T> list = this.goalOwner.world.getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
                     list.removeIf((Predicate<LivingEntity>) this::shouldRemoveTarget);
 

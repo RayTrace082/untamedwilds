@@ -63,6 +63,7 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
         this.head_snout.setRotationPoint(0.0F, -1.5F, -6.3F);
         this.head_snout.addBox(-2.0F, -1.0F, -4.0F, 4, 4, 5, 0.0F);
         this.setRotateAngle(head_snout, 0.22759093446006054F, 0.0F, 0.0F);
+        this.head_snout.scaleX = 1.05F;
         AdvancedModelBox head_teeth = new AdvancedModelBox(this, 0, 50);
         head_teeth.setRotationPoint(0.0F, 2.0F, 0.0F);
         head_teeth.addBox(-2.0F, 0.0F, -4.0F, 4, 1, 4, 0.0F);
@@ -170,7 +171,6 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
     }
 
     private void animate(IAnimatedEntity entityIn) {
-        this.resetToDefaultPose();
         AbstractBear bear = (AbstractBear) entityIn;
         animator.update(bear);
 
@@ -187,10 +187,14 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
         this.rotate(animator, leg_left_1, 44.35F, 2.61F, -10.43F);
         animator.move(leg_left_1, 0, -2F, 0F);
         this.rotate(animator, leg_left_2, 5.22F, -2.61F, 10.43F);
-        this.rotate(animator, arm_right_1, -20.87F, 7.83F, 36.52F);
-        this.rotate(animator, arm_right_2, -18.26F, 5.22F, -33.91F);
+        this.rotate(animator, arm_right_1, -33.91F, 7.83F, 36.52F);
+        this.rotate(animator, arm_right_2, -20.87F, 5.22F, -33.91F);
+        animator.move(arm_right_foot, 0, 2, 2);
+        this.rotate(animator, arm_right_foot, 100, 0, 0);
         this.rotate(animator, arm_left_1, -20.87F, -7.83F, -36.52F);
         this.rotate(animator, arm_left_2, -18.26F, -5.22F, 33.91F);
+        animator.move(arm_left_foot, 0, 2, 2);
+        this.rotate(animator, arm_left_foot, 100, 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(6);
         animator.move(body_torso, 0, -0.5F, 0);
@@ -405,10 +409,48 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
     }
 
     public void setRotationAngles(AbstractBear bear, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.resetToDefaultPose();
         animate(bear);
+        float globalSpeed = 2.5f;
+        float globalDegree = 1f;
+        limbSwingAmount = Math.min(0.3F, limbSwingAmount * 2);
+        limbSwing *= 0.5F;
+        if (bear.getAnimation() == AbstractBear.ATTACK_MAUL || bear.getAnimation() == AbstractBear.IDLE_STAND) {
+            limbSwingAmount *= 0.5F;
+        }
 
-        // Some scale tweaks to prevent Z-fighting
-        this.head_snout.setScaleX(1.05F);
+        // Model Parameters
+        float shortSnout = bear.hasShortSnout() ? 0.7F : 1;
+        this.head_snout.scaleY = shortSnout;
+        this.head_jaw.scaleY = shortSnout;
+        this.body_torso.scaleY = bear.hasHump() ? 1.2F : 1;
+        boolean longBody = bear.hasLongBody();
+        this.body_torso.rotationPointZ = longBody ? -2 : -1;
+        this.body_buttocks.rotationPointZ = longBody ? 4 : 2;
+        this.head_face.rotationPointZ = longBody ? -10 : -9;
+
+        // Breathing Animation
+        this.body_main.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
+        this.body_buttocks.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
+        this.body_torso.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
+        bob(body_main, 0.4F * globalSpeed, 0.03F, false, ageInTicks / 20, 2);
+        bob(arm_right_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
+        bob(arm_left_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
+        bob(leg_right_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
+        bob(leg_left_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
+
+        // Blinking Animation
+        if (!bear.shouldRenderEyes()) {
+            this.head_eyes.setRotationPoint(0.0F, -1.5F, -5.01F);
+        }
+        this.head_eyes.setScaleY(Math.min(bear.getHealth()/bear.getMaxHealth() + 0.4F, 1.0F));
+
+        // Head Tracking Animation
+        if (!bear.isSleeping()) {
+            this.faceTarget(netHeadYaw, headPitch, 2, head_face);
+        }
+
+        // Pitch/Yaw handler
         if (bear.isInWater() && !bear.isOnGround()) {
             limbSwing = ageInTicks / 3;
             limbSwingAmount = 0.5f;
@@ -417,17 +459,46 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
             this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 
-        //limbSwingAmount = 0.5f;
-        float globalSpeed = 2.5f;
-        float globalDegree = 1f;
-        limbSwingAmount *= 2;
-        limbSwing *= 0.5F;
-
-        if (limbSwingAmount > 0.3F) {
-            limbSwingAmount = 0.3F;
-        }
-        if (bear.getAnimation() == AbstractBear.ATTACK_MAUL || bear.getAnimation() == AbstractBear.IDLE_STAND) {
-            limbSwingAmount *= 0.5F;
+        // Movement Animation
+        if (bear.canMove()) {
+            if (bear.getSpeed() > 0.08f || bear.isAngry()) { // Running Animation
+                walk(body_main, 0.5f * globalSpeed, 0.6f * globalDegree, true, -0.5F, 0f, limbSwing, limbSwingAmount);
+                flap(body_torso, 0.5f * globalSpeed, 0.2f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
+                flap(body_buttocks, 0.5f * globalSpeed, 0.2f * globalDegree, false, 0.5F, 0f, limbSwing, limbSwingAmount);
+                flap(head_face, 0.5f * globalSpeed, 0.2f * globalDegree, false, 1F, 0f, limbSwing, limbSwingAmount);
+                walk(arm_right_1, 0.5f * globalSpeed, 1.4f * globalDegree, false, 0F, 0f, limbSwing, limbSwingAmount);
+                walk(arm_right_2, 0.5f * globalSpeed, 0.8f * globalDegree, false, 1F, -0.8f, limbSwing, limbSwingAmount * 1.2f);
+                walk(arm_right_foot, 0.5f * globalSpeed, 1.4f * globalDegree, false, -3.0F, 0.75f, limbSwing, limbSwingAmount);
+                flap(arm_right_1, 0.5f * globalSpeed, 0.2f * globalDegree, false, 2.3F, 0f, limbSwing, limbSwingAmount);
+                walk(arm_left_1, 0.5f * globalSpeed, 1.4f * globalDegree, false, 0.3F, 0f, limbSwing, limbSwingAmount);
+                walk(arm_left_2, 0.5f * globalSpeed, 0.8f * globalDegree, false, 1.3F, -0.8f, limbSwing, limbSwingAmount * 1.2f);
+                walk(arm_left_foot, 0.5f * globalSpeed, 1.4f * globalDegree, false, -3.3F, 0.75f, limbSwing, limbSwingAmount);
+                flap(arm_left_1, 0.5f * globalSpeed, 0.2f * globalDegree, false, 2.5F, 0f, limbSwing, limbSwingAmount);
+                walk(leg_left_1, 0.5f * globalSpeed, 0.8f * globalDegree, false, 4.3F, 0f, limbSwing, limbSwingAmount);
+                walk(leg_left_2, 0.5f * globalSpeed, 0.8f * globalDegree, false, 2.8F, 0.5f, limbSwing, limbSwingAmount);
+                walk(leg_left_foot, 0.5f * globalSpeed, 0.8f * globalDegree, false, 1.3F, 0f, limbSwing, limbSwingAmount);
+                walk(leg_right_1, 0.5f * globalSpeed, 0.8f * globalDegree, false, 4F, 0f, limbSwing, limbSwingAmount);
+            }
+            else { // Walking Animation
+                walk(body_main, 0.5f * globalSpeed, 0.1f * globalDegree, true, -0.5F, 0f, limbSwing, limbSwingAmount);
+                flap(body_torso, 0.5f * globalSpeed, 0.2f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
+                flap(body_buttocks, 0.5f * globalSpeed, 0.2f * globalDegree, false, 0.5F, 0f, limbSwing, limbSwingAmount);
+                flap(head_face, 0.5f * globalSpeed, 0.2f * globalDegree, false, 1F, 0f, limbSwing, limbSwingAmount);
+                walk(arm_right_1, 0.5f * globalSpeed, globalDegree, false, 0F, 0f, limbSwing, limbSwingAmount);
+                walk(arm_right_2, 0.5f * globalSpeed, 0.6f * globalDegree, false, 1F, -0.8f, limbSwing, limbSwingAmount * 1.2f);
+                walk(arm_right_foot, 0.5f * globalSpeed, 0.8f * globalDegree, false, -3.0F, 0.75f, limbSwing, limbSwingAmount);
+                flap(arm_right_1, 0.5f * globalSpeed, 0.2f * globalDegree, false, 2.2F, 0f, limbSwing, limbSwingAmount);
+                walk(arm_left_1, 0.5f * globalSpeed, globalDegree, false, 3.0F, 0f, limbSwing, limbSwingAmount);
+                walk(arm_left_2, 0.5f * globalSpeed, 0.6f * globalDegree, false, 4F, -0.8f, limbSwing, limbSwingAmount * 1.2f);
+                walk(arm_left_foot, 0.5f * globalSpeed, 0.8f * globalDegree, false, 1.0F, 0.75f, limbSwing, limbSwingAmount);
+                flap(arm_left_1, 0.5f * globalSpeed, 0.2f * globalDegree, false, 5.2F, 0f, limbSwing, limbSwingAmount);
+                walk(leg_left_1, 0.5f * globalSpeed, globalDegree, false, 1F, 0f, limbSwing, limbSwingAmount);
+                walk(leg_left_2, 0.5f * globalSpeed, 0.8f * globalDegree, false, -0.5F, 0.5f, limbSwing, limbSwingAmount);
+                walk(leg_left_foot, 0.5f * globalSpeed, 0.8f * globalDegree, false, -2F, 0f, limbSwing, limbSwingAmount);
+                walk(leg_right_1, 0.5f * globalSpeed, globalDegree, false, 4F, 0f, limbSwing, limbSwingAmount);
+            }
+            walk(leg_right_2, 0.5f * globalSpeed, 0.8f * globalDegree, false, 2.5F, 0.5f, limbSwing, limbSwingAmount);
+            walk(leg_right_foot, 0.5f * globalSpeed, 0.6f * globalDegree, false, 1F, 0f, limbSwing, limbSwingAmount);
         }
 
         // Sitting animation
@@ -467,93 +538,6 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
             this.progressRotation(leg_right_2, bear.sleepProgress, 0.22759093446006054F, 0.045553093477052F, -0.18203784098300857F, 40);
             this.progressRotation(leg_left_1, bear.sleepProgress, 0.22759093446006054F, 0.045553093477052F, -1.0016444577195458F, 40);
             this.progressRotation(leg_left_2, bear.sleepProgress, 2.276432943376204F, -0.36425021489121656F, -0.4553564018453205F, 40);
-        }
-
-        // Controls the head tracking
-        if (!bear.isSleeping()) {
-            this.faceTarget(netHeadYaw, headPitch, 2, head_face);
-        }
-
-        // Controls the blinking/eye closing
-        if (!bear.shouldRenderEyes()) {
-            this.head_eyes.setRotationPoint(0.0F, -1.5F, -5.01F);
-        }
-
-        // Controls the idle breathing animation
-        // float scale_x = (float) (0.8 + (0.2 * bear.getHunger()/100) + Math.sin(ageInTicks / 20) * 0.06F);
-        // float scale_y = (float) (0.6 + (0.4 * bear.getHunger()/100) + Math.sin(ageInTicks / 16) * 0.06F);
-        this.body_main.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
-        this.body_buttocks.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
-        this.body_torso.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
-        bob(body_main, 0.4F * globalSpeed, 0.03F, false, ageInTicks / 20, 2);
-        bob(arm_right_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
-        bob(arm_left_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
-        bob(leg_right_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
-        bob(leg_left_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
-
-        // Wounded animations
-        this.head_eyes.setScaleY(Math.min(bear.getHealth()/bear.getMaxHealth() + 0.4F, 1.0F));
-
-        if (bear.hasShortSnout()) { // Hardcoded a smaller snout for Panda bears
-            this.body_main.scaleZ = 1.2F;
-            this.head_snout.scaleZ = 0.7F;
-            this.head_jaw.scaleZ = 0.7F;
-        }
-        else {
-            this.head_snout.scaleZ = 1F;
-            this.head_jaw.scaleZ = 1F;
-        }
-        if (bear.hasHump()) {
-            this.body_torso.scaleY *= 1.2F;
-        }
-        else {
-            this.body_torso.scaleY *= 1F;
-        }
-
-        // Controls the moving animations
-        if (bear.canMove()) {
-            // Running animation
-            if (bear.getSpeed() > 0.08f || bear.isAngry()) {
-                walk(body_main, 0.5f * globalSpeed, 0.6f * globalDegree, true, -0.5F, 0f, limbSwing, limbSwingAmount);
-                flap(body_torso, 0.5f * globalSpeed, 0.2f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
-                flap(body_buttocks, 0.5f * globalSpeed, 0.2f * globalDegree, false, 0.5F, 0f, limbSwing, limbSwingAmount);
-                flap(head_face, 0.5f * globalSpeed, 0.2f * globalDegree, false, 1F, 0f, limbSwing, limbSwingAmount);
-                walk(arm_right_1, 0.5f * globalSpeed, 1.4f * globalDegree, false, 0F, 0f, limbSwing, limbSwingAmount);
-                walk(arm_right_2, 0.5f * globalSpeed, 0.8f * globalDegree, false, 1F, -0.8f, limbSwing, limbSwingAmount * 1.2f);
-                walk(arm_right_foot, 0.5f * globalSpeed, 1.4f * globalDegree, false, -3.0F, 0.75f, limbSwing, limbSwingAmount);
-                flap(arm_right_1, 0.5f * globalSpeed, 0.2f * globalDegree, false, 2.3F, 0f, limbSwing, limbSwingAmount);
-                walk(arm_left_1, 0.5f * globalSpeed, 1.4f * globalDegree, false, 0.3F, 0f, limbSwing, limbSwingAmount);
-                walk(arm_left_2, 0.5f * globalSpeed, 0.8f * globalDegree, false, 1.3F, -0.8f, limbSwing, limbSwingAmount * 1.2f);
-                walk(arm_left_foot, 0.5f * globalSpeed, 1.4f * globalDegree, false, -3.3F, 0.75f, limbSwing, limbSwingAmount);
-                flap(arm_left_1, 0.5f * globalSpeed, 0.2f * globalDegree, false, 2.5F, 0f, limbSwing, limbSwingAmount);
-                walk(leg_left_1, 0.5f * globalSpeed, 0.8f * globalDegree, false, 4.3F, 0f, limbSwing, limbSwingAmount);
-                walk(leg_left_2, 0.5f * globalSpeed, 0.8f * globalDegree, false, 2.8F, 0.5f, limbSwing, limbSwingAmount);
-                walk(leg_left_foot, 0.5f * globalSpeed, 0.8f * globalDegree, false, 1.3F, 0f, limbSwing, limbSwingAmount);
-                walk(leg_right_1, 0.5f * globalSpeed, 0.8f * globalDegree, false, 4F, 0f, limbSwing, limbSwingAmount);
-                walk(leg_right_2, 0.5f * globalSpeed, 0.8f * globalDegree, false, 2.5F, 0.5f, limbSwing, limbSwingAmount);
-                walk(leg_right_foot, 0.5f * globalSpeed, 0.6f * globalDegree, false, 1F, 0f, limbSwing, limbSwingAmount);
-            }
-            // Walking animation
-            else {
-                walk(body_main, 0.5f * globalSpeed, 0.1f * globalDegree, true, -0.5F, 0f, limbSwing, limbSwingAmount);
-                flap(body_torso, 0.5f * globalSpeed, 0.2f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
-                flap(body_buttocks, 0.5f * globalSpeed, 0.2f * globalDegree, false, 0.5F, 0f, limbSwing, limbSwingAmount);
-                flap(head_face, 0.5f * globalSpeed, 0.2f * globalDegree, false, 1F, 0f, limbSwing, limbSwingAmount);
-                walk(arm_right_1, 0.5f * globalSpeed, 1f * globalDegree, false, 0F, 0f, limbSwing, limbSwingAmount);
-                walk(arm_right_2, 0.5f * globalSpeed, 0.6f * globalDegree, false, 1F, -0.8f, limbSwing, limbSwingAmount * 1.2f);
-                walk(arm_right_foot, 0.5f * globalSpeed, 0.8f * globalDegree, false, -3.0F, 0.75f, limbSwing, limbSwingAmount);
-                flap(arm_right_1, 0.5f * globalSpeed, 0.2f * globalDegree, false, 2.2F, 0f, limbSwing, limbSwingAmount);
-                walk(arm_left_1, 0.5f * globalSpeed, 1f * globalDegree, false, 3.0F, 0f, limbSwing, limbSwingAmount);
-                walk(arm_left_2, 0.5f * globalSpeed, 0.6f * globalDegree, false, 4F, -0.8f, limbSwing, limbSwingAmount * 1.2f);
-                walk(arm_left_foot, 0.5f * globalSpeed, 0.8f * globalDegree, false, 1.0F, 0.75f, limbSwing, limbSwingAmount);
-                flap(arm_left_1, 0.5f * globalSpeed, 0.2f * globalDegree, false, 5.2F, 0f, limbSwing, limbSwingAmount);
-                walk(leg_left_1, 0.5f * globalSpeed, 1f * globalDegree, false, 1F, 0f, limbSwing, limbSwingAmount);
-                walk(leg_left_2, 0.5f * globalSpeed, 0.8f * globalDegree, false, -0.5F, 0.5f, limbSwing, limbSwingAmount);
-                walk(leg_left_foot, 0.5f * globalSpeed, 0.8f * globalDegree, false, -2F, 0f, limbSwing, limbSwingAmount);
-                walk(leg_right_1, 0.5f * globalSpeed, 1f * globalDegree, false, 4F, 0f, limbSwing, limbSwingAmount);
-                walk(leg_right_2, 0.5f * globalSpeed, 0.8f * globalDegree, false, 2.5F, 0.5f, limbSwing, limbSwingAmount);
-                walk(leg_right_foot, 0.5f * globalSpeed, 0.6f * globalDegree, false, 1F, 0f, limbSwing, limbSwingAmount);
-            }
         }
     }
 }
