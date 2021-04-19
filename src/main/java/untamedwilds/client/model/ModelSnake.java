@@ -152,12 +152,11 @@ public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
         limbSwingAmount = 0.5F;
         if (snake.sitProgress != 0) {
             limbSwingAmount /= Math.max((double) snake.sitProgress / 6, 1);
+            this.progressPosition(body_5, snake.sitProgress, -4.0F, 23.0F, -3.0F, 20);
             this.progressRotation(body_1, snake.sitProgress, (float) Math.toRadians(39.13F), (float) Math.toRadians(67.83F), (float) Math.toRadians(44.35F), 20);
             this.progressRotation(body_2, snake.sitProgress,(float) Math.toRadians(-15.65F), (float) Math.toRadians(70.43F), 0, 20);
             this.progressRotation(body_3, snake.sitProgress,0F, (float) Math.toRadians(75.65F), 0F, 20);
             this.progressRotation(body_4, snake.sitProgress,0F, (float) Math.toRadians(75.65F), 0F, 20);
-            body_5.rotationPointX = -4F;
-            body_5.rotationPointZ = 1F;
             this.progressRotation(body_5, snake.sitProgress,0F, (float) Math.toRadians(67.83F), 0F, 20);
             this.progressRotation(body_6, snake.sitProgress,0F, (float) Math.toRadians(-57.39F), 0F, 20);
             this.progressRotation(body_7, snake.sitProgress,0F, (float) Math.toRadians(49.57F), 0F, 20);

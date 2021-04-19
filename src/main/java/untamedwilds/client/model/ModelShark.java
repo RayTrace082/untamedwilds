@@ -104,7 +104,7 @@ public class ModelShark extends AdvancedEntityModel<EntityShark> {
         this.fin_pelvic_right.addBox(-0.5F, 0.0F, -0.8F, 1, 3, 3, 0.0F);
         this.setRotateAngle(fin_pelvic_right, 0.31869712141416456F, 0.0F, 1.0927506446736497F);
         this.body_main = new AdvancedModelBox(this, 0, 0);
-        this.body_main.setRotationPoint(0.0F, 17.0F, -3.0F);
+        this.body_main.setRotationPoint(0.0F, 17.0F, 6.0F);
         this.body_main.addBox(-4.0F, -4.0F, -8.0F, 8, 8, 14, 0.0F);
         this.setRotateAngle(body_main, 0.045553093477052F, 0.0F, 0.0F);
         this.fin_pelvic_left = new AdvancedModelBox(this, 36, 30);
