@@ -29,3 +29,4 @@ forge*changelog.txt
 /src/test/
 /logs/
 /gradle/
+/.github/
