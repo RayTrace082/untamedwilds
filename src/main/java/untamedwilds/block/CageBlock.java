@@ -194,16 +194,6 @@ public class CageBlock extends Block implements IWaterLoggable {
         if (stack.getTag() != null) {
             EntityType<?> type = EntityUtils.getEntityTypeFromTag(stack.getTag(), null);
             if (type != null) {
-                /*UntamedWilds.LOGGER.info(stack.getTag().getCompound("EntityTag").getString("CustomName"));
-                String key = new TranslationTextComponent(type.getTranslationKey()).getString();
-                if (stack.getTag().getCompound("EntityTag").contains("CustomName")) {
-                    String customName = stack.getTag().getCompound("EntityTag").getString("CustomName");
-                    // Entity uses ITextComponent.Serializer.getComponentFromJson(s) instead of substrings
-                    tooltip.add(new StringTextComponent(customName.substring(9, customName.length() - 2) + " (" + key + ")").mergeStyle(TextFormatting.GRAY));
-                }
-                else {
-                    tooltip.add(new TranslationTextComponent(key).mergeStyle(TextFormatting.GRAY));
-                }*/
                 EntityUtils.buildTooltipData(stack, tooltip, type, "");
             }
         }

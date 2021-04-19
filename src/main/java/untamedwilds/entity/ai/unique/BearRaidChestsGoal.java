@@ -57,7 +57,6 @@ public class BearRaidChestsGoal extends Goal {
     public void tick() {
         //double distance = this.taskOwner.getDistance(this.targetInventory.getX(), this.targetBlock.getY(), this.targetBlock.getZ());
         if (this.targetPos != null && this.taskOwner.getDistanceSq(targetPos.getX(), targetPos.getY(), targetPos.getZ()) < 4) {
-            // UntamedWilds.LOGGER.debug("Close to a chest! stealing stuff");
             this.taskOwner.getLookController().setLookPosition(this.targetPos.getX(), this.targetPos.getY() + 1.5F, this.targetPos.getZ(), 10f, (float)this.taskOwner.getVerticalFaceSpeed());
             this.taskOwner.getNavigator().clearPath();
             this.taskOwner.setSitting(true);

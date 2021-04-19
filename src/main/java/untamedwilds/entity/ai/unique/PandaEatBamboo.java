@@ -35,7 +35,6 @@ public class PandaEatBamboo extends Goal  {
             return false;
         }
         List<ItemEntity> list = this.taskOwner.world.getEntitiesWithinAABB(ItemEntity.class, this.getTargetableArea(distance));
-        //UntamedWilds.LOGGER.info(list.get(0).getItem().getItem());
         list.removeIf((ItemEntity item) -> item.getItem().getItem().equals("bamboo")); // Stupid way to do this
 
         if (list.isEmpty()) {
