@@ -20,16 +20,16 @@ public class DontThreadOnMeTarget<T extends LivingEntity> extends TargetGoal {
     protected LivingEntity nearestTarget;
     protected Predicate<T> targetEntitySelector;
 
-    public DontThreadOnMeTarget(MobEntity goalOwnerIn, Class<T> targetClassIn, boolean checkSight) {
-        this(goalOwnerIn, targetClassIn, checkSight, false);
+    public DontThreadOnMeTarget(MobEntity entityIn, Class<T> targetClassIn, boolean checkSight) {
+        this(entityIn, targetClassIn, checkSight, false);
     }
 
-    public DontThreadOnMeTarget(MobEntity goalOwnerIn, Class<T> targetClassIn, boolean checkSight, boolean nearbyOnlyIn) {
-        this(goalOwnerIn, targetClassIn, 6, checkSight, nearbyOnlyIn);
+    public DontThreadOnMeTarget(MobEntity entityIn, Class<T> targetClassIn, boolean checkSight, boolean nearbyOnlyIn) {
+        this(entityIn, targetClassIn, 6, checkSight, nearbyOnlyIn);
     }
 
-    public DontThreadOnMeTarget(MobEntity goalOwnerIn, Class<T> targetClassIn, int targetChanceIn, boolean checkSight, boolean nearbyOnlyIn) {
-        super(goalOwnerIn, checkSight, nearbyOnlyIn);
+    public DontThreadOnMeTarget(MobEntity entityIn, Class<T> targetClassIn, int targetChanceIn, boolean checkSight, boolean nearbyOnlyIn) {
+        super(entityIn, checkSight, nearbyOnlyIn);
         this.targetClass = targetClassIn;
         this.targetChance = targetChanceIn;
         this.setMutexFlags(EnumSet.of(Goal.Flag.TARGET));
@@ -48,7 +48,8 @@ public class DontThreadOnMeTarget<T extends LivingEntity> extends TargetGoal {
                 return false;
             }
             return EntityPredicates.NOT_SPECTATING.test(entity) && this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
-        };}
+        };
+    }
 
     public boolean shouldExecute() {
         if (this.goalOwner.getRNG().nextInt(this.targetChance) != 0) {

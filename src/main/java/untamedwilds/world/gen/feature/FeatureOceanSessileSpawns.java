@@ -21,10 +21,13 @@ public class FeatureOceanSessileSpawns extends Feature<NoFeatureConfig> {
     }
 
     public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        pos = new BlockPos(pos.getX(), world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.getX(), pos.getZ()), pos.getZ()); // So Sessile creatures do not spawn floating
+        //pos = new BlockPos(pos.getX(), world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.getX(), pos.getZ()), pos.getZ()); // So Sessile creatures do not spawn floating
+        pos = world.getHeight(Heightmap.Type.WORLD_SURFACE, pos);
+        //world.setBlockState(pos, Blocks.TORCH.getDefaultState(), 2);
+
         for (int i = 0; i < 5; i++) {
             FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.SESSILE));
-            if (FaunaSpawn.performWorldGenSpawning(entry.entityType, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, world, pos, rand, entry.groupCount)) {
+            if (FaunaSpawn.performWorldGenSpawning(entry.entityType, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, world, pos, rand, entry.groupCount)) {
                 return true;
             }
         }

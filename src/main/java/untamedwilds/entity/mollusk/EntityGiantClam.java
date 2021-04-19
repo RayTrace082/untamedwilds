@@ -144,7 +144,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies {
 
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (biomekey.equals(Biomes.WARM_OCEAN) || biomekey.equals(Biomes.LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_WARM_OCEAN)) {
+        if (biomekey.equals(Biomes.WARM_OCEAN) || biomekey.equals(Biomes.LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_WARM_OCEAN) || biome.getRegistryName().equals(new ResourceLocation("terraforged:warm_beach"))) {
             if (ConfigGamerules.randomSpecies.get()) {
                 return this.rand.nextInt(SpeciesGiantClam.values().length);
             }
