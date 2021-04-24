@@ -1,9 +1,6 @@
 package untamedwilds.entity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,17 +9,16 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
+import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
 import untamedwilds.config.ConfigGamerules;
@@ -207,6 +203,49 @@ public abstract class ComplexMob extends TameableEntity {
     // Commands can be implicitly used to check if a mob is tamed or not
     public void setCommandInt(int command) { this.dataManager.set(COMMAND, command % 3); }
     public int getCommandInt() { return (this.dataManager.get(COMMAND)); }
+
+    @Override
+    public void checkDespawn() {
+        if (this.world.getDifficulty() == Difficulty.PEACEFUL && this.isDespawnPeaceful()) {
+            this.remove();
+        } else if (!this.isNoDespawnRequired() && !this.preventDespawn()) {
+            Entity entity = this.world.getClosestPlayer(this, -1.0D);
+            net.minecraftforge.eventbus.api.Event.Result result = net.minecraftforge.event.ForgeEventFactory.canEntityDespawn(this);
+            if (result == net.minecraftforge.eventbus.api.Event.Result.DENY) {
+                idleTime = 0;
+                entity = null;
+            } else if (result == net.minecraftforge.eventbus.api.Event.Result.ALLOW) {
+                if (this instanceof ISpecies && this.getHome() != BlockPos.ZERO) {
+                    TileEntity burrow = this.world.getTileEntity(this.getHome());
+                    if (burrow instanceof CritterBurrowBlockEntity) {
+                        UntamedWilds.LOGGER.info("Mob is despawning into burrow");
+                        ((CritterBurrowBlockEntity)burrow).tryEnterBurrow(this);
+                        this.remove();
+                    }
+                }
+                entity = null;
+            }
+            if (entity != null) {
+                double d0 = entity.getDistanceSq(this);
+                int i = this.getType().getClassification().getInstantDespawnDistance();
+                int j = i * i;
+                if (d0 > (double)j && this.canDespawn(d0)) {
+                    this.remove();
+                }
+
+                int k = this.getType().getClassification().getRandomDespawnDistance();
+                int l = k * k;
+                if (this.idleTime > 600 && this.rand.nextInt(800) == 0 && d0 > (double)l && this.canDespawn(d0)) {
+                    this.remove();
+                } else if (d0 < (double)l) {
+                    this.idleTime = 0;
+                }
+            }
+
+        } else {
+            this.idleTime = 0;
+        }
+    }
 
     public void writeAdditional(CompoundNBT compound){ // Write NBT Tags
         super.writeAdditional(compound);

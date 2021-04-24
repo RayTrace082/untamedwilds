@@ -53,6 +53,9 @@ public class UntamedWildsGenerator {
     private static final RegistryObject<Feature<NoFeatureConfig>> OCEAN = regFeature("ocean_rare", () -> new FeatureOceanSwimming(NoFeatureConfig.field_236558_a_));
     private static final RegistryObject<Feature<NoFeatureConfig>> DENSE_WATER = regFeature("dense_water", () -> new FeatureDenseWater(NoFeatureConfig.field_236558_a_));
 
+    private static final RegistryObject<Feature<NoFeatureConfig>> CRITTER_BURROW = regFeature("burrow", () -> new FeatureCritterBurrow(NoFeatureConfig.field_236558_a_));
+
+
     private static <B extends Feature<?>> RegistryObject<B> regFeature(String name, Supplier<? extends B> supplier) {
         return FEATURES.register(name, supplier);
     }
@@ -82,7 +85,9 @@ public class UntamedWildsGenerator {
         }
         registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, DENSE_WATER.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(4), DENSE_WATER.get().getRegistryName());
 
-        registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqCritter.get());
+        //registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqCritter.get());
+        registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTER_BURROW.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqCritter.get());
+
         registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqApex.get());
 
         event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.1F)).chance(10)));

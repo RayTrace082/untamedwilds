@@ -19,6 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.block.*;
 import untamedwilds.block.blockentity.CageBlockEntity;
+import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
 import untamedwilds.config.ConfigFeatureControl;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.item.FuelBlockItem;
@@ -63,7 +64,10 @@ public class ModBlock {
     public static RegistryObject<Block> BUSH_TEMPERATE = createBlock("flora_bush_temperate", () -> new UndergrowthBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addBushes.get());
     public static RegistryObject<Block> ELEPHANT_EAR = createBlock("flora_elephant_ear", () -> new UndergrowthBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement(), AbstractBlock.OffsetType.XYZ), ItemGroup.DECORATIONS, ConfigFeatureControl.addBushes.get());
 
+    public static RegistryObject<Block> BURROW = createBlock("block_burrow", () -> new CritterBurrowBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addBushes.get());
+
     public static RegistryObject<TileEntityType<CageBlockEntity>> BLOCKENTITY_CAGE = TILE_ENTITY_TYPES.register("trap_cage", () -> new TileEntityType<>(CageBlockEntity::new, Sets.newHashSet(ModBlock.TRAP_CAGE.get()), null));
+    public static RegistryObject<TileEntityType<CritterBurrowBlockEntity>> BLOCKENTITY_BURROW = TILE_ENTITY_TYPES.register("critter_burrow", () -> new TileEntityType<>(CritterBurrowBlockEntity::new, Sets.newHashSet(ModBlock.BURROW.get()), null));
 
     public static <B extends Block> RegistryObject<B> createBlock(String name, Supplier<? extends B> supplier, @Nullable ItemGroup group) {
         return createBlock(name, supplier, group, true);
@@ -111,5 +115,7 @@ public class ModBlock {
             RenderTypeLookup.setRenderLayer(ModBlock.BUSH_TEMPERATE.get(), RenderType.getCutout());
             RenderTypeLookup.setRenderLayer(ModBlock.ELEPHANT_EAR.get(), RenderType.getCutout());
         }
+        RenderTypeLookup.setRenderLayer(ModBlock.BURROW.get(), RenderType.getTranslucent());
+
     }
 }

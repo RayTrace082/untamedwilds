@@ -1,0 +1,18 @@
+﻿{
+  "credit": "Made with Blockbench",
+  "parent": "block/thin_block",
+  "textures": {
+    "bottom": "untamedwilds:block/burrow_hole"
+  },
+  "elements": [
+    {
+      "from": [0, 0.1, 0],
+      "to": [16, 0.1, 16],
+      "color": 1,
+      "faces": {
+        "up": {"uv": [0, 0, 16, 16], "texture": "#bottom"},
+        "down": {"uv": [0, 0, 16, 16], "texture": "#bottom"}
+      }
+    }
+  ]
+}
