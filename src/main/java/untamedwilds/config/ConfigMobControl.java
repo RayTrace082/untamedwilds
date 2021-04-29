@@ -3,6 +3,7 @@ package untamedwilds.config;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ConfigMobControl {
+    public static ForgeConfigSpec.IntValue critterSpawnRange;
     public static ForgeConfigSpec.BooleanValue masterSpawner;
     public static ForgeConfigSpec.BooleanValue addBear;
     public static ForgeConfigSpec.BooleanValue addBigCat;
@@ -34,5 +35,8 @@ public class ConfigMobControl {
         addShark = builder.comment("Controls whether to add Sharks and their associated items.").define("mobcontrol.shark", true);
         addTarantula = builder.comment("Controls whether to add Tarantulas and their associated items.").define("mobcontrol.tarantula", true);
         addGiantClam = builder.comment("Controls whether to add Giant Clams and their associated items.").define("mobcontrol.giant_clam", true);
+
+        critterSpawnRange = builder.comment("Critters further than this value from any Player will despawn into their Burrow (only if they have a Burrow assigned).").defineInRange("mobcontrol.critterSpawnRange", 40, 0, Integer.MAX_VALUE);
+
     }
 }

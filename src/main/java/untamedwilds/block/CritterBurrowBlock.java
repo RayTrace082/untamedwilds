@@ -16,6 +16,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -27,6 +29,8 @@ import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
 import javax.annotation.Nullable;
 
 public class CritterBurrowBlock extends Block implements IWaterLoggable {
+
+    protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public CritterBurrowBlock(Block.Properties properties) {
@@ -40,6 +44,10 @@ public class CritterBurrowBlock extends Block implements IWaterLoggable {
 
     public FluidState getFluidState(BlockState state) {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+    }
+
+    public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_) {
+        return SHAPE;
     }
 
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
@@ -81,8 +89,9 @@ public class CritterBurrowBlock extends Block implements IWaterLoggable {
         }
         else {
             CritterBurrowBlockEntity te = (CritterBurrowBlockEntity) worldIn.getTileEntity(pos);
-            playerIn.sendMessage(new TranslationTextComponent("This burrow contains " + te.getMobToSpawn().getTranslationKey()).mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
+            playerIn.sendMessage(new TranslationTextComponent("This burrow contains " + te.getEntityType().getTranslationKey()).mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
             playerIn.sendMessage(new TranslationTextComponent("The variant is " + te.getVariant()).mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
+            playerIn.sendMessage(new TranslationTextComponent("There are " + (te.getInhabitants().size() + te.getCount()) + " mobs inside the burrow (" + te.getInhabitants().size() + " stored, and " + te.getCount() + " to be spawned)").mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
             return ActionResultType.SUCCESS;
         }
     }

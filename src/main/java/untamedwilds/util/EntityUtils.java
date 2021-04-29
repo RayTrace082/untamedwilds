@@ -26,6 +26,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
+import untamedwilds.entity.ISpecies;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -185,6 +186,11 @@ public abstract class EntityUtils {
         entity.writeUnlessRemoved(entityTag);
         entityTag.remove("Pos"); // Remove the Position from the NBT data, as it would fuck things up later on
         entityTag.remove("Motion");
+        if (entity instanceof ISpecies) {
+            entityTag.remove("HomePosX");
+            entityTag.remove("HomePosY");
+            entityTag.remove("HomePosZ");
+        }
         baseTag.put("EntityTag", entityTag); // Put the entity in the Tag
         return baseTag;
     }

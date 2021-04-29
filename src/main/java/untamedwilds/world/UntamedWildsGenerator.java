@@ -85,8 +85,12 @@ public class UntamedWildsGenerator {
         }
         registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, DENSE_WATER.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(4), DENSE_WATER.get().getRegistryName());
 
-        //registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqCritter.get());
-        registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTER_BURROW.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqCritter.get());
+        if (ConfigFeatureControl.addBurrows.get()) {
+            registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTER_BURROW.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqCritter.get());
+        }
+        else {
+            registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqCritter.get());
+        }
 
         registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqApex.get());
 

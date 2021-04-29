@@ -1,12 +1,12 @@
 {
     "name": "Arowana" ,
     "icon": "untamedwilds:textures/icon/arowana/green.png" ,
-    "category": "taxon_fish" ,
+    "category": "untamedwilds:taxon_fish" ,
     "pages": [
         {
             "type": "text" , 
             "title": "Arowana" ,
-            "text": "Arowana is a group of tropical freshwater fish most known for their aggressive behaviour and their tendency to jump. $(br2)Their head is bony and the elongated body is covered by large, heavy scales, with a mosaic pattern of canals. Their beautiful scales make Arowana a prized fish."
+            "text": "Arowana are a group of tropical freshwater fish most known for their aggressive behaviour and their tendency to jump. $(br2)Their head is bony and the elongated body is covered by large, heavy scales, with a mosaic pattern of canals. Their beautiful scales make Arowana a prized fish."
         } , 
         {
             "type": "relations" , 

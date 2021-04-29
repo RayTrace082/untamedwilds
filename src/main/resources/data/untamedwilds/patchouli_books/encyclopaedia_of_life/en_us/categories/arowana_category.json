@@ -2,5 +2,6 @@
     "name": "arowana" ,
     "description": "List of all discovered Arowana species" ,
     "icon": "minecraft:writable_book" ,
-    "parent": "test_category"
+    "parent": "patchouli:page_types/images",
+    "secret": false
 }
