@@ -10,6 +10,8 @@
   "item.untamedwilds.food_hippo_cooked": "Cooked Hippo Meat",
   "entity.untamedwilds.hippo": "Common Hippo",
   "entity.untamedwilds.hippo.sciname": "Hippopotamus amphibius",
+  "entity.untamedwilds.hippo_common": "Common Hippo",
+  "entity.untamedwilds.hippo_common.sciname": "Hippopotamus amphibius",
   "untamedwilds.subtitles.hippo.ambient": "Hippopotamus wheezes",
 
   "item.untamedwilds.aardvark_spawn_egg": "Aardvark Spawn Egg",
