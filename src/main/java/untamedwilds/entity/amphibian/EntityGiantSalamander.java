@@ -1,17 +1,19 @@
-package untamedwilds.entity.reptile;
+package untamedwilds.entity.amphibian;
 
+import com.github.alexthe666.citadel.animation.Animation;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -19,6 +21,7 @@ import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAmphibious;
+import untamedwilds.entity.INeedsPostUpdate;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
@@ -30,57 +33,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpecies {
+public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpecies, INeedsPostUpdate {
 
+    public static Animation ATTACK_SWALLOW;
     private static final String BREEDING = "EARLY_SUMMER";
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
-    public int baskProgress;
+    public int swimProgress;
 
-    public EntitySoftshellTurtle(EntityType<? extends ComplexMob> type, World worldIn) {
+    public EntityGiantSalamander(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
+        ATTACK_SWALLOW = Animation.create(15);
         this.experienceValue = 1;
         this.swimSpeedMult = 3;
-        this.buoyancy = 0.998F;
+        this.buoyancy = 0.996F;
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2D)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.16D)
                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 16.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 6.0D)
-                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0D)
-                .createMutableAttribute(Attributes.ARMOR, 2D);
+                .createMutableAttribute(Attributes.MAX_HEALTH, 10.0D)
+                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0D);
     }
 
     public void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
-        this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1D, 1.1D, input -> this.getEcoLevel(input) > 4));
+        this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1D, 1.1D, input -> this.getEcoLevel(input) > 6));
         this.goalSelector.addGoal(3, new AmphibiousTransition(this, 1D));
-        this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 80));
+        this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 600));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, input -> this.getEcoLevel(input) < 5));
+        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, false, input -> this.getEcoLevel(input) < 6));
     }
 
-    public boolean wantsToLeaveWater() { return this.world.getDayTime() > 5000 && this.world.getDayTime() < 7000; }
+    public boolean wantsToLeaveWater() { return this.world.isRainingAt(this.getPosition()); }
 
-    public boolean wantsToEnterWater() { return !(this.world.getDayTime() > 5000 && this.world.getDayTime() < 7000); }
+    public boolean wantsToEnterWater() { return true; }
 
     public boolean isPushedByWater() {
         return false;
-    }
-
-    public void onDeath(DamageSource cause) {
-        if (cause == DamageSource.ANVIL && !this.isChild()) {
-            // Advancement Trigger: "Unethical Soup"
-            ItemEntity entityitem = this.entityDropItem(new ItemStack(ModItems.FOOD_TURTLE_SOUP.get()), 0.2F);
-            if (entityitem != null) {
-                entityitem.getItem().setCount(1);
-            }
-        }
-        super.onDeath(cause);
     }
 
     public void livingTick() {
@@ -97,20 +90,20 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
             }
         }
         else {
-            if (!this.isInWater() && this.baskProgress < 100) {
-                this.baskProgress++;
-            } else if (this.isInWater() && this.baskProgress > 0) {
-                this.baskProgress--;
+            if (this.isInWater() && !this.isOnGround() && this.swimProgress < 20) {
+                this.swimProgress++;
+            } else if ((!this.isInWater() || this.isOnGround()) && this.swimProgress > 0) {
+                this.swimProgress--;
             }
         }
     }
 
-    /* Breeding conditions for the softshell_turtle are:
-     * A nearby softshell_turtle of the opposite gender and the same species */
+    /* Breeding conditions for the giant salamander are:
+     * A nearby giant salamander of the opposite gender and the same species */
     public boolean wantsToBreed() {
         if (super.wantsToBreed()) {
             if (!this.isSleeping() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
-                List<EntitySoftshellTurtle> list = this.world.getEntitiesWithinAABB(EntitySoftshellTurtle.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
+                List<EntityGiantSalamander> list = this.world.getEntitiesWithinAABB(EntityGiantSalamander.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                 list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getVariant() != this.getVariant()) || input.getGrowingAge() != 0);
                 if (list.size() >= 1) {
                     this.setGrowingAge(GROWING);
@@ -122,20 +115,37 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         return false;
     }
 
+    public boolean attackEntityAsMob(Entity entityIn) {
+        float f = (float)this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+        if (flag) {
+            if (entityIn instanceof LivingEntity && entityIn.getWidth() * entityIn.getHeight() < 0.4F) {
+                this.setAnimation(ATTACK_SWALLOW);
+                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.BLOCK_BEEHIVE_ENTER, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                EntityUtils.spawnParticlesOnEntity(this.world, (LivingEntity)entityIn, ParticleTypes.POOF, 6, 2);
+                this.setMotion(new Vector3d(entityIn.getPosX() - this.getPosX(), entityIn.getPosY() - this.getPosY(), entityIn.getPosZ() - this.getPosZ()).scale(0.15F));
+                entityIn.remove();
+            }
+            return true;
+        }
+        return false;
+    }
+
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_softshell_turtle_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 5);
+        EntityUtils.dropEggs(this, "egg_giant_salamander_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 5);
         return null;
     }
 
     @Override
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
-
-        if (itemstack.isEmpty() && this.isAlive()) {
-            EntityUtils.turnEntityIntoItem(this, "softshell_turtle_" + getRawSpeciesName(this.getVariant()).toLowerCase());
-            return ActionResultType.func_233537_a_(this.world.isRemote);
+        if (hand == Hand.MAIN_HAND) {
+            if (itemstack.getItem().equals(Items.WATER_BUCKET) && this.isAlive()) {
+                EntityUtils.mutateEntityIntoItem(this, player, hand, "bucket_giant_salamander_" + getRawSpeciesName(this.getVariant()).toLowerCase(), itemstack);
+                return ActionResultType.func_233537_a_(this.world.isRemote);
+            }
         }
         return super.func_230254_b_(player, hand);
     }
@@ -162,53 +172,62 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
     }
     public int getAdulthoodTime() { return GROWING; }
 
-    public boolean isBreedingItem(ItemStack stack) { return stack.getItem() == Items.COD; }
+    public boolean isBreedingItem(ItemStack stack) { return stack.getItem() == ModItems.MEAT_TURTLE_RAW.get(); }
+
+    public Animation[] getAnimations() { return new Animation[]{NO_ANIMATION, ATTACK_SWALLOW}; }
 
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomeKey, Biome biome, SpawnReason reason) {
         if (ConfigGamerules.randomSpecies.get() || reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET) {
-            return this.rand.nextInt(SpeciesSoftshellTurtle.values().length);
+            return this.rand.nextInt(SpeciesGiantSalamander.values().length);
         }
-        return SpeciesSoftshellTurtle.getSpeciesByBiome(biome);
+        return SpeciesGiantSalamander.getSpeciesByBiome(biome);
     }
 
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.softshell_turtle_" + getRawSpeciesName(i)).getString(); }
-    public String getRawSpeciesName(int i) { return SpeciesSoftshellTurtle.values()[i].name().toLowerCase(); }
+    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.giant_salamander" + getRawSpeciesName(i)).getString(); }
+    public String getRawSpeciesName(int i) { return SpeciesGiantSalamander.values()[i].name().toLowerCase(); }
 
-    public enum SpeciesSoftshellTurtle implements IStringSerializable {
+    @Override
+    public void updateAttributes() {
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(SpeciesGiantSalamander.values()[this.getVariant()].attack);
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(SpeciesGiantSalamander.values()[this.getVariant()].health);
+        this.setHealth(this.getMaxHealth());
+    }
 
-        BLACK			(0, 1.0F, 2, Biome.Category.SWAMP, Biome.Category.JUNGLE),
-        CHINESE	        (1, 0.8F, 3, Biome.Category.SWAMP, Biome.Category.JUNGLE, Biome.Category.RIVER),
-        FLAPSHELL		(2, 1.0F, 2, Biome.Category.SWAMP, Biome.Category.RIVER),
-        NILE			(3, 1.1F, 2, Biome.Category.RIVER),
-        PEACOCK			(4, 0.9F, 1, Biome.Category.JUNGLE),
-        PIG_NOSE		(5, 0.8F, 2, Biome.Category.JUNGLE, Biome.Category.SWAMP),
-        SPINY		    (6, 0.7F, 3, Biome.Category.SWAMP, Biome.Category.RIVER);
+    public enum SpeciesGiantSalamander implements IStringSerializable {
+
+        CHINESE			(0, 1.2F, 2, 4, 14, Biome.Category.SWAMP, Biome.Category.RIVER, Biome.Category.EXTREME_HILLS),
+        HELLBENDER		(1, 0.8F, 5, 2, 6, Biome.Category.RIVER, Biome.Category.EXTREME_HILLS),
+        JAPANESE	    (2, 1.0F, 3, 3, 10, Biome.Category.SWAMP, Biome.Category.RIVER, Biome.Category.EXTREME_HILLS);
 
         public Float scale;
         public int species;
         public int rolls;
+        public float attack;
+        public float health;
         public Biome.Category[] spawnBiomes;
 
-        SpeciesSoftshellTurtle(int species, Float scale, int rolls, Biome.Category... biomes) {
+        SpeciesGiantSalamander(int species, Float scale, int rolls, int attack, int health, Biome.Category... biomes) {
             this.species = species;
             this.scale = scale;
             this.rolls = rolls;
+            this.attack = (float)attack;
+            this.health = (float)health;
             this.spawnBiomes = biomes;
         }
 
         public int getSpecies() { return this.species; }
 
         public String getString() {
-            return I18n.format("entity.softshell_turtle." + this.name().toLowerCase());
+            return I18n.format("entity.giant_salamander." + this.name().toLowerCase());
         }
 
         public static int getSpeciesByBiome(Biome biome) {
-            List<SpeciesSoftshellTurtle> types = new ArrayList<>();
+            List<SpeciesGiantSalamander> types = new ArrayList<>();
             /*if (biome.getDefaultTemperature() < 0.8F) {
                 return 99;
             }*/
-            for (SpeciesSoftshellTurtle type : values()) {
+            for (SpeciesGiantSalamander type : values()) {
                 for(Biome.Category biomeTypes : type.spawnBiomes) {
                     if(biome.getCategory() == biomeTypes){
                         for (int i=0; i < type.rolls; i++) {

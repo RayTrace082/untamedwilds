@@ -9,6 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigMobControl;
+import untamedwilds.entity.amphibian.EntityGiantSalamander;
 import untamedwilds.entity.arthropod.EntityTarantula;
 import untamedwilds.entity.fish.EntityArowana;
 import untamedwilds.entity.fish.EntitySunfish;
@@ -135,6 +136,14 @@ public class ModItems {
                 int arowanaSpecies = i;
                 ModItems.ITEMS.register("egg_arowana_" + EntityArowana.SpeciesArowana.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.AROWANA, arowanaSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
                 ModItems.ITEMS.register("bucket_arowana_" + EntityArowana.SpeciesArowana.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.AROWANA, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), arowanaSpecies, EntityArowana.SpeciesArowana.values()[arowanaSpecies].name().toLowerCase()));
+            }
+        }
+        // Arowana Items
+        if (ConfigMobControl.addGiantSalamander.get()) {
+            for (int i = 0; i < EntityGiantSalamander.SpeciesGiantSalamander.values().length; i++) {
+                int giant_salamander = i;
+                ModItems.ITEMS.register("egg_giant_salamander_" + EntityGiantSalamander.SpeciesGiantSalamander.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.GIANT_SALAMANDER, giant_salamander, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("bucket_giant_salamander_" + EntityGiantSalamander.SpeciesGiantSalamander.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.GIANT_SALAMANDER, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), giant_salamander, EntityGiantSalamander.SpeciesGiantSalamander.values()[giant_salamander].name().toLowerCase()));
             }
         }
     }

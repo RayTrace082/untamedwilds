@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 public class HuntPackMobTarget<T extends LivingEntity> extends HuntMobTarget<T> {
 
     public HuntPackMobTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, int hungerThreshold, boolean onlyNearby, final Predicate<? super T> targetSelector) {
-        super(creature, classTarget, checkSight, hungerThreshold, onlyNearby, false, EntityPredicates.NOT_SPECTATING);
+        super(creature, classTarget, checkSight, hungerThreshold, false, EntityPredicates.NOT_SPECTATING);
         this.targetEntitySelector = (Predicate<T>) entity -> {
             if (targetSelector != null && !targetSelector.test(entity)) {
                 return false;

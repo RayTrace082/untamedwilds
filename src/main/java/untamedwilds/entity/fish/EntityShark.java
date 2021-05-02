@@ -64,7 +64,7 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         this.goalSelector.addGoal(3, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(4, new SharkSwimmingGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, false, input -> this.getEcoLevel(input) > 7));
+        this.targetSelector.addGoal(2, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, input -> this.getEcoLevel(input) > 7));
         this.targetSelector.addGoal(3, new HuntWeakerTarget<>(this, LivingEntity.class, true, true));
     }
 
@@ -146,7 +146,6 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         boolean flag = super.attackEntityAsMob(entityIn);
         if (flag && this.getAnimation() == NO_ANIMATION && !this.isChild()) {
             this.setAnimation(ATTACK_THRASH);
-            this.setAnimationTick(0);
         }
         return flag;
     }

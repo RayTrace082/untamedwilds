@@ -14,6 +14,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 
+// TODO: Figure out if Hunger is properly working
 public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
     protected final Class<T> targetClass;
     protected final Sorter sorter;
@@ -22,7 +23,11 @@ public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
     private final int threshold;
     private final boolean isCannibal;
 
-    public HuntMobTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, int hungerThreshold, boolean onlyNearby, boolean isCannibal, final Predicate<? super T > targetSelector) {
+    public HuntMobTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, boolean isCannibal, final Predicate<? super T > targetSelector) {
+        this(creature, classTarget, checkSight, 200, isCannibal, targetSelector);
+    }
+
+    public HuntMobTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, int hungerThreshold, boolean isCannibal, final Predicate<? super T> targetSelector) {
         super(creature, checkSight, true);
         this.targetClass = classTarget;
         this.sorter = new Sorter(creature);

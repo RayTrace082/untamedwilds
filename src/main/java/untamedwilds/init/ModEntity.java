@@ -22,6 +22,7 @@ import untamedwilds.UntamedWilds;
 import untamedwilds.client.render.*;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.config.ConfigMobControl;
+import untamedwilds.entity.amphibian.EntityGiantSalamander;
 import untamedwilds.entity.arthropod.EntityTarantula;
 import untamedwilds.entity.fish.EntityArowana;
 import untamedwilds.entity.fish.EntityShark;
@@ -88,7 +89,10 @@ public class ModEntity {
     public static EntityType<EntitySunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), EntitySunfish::new,  "sunfish",  1.6F, 1.6F, 0x2C545B, 0xB6D0D3, animalType.LARGE_OCEAN, 2);
     public static EntityType<EntityTrevally> TREVALLY = createEntity(ConfigMobControl.addTrevally.get(), EntityTrevally::new,  "trevally",  0.8F, 0.8F, 0xA5B4AF, 0xC89D17, animalType.LARGE_OCEAN, 4, 8);
     public static EntityType<EntityArowana> AROWANA = createEntity(ConfigMobControl.addArowana.get(), EntityArowana::new,  "arowana",  0.6F, 0.6F, 0x645C45, 0xB29F52, animalType.DENSE_WATER, 1);
-    public static EntityType<EntityShark> SHARK = createEntity(ConfigMobControl.addShark.get(), EntityShark::new,  "shark",  1.8F, 1.3F, 0x5B606C, 0xB0B0A3, animalType.LARGE_OCEAN, 1);
+    public static EntityType<EntityShark> SHARK = createEntity(ConfigMobControl.addShark.get(), EntityShark::new,  "shark",  1.8F, 1.3F, 0x6B5142, 0xB0B0A3, animalType.LARGE_OCEAN, 1);
+
+    // Amphibians
+    public static EntityType<EntityGiantSalamander> GIANT_SALAMANDER = createEntity(ConfigMobControl.addGiantSalamander.get(), EntityGiantSalamander::new,  "giant_salamander",  1F, 0.6f, 0x3A2C23, 0x6B5142, animalType.DENSE_WATER, 1);
 
     @SubscribeEvent
     public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
@@ -173,6 +177,8 @@ public class ModEntity {
         event.put(TREVALLY, EntityTrevally.registerAttributes().create());
         event.put(AROWANA, EntityArowana.registerAttributes().create());
         event.put(SHARK, EntityShark.registerAttributes().create());
+
+        event.put(GIANT_SALAMANDER, EntityGiantSalamander.registerAttributes().create());
     }
 
     @SubscribeEvent
@@ -238,6 +244,9 @@ public class ModEntity {
         }
         if (ConfigMobControl.addShark.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SHARK, RendererShark::new);
+        }
+        if (ConfigMobControl.addGiantSalamander.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
         }
     }
 

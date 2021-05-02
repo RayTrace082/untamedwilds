@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 public class HippoTerritoryTargetGoal<T extends LivingEntity> extends HuntMobTarget<T>  {
 
     public HippoTerritoryTargetGoal(ComplexMob creature, Class<T> classTarget, boolean checkSight, boolean onlyNearby, final Predicate<? super T > targetSelector) {
-        super(creature, classTarget, checkSight,200, onlyNearby, false, EntityPredicates.NOT_SPECTATING);
+        super(creature, classTarget, checkSight,200, false, EntityPredicates.NOT_SPECTATING);
         this.targetEntitySelector = (Predicate<T>) entity -> {
             if (targetSelector != null && !targetSelector.test(entity)) {
                 return false;

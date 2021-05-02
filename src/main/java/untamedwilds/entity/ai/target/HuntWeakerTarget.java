@@ -24,7 +24,7 @@ public class HuntWeakerTarget<T extends LivingEntity> extends HuntMobTarget<T> {
     }
 
     public HuntWeakerTarget(ComplexMob creature, Class<T> classTarget, int chance, boolean checkSight, boolean onlyNearby, final Predicate <? super LivingEntity> targetSelector) {
-        super(creature, classTarget, checkSight,200, onlyNearby, false, EntityPredicates.NOT_SPECTATING);
+        super(creature, classTarget, checkSight,200, false, EntityPredicates.NOT_SPECTATING);
         this.executionChance = chance;
         this.targetEntitySelector = (Predicate<T>) entity -> {
             if (targetSelector != null && !targetSelector.test(entity)) {

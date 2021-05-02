@@ -17,6 +17,7 @@ public class ConfigMobControl {
     public static ForgeConfigSpec.BooleanValue addShark;
     public static ForgeConfigSpec.BooleanValue addTarantula;
     public static ForgeConfigSpec.BooleanValue addGiantClam;
+    public static ForgeConfigSpec.BooleanValue addGiantSalamander;
 
     ConfigMobControl(final ForgeConfigSpec.Builder builder) {
         builder.comment("Pest Control");
@@ -35,6 +36,7 @@ public class ConfigMobControl {
         addShark = builder.comment("Controls whether to add Sharks and their associated items.").define("mobcontrol.shark", true);
         addTarantula = builder.comment("Controls whether to add Tarantulas and their associated items.").define("mobcontrol.tarantula", true);
         addGiantClam = builder.comment("Controls whether to add Giant Clams and their associated items.").define("mobcontrol.giant_clam", true);
+        addGiantSalamander = builder.comment("Controls whether to add Giant Salamanders and their associated items.").define("mobcontrol.giant_salamander", true);
 
         critterSpawnRange = builder.comment("Critters further than this value from any Player will despawn into their Burrow (only if they have a Burrow assigned).").defineInRange("mobcontrol.critterSpawnRange", 40, 0, Integer.MAX_VALUE);
 
