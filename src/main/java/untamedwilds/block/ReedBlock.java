@@ -76,7 +76,7 @@ public class ReedBlock extends Block implements IGrowable, IWaterLoggable {
       boolean isWaterLogged = !world.getFluidState(pos).isEmpty();
       BlockState blockstate = world.getBlockState(pos.down());
       if (blockstate.getBlock() == ModBlock.COMMON_REED.get()) {
-         if (world.getFluidState(pos.down()).isEmpty()) {
+         if (world.getFluidState(pos.down()).isEmpty() || world.getBlockState(pos.down(2)).getBlock() == ModBlock.COMMON_REED.get()) {
             world.setBlockState(pos.down(), blockstate.getBlockState().with(PROPERTY_AGE, 1), 1);
          }
          BlockState blockstate1 = world.getBlockState(pos.up());
@@ -95,7 +95,7 @@ public class ReedBlock extends Block implements IGrowable, IWaterLoggable {
       boolean isWaterLogged = !context.getWorld().getFluidState(context.getPos()).isEmpty();
       BlockState blockstate = context.getWorld().getBlockState(context.getPos().down());
       if (blockstate.getBlock() == ModBlock.COMMON_REED.get()) {
-         if (context.getWorld().getFluidState(context.getPos().down()).isEmpty()) {
+         if (context.getWorld().getFluidState(context.getPos().down()).isEmpty() || context.getWorld().getBlockState(context.getPos().down(2)).getBlock() == ModBlock.COMMON_REED.get()) {
             context.getWorld().setBlockState(context.getPos().down(), blockstate.getBlockState().with(PROPERTY_AGE, 1));
          }
          BlockState blockstate1 = context.getWorld().getBlockState(context.getPos().up());
