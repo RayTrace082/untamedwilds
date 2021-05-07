@@ -52,7 +52,6 @@ public class EntityBlackBear extends AbstractBear implements ISkins {
         this.goalSelector.addGoal(4, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(5, new GrazeGoal(this, 100));
         this.goalSelector.addGoal(5, new BearRaidChestsGoal(this, 120));
         this.goalSelector.addGoal(6, new SmartWanderGoal(this, 1D, true));
         this.goalSelector.addGoal(7, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));

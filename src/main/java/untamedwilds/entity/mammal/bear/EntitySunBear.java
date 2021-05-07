@@ -43,7 +43,6 @@ public class EntitySunBear extends AbstractBear {
         this.goalSelector.addGoal(4, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(5, new GrazeGoal(this, 100));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, true));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
