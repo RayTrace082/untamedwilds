@@ -12,10 +12,10 @@
             "type": "relations" , 
             "title": "Giant Clam species" ,
             "entries": [
-                "untamedwilds:giant_clam/giant_clam_derasa" , 
-                "untamedwilds:giant_clam/giant_clam_gigas" , 
-                "untamedwilds:giant_clam/giant_clam_maxima" , 
-                "untamedwilds:giant_clam/giant_clam_squamosa"
+                "untamedwilds:giant_clam/derasa" ,
+                "untamedwilds:giant_clam/gigas" ,
+                "untamedwilds:giant_clam/maxima" ,
+                "untamedwilds:giant_clam/squamosa"
             ]
         }
     ]

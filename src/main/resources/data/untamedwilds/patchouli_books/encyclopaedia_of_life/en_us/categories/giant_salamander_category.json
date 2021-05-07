@@ -1,0 +1,6 @@
+{
+    "name": "giant_salamander" , 
+    "description": "List of all discovered Giant salamander species" , 
+    "icon": "minecraft:writable_book" , 
+    "parent": "taxon_amphibian"
+}

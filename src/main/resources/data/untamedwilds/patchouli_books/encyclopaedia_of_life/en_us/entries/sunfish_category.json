@@ -12,8 +12,8 @@
             "type": "relations" , 
             "title": "Sunfish Species" ,
             "entries": [
-                "untamedwilds:sunfish/sunfish_sunfish" , 
-                "untamedwilds:sunfish/sunfish_southern"
+                "untamedwilds:sunfish/sunfish" ,
+                "untamedwilds:sunfish/southern"
             ]
         }
     ]

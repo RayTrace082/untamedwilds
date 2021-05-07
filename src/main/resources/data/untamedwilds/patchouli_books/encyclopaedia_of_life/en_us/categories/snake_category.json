@@ -1,7 +1,6 @@
 {
     "name": "snake" , 
     "description": "List of all discovered Snake species" , 
-    "icon": "minecraft:writable_book" , 
-    "parent": "test_category",
-    "secret": true
+    "icon": "minecraft:writable_book" ,
+    "parent": "untamedwilds:taxon_reptile"
 }

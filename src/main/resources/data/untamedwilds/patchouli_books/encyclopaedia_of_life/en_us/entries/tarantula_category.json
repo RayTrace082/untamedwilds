@@ -12,14 +12,14 @@
             "type": "relations" , 
             "title": "Tarantula species" ,
             "entries": [
-                "untamedwilds:tarantula/tarantula_black" , 
-                "untamedwilds:tarantula/tarantula_black_and_white" , 
-                "untamedwilds:tarantula/tarantula_cobalt" , 
-                "untamedwilds:tarantula/tarantula_king" , 
-                "untamedwilds:tarantula/tarantula_red_knee" , 
-                "untamedwilds:tarantula/tarantula_regalis" , 
-                "untamedwilds:tarantula/tarantula_rose" , 
-                "untamedwilds:tarantula/tarantula_tiger"
+                "untamedwilds:tarantula/black" , 
+                "untamedwilds:tarantula/black_and_white" , 
+                "untamedwilds:tarantula/cobalt" , 
+                "untamedwilds:tarantula/king" , 
+                "untamedwilds:tarantula/red_knee" , 
+                "untamedwilds:tarantula/regalis" , 
+                "untamedwilds:tarantula/rose" , 
+                "untamedwilds:tarantula/tiger"
             ]
         }
     ]

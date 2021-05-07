@@ -12,13 +12,13 @@
             "type": "relations" , 
             "title": "Softshell Turtle species" ,
             "entries": [
-                "untamedwilds:softshell_turtle/softshell_turtle_black" , 
-                "untamedwilds:softshell_turtle/softshell_turtle_chinese" , 
-                "untamedwilds:softshell_turtle/softshell_turtle_flapshell" , 
-                "untamedwilds:softshell_turtle/softshell_turtle_nile" , 
-                "untamedwilds:softshell_turtle/softshell_turtle_peacock" , 
-                "untamedwilds:softshell_turtle/softshell_turtle_pig_nose" , 
-                "untamedwilds:softshell_turtle/softshell_turtle_spiny"
+                "untamedwilds:softshell_turtle/black" , 
+                "untamedwilds:softshell_turtle/chinese" , 
+                "untamedwilds:softshell_turtle/flapshell" , 
+                "untamedwilds:softshell_turtle/nile" , 
+                "untamedwilds:softshell_turtle/peacock" , 
+                "untamedwilds:softshell_turtle/pig_nose" , 
+                "untamedwilds:softshell_turtle/spiny"
             ]
         }
     ]

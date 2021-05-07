@@ -12,12 +12,12 @@
             "type": "relations" , 
             "title": "Arowana species" ,
             "entries": [
-                "untamedwilds:arowana/arowana_black" ,
-                "untamedwilds:arowana/arowana_dragon" ,
-                "untamedwilds:arowana/arowana_golden" ,
-                "untamedwilds:arowana/arowana_green" ,
-                "untamedwilds:arowana/arowana_jardini" ,
-                "untamedwilds:arowana/arowana_silver"
+                "untamedwilds:arowana/black" ,
+                "untamedwilds:arowana/dragon" ,
+                "untamedwilds:arowana/golden" ,
+                "untamedwilds:arowana/green" ,
+                "untamedwilds:arowana/jardini" ,
+                "untamedwilds:arowana/silver"
             ]
         }
     ]

@@ -52,16 +52,16 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
         return MobEntity.func_233666_p_()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.16D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 16.0D)
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 8.0D)
                 .createMutableAttribute(Attributes.MAX_HEALTH, 10.0D)
                 .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0D);
     }
 
     public void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1D, false));
+        this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1.4D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
-        this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1D, 1.1D, input -> this.getEcoLevel(input) > 6));
+        this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, (float)this.getAttributeValue(Attributes.FOLLOW_RANGE), 1D, 1.1D, input -> this.getEcoLevel(input) > 6));
         this.goalSelector.addGoal(3, new AmphibiousTransition(this, 1D));
         this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 600));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));

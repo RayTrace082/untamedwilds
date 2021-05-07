@@ -129,7 +129,7 @@ public class SmartMeleeAttackGoal extends Goal {
 
         // This piece of code fixes mobs in water being unable to chase upwards
         if (this.attacker.isInWater() && this.attacker.ticksExisted % 12 == 0) {
-            if ((livingentity.getBoundingBox().minY + 1) > this.attacker.getPosY()) {
+            if ((livingentity.getBoundingBox().minY + 1) > this.attacker.getPosY() - 1) {
                 this.attacker.getJumpController().setJumping();
             }
         }
@@ -158,7 +158,7 @@ public class SmartMeleeAttackGoal extends Goal {
             }
 
             if (!this.attacker.getNavigator().tryMoveToEntityLiving(livingentity, this.speedTowardsTarget)) {
-                this.delayCounter += 15;
+                this.delayCounter += 50;
             }
         }
 

@@ -2,7 +2,8 @@
   "credit": "Made with Blockbench",
   "parent": "block/thin_block",
   "textures": {
-    "bottom": "untamedwilds:block/burrow_hole"
+    "bottom": "untamedwilds:block/burrow_hole",
+    "particle": "untamedwilds:block/burrow_hole"
   },
   "elements": [
     {

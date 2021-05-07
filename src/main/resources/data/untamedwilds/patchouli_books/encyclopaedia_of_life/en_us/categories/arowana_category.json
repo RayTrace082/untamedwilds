@@ -1,7 +1,6 @@
 {
-    "name": "arowana" ,
-    "description": "List of all discovered Arowana species" ,
-    "icon": "minecraft:writable_book" ,
-    "parent": "patchouli:page_types/images",
-    "secret": false
+    "name": "Arowana" ,
+    "description": "Arowana are a group of tropical freshwater fish most known for their aggressive behaviour and their tendency to jump. $(br2)Their head is bony and the elongated body is covered by large, heavy scales.",
+    "icon": "untamedwilds:textures/icon/arowana/category.png" ,
+    "parent": "taxon_fish"
 }

@@ -1,7 +1,6 @@
 {
     "name": "tarantula" , 
     "description": "List of all discovered Tarantula species" , 
-    "icon": "minecraft:writable_book" , 
-    "parent": "test_category",
-    "secret": true
+    "icon": "minecraft:writable_book" ,
+    "parent": "untamedwilds:taxon_arthropod"
 }

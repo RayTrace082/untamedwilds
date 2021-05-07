@@ -12,12 +12,12 @@
             "type": "relations" , 
             "title": "Big Cat species" ,
             "entries": [
-                "untamedwilds:big_cat/bigcat_jaguar" , 
-                "untamedwilds:big_cat/bigcat_leopard" , 
-                "untamedwilds:big_cat/bigcat_lion" , 
-                "untamedwilds:big_cat/bigcat_puma" , 
-                "untamedwilds:big_cat/bigcat_snow_leopard" , 
-                "untamedwilds:big_cat/bigcat_tiger"
+                "untamedwilds:big_cat/jaguar" ,
+                "untamedwilds:big_cat/leopard" ,
+                "untamedwilds:big_cat/lion" ,
+                "untamedwilds:big_cat/puma" ,
+                "untamedwilds:big_cat/snow_leopard" ,
+                "untamedwilds:big_cat/tiger"
             ]
         }
     ]

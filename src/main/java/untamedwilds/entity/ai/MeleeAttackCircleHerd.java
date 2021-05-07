@@ -3,10 +3,8 @@ package untamedwilds.entity.ai;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EntityPredicates;
-import net.minecraft.world.server.ServerWorld;
 import untamedwilds.entity.ComplexMob;
 
 import java.util.EnumSet;
@@ -146,7 +144,6 @@ public class MeleeAttackCircleHerd extends Goal {
             if (this.attacker.getAttackTarget() != null) {
                 double x = this.attacker.getAttackTarget().getPosX() + Math.cos(this.offset + this.attacker.ticksExisted / 40F) * 6;
                 double z = this.attacker.getAttackTarget().getPosZ() + Math.sin(this.offset + this.attacker.ticksExisted / 40F) * 6;
-                ((ServerWorld)this.attacker.getEntityWorld()).spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, x, this.attacker.getAttackTarget().getPosY(), z, 1, 0, 0,0, 0.05D);
                 this.attacker.getNavigator().tryMoveToXYZ(x, this.attacker.getAttackTarget().getPosY(), z, 1.2F);
             }
         }

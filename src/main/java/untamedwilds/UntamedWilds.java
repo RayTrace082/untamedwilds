@@ -45,7 +45,7 @@ public class UntamedWilds {
     public UntamedWilds() {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigBase.common_config);
-        ConfigBase.loadConfig(ConfigBase.common_config, FMLPaths.CONFIGDIR.get().resolve("untamedwilds-server.toml").toString());
+        ConfigBase.loadConfig(ConfigBase.common_config, FMLPaths.CONFIGDIR.get().resolve("untamedwilds-common.toml").toString());
         eventBus.addListener(this::setupCommon);
         eventBus.addListener(this::setupClient);
         ModBlock.BLOCKS.register(eventBus);

@@ -1,0 +1,21 @@
+{
+    "name": "Giant Salamanders" ,
+    "icon": "untamedwilds:textures/icon/giant_salamander/hellbender.png" , 
+    "category": "taxon_amphibian" ,
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Giant Salamander" ,
+            "text": "Giant Salamanders are large amphibians, with large folds of skin along their flanks.$(br2)Giant salamanders have a stout body with a heavy, laterally compressed tail and very poor eyesight. Their metamorphosis from the larval stage is incomplete."
+        } , 
+        {
+            "type": "relations" , 
+            "title": "Giant Salamander species" ,
+            "entries": [
+                "untamedwilds:giant_salamander/chinese" , 
+                "untamedwilds:giant_salamander/japanese" , 
+                "untamedwilds:giant_salamander/hellbender"
+            ]
+        }
+    ]
+}

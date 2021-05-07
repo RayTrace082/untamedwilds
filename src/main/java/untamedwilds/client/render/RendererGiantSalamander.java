@@ -29,7 +29,7 @@ public class RendererGiantSalamander extends MobRenderer<EntityGiantSalamander, 
         f *= entity.getRenderScale();
         f *= (EntityGiantSalamander.SpeciesGiantSalamander.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
-        this.shadowSize = entity.getModelScale() * 0.6f;
+        this.shadowSize = entity.getModelScale() * 0.4f;
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntityGiantSalamander entity) {

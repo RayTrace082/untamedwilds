@@ -12,29 +12,29 @@
             "type": "relations" , 
             "title": "Snake species (1/2)" ,
             "entries": [
-                "untamedwilds:snake/snake_adder" , 
-                "untamedwilds:snake/snake_ball_python" , 
-                "untamedwilds:snake/snake_black_mamba" , 
-                "untamedwilds:snake/snake_carpet_python" , 
-                "untamedwilds:snake/snake_cave_racer" , 
-                "untamedwilds:snake/snake_coral" , 
-                "untamedwilds:snake/snake_coral_blue" , 
-                "untamedwilds:snake/snake_corn" , 
-                "untamedwilds:snake/snake_emerald" , 
-                "untamedwilds:snake/snake_grass_snake"
+                "untamedwilds:snake/adder" , 
+                "untamedwilds:snake/ball_python" , 
+                "untamedwilds:snake/black_mamba" , 
+                "untamedwilds:snake/carpet_python" , 
+                "untamedwilds:snake/cave_racer" , 
+                "untamedwilds:snake/coral" , 
+                "untamedwilds:snake/coral_blue" , 
+                "untamedwilds:snake/corn" , 
+                "untamedwilds:snake/emerald" , 
+                "untamedwilds:snake/grass_snake"
             ]
         },
         {
             "type": "relations" ,
             "title": "Snake species (2/2)" ,
             "entries": [
-                "untamedwilds:snake/snake_gray_kingsnake" ,
-                "untamedwilds:snake/snake_green_mamba" ,
-                "untamedwilds:snake/snake_rattlesnake" ,
-                "untamedwilds:snake/snake_rice_paddy" ,
-                "untamedwilds:snake/snake_swamp_moccasin" ,
-                "untamedwilds:snake/snake_taipan" ,
-                "untamedwilds:snake/snake_western_rattlesnake"
+                "untamedwilds:snake/gray_kingsnake" ,
+                "untamedwilds:snake/green_mamba" ,
+                "untamedwilds:snake/rattlesnake" ,
+                "untamedwilds:snake/rice_paddy" ,
+                "untamedwilds:snake/swamp_moccasin" ,
+                "untamedwilds:snake/taipan" ,
+                "untamedwilds:snake/western_rattlesnake"
             ]
         }
     ]

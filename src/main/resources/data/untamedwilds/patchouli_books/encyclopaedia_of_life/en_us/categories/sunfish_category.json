@@ -1,7 +1,6 @@
 {
     "name": "sunfish" , 
     "description": "List of all discovered Sunfish species" , 
-    "icon": "minecraft:writable_book" , 
-    "parent": "test_category",
-    "secret": true
+    "icon": "minecraft:writable_book" ,
+    "parent": "untamedwilds:taxon_fish"
 }

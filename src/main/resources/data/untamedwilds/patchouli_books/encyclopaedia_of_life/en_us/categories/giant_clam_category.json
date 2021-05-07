@@ -2,6 +2,5 @@
     "name": "giant_clam" , 
     "description": "List of all discovered Giant clam species" , 
     "icon": "minecraft:writable_book" ,
-    "parent": "test_category",
-    "secret": true
+    "parent": "taxon_mollusk"
 }

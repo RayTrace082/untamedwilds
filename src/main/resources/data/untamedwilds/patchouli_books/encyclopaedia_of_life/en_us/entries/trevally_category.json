@@ -12,11 +12,11 @@
             "type": "relations" , 
             "title": "Trevally species" ,
             "entries": [
-                "untamedwilds:trevally/trevally_bigeye" , 
-                "untamedwilds:trevally/trevally_bluespotted" , 
-                "untamedwilds:trevally/trevally_giant" , 
-                "untamedwilds:trevally/trevally_golden" , 
-                "untamedwilds:trevally/trevally_jack"
+                "untamedwilds:trevally/bigeye" , 
+                "untamedwilds:trevally/bluespotted" , 
+                "untamedwilds:trevally/giant" , 
+                "untamedwilds:trevally/golden" , 
+                "untamedwilds:trevally/jack"
             ]
         }
     ]

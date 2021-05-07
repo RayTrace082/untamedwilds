@@ -12,16 +12,16 @@
             "type": "relations" , 
             "title": "Shark species" ,
             "entries": [
-                "untamedwilds:shark/shark_bigeye" , 
-                "untamedwilds:shark/shark_bluntnose" , 
-                "untamedwilds:shark/shark_bull" , 
-                "untamedwilds:shark/shark_goblin" , 
-                "untamedwilds:shark/shark_great_white" , 
-                "untamedwilds:shark/shark_greenland" , 
-                "untamedwilds:shark/shark_hammerhead" , 
-                "untamedwilds:shark/shark_lemon" , 
-                "untamedwilds:shark/shark_mako" , 
-                "untamedwilds:shark/shark_tiger"
+                "untamedwilds:shark/bigeye" ,
+                "untamedwilds:shark/bluntnose" ,
+                "untamedwilds:shark/bull" ,
+                "untamedwilds:shark/goblin" ,
+                "untamedwilds:shark/great_white" ,
+                "untamedwilds:shark/greenland" ,
+                "untamedwilds:shark/hammerhead" ,
+                "untamedwilds:shark/lemon" ,
+                "untamedwilds:shark/mako" ,
+                "untamedwilds:shark/tiger"
             ]
         }
     ]

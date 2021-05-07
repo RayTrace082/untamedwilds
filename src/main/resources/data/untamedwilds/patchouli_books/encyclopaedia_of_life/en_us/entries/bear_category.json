@@ -12,14 +12,14 @@
             "type": "relations" , 
             "title": "Bear species" ,
             "entries": [
-                "untamedwilds:bear/bear_black" , 
-                "untamedwilds:bear/bear_brown" , 
-                "untamedwilds:bear/bear_blind" , 
-                "untamedwilds:bear/bear_cave" , 
-                "untamedwilds:bear/bear_panda" , 
-                "untamedwilds:bear/bear_polar" , 
-                "untamedwilds:bear/bear_spectacled" , 
-                "untamedwilds:bear/bear_sun"
+                "untamedwilds:bear/black" ,
+                "untamedwilds:bear/brown" ,
+                "untamedwilds:bear/blind" ,
+                "untamedwilds:bear/cave" ,
+                "untamedwilds:bear/panda" ,
+                "untamedwilds:bear/polar" ,
+                "untamedwilds:bear/spectacled" ,
+                "untamedwilds:bear/sun"
             ]
         }
     ]
