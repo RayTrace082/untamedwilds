@@ -65,7 +65,7 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
     public EntityType<?> getEntityType() { return this.entityType; }
 
     public void tick() {
-        if (this.world != null && !this.world.isRemote && !this.hasNoMobs() && this.getEntityType() != null && this.world.getRandom().nextDouble() < (Math.min(0.001, 0.0001D * (this.getSumMobs() * 2)))) {
+        if (this.world != null && !this.world.isRemote && !this.hasNoMobs() && this.getEntityType() != null && this.world.getRandom().nextDouble() < (Math.min(0.001, 0.0001D * (this.getSumMobs() * this.getSumMobs())))) {
             BlockPos blockpos = this.getPos();
             if (this.world.getRandom().nextInt(10) == 0) {
                 this.setCount(this.getCount() + 1);

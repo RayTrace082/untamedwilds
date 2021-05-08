@@ -1,6 +1,6 @@
 {
     "name": "trevally" , 
-    "description": "List of all discovered Trevally species" , 
-    "icon": "minecraft:writable_book" ,
+    "description": "List of all discovered Trevally species" ,
+    "icon": "untamedwilds:textures/icon/trevally/category.png" ,
     "parent": "untamedwilds:taxon_fish"
 }

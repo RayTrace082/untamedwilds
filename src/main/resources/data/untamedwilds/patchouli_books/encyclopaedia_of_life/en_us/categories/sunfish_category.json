@@ -1,6 +1,6 @@
 {
     "name": "sunfish" , 
-    "description": "List of all discovered Sunfish species" , 
-    "icon": "minecraft:writable_book" ,
+    "description": "List of all discovered Sunfish species" ,
+    "icon": "untamedwilds:textures/icon/sunfish/category.png" ,
     "parent": "untamedwilds:taxon_fish"
 }

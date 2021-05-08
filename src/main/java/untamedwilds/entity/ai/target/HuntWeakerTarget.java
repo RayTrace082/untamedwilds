@@ -60,9 +60,9 @@ public class HuntWeakerTarget<T extends LivingEntity> extends HuntMobTarget<T> {
         if (entity instanceof CreeperEntity) {
             return true; // Hardcoded Creepers out because they will absolutely destroy wildlife if targeted
         }
-        if (entity instanceof ComplexMob) {
+        if (entity instanceof ComplexMob && !EntityUtils.hasFullHealth(entity)) {
             ComplexMob ctarget = (ComplexMob)entity;
-            return (this.goalOwner.getClass() == entity.getClass() && ((ComplexMob)this.goalOwner).getVariant() == ctarget.getVariant()) || !ctarget.canBeTargeted() || EntityUtils.hasFullHealth(entity);
+            return (this.goalOwner.getClass() == entity.getClass() && ((ComplexMob)this.goalOwner).getVariant() == ctarget.getVariant()) || !ctarget.canBeTargeted();
         }
         return false;
     }

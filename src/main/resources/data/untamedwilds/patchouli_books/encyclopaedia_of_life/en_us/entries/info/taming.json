@@ -17,7 +17,7 @@
             "type": "crafting" ,
             "title": "Ownership Deed" ,
             "recipe": "untamedwilds:items/ownership_deed",
-            "text": "Mob ownership can be transferred between players through the use of an Ownership Deed"
+            "text": "Mob ownership can be transferred between players through the use of an Ownership Deed.$(br2)Ownership deeds also work with other Mobs, as long as they can be tamed."
         }
     ]
 }

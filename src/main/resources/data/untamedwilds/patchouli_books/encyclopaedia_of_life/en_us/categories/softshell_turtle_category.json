@@ -2,5 +2,5 @@
     "name": "softshell_turtle" , 
     "description": "List of all discovered Softshell turtle species" , 
     "icon": "minecraft:writable_book" ,
-    "parent": "untamedwilds:taxon_fish"
+    "parent": "untamedwilds:taxon_reptile"
 }

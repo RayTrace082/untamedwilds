@@ -84,14 +84,19 @@ public class CritterBurrowBlock extends Block implements IWaterLoggable {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-        if (!playerIn.isCreative() || worldIn.isRemote) {
+        if (worldIn.isRemote) {
             return ActionResultType.FAIL;
         }
         else {
             CritterBurrowBlockEntity te = (CritterBurrowBlockEntity) worldIn.getTileEntity(pos);
-            playerIn.sendMessage(new TranslationTextComponent("This burrow contains " + te.getEntityType().getTranslationKey()).mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
-            playerIn.sendMessage(new TranslationTextComponent("The variant is " + te.getVariant()).mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
-            playerIn.sendMessage(new TranslationTextComponent("There are " + (te.getInhabitants().size() + te.getCount()) + " mobs inside the burrow (" + te.getInhabitants().size() + " stored, and " + te.getCount() + " to be spawned)").mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
+            if (playerIn.isCreative()) {
+                playerIn.sendMessage(new TranslationTextComponent("This burrow contains " + te.getEntityType().getTranslationKey()).mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
+                playerIn.sendMessage(new TranslationTextComponent("The variant is " + te.getVariant()).mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
+                playerIn.sendMessage(new TranslationTextComponent("There are " + (te.getInhabitants().size() + te.getCount()) + " mobs inside the burrow (" + te.getInhabitants().size() + " stored, and " + te.getCount() + " to be spawned)").mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
+            }
+            else {
+                playerIn.sendStatusMessage(new TranslationTextComponent("block.burrow.state", te.getEntityType().getName().getString()), true);
+            }
             return ActionResultType.SUCCESS;
         }
     }
