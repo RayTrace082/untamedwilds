@@ -191,6 +191,7 @@ public class ModEntity {
     public static void registerRendering() {
         if (ConfigMobControl.addTarantula.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.TARANTULA, RendererTarantula::new);
+            EntityAardvark.processSkins();
         }
         if (ConfigMobControl.addSoftshellTurtle.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SOFTSHELL_TURTLE, RendererSoftshellTurtle::new);

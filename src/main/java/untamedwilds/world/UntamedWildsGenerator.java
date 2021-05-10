@@ -83,7 +83,7 @@ public class UntamedWildsGenerator {
             registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, VEGETATION.get().withConfiguration(new FeatureSpreadConfig(4)).withPlacement(Features.Placements.KELP_PLACEMENT).chance(4), VEGETATION.get().getRegistryName());
 
         }
-        registerFeature(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, DENSE_WATER.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(4), DENSE_WATER.get().getRegistryName());
+        registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, DENSE_WATER.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqWater.get());
 
         if (ConfigFeatureControl.addBurrows.get()) {
             registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, CRITTER_BURROW.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqCritter.get());

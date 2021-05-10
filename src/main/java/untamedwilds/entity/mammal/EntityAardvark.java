@@ -45,6 +45,12 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
         WORK_DIG = Animation.create(76);
     }
 
+    public static void processSkins() {
+        for (int i = 0; i < SpeciesAardvark.values().length; i++) {
+            EntityUtils.buildSkinArrays("aardvark", SpeciesAardvark.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
+        }
+    }
+
     public void registerGoals() {
         this.goalSelector.addGoal(1, new SmartSwimGoal(this));
         this.goalSelector.addGoal(2, new FindItemsGoal(this, 12, 100, false, true));

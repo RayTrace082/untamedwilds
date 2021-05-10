@@ -52,6 +52,12 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies {
         this.goalSelector.addGoal(4, new FishBreachGoal(this, 400, true));
     }
 
+    public static void processSkins() {
+        for (int i = 0; i < SpeciesArowana.values().length; i++) {
+            EntityUtils.buildSkinArrays("arowana", SpeciesArowana.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
+        }
+    }
+
     public void livingTick() {
         if (!this.world.isRemote) {
             if (this.ticksExisted % 1000 == 0) {
@@ -123,12 +129,13 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies {
 
     public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.arowana_" + getRawSpeciesName(i)).getString(); }
     public String getRawSpeciesName(int i) { return SpeciesArowana.values()[i].name().toLowerCase(); }
+    public ResourceLocation getTexture() {
+        return TEXTURES_COMMON.get(this.getVariant()).get(this.getSkin());
+    }
 
     public enum SpeciesArowana implements IStringSerializable {
 
         BLACK		(0, 0.8F, 10, Biome.Category.JUNGLE),
-        DRAGON	    (1, 1.1F, 1, Biome.Category.SWAMP, Biome.Category.JUNGLE),
-        GOLDEN    	(2, 1.1F,  1, Biome.Category.SWAMP, Biome.Category.JUNGLE),
         GREEN		(3, 1.1F, 8, Biome.Category.SWAMP, Biome.Category.JUNGLE),
         JARDINI		(4, 1F, 6, Biome.Category.SWAMP),
         SILVER    	(5, 1F, 10, Biome.Category.JUNGLE);

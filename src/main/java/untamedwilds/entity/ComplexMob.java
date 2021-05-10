@@ -33,12 +33,17 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 
 public abstract class ComplexMob extends TameableEntity {
 
     private static final DataParameter<BlockPos> HOME_POS = EntityDataManager.createKey(ComplexMob.class, DataSerializers.BLOCK_POS);
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> SKIN = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT);
+    public static HashMap<Integer, ArrayList<ResourceLocation>> TEXTURES_COMMON = new HashMap<>();
+    public static HashMap<Integer, ArrayList<ResourceLocation>> TEXTURES_RARE = new HashMap<>();
     private static final DataParameter<Float> SIZE = EntityDataManager.createKey(ComplexMob.class, DataSerializers.FLOAT);
     private static final DataParameter<Integer> GENDER = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT); // 0 - Male, 1 - Female
     private static final DataParameter<Boolean> IS_ANGRY = EntityDataManager.createKey(ComplexMob.class, DataSerializers.BOOLEAN);
@@ -56,6 +61,7 @@ public abstract class ComplexMob extends TameableEntity {
         super.registerData();
         this.dataManager.register(HOME_POS, BlockPos.ZERO);
         this.dataManager.register(VARIANT, 0);
+        this.dataManager.register(SKIN, 0);
         this.dataManager.register(SIZE, 0F);
         this.dataManager.register(GENDER, 0);
         this.dataManager.register(IS_ANGRY, false);
@@ -92,6 +98,8 @@ public abstract class ComplexMob extends TameableEntity {
 
     public int getVariant(){ return (this.dataManager.get(VARIANT)); }
     public void setVariant(int variant){ this.dataManager.set(VARIANT, variant); }
+    public int getSkin(){ return (this.dataManager.get(SKIN)); }
+    public void setSkin(int skin){ this.dataManager.set(SKIN, skin); }
 
     public float getModelScale() { return 1f; }
     public float getMobSize(){ return (this.dataManager.get(SIZE)); }
@@ -220,7 +228,6 @@ public abstract class ComplexMob extends TameableEntity {
                 if (this instanceof ISpecies && this.getHome() != BlockPos.ZERO) {
                     TileEntity burrow = this.world.getTileEntity(this.getHome());
                     if (burrow instanceof CritterBurrowBlockEntity) {
-                        UntamedWilds.LOGGER.info("Mob is despawning into burrow");
                         ((CritterBurrowBlockEntity)burrow).tryEnterBurrow(this);
                         burrow.markDirty();
                     }
@@ -229,7 +236,7 @@ public abstract class ComplexMob extends TameableEntity {
         }
     }
 
-    public void writeAdditional(CompoundNBT compound){ // Write NBT Tags
+    public void writeAdditional(CompoundNBT compound){
         super.writeAdditional(compound);
         if (this.getHome() != BlockPos.ZERO) {
             compound.putInt("HomePosX", this.getHome().getX());
@@ -240,12 +247,13 @@ public abstract class ComplexMob extends TameableEntity {
             compound.putInt("Command", this.getCommandInt());
         }
         compound.putInt("Variant", this.getVariant());
+        compound.putInt("Skin", this.getSkin());
         compound.putFloat("Size", this.getMobSize());
         compound.putInt("Gender", this.getGender());
         compound.putBoolean("isAngry", this.isAngry());
     }
 
-    public void readAdditional(CompoundNBT compound){ // Read NBT Tags
+    public void readAdditional(CompoundNBT compound){
         super.readAdditional(compound);
         if (compound.contains("HomePosX")) {
             int i = compound.getInt("HomePosX");
@@ -257,6 +265,7 @@ public abstract class ComplexMob extends TameableEntity {
             this.setCommandInt(compound.getInt("Command"));
         }
         this.setVariant(compound.getInt("Variant"));
+        this.setSkin(compound.getInt("Skin"));
         this.setMobSize(compound.getFloat("Size"));
         this.setGender(compound.getInt("Gender"));
         this.setAngry(compound.getBoolean("isAngry"));

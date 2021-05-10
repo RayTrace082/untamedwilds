@@ -24,6 +24,7 @@ public class RendererArowana extends MobRenderer<EntityArowana, EntityModel<Enti
     public RendererArowana(EntityRendererManager rendermanager) {
         super(rendermanager, AROWANA_MODEL, 0.2F);
     }
+
     @Override
     protected void preRenderCallback(EntityArowana entity, MatrixStack matrixStackIn, float partialTickTime) {
         float f = 0.8F;

@@ -11,6 +11,7 @@ public class ConfigFeatureControl {
     public static ForgeConfigSpec.BooleanValue addBurrows;
 
     public static ForgeConfigSpec.IntValue freqCritter;
+    public static ForgeConfigSpec.IntValue freqWater;
     public static ForgeConfigSpec.IntValue freqSessile;
     public static ForgeConfigSpec.IntValue freqOcean;
     public static ForgeConfigSpec.IntValue freqApex;
@@ -29,6 +30,8 @@ public class ConfigFeatureControl {
         freqSessile = builder.comment("Frequency of Sessile Ocean Mobs, 1 in N chunks will generate with Sessile Mobs (0 to disable)").defineInRange("gencontrol.freqsessile", 8, 0, Integer.MAX_VALUE);
         freqOcean = builder.comment("Frequency of Ocean Mobs, 1 in N chunks will generate with Ocean Mobs (0 to disable)").defineInRange("gencontrol.freqocean", 16, 0, Integer.MAX_VALUE);
         freqApex = builder.comment("Frequency of Apex Predators, 1 in N chunks will generate with an Apex Predator (0 to disable)").defineInRange("gencontrol.freqapex", 24, 0, Integer.MAX_VALUE);
+        freqWater = builder.comment("Frequency of Freshwater Mobs, 1 in N chunks will generate with Freshwater Mobs (0 to disable)").defineInRange("gencontrol.freqwater", 4, 0, Integer.MAX_VALUE);
+
         //builder.pop();
     }
 }
