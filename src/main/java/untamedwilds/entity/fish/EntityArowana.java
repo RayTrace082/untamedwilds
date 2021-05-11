@@ -19,6 +19,7 @@ import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
+import untamedwilds.entity.INewSkins;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.FishBreachGoal;
 import untamedwilds.util.EntityUtils;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntityArowana extends ComplexMobAquatic implements ISpecies {
+public class EntityArowana extends ComplexMobAquatic implements ISpecies, INewSkins {
 
     private static final String BREEDING = "MID_SUMMER";
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
@@ -130,15 +131,18 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies {
     public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.arowana_" + getRawSpeciesName(i)).getString(); }
     public String getRawSpeciesName(int i) { return SpeciesArowana.values()[i].name().toLowerCase(); }
     public ResourceLocation getTexture() {
-        return TEXTURES_COMMON.get(this.getVariant()).get(this.getSkin());
+        if (this.getSkin() > 99) {
+            return EntityArowana.TEXTURES_RARE.get(this.getVariant()).get(this.getSkin() - 100);
+        }
+        return EntityArowana.TEXTURES_COMMON.get(this.getVariant()).get(this.getSkin());
     }
 
     public enum SpeciesArowana implements IStringSerializable {
 
         BLACK		(0, 0.8F, 10, Biome.Category.JUNGLE),
-        GREEN		(3, 1.1F, 8, Biome.Category.SWAMP, Biome.Category.JUNGLE),
-        JARDINI		(4, 1F, 6, Biome.Category.SWAMP),
-        SILVER    	(5, 1F, 10, Biome.Category.JUNGLE);
+        GREEN		(1, 1.1F, 8, Biome.Category.SWAMP, Biome.Category.JUNGLE),
+        JARDINI		(2, 1F, 6, Biome.Category.SWAMP),
+        SILVER    	(3, 1F, 10, Biome.Category.JUNGLE);
 
         public Float scale;
         public int species;

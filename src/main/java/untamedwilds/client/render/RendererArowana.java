@@ -14,13 +14,6 @@ public class RendererArowana extends MobRenderer<EntityArowana, EntityModel<Enti
 
     private static final ModelArowana AROWANA_MODEL = new ModelArowana();
 
-    private final ResourceLocation BLACK         = new ResourceLocation("untamedwilds:textures/entity/arowana/black.png");
-    private final ResourceLocation DRAGON    = new ResourceLocation("untamedwilds:textures/entity/arowana/dragon.png");
-    private final ResourceLocation GOLDEN         = new ResourceLocation("untamedwilds:textures/entity/arowana/golden.png");
-    private final ResourceLocation GREEN = new ResourceLocation("untamedwilds:textures/entity/arowana/green.png");
-    private final ResourceLocation JARDINI        = new ResourceLocation("untamedwilds:textures/entity/arowana/jardini.png");
-    private final ResourceLocation SILVER        = new ResourceLocation("untamedwilds:textures/entity/arowana/silver.png");
-
     public RendererArowana(EntityRendererManager rendermanager) {
         super(rendermanager, AROWANA_MODEL, 0.2F);
     }
@@ -35,14 +28,6 @@ public class RendererArowana extends MobRenderer<EntityArowana, EntityModel<Enti
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntityArowana entity) {
-        switch (entity.getVariant()) {
-            default:
-            case 0: return BLACK;
-            case 1: return DRAGON;
-            case 2: return GOLDEN;
-            case 3: return GREEN;
-            case 4: return JARDINI;
-            case 5: return SILVER;
-        }
+        return entity.getTexture();
     }
 }

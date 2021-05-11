@@ -100,6 +100,23 @@ public abstract class ComplexMob extends TameableEntity {
     public void setVariant(int variant){ this.dataManager.set(VARIANT, variant); }
     public int getSkin(){ return (this.dataManager.get(SKIN)); }
     public void setSkin(int skin){ this.dataManager.set(SKIN, skin); }
+    public void chooseSkinForSpecies() {
+        if (!TEXTURES_COMMON.isEmpty() && this instanceof INewSkins) {
+            int skin;
+            if (!TEXTURES_RARE.isEmpty() && this.rand.nextFloat() < 0.05F) {
+                int size = TEXTURES_RARE.get(this.getVariant()).size();
+                skin = this.rand.nextInt(size);
+                UntamedWilds.LOGGER.info(size + " " + skin);
+                this.setSkin(skin + 100);
+            }
+            else {
+                int size = TEXTURES_COMMON.get(this.getVariant()).size();
+                skin = this.rand.nextInt(size);
+                UntamedWilds.LOGGER.info(size + " " + skin);
+                this.setSkin(skin);
+            }
+        }
+    }
 
     public float getModelScale() { return 1f; }
     public float getMobSize(){ return (this.dataManager.get(SIZE)); }
@@ -293,6 +310,19 @@ public abstract class ComplexMob extends TameableEntity {
             } else if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
                 UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + this.getName().getString());
             }
+            // UntamedWilds.LOGGER.info("HOWDY " + this.getType().getRegistryName().toString() + this.TEXTURES_COMMON);
+            // --- WIP ---
+            if (!TEXTURES_COMMON.isEmpty() && this instanceof INewSkins) {
+                UntamedWilds.LOGGER.info("SEAL: Variant is " + this.getVariant());
+                UntamedWilds.LOGGER.info((TEXTURES_COMMON.get(this.getVariant())));
+                UntamedWilds.LOGGER.info("There are " + (TEXTURES_COMMON.get(this.getVariant()).size()) + " random skins to choose");
+                // TODO: RARE SKINS
+                int size = TEXTURES_COMMON.get(this.getVariant()).size();
+                int skin = Math.max(0, this.rand.nextInt(size));
+                UntamedWilds.LOGGER.info(size + " " + skin);
+                this.setSkin(skin);
+            }
+            // ---     ---
             if (this instanceof ISkins) {
                 this.setVariant(this.rand.nextInt(((ISkins)this).getSkinNumber()));
             }

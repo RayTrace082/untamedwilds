@@ -59,9 +59,8 @@ public class MobEggItem extends Item {
             if (!itemStack.hasTag()) {
                 if (spawn instanceof ComplexMob) {
                     ComplexMob entitySpawn = (ComplexMob) spawn;
-                    entitySpawn.setRandomMobSize();
-                    entitySpawn.setGender(worldIn.rand.nextInt(2));
                     entitySpawn.setVariant(this.species);
+                    entitySpawn.chooseSkinForSpecies();
                     entitySpawn.setGrowingAge(entitySpawn.getAdulthoodTime() * -1);
                 }
             }

@@ -208,8 +208,8 @@ public abstract class EntityUtils {
     public static Pair<Integer, Integer> buildSkinArrays(String name, String species, int variant, HashMap<Integer, ArrayList<ResourceLocation>> common_list, HashMap<Integer, ArrayList<ResourceLocation>> rare_list) {
         Pair<Integer, Integer> pair = new Pair<>(0, 0);
         String path = "textures/entity/" + name + "/" + species;
-        // Everything below should be in a for-loop for each species
         common_list.put(variant, new ArrayList<>());
+        rare_list.put(variant, new ArrayList<>());
         for(int i = 0; i < 99; i++) {
             int k = i;
             try {
@@ -217,10 +217,9 @@ public abstract class EntityUtils {
                 common_list.get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, String.format(path + "_%d.png", i + 1)));
             }
             catch(Exception e) {
-                if (k == 1) {
+                if (k == 0) {
                     common_list.get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, path + ".png"));
                 }
-                UntamedWilds.LOGGER.info("Number of skins is " + k);
                 pair = new Pair<>(k, pair.getSecond());
                 break;
             }
@@ -232,7 +231,7 @@ public abstract class EntityUtils {
                 rare_list.get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, String.format(path + "_%dr.png", j + 1)));
             }
             catch(Exception e) {
-                UntamedWilds.LOGGER.info("Number of rare skins is " + k);
+                //UntamedWilds.LOGGER.info("Number of rare skins is " + k);
                 pair = new Pair<>(pair.getFirst(), k);
                 break;
             }

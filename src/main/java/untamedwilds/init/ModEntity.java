@@ -242,6 +242,7 @@ public class ModEntity {
         }
         if (ConfigMobControl.addArowana.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.AROWANA, RendererArowana::new);
+            EntityArowana.processSkins();
         }
         if (ConfigMobControl.addShark.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SHARK, RendererShark::new);
