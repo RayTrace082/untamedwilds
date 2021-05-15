@@ -14,10 +14,6 @@ public class RendererGiantSalamander extends MobRenderer<EntityGiantSalamander, 
 
     private static final ModelGiantSalamander GIANT_SALAMANDER_MODEL = new ModelGiantSalamander();
 
-    private static final ResourceLocation CHINESE         = new ResourceLocation("untamedwilds:textures/entity/giant_salamander/chinese.png");
-    private static final ResourceLocation HELLBENDER = new ResourceLocation("untamedwilds:textures/entity/giant_salamander/hellbender.png");
-    private static final ResourceLocation JAPANESE         = new ResourceLocation("untamedwilds:textures/entity/giant_salamander/japanese.png");
-
     public RendererGiantSalamander(EntityRendererManager renderManager) {
         super(renderManager, GIANT_SALAMANDER_MODEL, 0.2F);
     }
@@ -33,14 +29,6 @@ public class RendererGiantSalamander extends MobRenderer<EntityGiantSalamander, 
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntityGiantSalamander entity) {
-        if (entity.getGrowingAge() < 0) {
-            return CHINESE;
-        }
-        switch (entity.getVariant()) {
-            default:
-            case 0: return CHINESE;
-            case 1: return HELLBENDER;
-            case 2: return JAPANESE;
-        }
+        return entity.getTexture();
     }
 }

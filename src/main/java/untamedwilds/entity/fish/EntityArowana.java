@@ -16,6 +16,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
+import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
@@ -55,8 +56,9 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies, INewSk
 
     public static void processSkins() {
         for (int i = 0; i < SpeciesArowana.values().length; i++) {
-            EntityUtils.buildSkinArrays("arowana", SpeciesArowana.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
+            EntityUtils.buildSkinArrays("arowana", SpeciesArowana.values()[i].name().toLowerCase(), i, EntityArowana.TEXTURES_COMMON, EntityArowana.TEXTURES_RARE);
         }
+        UntamedWilds.LOGGER.info(EntityArowana.TEXTURES_COMMON);
     }
 
     public void livingTick() {
@@ -139,10 +141,10 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies, INewSk
 
     public enum SpeciesArowana implements IStringSerializable {
 
-        BLACK		(0, 0.8F, 10, Biome.Category.JUNGLE),
-        GREEN		(1, 1.1F, 8, Biome.Category.SWAMP, Biome.Category.JUNGLE),
-        JARDINI		(2, 1F, 6, Biome.Category.SWAMP),
-        SILVER    	(3, 1F, 10, Biome.Category.JUNGLE);
+        BLACK		(0, 0.8F, 2, Biome.Category.JUNGLE),
+        GREEN		(1, 1.1F, 2, Biome.Category.SWAMP, Biome.Category.JUNGLE),
+        JARDINI		(2, 1F, 1, Biome.Category.SWAMP),
+        SILVER    	(3, 1F, 2, Biome.Category.JUNGLE);
 
         public Float scale;
         public int species;

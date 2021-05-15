@@ -206,36 +206,33 @@ public abstract class EntityUtils {
 
     // Pulls all resources with the given name from the provided ResourceLocation
     public static Pair<Integer, Integer> buildSkinArrays(String name, String species, int variant, HashMap<Integer, ArrayList<ResourceLocation>> common_list, HashMap<Integer, ArrayList<ResourceLocation>> rare_list) {
-        Pair<Integer, Integer> pair = new Pair<>(0, 0);
         String path = "textures/entity/" + name + "/" + species;
         common_list.put(variant, new ArrayList<>());
         rare_list.put(variant, new ArrayList<>());
-        for(int i = 0; i < 99; i++) {
+
+        Pair<Integer, Integer> result = new Pair<>(populateSkinArray(path, "_%d.png", variant, common_list), populateSkinArray(path, "_%dr.png", variant, rare_list));
+        if (UntamedWilds.DEBUG) {
+            UntamedWilds.LOGGER.info("Number of textures for " + species + " " + name + ": " + result);
+        }
+        return result;
+    }
+
+    // Populates the provided array with the data located in the specified path
+    public static int populateSkinArray(String path, String suffix, int variant, HashMap<Integer, ArrayList<ResourceLocation>> list) {
+        for (int i = 0; i < 99; i++) {
             int k = i;
             try {
-                Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation(UntamedWilds.MOD_ID, String.format(path + "_%d.png", i + 1)));
-                common_list.get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, String.format(path + "_%d.png", i + 1)));
-            }
-            catch(Exception e) {
+                final String full_path = String.format(path + suffix, i + 1);
+                Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
+                list.get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
+            } catch (Exception e) {
                 if (k == 0) {
-                    common_list.get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, path + ".png"));
+                    list.get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, path + ".png"));
+                    k++;
                 }
-                pair = new Pair<>(k, pair.getSecond());
-                break;
+                return k;
             }
         }
-        for(int j = 0; j < 99; j++) {
-            int k = j;
-            try {
-                Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation(UntamedWilds.MOD_ID, String.format(path + "_%dr.png", j + 1)));
-                rare_list.get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, String.format(path + "_%dr.png", j + 1)));
-            }
-            catch(Exception e) {
-                //UntamedWilds.LOGGER.info("Number of rare skins is " + k);
-                pair = new Pair<>(pair.getFirst(), k);
-                break;
-            }
-        }
-        return pair;
+        return 0;
     }
 }

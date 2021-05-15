@@ -15,6 +15,8 @@ public class ConfigGamerules {
     public static ForgeConfigSpec.BooleanValue grazerGriefing;
     public static ForgeConfigSpec.BooleanValue sleepBehaviour;
     public static ForgeConfigSpec.IntValue cycleLength;
+    public static ForgeConfigSpec.DoubleValue rareSkinChance;
+    public static ForgeConfigSpec.BooleanValue wildRareSkins;
 
     ConfigGamerules(final ForgeConfigSpec.Builder builder) {
         builder.comment("Options pertaining to global Gamerules");
@@ -33,5 +35,8 @@ public class ConfigGamerules {
 
         cycleLength = builder.comment("Defines how long a cycle should last, cycles are used to scale the gestation and breeding periods",
                 "Example values: 24000 - Day, 168000 - Week, 720000 - Month, 8760000 - Year").defineInRange("gamerules.cycle_length", 24000, 0, 8760000);
+        rareSkinChance = builder.comment("Chance for a mob, out of 1, to have it's Skin replaced by a Rare skin (if any are defined through assets)").defineInRange("gamerules.rare_skin_chance", 0.05, 0, 1);
+        wildRareSkins = builder.comment("Should mobs with Rare skins generate in the wild (if defined through assets)").define("gamerules.wild_rare_skins", true);
+
     }
 }

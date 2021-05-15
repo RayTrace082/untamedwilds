@@ -19,10 +19,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
-import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ComplexMobAmphibious;
-import untamedwilds.entity.INeedsPostUpdate;
-import untamedwilds.entity.ISpecies;
+import untamedwilds.entity.*;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.init.ModItems;
@@ -33,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpecies, INeedsPostUpdate {
+public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpecies, INeedsPostUpdate, INewSkins {
 
     public static Animation ATTACK_SWALLOW;
     private static final String BREEDING = "EARLY_SUMMER";
@@ -66,6 +63,12 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
         this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 600));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, false, input -> this.getEcoLevel(input) < 6));
+    }
+
+    public static void processSkins() {
+        for (int i = 0; i < SpeciesGiantSalamander.values().length; i++) {
+            EntityUtils.buildSkinArrays("giant_salamander", SpeciesGiantSalamander.values()[i].name().toLowerCase(), i, EntityGiantSalamander.TEXTURES_COMMON, EntityGiantSalamander.TEXTURES_RARE);
+        }
     }
 
     public boolean wantsToLeaveWater() { return this.world.isRainingAt(this.getPosition()); }
@@ -192,6 +195,13 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(SpeciesGiantSalamander.values()[this.getVariant()].attack);
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(SpeciesGiantSalamander.values()[this.getVariant()].health);
         this.setHealth(this.getMaxHealth());
+    }
+
+    public ResourceLocation getTexture() {
+        if (this.getSkin() > 99) {
+            return EntityGiantSalamander.TEXTURES_RARE.get(this.getVariant()).get(this.getSkin() - 100);
+        }
+        return EntityGiantSalamander.TEXTURES_COMMON.get(this.getVariant()).get(this.getSkin());
     }
 
     public enum SpeciesGiantSalamander implements IStringSerializable {

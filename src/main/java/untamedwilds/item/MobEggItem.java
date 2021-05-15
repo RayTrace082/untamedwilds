@@ -60,7 +60,7 @@ public class MobEggItem extends Item {
                 if (spawn instanceof ComplexMob) {
                     ComplexMob entitySpawn = (ComplexMob) spawn;
                     entitySpawn.setVariant(this.species);
-                    entitySpawn.chooseSkinForSpecies();
+                    entitySpawn.chooseSkinForSpecies(entitySpawn, true);
                     entitySpawn.setGrowingAge(entitySpawn.getAdulthoodTime() * -1);
                 }
             }

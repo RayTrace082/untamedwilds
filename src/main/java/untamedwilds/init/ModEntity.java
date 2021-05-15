@@ -191,7 +191,6 @@ public class ModEntity {
     public static void registerRendering() {
         if (ConfigMobControl.addTarantula.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.TARANTULA, RendererTarantula::new);
-            EntityAardvark.processSkins();
         }
         if (ConfigMobControl.addSoftshellTurtle.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SOFTSHELL_TURTLE, RendererSoftshellTurtle::new);
@@ -207,6 +206,7 @@ public class ModEntity {
         }
         if (ConfigMobControl.addAardvark.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.AARDVARK, RendererAardvark::new);
+            EntityAardvark.processSkins();
         }
         if (ConfigMobControl.addBear.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, RendererBear::new);
@@ -249,6 +249,7 @@ public class ModEntity {
         }
         if (ConfigMobControl.addGiantSalamander.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
+            EntityGiantSalamander.processSkins();
         }
     }
 
