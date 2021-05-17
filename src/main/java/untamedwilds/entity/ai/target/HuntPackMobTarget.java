@@ -15,9 +15,7 @@ public class HuntPackMobTarget<T extends LivingEntity> extends HuntMobTarget<T> 
             if (targetSelector != null && !targetSelector.test(entity)) {
                 return false;
             }
-            else {
-                return this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
-            }
+            return this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
         };
     }
 

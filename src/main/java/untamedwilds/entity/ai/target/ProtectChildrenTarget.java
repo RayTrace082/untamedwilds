@@ -28,9 +28,7 @@ public class ProtectChildrenTarget<T extends LivingEntity> extends HuntMobTarget
             if (targetSelector != null && !targetSelector.test(entity)) {
                 return false;
             }
-            else {
-                return this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
-            }
+            return this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
         };
     }
 

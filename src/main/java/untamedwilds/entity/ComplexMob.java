@@ -208,9 +208,10 @@ public abstract class ComplexMob extends TameableEntity {
     }
 
     // Returns the ecological level of an entity. Values are data-driven, defaulting to 4 if no key is found.
-    protected int getEcoLevel(LivingEntity entity) {
-        if (ModEntity.eco_levels.containsKey(entity.getEntityString())) {
-            return ModEntity.eco_levels.get(entity.getEntityString());
+    public static int getEcoLevel(LivingEntity entity) {
+        ResourceLocation name = entity.getType().getRegistryName();
+        if (name != null && ModEntity.eco_levels.containsKey(name.toString())) {
+            return ModEntity.eco_levels.get(name.toString());
         }
         return entity instanceof MonsterEntity ? 7 : 4;
     }
