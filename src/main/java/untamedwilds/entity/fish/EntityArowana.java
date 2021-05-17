@@ -16,7 +16,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
@@ -56,9 +55,8 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies, INewSk
 
     public static void processSkins() {
         for (int i = 0; i < SpeciesArowana.values().length; i++) {
-            EntityUtils.buildSkinArrays("arowana", SpeciesArowana.values()[i].name().toLowerCase(), i, EntityArowana.TEXTURES_COMMON, EntityArowana.TEXTURES_RARE);
+            EntityUtils.buildSkinArrays("arowana", SpeciesArowana.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
         }
-        UntamedWilds.LOGGER.info(EntityArowana.TEXTURES_COMMON);
     }
 
     public void livingTick() {
@@ -132,12 +130,6 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies, INewSk
 
     public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.arowana_" + getRawSpeciesName(i)).getString(); }
     public String getRawSpeciesName(int i) { return SpeciesArowana.values()[i].name().toLowerCase(); }
-    public ResourceLocation getTexture() {
-        if (this.getSkin() > 99) {
-            return EntityArowana.TEXTURES_RARE.get(this.getVariant()).get(this.getSkin() - 100);
-        }
-        return EntityArowana.TEXTURES_COMMON.get(this.getVariant()).get(this.getSkin());
-    }
 
     public enum SpeciesArowana implements IStringSerializable {
 

@@ -48,7 +48,6 @@ public class FeatureCritterBurrow extends Feature<NoFeatureConfig> {
                         te.setEntityType(entry.entityType);
                         te.setVariant(variant);
                         entity.remove();
-                        return true;
                     }
                 }
                 else {
@@ -57,13 +56,10 @@ public class FeatureCritterBurrow extends Feature<NoFeatureConfig> {
                     te.setCount(entry.groupCount * rand.nextInt(3) + 1);
                     te.setEntityType(entry.entityType);
                     entity.remove();
-                    return true;
                 }
             }
             return true;
         }
-
-
         return false;
     }
 }

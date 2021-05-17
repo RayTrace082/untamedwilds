@@ -151,36 +151,40 @@ public abstract class EntityUtils {
 
     // This function turns the entity into an item with item_name registry name, and removes the entity from the world
     public static void turnEntityIntoItem(LivingEntity entity, String item_name) {
-        ItemEntity entityitem = entity.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase()))), 0.2F);
-        Random rand = entity.getRNG();
-        if (entityitem != null) {
-            entityitem.setMotion((rand.nextFloat() - rand.nextFloat()) * 0.1F, rand.nextFloat() * 0.05F, (rand.nextFloat() - rand.nextFloat()) * 0.1F);
-            entityitem.getItem().setTag(writeEntityToNBT(entity));
-            if (entity.hasCustomName()) {
-                entityitem.getItem().setDisplayName(entity.getCustomName());
+        if (ConfigGamerules.easyMobCapturing.get() || ((MobEntity)entity).getAttackTarget() == null) {
+            ItemEntity entityitem = entity.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase()))), 0.2F);
+            Random rand = entity.getRNG();
+            if (entityitem != null) {
+                entityitem.setMotion((rand.nextFloat() - rand.nextFloat()) * 0.1F, rand.nextFloat() * 0.05F, (rand.nextFloat() - rand.nextFloat()) * 0.1F);
+                entityitem.getItem().setTag(writeEntityToNBT(entity));
+                if (entity.hasCustomName()) {
+                    entityitem.getItem().setDisplayName(entity.getCustomName());
+                }
+                entity.remove();
             }
-            entity.remove();
         }
     }
 
     // This function replaces a given ItemStack with a new item with item_name registry name, and removes the entity from the world
     public static void mutateEntityIntoItem(LivingEntity entity, PlayerEntity player, Hand hand, String item_name, ItemStack itemstack) {
-        entity.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
-        itemstack.shrink(1);
-        ItemStack newitem = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase())));
-        newitem.setTag(writeEntityToNBT(entity));
-        if (entity.hasCustomName()) {
-            newitem.setDisplayName(entity.getCustomName());
+        if (ConfigGamerules.easyMobCapturing.get() || ((MobEntity)entity).getAttackTarget() == null) {
+            entity.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
+            itemstack.shrink(1);
+            ItemStack newitem = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase())));
+            newitem.setTag(writeEntityToNBT(entity));
+            if (entity.hasCustomName()) {
+                newitem.setDisplayName(entity.getCustomName());
+            }
+            if (!entity.world.isRemote) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity) player, newitem);
+            }
+            if (itemstack.isEmpty()) {
+                player.setHeldItem(hand, newitem);
+            } else if (!player.inventory.addItemStackToInventory(newitem)) {
+                player.dropItem(newitem, false);
+            }
+            entity.remove();
         }
-        if (!entity.world.isRemote) {
-            CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity)player, newitem);
-        }
-        if (itemstack.isEmpty()) {
-            player.setHeldItem(hand, newitem);
-        } else if (!player.inventory.addItemStackToInventory(newitem)) {
-            player.dropItem(newitem, false);
-        }
-        entity.remove();
     }
 
     // This method writes this entity into a CompoundNBT Tag
@@ -205,12 +209,16 @@ public abstract class EntityUtils {
     }
 
     // Pulls all resources with the given name from the provided ResourceLocation
-    public static Pair<Integer, Integer> buildSkinArrays(String name, String species, int variant, HashMap<Integer, ArrayList<ResourceLocation>> common_list, HashMap<Integer, ArrayList<ResourceLocation>> rare_list) {
+    public static Pair<Integer, Integer> buildSkinArrays(String name, String species, int variant, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> common_list, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> rare_list) {
         String path = "textures/entity/" + name + "/" + species;
-        common_list.put(variant, new ArrayList<>());
-        rare_list.put(variant, new ArrayList<>());
 
-        Pair<Integer, Integer> result = new Pair<>(populateSkinArray(path, "_%d.png", variant, common_list), populateSkinArray(path, "_%dr.png", variant, rare_list));
+        if (!common_list.containsKey(name)) {
+            common_list.put(name, new HashMap<>());
+        }
+        if (!rare_list.containsKey(name)) {
+            rare_list.put(name, new HashMap<>());
+        }
+        Pair<Integer, Integer> result = new Pair<>(populateSkinArray(path, "_%d.png", variant, common_list.get(name), true), populateSkinArray(path, "_%dr.png", variant, rare_list.get(name), false));
         if (UntamedWilds.DEBUG) {
             UntamedWilds.LOGGER.info("Number of textures for " + species + " " + name + ": " + result);
         }
@@ -218,7 +226,8 @@ public abstract class EntityUtils {
     }
 
     // Populates the provided array with the data located in the specified path
-    public static int populateSkinArray(String path, String suffix, int variant, HashMap<Integer, ArrayList<ResourceLocation>> list) {
+    public static int populateSkinArray(String path, String suffix, int variant, HashMap<Integer, ArrayList<ResourceLocation>> list, boolean addDefault) {
+        list.put(variant, new ArrayList<>());
         for (int i = 0; i < 99; i++) {
             int k = i;
             try {
@@ -226,13 +235,24 @@ public abstract class EntityUtils {
                 Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
                 list.get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
             } catch (Exception e) {
-                if (k == 0) {
+                if (k == 0 && addDefault) {
+                    //UntamedWilds.LOGGER.info("Using the default path instead");
                     list.get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, path + ".png"));
                     k++;
                 }
+                //UntamedWilds.LOGGER.info(k + " " + variant + " " + path + " " + list);
                 return k;
             }
         }
         return 0;
+    }
+
+    // Takes the skin from the TEXTURES_COMMON or TEXTURES_RARE array
+    public static ResourceLocation getSkinFromEntity(ComplexMob entityIn) {
+        String name = entityIn.getType().getRegistryName().getPath();
+        if (entityIn.getSkin() > 99) {
+            return ComplexMob.TEXTURES_RARE.get(name).get(entityIn.getVariant()).get(Math.min(entityIn.getSkin() - 100, ComplexMob.TEXTURES_RARE.get(name).get(entityIn.getVariant()).size()));
+        }
+        return ComplexMob.TEXTURES_COMMON.get(name).get(entityIn.getVariant()).get(Math.min(entityIn.getSkin(), ComplexMob.TEXTURES_COMMON.get(name).get(entityIn.getVariant()).size()));
     }
 }

@@ -40,12 +40,9 @@ public class EntityBlackBear extends AbstractBear implements ISkins {
     }
 
     public static void registerTextures(int count) {
-        UntamedWilds.LOGGER.info(EntityUtils.buildSkinArrays("bear", "black", 0, EntityBlackBear.TEXTURES_COMMON, EntityBlackBear.TEXTURES_RARE));
         for(int i = 1; i < count + 1; i++) {
             EntityBlackBear.TEXTURES.add(new ResourceLocation(UntamedWilds.MOD_ID, String.format("textures/entity/bear/black_%d.png", i)));
         }
-        UntamedWilds.LOGGER.info(EntityBlackBear.TEXTURES_COMMON);
-
     }
 
     public void registerGoals() {

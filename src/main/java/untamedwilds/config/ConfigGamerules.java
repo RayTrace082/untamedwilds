@@ -14,6 +14,7 @@ public class ConfigGamerules {
     public static ForgeConfigSpec.BooleanValue fantasyMobs;
     public static ForgeConfigSpec.BooleanValue grazerGriefing;
     public static ForgeConfigSpec.BooleanValue sleepBehaviour;
+    public static ForgeConfigSpec.BooleanValue easyMobCapturing;
     public static ForgeConfigSpec.IntValue cycleLength;
     public static ForgeConfigSpec.DoubleValue rareSkinChance;
     public static ForgeConfigSpec.BooleanValue wildRareSkins;
@@ -32,6 +33,7 @@ public class ConfigGamerules {
         fantasyMobs = builder.comment("Should fantasy mobs spawn naturally in the world?.").define("gamerules.fantasy_mobs", true);
         grazerGriefing = builder.comment("Should 'Grazing' mobs destroy Tall Grass and/or turn Grass into dirt blocks (like Vanilla Sheep do).").define("gamerules.grazer_griefing", true);
         sleepBehaviour = builder.comment("Should the 'Sleeping' behaviour run? Disabling this option also disables the activity").define("gamerules.mob_sleeping", true);
+        easyMobCapturing = builder.comment("If set to false, makes mobs a lot harder to catch by preventing the capture of hostile mobs").define("gamerules.easy_mob_capture", true);
 
         cycleLength = builder.comment("Defines how long a cycle should last, cycles are used to scale the gestation and breeding periods",
                 "Example values: 24000 - Day, 168000 - Week, 720000 - Month, 8760000 - Year").defineInRange("gamerules.cycle_length", 24000, 0, 8760000);

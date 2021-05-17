@@ -57,7 +57,7 @@ public class HuntWeakerTarget<T extends LivingEntity> extends HuntMobTarget<T> {
 
     @Override
     public boolean shouldRemoveTarget(LivingEntity entity) {
-        if (entity instanceof CreeperEntity) {
+        if (entity instanceof CreeperEntity || entity == this.goalOwner) { // TODO: Bigger bugs
             return true; // Hardcoded Creepers out because they will absolutely destroy wildlife if targeted
         }
         if (entity instanceof ComplexMob && !EntityUtils.hasFullHealth(entity)) {

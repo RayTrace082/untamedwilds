@@ -45,9 +45,9 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
         WORK_DIG = Animation.create(76);
     }
 
-    public static void processSkins() {
+    public void processSkins() {
         for (int i = 0; i < SpeciesAardvark.values().length; i++) {
-            EntityUtils.buildSkinArrays("aardvark", SpeciesAardvark.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
+            EntityUtils.buildSkinArrays("aardvark", SpeciesAardvark.values()[i].name().toLowerCase(), i, this.TEXTURES_COMMON, this.TEXTURES_RARE);
         }
     }
 

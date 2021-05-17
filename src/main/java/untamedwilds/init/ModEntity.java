@@ -22,6 +22,7 @@ import untamedwilds.UntamedWilds;
 import untamedwilds.client.render.*;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.config.ConfigMobControl;
+import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
 import untamedwilds.entity.arthropod.EntityTarantula;
 import untamedwilds.entity.fish.EntityArowana;
@@ -206,7 +207,7 @@ public class ModEntity {
         }
         if (ConfigMobControl.addAardvark.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.AARDVARK, RendererAardvark::new);
-            EntityAardvark.processSkins();
+            //EntityAardvark.processSkins();
         }
         if (ConfigMobControl.addBear.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, RendererBear::new);
@@ -251,6 +252,7 @@ public class ModEntity {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
             EntityGiantSalamander.processSkins();
         }
+        UntamedWilds.LOGGER.info(ComplexMob.TEXTURES_COMMON);
     }
 
     public static void addWorldSpawn(EntityType<?> entityClass, int weightedProb, FaunaHandler.animalType type, int groupCount) {

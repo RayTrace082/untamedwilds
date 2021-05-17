@@ -67,7 +67,7 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
 
     public static void processSkins() {
         for (int i = 0; i < SpeciesGiantSalamander.values().length; i++) {
-            EntityUtils.buildSkinArrays("giant_salamander", SpeciesGiantSalamander.values()[i].name().toLowerCase(), i, EntityGiantSalamander.TEXTURES_COMMON, EntityGiantSalamander.TEXTURES_RARE);
+            EntityUtils.buildSkinArrays("giant_salamander", SpeciesGiantSalamander.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
         }
     }
 
@@ -197,13 +197,6 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
         this.setHealth(this.getMaxHealth());
     }
 
-    public ResourceLocation getTexture() {
-        if (this.getSkin() > 99) {
-            return EntityGiantSalamander.TEXTURES_RARE.get(this.getVariant()).get(this.getSkin() - 100);
-        }
-        return EntityGiantSalamander.TEXTURES_COMMON.get(this.getVariant()).get(this.getSkin());
-    }
-
     public enum SpeciesGiantSalamander implements IStringSerializable {
 
         CHINESE			(0, 1.2F, 2, 4, 14, Biome.Category.SWAMP, Biome.Category.RIVER, Biome.Category.EXTREME_HILLS),
@@ -234,9 +227,6 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
 
         public static int getSpeciesByBiome(Biome biome) {
             List<SpeciesGiantSalamander> types = new ArrayList<>();
-            /*if (biome.getDefaultTemperature() < 0.8F) {
-                return 99;
-            }*/
             for (SpeciesGiantSalamander type : values()) {
                 for(Biome.Category biomeTypes : type.spawnBiomes) {
                     if(biome.getCategory() == biomeTypes){

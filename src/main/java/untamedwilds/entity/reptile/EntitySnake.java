@@ -12,15 +12,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.UntamedWilds;
-import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.entity.ISpecies;
@@ -164,14 +160,6 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
 
-        if (itemstack.getItem() == Items.APPLE && this.getHome() != BlockPos.ZERO) {
-            TileEntity burrow = this.world.getTileEntity(this.getHome());
-            if (burrow instanceof CritterBurrowBlockEntity) {
-                UntamedWilds.LOGGER.info("Mob is despawning into burrow");
-                ((CritterBurrowBlockEntity)burrow).tryEnterBurrow(this);
-                this.remove();
-            }
-        }
         if (itemstack.isEmpty() && this.isAlive()) {
             EntityUtils.turnEntityIntoItem(this,"snake_" + getRawSpeciesName(this.getVariant()).toLowerCase());
             return ActionResultType.func_233537_a_(this.world.isRemote);

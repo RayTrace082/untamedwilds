@@ -11,6 +11,7 @@ import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -178,8 +179,8 @@ public class CageBlock extends Block implements IWaterLoggable {
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         CageBlockEntity te = (CageBlockEntity)world.getTileEntity(pos);
         if (!world.isRemote && !(entity instanceof PlayerEntity) && entity.isAlive() && entity.isNonBoss() && entity instanceof LivingEntity) {
-            if (te != null && !te.hasCagedEntity()) {
-                if (te.cageEntity(entity)) {
+            if (te != null && !te.hasCagedEntity() && entity instanceof MobEntity) {
+                if (te.cageEntity((MobEntity) entity)) {
                     world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
                     world.setBlockState(pos, state.with(OPEN, Boolean.FALSE));
                     spawnParticles(world, pos, ParticleTypes.POOF);

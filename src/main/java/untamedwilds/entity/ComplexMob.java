@@ -31,6 +31,7 @@ import untamedwilds.config.ConfigGamerules;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -42,8 +43,8 @@ public abstract class ComplexMob extends TameableEntity {
     private static final DataParameter<BlockPos> HOME_POS = EntityDataManager.createKey(ComplexMob.class, DataSerializers.BLOCK_POS);
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> SKIN = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT);
-    public static HashMap<Integer, ArrayList<ResourceLocation>> TEXTURES_COMMON = new HashMap<>();
-    public static HashMap<Integer, ArrayList<ResourceLocation>> TEXTURES_RARE = new HashMap<>();
+    public static HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> TEXTURES_COMMON = new HashMap<>();
+    public static HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> TEXTURES_RARE = new HashMap<>();
     private static final DataParameter<Float> SIZE = EntityDataManager.createKey(ComplexMob.class, DataSerializers.FLOAT);
     private static final DataParameter<Integer> GENDER = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT); // 0 - Male, 1 - Female
     private static final DataParameter<Boolean> IS_ANGRY = EntityDataManager.createKey(ComplexMob.class, DataSerializers.BOOLEAN);
@@ -101,9 +102,9 @@ public abstract class ComplexMob extends TameableEntity {
     public int getSkin(){ return (this.dataManager.get(SKIN)); }
     public void setSkin(int skin){ this.dataManager.set(SKIN, skin); }
     public <T extends ComplexMob> void chooseSkinForSpecies(T entityIn, boolean allowRares) {
-        if (!entityIn.TEXTURES_COMMON.isEmpty() && this instanceof INewSkins) {
-            boolean isRare = allowRares && !entityIn.TEXTURES_RARE.isEmpty() && this.rand.nextFloat() < ConfigGamerules.rareSkinChance.get();
-            int skin = this.rand.nextInt(isRare ? entityIn.TEXTURES_RARE.get(this.getVariant()).size() : entityIn.TEXTURES_COMMON.get(this.getVariant()).size()) + (isRare ? 100 : 0);
+        if (this instanceof INewSkins && !TEXTURES_COMMON.get(entityIn.getType().getRegistryName().getPath()).isEmpty()) {
+            boolean isRare = allowRares && !TEXTURES_RARE.get(this.getType().getRegistryName().getPath()).isEmpty() && this.rand.nextFloat() < ConfigGamerules.rareSkinChance.get();
+            int skin = this.rand.nextInt(isRare ? TEXTURES_RARE.get(this.getType().getRegistryName().getPath()).get(this.getVariant()).size() : TEXTURES_COMMON.get(this.getType().getRegistryName().getPath()).get(this.getVariant()).size()) + (isRare ? 100 : 0);
             this.setSkin(skin);
         }
     }
@@ -203,7 +204,7 @@ public abstract class ComplexMob extends TameableEntity {
     }
 
     public ResourceLocation getTexture() {
-        return null;
+        return EntityUtils.getSkinFromEntity(this);
     }
 
     // Returns the ecological level of an entity. Values are data-driven, defaulting to 4 if no key is found.
@@ -300,7 +301,9 @@ public abstract class ComplexMob extends TameableEntity {
             } else if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
                 UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + this.getName().getString());
             }
-            chooseSkinForSpecies(this, ConfigGamerules.wildRareSkins.get());
+            if (TEXTURES_COMMON.containsKey(this.getType().getRegistryName().getPath())) {
+                chooseSkinForSpecies(this, ConfigGamerules.wildRareSkins.get());
+            }
             if (this instanceof ISkins) {
                 this.setVariant(this.rand.nextInt(((ISkins)this).getSkinNumber()));
             }

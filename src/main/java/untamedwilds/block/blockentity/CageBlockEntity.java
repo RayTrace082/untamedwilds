@@ -3,7 +3,7 @@ package untamedwilds.block.blockentity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tags.EntityTypeTags;
@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
+import untamedwilds.config.ConfigGamerules;
 import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModTags;
 import untamedwilds.util.EntityUtils;
@@ -32,10 +33,10 @@ public class CageBlockEntity extends TileEntity {
         return EntityTypeTags.getCollection().get(ModTags.EntityTags.CAGE_BLACKLIST).contains(entity.getType());
     }
 
-    public boolean cageEntity(Entity entity) {
+    public boolean cageEntity(MobEntity entity) {
         if (!this.hasCagedEntity()) {
-            if (!isBlacklisted(entity)) {
-                this.setTagCompound(EntityUtils.writeEntityToNBT((LivingEntity) entity));
+            if (!isBlacklisted(entity) && (ConfigGamerules.easyMobCapturing.get() || entity.getAttackTarget() == null)) {
+                this.setTagCompound(EntityUtils.writeEntityToNBT( entity));
                 this.setCagedEntity(true);
                 entity.remove();
                 markDirty();

@@ -10,7 +10,7 @@
         } , 
         {
             "type": "entity" , 
-            "entity": "untamedwilds:arowana{Variant: 5}" , 
+            "entity": "untamedwilds:arowana{Variant: 3}" ,
             "text": ""
         }
     ]

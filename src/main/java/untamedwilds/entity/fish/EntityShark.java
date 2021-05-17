@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
+import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
@@ -146,6 +147,11 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
             this.setAnimation(ATTACK_THRASH);
         }
         return flag;
+    }
+
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        UntamedWilds.LOGGER.info(source.damageType);
+        return super.attackEntityFrom(source, amount);
     }
 
     public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.shark_" + getRawSpeciesName(i)).getString(); }
