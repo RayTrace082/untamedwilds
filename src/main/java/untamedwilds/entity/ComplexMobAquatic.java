@@ -120,10 +120,10 @@ public abstract class ComplexMobAquatic extends ComplexMob {
         }
     }
 
-    static class MoveHelperController extends MovementController {
-        private final ComplexMobAquatic entity;
+    public static class MoveHelperController extends MovementController {
+        private final ComplexMob entity;
 
-        public MoveHelperController(ComplexMobAquatic entity) {
+        public MoveHelperController(ComplexMob entity) {
             super(entity);
             this.entity = entity;
         }

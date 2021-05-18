@@ -158,7 +158,7 @@ public class SmartMeleeAttackGoal extends Goal {
             }
 
             if (!this.attacker.getNavigator().tryMoveToEntityLiving(livingentity, this.speedTowardsTarget)) {
-                this.delayCounter += 50;
+                this.delayCounter += 15;
             }
         }
 

@@ -116,6 +116,7 @@ public class ModelGiantSalamander extends AdvancedEntityModel<EntityGiantSalaman
         animate(salamander);
         float globalSpeed = 0.8f;
         float globalDegree = 1.0f;
+        limbSwingAmount = Math.min(0.5F, limbSwingAmount);
 
         // Breathing Animation
         this.body_main.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
@@ -130,22 +131,22 @@ public class ModelGiantSalamander extends AdvancedEntityModel<EntityGiantSalaman
         }
 
         // Pitch/Yaw handler
-        if (salamander.isInWater()) {
-            //this.setRotateAngle(body_main, netHeadYaw * 2 * ((float) Math.PI / 180F), headPitch * 2 * ((float) Math.PI / 180F), 0);
+        if (salamander.isInWater() && !salamander.isOnGround()) {
+            this.setRotateAngle(body_main, salamander.rotationPitch * ((float) Math.PI / 180F), 0, 0);
         }
 
         // Movement Animation
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{head_main, body_torso, body_main, tail_1, tail_2};
-        chainSwing(bodyParts, globalSpeed * 1.4F, globalDegree * 1.2F, -4, limbSwing, limbSwingAmount);
-        swing(arm_left_1, globalSpeed, globalDegree * 1.4f, false, 0, 0.8f, limbSwing / 2, limbSwingAmount);
-        swing(leg_left_1, globalSpeed, globalDegree * 1.2f, false, 0.8F, 0.1f, limbSwing / 2, limbSwingAmount);
-        swing(arm_right_1, globalSpeed, globalDegree * 1.4f, false, 1.6F, 0.8f, limbSwing / 2, limbSwingAmount);
-        swing(leg_right_1, globalSpeed, globalDegree * 1.2f, false, 2.4F, 0.1f, limbSwing / 2, limbSwingAmount);
+        chainSwing(bodyParts, globalSpeed * 1.4F, globalDegree * 1.2F, -4, limbSwing, limbSwingAmount * (salamander.isInWater() ? 0.8F : 0.2F));
+        swing(arm_left_1, globalSpeed, globalDegree * 2f, false, 0.8F, 1f, limbSwing, limbSwingAmount);
+        swing(leg_left_1, globalSpeed, globalDegree * 1.8f, false, 1.6F, 1f, limbSwing, limbSwingAmount);
+        swing(arm_right_1, globalSpeed, globalDegree * 2f, false, 2.4F, 1f, limbSwing, limbSwingAmount);
+        swing(leg_right_1, globalSpeed, globalDegree * 1.8f, false, 3.2F, 1f, limbSwing, limbSwingAmount);
         if (salamander.isInWater()) {
-            flap(arm_left_1, globalSpeed, globalDegree * 1.4f, false, 0, 0.1f, limbSwing / 2, limbSwingAmount);
-            flap(leg_left_1, globalSpeed, globalDegree * 1.2f, false, 0.8F, 0.1f, limbSwing / 2, limbSwingAmount);
-            flap(arm_right_1, globalSpeed, globalDegree * 1.4f, false, 1.6F, 0.1f, limbSwing / 2, limbSwingAmount);
-            flap(leg_right_1, globalSpeed, globalDegree * 1.2f, false, 2.4F, 0.1f, limbSwing / 2, limbSwingAmount);
+            flap(arm_left_1, globalSpeed, globalDegree * 1.4f, false, 0.8F, 1f, limbSwing, limbSwingAmount);
+            flap(leg_left_1, globalSpeed, globalDegree * 1.2f, false, 1.6F, 1f, limbSwing, limbSwingAmount);
+            flap(arm_right_1, globalSpeed, globalDegree * 1.4f, false, 2.4F, 1f, limbSwing, limbSwingAmount);
+            flap(leg_right_1, globalSpeed, globalDegree * 1.2f, false, 3.2F, 1f, limbSwing, limbSwingAmount);
 
             flap(body_main, globalSpeed / 2, globalDegree * 1.2f, false, 0, 0.1f, limbSwing / 2, limbSwingAmount);
             swing(body_main, globalSpeed / 2, globalDegree * 1.2f, false, 0.8F, 0.1f, limbSwing / 3, limbSwingAmount);

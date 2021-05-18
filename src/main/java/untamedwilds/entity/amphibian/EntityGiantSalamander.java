@@ -36,13 +36,15 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
     private static final String BREEDING = "EARLY_SUMMER";
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
     public int swimProgress;
+    public int peacefulTicks;
 
     public EntityGiantSalamander(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
+        this.moveController = new ComplexMobAquatic.MoveHelperController(this);
         ATTACK_SWALLOW = Animation.create(15);
         this.experienceValue = 1;
         this.swimSpeedMult = 3;
-        this.buoyancy = 0.996F;
+        this.buoyancy = 0.992F;
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -58,11 +60,11 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
         super.registerGoals();
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1.4D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
-        this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, (float)this.getAttributeValue(Attributes.FOLLOW_RANGE), 1D, 1.1D, input -> this.getEcoLevel(input) > 6));
+        this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, (float)this.getAttributeValue(Attributes.FOLLOW_RANGE), 1D, 1.1D, input -> getEcoLevel(input) > 6));
         this.goalSelector.addGoal(3, new AmphibiousTransition(this, 1D));
         this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 600));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, false, input -> this.getEcoLevel(input) < 6));
+        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, false, input -> getEcoLevel(input) < 6 && this.peacefulTicks == 0));
     }
 
     public static void processSkins() {
@@ -90,6 +92,9 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
             }
             if (this.world.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
+            }
+            if (this.peacefulTicks > 0) {
+                this.peacefulTicks--;
             }
         }
         else {
@@ -127,6 +132,7 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
                 this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.BLOCK_BEEHIVE_ENTER, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 EntityUtils.spawnParticlesOnEntity(this.world, (LivingEntity)entityIn, ParticleTypes.POOF, 6, 2);
                 this.setMotion(new Vector3d(entityIn.getPosX() - this.getPosX(), entityIn.getPosY() - this.getPosY(), entityIn.getPosZ() - this.getPosZ()).scale(0.15F));
+                this.peacefulTicks = 12000;
                 entityIn.remove();
             }
             return true;
