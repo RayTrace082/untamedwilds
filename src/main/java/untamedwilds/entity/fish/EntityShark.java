@@ -186,8 +186,8 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         MAKO    	(8, 1.1F, 4, 8, 30, false, false, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_WARM_OCEAN),
         TIGER	    (9, 1.3F, 2, 16, 45, false, false, Biomes.WARM_OCEAN, Biomes.DEEP_WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN);
 
-        public Float scale;
         public int species;
+        public Float scale;
         public int rolls;
         public float attack;
         public float health;

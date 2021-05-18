@@ -1,7 +1,7 @@
 {
     "name": "Common Hippo" , 
     "icon": "untamedwilds:textures/icon/hippo/common.png" , 
-    "category": "taxon_mammal" ,
+    "category": "hippo_category" ,
     "pages": [
         {
             "type": "text" , 

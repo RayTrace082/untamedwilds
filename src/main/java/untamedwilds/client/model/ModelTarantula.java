@@ -149,6 +149,7 @@ public class ModelTarantula extends AdvancedEntityModel<EntityTarantula> {
         resetToDefaultPose();
 
         limbSwing = ageInTicks;
+        limbSwingAmount = Math.min(0.4F, limbSwingAmount);
 
         float globalSpeed = 1.2f;
         float globalDegree = 1.4f;

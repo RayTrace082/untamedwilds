@@ -324,4 +324,61 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
             return !types.isEmpty() ? types.get(new Random().nextInt(types.size())).type : null;
         }
     }
+
+    /*public enum SpeciesBearNew implements IStringSerializable {
+
+        BLACK		(0, 0.8F, EntityBlackBear.getRarity(), Biome.Category.FOREST, Biome.Category.TAIGA),
+        BLIND		(1, 1.1F, EntityBlindBear.getRarity()),
+        BROWN		(2, EntityBrownBear.getRarity(), Biome.Category.TAIGA, Biome.Category.EXTREME_HILLS),
+        CAVE		(3, EntityCaveBear.getRarity(), Biome.Category.TAIGA, Biome.Category.EXTREME_HILLS),
+        PANDA		(4, EntityGiantPanda.getRarity(), Biome.Category.JUNGLE),
+        POLAR		(5, EntityPolarBear.getRarity(), Biome.Category.ICY),
+        SPECTACLED	(6, EntitySpectacledBear.getRarity(), Biome.Category.EXTREME_HILLS),
+        SUN 		(7, EntitySunBear.getRarity(), Biome.Category.JUNGLE);
+
+        public int species;
+        public Float scale;
+        public int rolls;
+        public float attack;
+        public float health;
+        public boolean hasHump;
+        public boolean hasShortSnout;
+        public boolean hasLongBody;
+        public boolean isPanda;
+        public Biome.Category[] spawnBiomes;
+
+        SpeciesBearNew(int species, float scale, int rolls, Biome.Category... biomes) {
+            this.spawnBiomes = species;
+            this.scale = scale;
+            this.rarity = rolls;
+            this.spawnBiomes = biomes;
+        }
+
+        @Override
+        public String getString() {
+            return "why would you do this?";
+        }
+
+        public static EntityType<? extends AbstractBear> getSpeciesByBiome(IWorld world, BlockPos pos) {
+            Optional<RegistryKey<Biome>> optional = world.func_242406_i(pos);
+            if (Objects.equals(optional, Optional.of(Biomes.FROZEN_OCEAN)) || Objects.equals(optional, Optional.of(Biomes.DEEP_FROZEN_OCEAN))) {
+                return ModEntity.POLAR_BEAR;
+            }
+            if (Objects.equals(optional, Optional.of(Biomes.BAMBOO_JUNGLE)) || Objects.equals(optional, Optional.of(Biomes.BAMBOO_JUNGLE_HILLS))) {
+                return ModEntity.PANDA_BEAR;
+            }
+            Biome biome = world.getBiome(pos);
+            List<AbstractBear.SpeciesBear> types = new ArrayList<>();
+            for (AbstractBear.SpeciesBear type : values()) {
+                for(Biome.Category biomeTypes : type.spawnBiomes) {
+                    if(biome.getCategory() == biomeTypes){
+                        for (int i=0; i < type.rarity; i++) {
+                            types.add(type);
+                        }
+                    }
+                }
+            }
+            return !types.isEmpty() ? types.get(new Random().nextInt(types.size())).type : null;
+        }
+    }*/
 }

@@ -1,7 +1,7 @@
 {
     "name": "Aardvark" , 
     "icon": "untamedwilds:textures/icon/aardvark/common.png" , 
-    "category": "taxon_mammal" ,
+    "category": "aardvark_category" ,
     "pages": [
         {
             "type": "text" , 
