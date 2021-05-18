@@ -241,6 +241,9 @@ public abstract class EntityUtils {
                     k++;
                 }
                 //UntamedWilds.LOGGER.info(k + " " + variant + " " + path + " " + list);
+                if (list.get(variant).isEmpty()) {
+                    list.remove(variant);
+                }
                 return k;
             }
         }
