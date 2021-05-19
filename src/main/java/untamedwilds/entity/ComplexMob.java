@@ -141,7 +141,7 @@ public abstract class ComplexMob extends TameableEntity {
         for (int i = 0; i < bound; i++) {
             T child = (T) this.func_241840_a((ServerWorld) this.world, this);
             if (child != null) {
-                child.setGrowingAge(this.getGrowingAge() * -1);
+                child.setGrowingAge(this.getAdulthoodTime() * -1);
                 child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
                 if (this instanceof ISkins) {
                     child.setVariant(this.getVariant());
@@ -149,6 +149,7 @@ public abstract class ComplexMob extends TameableEntity {
                 if (this.getOwner() != null) {
                     child.setTamedBy((PlayerEntity) this.getOwner());
                 }
+                child.chooseSkinForSpecies(child, true);
                 this.world.addEntity(child);
             }
         }
