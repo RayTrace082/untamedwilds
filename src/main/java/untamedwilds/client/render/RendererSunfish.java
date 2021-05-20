@@ -14,9 +14,6 @@ public class RendererSunfish extends MobRenderer<EntitySunfish, EntityModel<Enti
 
     private static final ModelSunfish SUNFISH_MODEL = new ModelSunfish();
 
-    private final ResourceLocation SUNFISH = new ResourceLocation("untamedwilds:textures/entity/sunfish/sunfish.png");
-    private final ResourceLocation SOUTHERN = new ResourceLocation("untamedwilds:textures/entity/sunfish/southern.png");
-
     public RendererSunfish(EntityRendererManager rendermanager) {
         super(rendermanager, SUNFISH_MODEL, 1F);
     }
@@ -29,12 +26,7 @@ public class RendererSunfish extends MobRenderer<EntitySunfish, EntityModel<Enti
         matrixStackIn.scale(f, f, f);
     }
 
-    @Override
     public ResourceLocation getEntityTexture(@Nonnull EntitySunfish entity) {
-        switch (entity.getVariant()) {
-            default:
-            case 0: return SUNFISH;
-            case 1: return SOUTHERN;
-        }
+        return entity.getTexture();
     }
 }

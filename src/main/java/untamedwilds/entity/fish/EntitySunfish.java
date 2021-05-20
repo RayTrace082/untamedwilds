@@ -22,6 +22,7 @@ import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
+import untamedwilds.entity.INewSkins;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.util.EntityUtils;
 
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntitySunfish extends ComplexMobAquatic implements ISpecies {
+public class EntitySunfish extends ComplexMobAquatic implements ISpecies, INewSkins {
 
     private static final String BREEDING = "EARLY_AUTUMN";
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
@@ -56,6 +57,12 @@ public class EntitySunfish extends ComplexMobAquatic implements ISpecies {
         super.registerGoals();
         this.goalSelector.addGoal(0, new PanicGoal(this, 1.25D));
         this.goalSelector.addGoal(4, new SwimGoal(this));
+    }
+
+    public static void processSkins() {
+        for (int i = 0; i < SpeciesSunfish.values().length; i++) {
+            EntityUtils.buildSkinArrays("sunfish", SpeciesSunfish.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
+        }
     }
 
     public void livingTick() {

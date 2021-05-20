@@ -17,12 +17,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
-import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ComplexMobAquatic;
-import untamedwilds.entity.INeedsPostUpdate;
-import untamedwilds.entity.ISpecies;
+import untamedwilds.entity.*;
 import untamedwilds.entity.ai.MeleeAttackCircle;
 import untamedwilds.entity.ai.SmartMateGoal;
 import untamedwilds.entity.ai.target.HuntWeakerTarget;
@@ -35,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimatedEntity, INeedsPostUpdate {
+public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimatedEntity, INeedsPostUpdate, INewSkins {
 
     public static Animation ATTACK_THRASH;
     private static final String BREEDING = "MID_SUMMER";
@@ -65,6 +61,12 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         this.goalSelector.addGoal(4, new SharkSwimmingGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntWeakerTarget<>(this, LivingEntity.class, true, true));
+    }
+
+    public static void processSkins() {
+        for (int i = 0; i < SpeciesShark.values().length; i++) {
+            EntityUtils.buildSkinArrays("shark", SpeciesShark.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
+        }
     }
 
     public void livingTick() {
@@ -147,11 +149,6 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
             this.setAnimation(ATTACK_THRASH);
         }
         return flag;
-    }
-
-    public boolean attackEntityFrom(DamageSource source, float amount) {
-        UntamedWilds.LOGGER.info(source.damageType);
-        return super.attackEntityFrom(source, amount);
     }
 
     public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.shark_" + getRawSpeciesName(i)).getString(); }

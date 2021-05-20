@@ -58,6 +58,12 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
         this.goalSelector.addGoal(4, new FishReturnToSchoolGoal(this));
     }
 
+    public static void processSkins() {
+        for (int i = 0; i < SpeciesTrevally.values().length; i++) {
+            EntityUtils.buildSkinArrays("trevally", SpeciesTrevally.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
+        }
+    }
+
     public void livingTick() {
         if (this.herd == null) {
             IPackEntity.initPack(this);

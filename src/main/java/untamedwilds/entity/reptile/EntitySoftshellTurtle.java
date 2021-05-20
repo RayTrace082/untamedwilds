@@ -64,6 +64,12 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, input -> getEcoLevel(input) < 5));
     }
 
+    public static void processSkins() {
+        for (int i = 0; i < SpeciesSoftshellTurtle.values().length; i++) {
+            EntityUtils.buildSkinArrays("softshell_turtle", SpeciesSoftshellTurtle.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
+        }
+    }
+
     public boolean wantsToLeaveWater() { return this.world.getDayTime() > 5000 && this.world.getDayTime() < 7000; }
 
     public boolean wantsToEnterWater() { return !(this.world.getDayTime() > 5000 && this.world.getDayTime() < 7000); }

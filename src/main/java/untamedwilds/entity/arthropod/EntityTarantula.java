@@ -66,6 +66,12 @@ public class EntityTarantula extends ComplexMob implements ISpecies {
         this.targetSelector.addGoal(3, new DontThreadOnMeTarget<>(this, LivingEntity.class, true));
     }
 
+    public static void processSkins() {
+        for (int i = 0; i < SpeciesTarantula.values().length; i++) {
+            EntityUtils.buildSkinArrays("tarantula", SpeciesTarantula.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
+        }
+    }
+
     public void livingTick() {
         super.livingTick();
         if (!this.world.isRemote) {

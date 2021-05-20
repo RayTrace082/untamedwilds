@@ -49,6 +49,12 @@ public class EntityGiantClam extends ComplexMob implements ISpecies {
                 .createMutableAttribute(Attributes.ARMOR, 12D);
     }
 
+    public static void processSkins() {
+        for (int i = 0; i < SpeciesGiantClam.values().length; i++) {
+            EntityUtils.buildSkinArrays("giant_clam", SpeciesGiantClam.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
+        }
+    }
+
     @Override
     protected void registerData() {
         super.registerData();

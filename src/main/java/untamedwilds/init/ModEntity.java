@@ -146,40 +146,55 @@ public class ModEntity {
     @SubscribeEvent
     public static void bakeAttributes(EntityAttributeCreationEvent event) {
         // TODO: I am 95% sure that with some fuckery this can be abstracted with a for-loop through `entities`
-        event.put(TARANTULA, EntityTarantula.registerAttributes().create());
+        if (ConfigMobControl.addTarantula.get())
+            event.put(TARANTULA, EntityTarantula.registerAttributes().create());
 
-        event.put(SNAKE, EntitySnake.registerAttributes().create());
-        event.put(SOFTSHELL_TURTLE, EntitySoftshellTurtle.registerAttributes().create());
+        if (ConfigMobControl.addSnake.get())
+            event.put(SNAKE, EntitySnake.registerAttributes().create());
+        if (ConfigMobControl.addSoftshellTurtle.get())
+            event.put(SOFTSHELL_TURTLE, EntitySoftshellTurtle.registerAttributes().create());
 
-        event.put(GIANT_CLAM, EntityGiantClam.registerAttributes().create());
+        if (ConfigMobControl.addGiantClam.get())
+            event.put(GIANT_CLAM, EntityGiantClam.registerAttributes().create());
 
-        event.put(HIPPO, EntityHippo.registerAttributes().create());
-        event.put(AARDVARK, EntityAardvark.registerAttributes().create());
-        event.put(BLACK_BEAR, EntityBlackBear.registerAttributes().create());
-        event.put(BROWN_BEAR, EntityBrownBear.registerAttributes().create());
-        event.put(CAVE_BEAR, EntityCaveBear.registerAttributes().create());
-        event.put(BLIND_BEAR, EntityBlindBear.registerAttributes().create());
-        event.put(PANDA_BEAR, EntityGiantPanda.registerAttributes().create());
-        event.put(POLAR_BEAR, EntityPolarBear.registerAttributes().create());
-        event.put(SPECTACLED_BEAR, EntitySpectacledBear.registerAttributes().create());
-        event.put(SUN_BEAR, EntitySunBear.registerAttributes().create());
-        event.put(JAGUAR, EntityJaguar.registerAttributes().create());
-        event.put(LEOPARD, EntityLeopard.registerAttributes().create());
-        event.put(LION, EntityLion.registerAttributes().create());
-        event.put(PUMA, EntityPuma.registerAttributes().create());
-        event.put(SNOW_LEOPARD, EntitySnowLeopard.registerAttributes().create());
-        event.put(TIGER, EntityTiger.registerAttributes().create());
-        //event.put(CAVE_LION, CaveLionBigCat.registerAttributes().create());
-        //event.put(DIRE_LION, DireLionBigCat.registerAttributes().create());
-        //event.put(MARSUPIAL_LION, MarsupialLionBigCat.registerAttributes().create());
-        //event.put(SABERTOOTH, SabertoothBigCat.registerAttributes().create());
+        if (ConfigMobControl.addHippo.get())
+            event.put(HIPPO, EntityHippo.registerAttributes().create());
+        if (ConfigMobControl.addAardvark.get())
+            event.put(AARDVARK, EntityAardvark.registerAttributes().create());
+        if (ConfigMobControl.addBear.get()) {
+            event.put(BLACK_BEAR, EntityBlackBear.registerAttributes().create());
+            event.put(BROWN_BEAR, EntityBrownBear.registerAttributes().create());
+            event.put(CAVE_BEAR, EntityCaveBear.registerAttributes().create());
+            event.put(BLIND_BEAR, EntityBlindBear.registerAttributes().create());
+            event.put(PANDA_BEAR, EntityGiantPanda.registerAttributes().create());
+            event.put(POLAR_BEAR, EntityPolarBear.registerAttributes().create());
+            event.put(SPECTACLED_BEAR, EntitySpectacledBear.registerAttributes().create());
+            event.put(SUN_BEAR, EntitySunBear.registerAttributes().create());
+        }
+        if (ConfigMobControl.addBigCat.get()) {
+            event.put(JAGUAR, EntityJaguar.registerAttributes().create());
+            event.put(LEOPARD, EntityLeopard.registerAttributes().create());
+            event.put(LION, EntityLion.registerAttributes().create());
+            event.put(PUMA, EntityPuma.registerAttributes().create());
+            event.put(SNOW_LEOPARD, EntitySnowLeopard.registerAttributes().create());
+            event.put(TIGER, EntityTiger.registerAttributes().create());
+            //event.put(CAVE_LION, CaveLionBigCat.registerAttributes().create());
+            //event.put(DIRE_LION, DireLionBigCat.registerAttributes().create());
+            //event.put(MARSUPIAL_LION, MarsupialLionBigCat.registerAttributes().create());
+            //event.put(SABERTOOTH, SabertoothBigCat.registerAttributes().create());
+        }
 
-        event.put(SUNFISH, EntitySunfish.registerAttributes().create());
-        event.put(TREVALLY, EntityTrevally.registerAttributes().create());
-        event.put(AROWANA, EntityArowana.registerAttributes().create());
-        event.put(SHARK, EntityShark.registerAttributes().create());
+        if (ConfigMobControl.addSunfish.get())
+            event.put(SUNFISH, EntitySunfish.registerAttributes().create());
+        if (ConfigMobControl.addTrevally.get())
+            event.put(TREVALLY, EntityTrevally.registerAttributes().create());
+        if (ConfigMobControl.addArowana.get())
+            event.put(AROWANA, EntityArowana.registerAttributes().create());
+        if (ConfigMobControl.addShark.get())
+            event.put(SHARK, EntityShark.registerAttributes().create());
 
-        event.put(GIANT_SALAMANDER, EntityGiantSalamander.registerAttributes().create());
+        if (ConfigMobControl.addGiantSalamander.get())
+            event.put(GIANT_SALAMANDER, EntityGiantSalamander.registerAttributes().create());
     }
 
     @SubscribeEvent
@@ -192,22 +207,27 @@ public class ModEntity {
     public static void registerRendering() {
         if (ConfigMobControl.addTarantula.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.TARANTULA, RendererTarantula::new);
+            EntityTarantula.processSkins();
         }
         if (ConfigMobControl.addSoftshellTurtle.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SOFTSHELL_TURTLE, RendererSoftshellTurtle::new);
+            EntitySoftshellTurtle.processSkins();
         }
         if (ConfigMobControl.addSnake.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNAKE, RendererSnake::new);
+            EntitySnake.processSkins();
         }
         if (ConfigMobControl.addGiantClam.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, RendererGiantClam::new);
+            EntityGiantClam.processSkins();
         }
         if (ConfigMobControl.addHippo.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.HIPPO, RendererHippo::new);
+            EntityHippo.processSkins();
         }
         if (ConfigMobControl.addAardvark.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.AARDVARK, RendererAardvark::new);
-            //EntityAardvark.processSkins();
+            EntityAardvark.processSkins();
         }
         if (ConfigMobControl.addBear.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, RendererBear::new);
@@ -237,9 +257,11 @@ public class ModEntity {
         }
         if (ConfigMobControl.addSunfish.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUNFISH, RendererSunfish::new);
+            EntitySunfish.processSkins();
         }
         if (ConfigMobControl.addTrevally.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.TREVALLY, RendererTrevally::new);
+            EntityTrevally.processSkins();
         }
         if (ConfigMobControl.addArowana.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.AROWANA, RendererArowana::new);
@@ -247,6 +269,7 @@ public class ModEntity {
         }
         if (ConfigMobControl.addShark.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SHARK, RendererShark::new);
+            EntityShark.processSkins();
         }
         if (ConfigMobControl.addGiantSalamander.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);

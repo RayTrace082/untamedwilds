@@ -14,11 +14,6 @@ public class RendererGiantClam extends MobRenderer<EntityGiantClam, EntityModel<
 
     private static final ModelGiantClam GIANT_CLAM_MODEL = new ModelGiantClam();
 
-    private static final ResourceLocation DERASA         = new ResourceLocation("untamedwilds:textures/entity/giant_clam/derasa.png");
-    private static final ResourceLocation GIGAS         = new ResourceLocation("untamedwilds:textures/entity/giant_clam/gigas.png");
-    private static final ResourceLocation MAXIMA        = new ResourceLocation("untamedwilds:textures/entity/giant_clam/maxima.png");
-    private static final ResourceLocation SQUAMOSA      = new ResourceLocation("untamedwilds:textures/entity/giant_clam/squamosa.png");
-
     public RendererGiantClam(EntityRendererManager renderManager) {
         super(renderManager, GIANT_CLAM_MODEL, 1F);
     }
@@ -33,12 +28,6 @@ public class RendererGiantClam extends MobRenderer<EntityGiantClam, EntityModel<
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntityGiantClam entity) {
-        switch (entity.getVariant()) {
-            default:
-            case 0: return DERASA;
-            case 1: return GIGAS;
-            case 2: return MAXIMA;
-            case 3: return SQUAMOSA;
-        }
+        return entity.getTexture();
     }
 }

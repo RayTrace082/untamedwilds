@@ -25,6 +25,7 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
     private EntityType<?> entityType;
     private int variant;
     private int count;
+    private int cooldown = 0;
 
     public CritterBurrowBlockEntity() {
         super(ModBlock.BLOCKENTITY_BURROW.get());
@@ -65,7 +66,9 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
     public EntityType<?> getEntityType() { return this.entityType; }
 
     public void tick() {
-        if (this.world != null && !this.world.isRemote && !this.hasNoMobs() && this.getEntityType() != null && this.world.getRandom().nextDouble() < (Math.min(0.001, 0.0001D * (this.getSumMobs() * this.getSumMobs())))) {
+        if (this.cooldown > 0)
+            this.cooldown--;
+        if (this.cooldown == 0 && this.world != null && !this.world.isRemote && !this.hasNoMobs() && this.getEntityType() != null && this.world.getRandom().nextFloat() < (Math.min(0.01, 0.002D * (this.getSumMobs() * this.getSumMobs())))) {
             BlockPos blockpos = this.getPos();
             if (this.world.getRandom().nextInt(10) == 0) {
                 this.setCount(this.getCount() + 1);
@@ -98,6 +101,7 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
                         markDirty();
                     }
                 }
+                this.cooldown = 200 + this.world.getRandom().nextInt(2000);
             }
         }
     }
@@ -108,6 +112,7 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
         ListNBT listnbt = nbt.getList("Inhabitants", 10);
         this.setVariant(nbt.getInt("Variant"));
         this.setCount(nbt.getInt("Count"));
+        this.cooldown = nbt.getInt("Cooldown");
         if (nbt.contains("entityType")) {
             this.setEntityType(EntityType.byKey(nbt.getString("entityType")).orElse(null));
         }
@@ -124,6 +129,7 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
         compound.put("Inhabitants", this.getInhabitants());
         compound.putInt("Count", this.getCount());
         compound.putInt("Variant", this.getVariant());
+        compound.putInt("Cooldown", this.cooldown);
         if (this.getEntityType() != null) {
             compound.putString("entityType", this.getEntityType().getRegistryName().toString());
         }
@@ -134,7 +140,6 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
         ListNBT listnbt = new ListNBT();
 
         for(Inhabitants inhabitant : this.inhabitants) {
-            //beehivetileentity$bee.entityData.remove("UUID");
             CompoundNBT compoundnbt = new CompoundNBT();
             compoundnbt.put("EntityData", inhabitant.entityData);
             listnbt.add(compoundnbt);

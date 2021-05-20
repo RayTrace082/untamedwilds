@@ -33,13 +33,6 @@ public class RendererTrevally extends MobRenderer<EntityTrevally, EntityModel<En
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntityTrevally entity) {
-        switch (entity.getVariant()) {
-            default:
-            case 0: return BIGEYE;
-            case 1: return BLUESPOTTED;
-            case 2: return GIANT;
-            case 3: return GOLDEN;
-            case 4: return JACK;
-        }
+        return entity.getTexture();
     }
 }

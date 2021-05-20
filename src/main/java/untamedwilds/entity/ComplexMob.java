@@ -101,13 +101,15 @@ public abstract class ComplexMob extends TameableEntity {
     public void setVariant(int variant){ this.dataManager.set(VARIANT, variant); }
     public int getSkin(){ return (this.dataManager.get(SKIN)); }
     public void setSkin(int skin){ this.dataManager.set(SKIN, skin); }
-    public <T extends ComplexMob> void chooseSkinForSpecies(T entityIn, boolean allowRares) {
+    public <T extends ComplexMob> int chooseSkinForSpecies(T entityIn, boolean allowRares) {
         String name = entityIn.getType().getRegistryName().getPath();
         if (this instanceof INewSkins && !TEXTURES_COMMON.get(name).isEmpty()) {
-            boolean isRare = allowRares && !TEXTURES_RARE.get(name).containsKey(this.getVariant()) && this.rand.nextFloat() < ConfigGamerules.rareSkinChance.get();
+            boolean isRare = allowRares && TEXTURES_RARE.get(name).containsKey(this.getVariant()) && this.rand.nextFloat() < ConfigGamerules.rareSkinChance.get();
             int skin = this.rand.nextInt(isRare ? TEXTURES_RARE.get(name).get(this.getVariant()).size() : TEXTURES_COMMON.get(name).get(this.getVariant()).size()) + (isRare ? 100 : 0);
             this.setSkin(skin);
+            return skin;
         }
+        return 0;
     }
 
     public float getModelScale() { return 1f; }
@@ -276,7 +278,7 @@ public abstract class ComplexMob extends TameableEntity {
             this.setCommandInt(compound.getInt("Command"));
         }
         this.setVariant(compound.getInt("Variant"));
-        this.setSkin(compound.getInt("Skin"));
+        this.setSkin(compound.contains("Skin") ? compound.getInt("Skin") : this.chooseSkinForSpecies(this, false)); // TODO: Retrocompatibility for mobs created before the Skin system
         this.setMobSize(compound.getFloat("Size"));
         this.setGender(compound.getInt("Gender"));
         this.setAngry(compound.getBoolean("isAngry"));

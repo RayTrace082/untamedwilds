@@ -28,5 +28,5 @@ backup
 /src/main/unused/
 /src/test/
 logs
-gradle
 /logs/
+/.github/

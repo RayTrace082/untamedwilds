@@ -9,6 +9,8 @@ import net.minecraft.util.ResourceLocation;
 import untamedwilds.client.model.ModelAardvark;
 import untamedwilds.entity.mammal.EntityAardvark;
 
+import javax.annotation.Nonnull;
+
 public class RendererAardvark extends MobRenderer<EntityAardvark, EntityModel<EntityAardvark>> {
 
     private static final ModelAardvark AARDVARK_MODEL = new ModelAardvark();
@@ -31,8 +33,7 @@ public class RendererAardvark extends MobRenderer<EntityAardvark, EntityModel<En
         this.shadowSize = entity.getModelScale() * 0.6f;
     }
 
-    @Override
-    public ResourceLocation getEntityTexture(EntityAardvark entity) {
-        return new ResourceLocation("untamedwilds:textures/entity/aardvark/common.png");
+    public ResourceLocation getEntityTexture(@Nonnull EntityAardvark entity) {
+        return entity.getTexture();
     }
 }

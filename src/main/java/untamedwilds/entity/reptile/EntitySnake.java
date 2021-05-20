@@ -19,6 +19,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMobTerrestrial;
+import untamedwilds.entity.INewSkins;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.SmartAvoidGoal;
 import untamedwilds.entity.ai.SmartMateGoal;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
+public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INewSkins {
 
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
     private static final String BREEDING = "LATE_SUMMER";
@@ -71,6 +72,12 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies {
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, input -> getEcoLevel(input) < 4));
         this.targetSelector.addGoal(3, new DontThreadOnMeTarget<>(this, LivingEntity.class, true));
+    }
+
+    public static void processSkins() {
+        for (int i = 0; i < SpeciesSnake.values().length; i++) {
+            EntityUtils.buildSkinArrays("snake", SpeciesSnake.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
+        }
     }
 
     /* Crepuscular: Active between 10:00 and 22:00 */

@@ -58,6 +58,12 @@ public class EntityHippo extends ComplexMobAmphibious {
         this.turn_speed = 0.3F;
     }
 
+    public static void processSkins() {
+        for (int i = 0; i < SpeciesHippo.values().length; i++) {
+            EntityUtils.buildSkinArrays("hippo", SpeciesHippo.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
+        }
+    }
+
     public void registerGoals() {
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1.4D, false));
         this.goalSelector.addGoal(3, new SmartMateGoal(this, 0.8D));

@@ -10,6 +10,8 @@ import untamedwilds.client.model.ModelHippo;
 import untamedwilds.client.model.ModelHippoCalf;
 import untamedwilds.entity.mammal.EntityHippo;
 
+import javax.annotation.Nonnull;
+
 public class RendererHippo extends MobRenderer<EntityHippo, EntityModel<EntityHippo>> {
 
     private static final ModelHippo HIPPO_MODEL = new ModelHippo();
@@ -36,8 +38,7 @@ public class RendererHippo extends MobRenderer<EntityHippo, EntityModel<EntityHi
         this.shadowSize = entity.getModelScale() * 0.8f;
     }
 
-    @Override
-    public ResourceLocation getEntityTexture(EntityHippo entity) {
-        return new ResourceLocation("untamedwilds:textures/entity/hippo/common.png");
+    public ResourceLocation getEntityTexture(@Nonnull EntityHippo entity) {
+        return entity.getTexture();
     }
 }

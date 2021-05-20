@@ -325,31 +325,43 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
         }
     }
 
-    /*public enum SpeciesBearNew implements IStringSerializable {
+    /*public enum SpeciesBear implements IStringSerializable {
 
-        BLACK		(0, 0.8F, EntityBlackBear.getRarity(), Biome.Category.FOREST, Biome.Category.TAIGA),
-        BLIND		(1, 1.1F, EntityBlindBear.getRarity()),
-        BROWN		(2, EntityBrownBear.getRarity(), Biome.Category.TAIGA, Biome.Category.EXTREME_HILLS),
-        CAVE		(3, EntityCaveBear.getRarity(), Biome.Category.TAIGA, Biome.Category.EXTREME_HILLS),
-        PANDA		(4, EntityGiantPanda.getRarity(), Biome.Category.JUNGLE),
-        POLAR		(5, EntityPolarBear.getRarity(), Biome.Category.ICY),
-        SPECTACLED	(6, EntitySpectacledBear.getRarity(), Biome.Category.EXTREME_HILLS),
-        SUN 		(7, EntitySunBear.getRarity(), Biome.Category.JUNGLE);
+        BLACK		(0, 0.8F, 5F, 30F, false, false, false, false, Items.SWEET_BERRIES, "EARLY_SUMMER", 8, 5, Biome.Category.FOREST, Biome.Category.TAIGA),
+        BLIND		(1, 1.1F, 7F, 45F, false, true, false, false, Items.BEEF, "MID_SUMMER", 8, ConfigGamerules.fantasyMobs.get() ? 1 : 0),
+        BROWN		(2, 1.1F, 7F, 40F, true, false, false, false, Items.SALMON, "EARLY_SUMMER", 8, 3, Biome.Category.TAIGA, Biome.Category.EXTREME_HILLS),
+        CAVE		(3, 1.3F, 9F, 50F, true, false, false, false, Items.POTATO, "MID_SUMMER", 10, ConfigGamerules.extinctMobs.get() ? 1 : 0, Biome.Category.TAIGA, Biome.Category.EXTREME_HILLS),
+        PANDA		(4, 0.7F, 4F, 25F,false, true, false, true, Items.BAMBOO, "MID_SPRING", 6, 0, Biome.Category.JUNGLE),
+        POLAR		(5, 1.3F, 8F, 45F, false, false, true, false, ModItems.MATERIAL_FAT.get(), "LATE_SPRING", 10, 1, Biome.Category.ICY),
+        SPECTACLED	(6, 0.8F, 5F, 30F, false, true, false, false, Items.APPLE, "LATE_WET", 7, 1, Biome.Category.EXTREME_HILLS),
+        SUN 		(7, 0.6F, 4F, 15F, false, false, false, false, Items.HONEYCOMB, "MID_WET", 4, 4, Biome.Category.JUNGLE);
 
         public int species;
         public Float scale;
-        public int rolls;
         public float attack;
         public float health;
         public boolean hasHump;
         public boolean hasShortSnout;
         public boolean hasLongBody;
         public boolean isPanda;
+        public String breedingSeason;
+        public int gestation;
+        public Item favouriteFood;
+        public int rarity;
         public Biome.Category[] spawnBiomes;
 
-        SpeciesBearNew(int species, float scale, int rolls, Biome.Category... biomes) {
-            this.spawnBiomes = species;
+        SpeciesBear(int species, float scale, float attack, float health, boolean hasHump, boolean hasShortSnout, boolean hasLongBody, boolean isPanda, Item favouriteFood, String breeding, int growingAge, int rolls, Biome.Category... biomes) {
+            this.species = species;
             this.scale = scale;
+            this.attack = attack;
+            this.health = health;
+            this.hasHump = hasHump;
+            this.hasShortSnout = hasShortSnout;
+            this.hasLongBody = hasLongBody;
+            this.isPanda = isPanda;
+            this.favouriteFood = favouriteFood;
+            this.breedingSeason = breeding;
+            this.gestation = growingAge;
             this.rarity = rolls;
             this.spawnBiomes = biomes;
         }
@@ -357,6 +369,31 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
         @Override
         public String getString() {
             return "why would you do this?";
+        }
+
+        public static int getSpeciesByBiome(Biome biome) {
+            Optional<RegistryKey<Biome>> optional = biome.func_242406_i(pos);
+            if (Objects.equals(optional, Optional.of(Biomes.FROZEN_OCEAN)) || Objects.equals(optional, Optional.of(Biomes.DEEP_FROZEN_OCEAN))) {
+                return ModEntity.POLAR_BEAR;
+            }
+            if (Objects.equals(optional, Optional.of(Biomes.BAMBOO_JUNGLE)) || Objects.equals(optional, Optional.of(Biomes.BAMBOO_JUNGLE_HILLS))) {
+                return ModEntity.PANDA_BEAR;
+            }
+            List<SpeciesBear> types = new ArrayList<>();
+            for (SpeciesBear type : values()) {
+                for(Biome.Category biomeTypes : type.spawnBiomes) {
+                    if(biome.getCategory() == biomeTypes){
+                        for (int i=0; i < type.rarity; i++) {
+                            types.add(type);
+                        }
+                    }
+                }
+            }
+            if (types.isEmpty()) {
+                return 99;
+            } else {
+                return types.get(new Random().nextInt(types.size())).getSpecies();
+            }
         }
 
         public static EntityType<? extends AbstractBear> getSpeciesByBiome(IWorld world, BlockPos pos) {
@@ -367,9 +404,8 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
             if (Objects.equals(optional, Optional.of(Biomes.BAMBOO_JUNGLE)) || Objects.equals(optional, Optional.of(Biomes.BAMBOO_JUNGLE_HILLS))) {
                 return ModEntity.PANDA_BEAR;
             }
-            Biome biome = world.getBiome(pos);
-            List<AbstractBear.SpeciesBear> types = new ArrayList<>();
-            for (AbstractBear.SpeciesBear type : values()) {
+            List<SpeciesBear> types = new ArrayList<>();
+            for (SpeciesBear type : values()) {
                 for(Biome.Category biomeTypes : type.spawnBiomes) {
                     if(biome.getCategory() == biomeTypes){
                         for (int i=0; i < type.rarity; i++) {
@@ -378,7 +414,11 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
                     }
                 }
             }
-            return !types.isEmpty() ? types.get(new Random().nextInt(types.size())).type : null;
+            if (types.isEmpty()) {
+                return 99;
+            } else {
+                return types.get(new Random().nextInt(types.size())).getSpecies();
+            }
         }
     }*/
 }
