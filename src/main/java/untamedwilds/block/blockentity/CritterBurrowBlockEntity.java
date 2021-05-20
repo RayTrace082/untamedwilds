@@ -11,7 +11,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.init.ModBlock;
@@ -79,7 +78,6 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
                     int i = worldIn.rand.nextInt(this.inhabitants.size());
                     Entity spawn = this.getEntityType().create(worldIn, this.inhabitants.get(i).entityData, null, null, blockpos, SpawnReason.DISPENSER, true, false);
                     if (spawn != null) {
-                        UntamedWilds.LOGGER.info("Spawning mob stored into burrow");
                         worldIn.addEntity(spawn);
                         this.inhabitants.remove(i);
                         markDirty();

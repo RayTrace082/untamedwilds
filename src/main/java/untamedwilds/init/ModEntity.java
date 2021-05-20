@@ -275,7 +275,11 @@ public class ModEntity {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
             EntityGiantSalamander.processSkins();
         }
-        UntamedWilds.LOGGER.info(ComplexMob.TEXTURES_COMMON);
+        if (UntamedWilds.DEBUG) {
+            UntamedWilds.LOGGER.info("---Dump of Common and Rare Texture arrays---");
+            UntamedWilds.LOGGER.info(ComplexMob.TEXTURES_COMMON);
+            UntamedWilds.LOGGER.info(ComplexMob.TEXTURES_RARE);
+        }
     }
 
     public static void addWorldSpawn(EntityType<?> entityClass, int weightedProb, FaunaHandler.animalType type, int groupCount) {
