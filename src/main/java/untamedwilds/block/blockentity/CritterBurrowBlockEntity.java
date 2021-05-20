@@ -129,7 +129,7 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
         compound.put("Inhabitants", this.getInhabitants());
         compound.putInt("Count", this.getCount());
         compound.putInt("Variant", this.getVariant());
-        compound.putInt("Cooldown", this.cooldown);
+        compound.putInt("Cooldown", this.cooldown / 3);
         if (this.getEntityType() != null) {
             compound.putString("entityType", this.getEntityType().getRegistryName().toString());
         }
