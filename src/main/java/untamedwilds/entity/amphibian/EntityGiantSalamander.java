@@ -205,9 +205,9 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
 
     public enum SpeciesGiantSalamander implements IStringSerializable {
 
-        CHINESE			(0, 1.2F, 2, 4, 14, Biome.Category.SWAMP, Biome.Category.RIVER, Biome.Category.EXTREME_HILLS),
+        CHINESE			(0, 1.2F, 2, 4, 14, Biome.Category.RIVER, Biome.Category.EXTREME_HILLS),
         HELLBENDER		(1, 0.8F, 5, 2, 6, Biome.Category.RIVER, Biome.Category.EXTREME_HILLS),
-        JAPANESE	    (2, 1.0F, 3, 3, 10, Biome.Category.SWAMP, Biome.Category.RIVER, Biome.Category.EXTREME_HILLS);
+        JAPANESE	    (2, 1.0F, 3, 3, 10, Biome.Category.RIVER, Biome.Category.EXTREME_HILLS);
 
         public Float scale;
         public int species;
