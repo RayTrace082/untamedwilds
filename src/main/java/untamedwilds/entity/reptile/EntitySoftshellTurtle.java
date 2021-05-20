@@ -19,6 +19,7 @@ import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAmphibious;
+import untamedwilds.entity.INewSkins;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpecies {
+public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpecies, INewSkins {
 
     private static final String BREEDING = "EARLY_SUMMER";
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();

@@ -17,6 +17,7 @@ import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAmphibious;
+import untamedwilds.entity.INewSkins;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.unique.HippoTerritoryTargetGoal;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntityHippo extends ComplexMobAmphibious {
+public class EntityHippo extends ComplexMobAmphibious implements INewSkins {
 
     private static final float SIZE = 1.1f;
     private static final String BREEDING = "EARLY_SUMMER";

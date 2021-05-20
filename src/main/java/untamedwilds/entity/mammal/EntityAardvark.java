@@ -18,6 +18,7 @@ import net.minecraftforge.common.ToolType;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
+import untamedwilds.entity.INewSkins;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.*;
 import untamedwilds.init.ModEntity;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies {
+public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, INewSkins {
 
     private static final float SIZE = 1.0f;
     private static final String BREEDING = "LATE_SPRING";

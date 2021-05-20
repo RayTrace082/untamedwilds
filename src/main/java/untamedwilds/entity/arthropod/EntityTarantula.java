@@ -19,6 +19,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
+import untamedwilds.entity.INewSkins;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.SmartAvoidGoal;
 import untamedwilds.entity.ai.SmartMateGoal;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntityTarantula extends ComplexMob implements ISpecies {
+public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
 
     private static final String BREEDING = "EARLY_SUMMER";
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();

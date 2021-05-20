@@ -104,6 +104,8 @@ public abstract class ComplexMob extends TameableEntity {
     public <T extends ComplexMob> int chooseSkinForSpecies(T entityIn, boolean allowRares) {
         String name = entityIn.getType().getRegistryName().getPath();
         if (this instanceof INewSkins && !TEXTURES_COMMON.get(name).isEmpty()) {
+            //UntamedWilds.LOGGER.info(TEXTURES_COMMON);
+            //UntamedWilds.LOGGER.info(TEXTURES_RARE);
             boolean isRare = allowRares && TEXTURES_RARE.get(name).containsKey(this.getVariant()) && this.rand.nextFloat() < ConfigGamerules.rareSkinChance.get();
             int skin = this.rand.nextInt(isRare ? TEXTURES_RARE.get(name).get(this.getVariant()).size() : TEXTURES_COMMON.get(name).get(this.getVariant()).size()) + (isRare ? 100 : 0);
             this.setSkin(skin);

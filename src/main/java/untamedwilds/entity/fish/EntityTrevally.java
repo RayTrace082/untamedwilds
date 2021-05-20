@@ -20,10 +20,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
-import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ComplexMobAquatic;
-import untamedwilds.entity.IPackEntity;
-import untamedwilds.entity.ISpecies;
+import untamedwilds.entity.*;
 import untamedwilds.entity.ai.FishReturnToSchoolGoal;
 import untamedwilds.entity.ai.FishWanderAsSchoolGoal;
 import untamedwilds.util.EntityUtils;
@@ -33,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPackEntity {
+public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPackEntity, INewSkins {
 
     private static final String BREEDING = "MID_SUMMER";
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
