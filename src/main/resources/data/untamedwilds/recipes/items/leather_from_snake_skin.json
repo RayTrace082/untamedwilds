@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "sticks",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "untamedwilds:material_snake_skin"
+    }
+  },
+  "result": {
+    "item": "minecraft:leather"
+  }
+}

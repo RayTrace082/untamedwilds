@@ -45,6 +45,7 @@ public class ModItems {
     public static RegistryObject<Item> MATERIAL_FAT = createItem("material_fat", () -> new LardItem(new Item.Properties().food((new Food.Builder()).hunger(1).saturation(1F).meat().build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> MATERIAL_PEARL = createItem(ConfigMobControl.addGiantClam.get(),"material_pearl", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
     public static RegistryObject<Item> RARE_GIANT_PEARL = createItem(ConfigMobControl.addGiantClam.get(), "material_giant_pearl", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON).group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> MATERIAL_SNAKE_SKIN = createItem(ConfigMobControl.addSnake.get(),"material_snake_skin", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
 
     // Food
     public static RegistryObject<Item> MEAT_BEAR_RAW = createItem(ConfigMobControl.addBear.get(),"food_bear_raw", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.6F).meat().build()).group(ItemGroup.FOOD)));
@@ -54,7 +55,7 @@ public class ModItems {
     public static RegistryObject<Item> MEAT_HIPPO_RAW = createItem(ConfigMobControl.addHippo.get(),"food_hippo_raw", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.7F).meat().build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> MEAT_HIPPO_COOKED = createItem(ConfigMobControl.addHippo.get(),"food_hippo_cooked", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(7).saturation(1.1F).meat().build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> FOOD_TURTLE_SOUP = createItem(ConfigMobControl.addSoftshellTurtle.get(),"food_turtle_soup", () -> new SoupItem(new Item.Properties().food((new Food.Builder()).hunger(8).saturation(0.6F).build()).group(ItemGroup.FOOD).maxStackSize(1)));
-    public static RegistryObject<Item> FOOD_PEMMICAN = createItem("food_pemmican", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(6).saturation(1.6F).build()).group(ItemGroup.FOOD)));
+    public static RegistryObject<Item> FOOD_PEMMICAN = createItem("food_pemmican", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(6).saturation(1.0F).build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> VEGETABLE_AARDVARK_CUCUMBER = createItem(ConfigMobControl.addAardvark.get(),"food_aardvark_cucumber", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.2F).build()).group(ItemGroup.FOOD)));
 
     // Hides

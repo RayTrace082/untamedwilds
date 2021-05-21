@@ -27,6 +27,7 @@ import untamedwilds.entity.ai.SmartSwimGoal;
 import untamedwilds.entity.ai.SmartWanderGoal;
 import untamedwilds.entity.ai.target.DontThreadOnMeTarget;
 import untamedwilds.entity.ai.target.HuntMobTarget;
+import untamedwilds.init.ModItems;
 import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
 
@@ -96,6 +97,9 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
             if (this.ticksExisted % 1000 == 0) {
                 if (this.wantsToBreed() && !this.isMale()) {
                     this.breed();
+                }
+                if (this.rand.nextInt(40) == 0) {
+                    this.entityDropItem(new ItemStack(ModItems.MATERIAL_SNAKE_SKIN.get()), 0.2F);
                 }
             }
             if (this.world.getGameTime() % 4000 == 0) {
