@@ -63,6 +63,7 @@ public class ModBlock {
     public static RegistryObject<Block> AMAZON_SWORD = createBlock("flora_amazon_sword", () -> new AlgaeBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(0).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addAlgae.get());
     public static RegistryObject<Block> BUSH_TEMPERATE = createBlock("flora_bush_temperate", () -> new UndergrowthBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addBushes.get());
     public static RegistryObject<Block> ELEPHANT_EAR = createBlock("flora_elephant_ear", () -> new UndergrowthBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement(), AbstractBlock.OffsetType.XYZ), ItemGroup.DECORATIONS, ConfigFeatureControl.addBushes.get());
+    public static RegistryObject<Block> HEMLOCK = createBlock("flora_hemlock", () -> new UndergrowthPoisonousBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement(), AbstractBlock.OffsetType.XYZ), ItemGroup.DECORATIONS, ConfigFeatureControl.addBushes.get());
 
     public static RegistryObject<Block> BURROW = createBlock("block_burrow", () -> new CritterBurrowBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addBushes.get());
 
@@ -114,6 +115,7 @@ public class ModBlock {
         if (ConfigFeatureControl.addBushes.get()) {
             RenderTypeLookup.setRenderLayer(ModBlock.BUSH_TEMPERATE.get(), RenderType.getCutout());
             RenderTypeLookup.setRenderLayer(ModBlock.ELEPHANT_EAR.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlock.HEMLOCK.get(), RenderType.getCutout());
         }
         RenderTypeLookup.setRenderLayer(ModBlock.BURROW.get(), RenderType.getTranslucent());
 

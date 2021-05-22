@@ -1,19 +1,14 @@
 package untamedwilds.block;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.BushBlock;
 import net.minecraft.block.IGrowable;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.util.Direction;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -21,37 +16,21 @@ import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
-public class UndergrowthBlock extends BushBlock implements IGrowable, net.minecraftforge.common.IForgeShearable {
+public class UndergrowthPoisonousBlock extends UndergrowthBlock implements IGrowable, net.minecraftforge.common.IForgeShearable {
 
-    protected OffsetType offset;
-
-    public UndergrowthBlock(Properties properties) {
+    public UndergrowthPoisonousBlock(Properties properties) {
         super(properties);
         this.offset = OffsetType.NONE;
     }
 
-    public UndergrowthBlock(Properties properties, OffsetType type) {
+    public UndergrowthPoisonousBlock(Properties properties, OffsetType type) {
         super(properties);
         this.offset = type;
     }
 
-    protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return state.isSolidSide(worldIn, pos, Direction.UP) && !state.isIn(Blocks.MAGMA_BLOCK);
-    }
-
-    public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-        return true;
-    }
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
-        return true;
-    }
-
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return VoxelShapes.empty();
-    }
-
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-        if (entityIn instanceof PlayerEntity && !entityIn.isSneaking()) {
+        if (entityIn instanceof LivingEntity && !entityIn.isSneaking() && entityIn.getHeight() > 1) {
+            ((LivingEntity)entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 100, 1));
             entityIn.setMotionMultiplier(state, new Vector3d(0.95F, 1D, 0.95F));
             if (worldIn.getRandom().nextInt(20) == 0) {
                 worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GRASS_STEP, SoundCategory.AMBIENT, 1, 1, true);

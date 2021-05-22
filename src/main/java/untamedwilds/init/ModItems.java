@@ -3,6 +3,8 @@ package untamedwilds.init;
 import com.google.common.collect.Lists;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.*;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -57,6 +59,7 @@ public class ModItems {
     public static RegistryObject<Item> FOOD_TURTLE_SOUP = createItem(ConfigMobControl.addSoftshellTurtle.get(),"food_turtle_soup", () -> new SoupItem(new Item.Properties().food((new Food.Builder()).hunger(8).saturation(0.6F).build()).group(ItemGroup.FOOD).maxStackSize(1)));
     public static RegistryObject<Item> FOOD_PEMMICAN = createItem("food_pemmican", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(6).saturation(1.0F).build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> VEGETABLE_AARDVARK_CUCUMBER = createItem(ConfigMobControl.addAardvark.get(),"food_aardvark_cucumber", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.2F).build()).group(ItemGroup.FOOD)));
+    public static RegistryObject<Item> FOOD_HEMLOCK_STEW = createItem("food_hemlock_stew", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(6).saturation(0.1F).effect(new EffectInstance(Effects.POISON, 1200, 3), 1.0F).setAlwaysEdible().build()).group(ItemGroup.FOOD).maxStackSize(1))); // TODO: Asebeia achievement for drinking Hemlock stew
 
     // Hides
     public static RegistryObject<Item> HIDE_BEAR_ASHEN = createItem(ConfigMobControl.addBear.get(),"hide_bear_ashen", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));

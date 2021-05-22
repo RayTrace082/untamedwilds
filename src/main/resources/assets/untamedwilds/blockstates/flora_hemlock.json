@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"": [
+			{ "model": "untamedwilds:block/flora_hemlock" },
+			{ "model": "untamedwilds:block/flora_hemlock", "y": 90 },
+			{ "model": "untamedwilds:block/flora_hemlock", "y": 180 },
+			{ "model": "untamedwilds:block/flora_hemlock", "y": 270 }
+		]
+	}
+}
