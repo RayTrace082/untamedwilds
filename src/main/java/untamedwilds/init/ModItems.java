@@ -19,6 +19,7 @@ import untamedwilds.entity.fish.EntityTrevally;
 import untamedwilds.entity.mollusk.EntityGiantClam;
 import untamedwilds.entity.reptile.EntitySnake;
 import untamedwilds.entity.reptile.EntitySoftshellTurtle;
+import untamedwilds.entity.reptile.EntityTortoise;
 import untamedwilds.item.*;
 import untamedwilds.item.debug.*;
 import untamedwilds.util.ItemGroupUT;
@@ -142,12 +143,20 @@ public class ModItems {
                 ModItems.ITEMS.register("bucket_arowana_" + EntityArowana.SpeciesArowana.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.AROWANA, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), arowanaSpecies, EntityArowana.SpeciesArowana.values()[arowanaSpecies].name().toLowerCase()));
             }
         }
-        // Arowana Items
+        // Giant Salamander Items
         if (ConfigMobControl.addGiantSalamander.get()) {
             for (int i = 0; i < EntityGiantSalamander.SpeciesGiantSalamander.values().length; i++) {
                 int giant_salamander = i;
                 ModItems.ITEMS.register("egg_giant_salamander_" + EntityGiantSalamander.SpeciesGiantSalamander.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.GIANT_SALAMANDER, giant_salamander, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
                 ModItems.ITEMS.register("bucket_giant_salamander_" + EntityGiantSalamander.SpeciesGiantSalamander.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.GIANT_SALAMANDER, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), giant_salamander, EntityGiantSalamander.SpeciesGiantSalamander.values()[giant_salamander].name().toLowerCase()));
+            }
+        }
+        // Tortoise Items
+        if (ConfigMobControl.addGiantSalamander.get()) {
+            for (int i = 0; i < EntityTortoise.SpeciesTortoise.values().length; i++) {
+                int tortoise = i;
+                ModItems.ITEMS.register("egg_tortoise_" + EntityTortoise.SpeciesTortoise.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.TORTOISE, tortoise, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("tortoise_" + EntityTortoise.SpeciesTortoise.values()[i].name().toLowerCase(), () -> new MobSpawnItem(ModEntity.TORTOISE, tortoise, EntityTortoise.SpeciesTortoise.values()[tortoise].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             }
         }
     }

@@ -41,7 +41,7 @@ public class FeatureCritterBurrow extends Feature<NoFeatureConfig> {
                 if (variant != 99) {
                     world.setBlockState(pos, ModBlock.BURROW.get().getDefaultState(), 1);
                     CritterBurrowBlockEntity te = (CritterBurrowBlockEntity)world.getTileEntity(pos);
-                    te.setCount(entry.groupCount * (rand.nextInt(3) + 4));
+                    te.setCount(Math.max(12, entry.groupCount * (rand.nextInt(3) + 4)));
                     te.setEntityType(entry.entityType);
                     te.setVariant(variant);
                     entity.remove();

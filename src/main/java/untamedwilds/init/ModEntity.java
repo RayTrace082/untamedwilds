@@ -36,6 +36,7 @@ import untamedwilds.entity.mammal.bigcat.*;
 import untamedwilds.entity.mollusk.EntityGiantClam;
 import untamedwilds.entity.reptile.EntitySnake;
 import untamedwilds.entity.reptile.EntitySoftshellTurtle;
+import untamedwilds.entity.reptile.EntityTortoise;
 import untamedwilds.world.FaunaHandler;
 import untamedwilds.world.FaunaHandler.animalType;
 
@@ -58,6 +59,7 @@ public class ModEntity {
     // Reptiles
     public static EntityType<EntitySnake> SNAKE = createEntity(ConfigMobControl.addSnake.get(), EntitySnake::new,  "snake",  0.6f, 0.3f, 0xD8A552, 0x5C3525, animalType.CRITTER, 4, 1);
     public static EntityType<EntitySoftshellTurtle> SOFTSHELL_TURTLE = createEntity(ConfigMobControl.addSoftshellTurtle.get(), EntitySoftshellTurtle::new,  "softshell_turtle",  0.6f, 0.3f, 0x828444, 0x26292B, animalType.CRITTER, 3, 2);
+    public static EntityType<EntityTortoise> TORTOISE = createEntity(ConfigMobControl.addTortoise.get(), EntityTortoise::new,  "tortoise",  0.6f, 0.6f, 0xAF9F74, 0x775232, animalType.CRITTER, 3, 2);
 
     // Mollusks
     public static EntityType<EntityGiantClam> GIANT_CLAM = createEntity(ConfigMobControl.addGiantClam.get(), EntityGiantClam::new, EntityClassification.WATER_CREATURE, "giant_clam", 32, 10, true, 1.0F, 1.0F, 0x346B70, 0xAD713C, animalType.SESSILE, 1);
@@ -153,6 +155,8 @@ public class ModEntity {
             event.put(SNAKE, EntitySnake.registerAttributes().create());
         if (ConfigMobControl.addSoftshellTurtle.get())
             event.put(SOFTSHELL_TURTLE, EntitySoftshellTurtle.registerAttributes().create());
+        if (ConfigMobControl.addTortoise.get())
+            event.put(TORTOISE, EntityTortoise.registerAttributes().create());
 
         if (ConfigMobControl.addGiantClam.get())
             event.put(GIANT_CLAM, EntityGiantClam.registerAttributes().create());
@@ -217,6 +221,10 @@ public class ModEntity {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNAKE, RendererSnake::new);
             EntitySnake.processSkins();
         }
+        if (ConfigMobControl.addTortoise.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TORTOISE, RendererTortoise::new);
+            EntityTortoise.processSkins();
+        }
         if (ConfigMobControl.addGiantClam.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, RendererGiantClam::new);
             EntityGiantClam.processSkins();
@@ -275,6 +283,7 @@ public class ModEntity {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
             EntityGiantSalamander.processSkins();
         }
+
         if (UntamedWilds.DEBUG) {
             UntamedWilds.LOGGER.info("---Dump of Common and Rare Texture arrays---");
             UntamedWilds.LOGGER.info(ComplexMob.TEXTURES_COMMON);

@@ -303,7 +303,7 @@ public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
                 this.progressPosition(head_neck, hippo.sitProgress, 0, 0, -10.0F, 40);
                 this.progressRotation(head_neck, hippo.sitProgress, 0.18203784098300857F, 0.0F, 0.0F, 40);
                 this.progressPosition(head_face, hippo.sitProgress, 0.0F, -1.0F, -5.0F, 40);
-                this.progressRotation(head_face, hippo.sitProgress, 00.0F, -0.27314402793711257F, 0.045553093477052F, 40);
+                this.progressRotation(head_face, hippo.sitProgress, 0.0F, -0.27314402793711257F, 0.045553093477052F, 40);
                 this.progressRotation(arm_right, hippo.sitProgress, -1.5025539530419183F, 0.27314402793711257F, 0.0F, 40);
                 this.progressRotation(arm_left, hippo.sitProgress, -1.5025539530419183F, -0.27314402793711257F, 0.0F, 40);
                 this.progressRotation(leg_right, hippo.sitProgress, -1.5481070465189704F, 2.5497515042385164F, 0.0F, 40);
