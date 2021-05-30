@@ -2,7 +2,6 @@ package untamedwilds.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
-import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -23,8 +22,6 @@ public class ModelHippoCalf extends AdvancedEntityModel<EntityHippo> {
     public AdvancedModelBox face_ear_left;
     public AdvancedModelBox eye_left;
     public AdvancedModelBox eye_right;
-
-    private ModelAnimator animator;
 
     public ModelHippoCalf() {
         this.textureWidth = 128;
@@ -87,7 +84,6 @@ public class ModelHippoCalf extends AdvancedEntityModel<EntityHippo> {
         this.head_face.addChild(this.eye_right);
         this.head_face.addChild(this.face_ear_left);
         this.body_main.addChild(this.arm_left);
-        animator = ModelAnimator.create();
         updateDefaultPose();
     }
 

@@ -33,7 +33,8 @@ public class GrazeGoal extends Goal {
         if (!this.taskOwner.canMove() || this.taskOwner.isChild() || this.taskOwner.getHunger() > 100 || this.taskOwner.getAttackTarget() != null || this.taskOwner.getRNG().nextInt(executionChance) != 0) {
             return false;
         }
-        this.testpos = new BlockPos(this.taskOwner.getPosition());
+        this.testpos = this.taskOwner.getPosition().add(Math.cos(Math.toRadians(this.taskOwner.rotationYaw + 90)) * 1.2, 0, Math.sin(Math.toRadians(this.taskOwner.rotationYaw + 90)) * 1.2);
+        //this.testpos = new BlockPos(this.taskOwner.getPosition());
         if (this.entityWorld.getBlockState(this.testpos).isIn(ModTags.BlockTags.GRAZEABLE_BLOCKS) || this.entityWorld.getBlockState(this.testpos.down()).getBlock() == Blocks.GRASS_BLOCK) {
             return true;
         }

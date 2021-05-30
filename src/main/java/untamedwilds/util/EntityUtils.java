@@ -6,17 +6,22 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Food;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.IParticleData;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -28,6 +33,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
+import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.entity.ISpecies;
 
 import javax.annotation.Nullable;
@@ -257,5 +263,47 @@ public abstract class EntityUtils {
             return ComplexMob.TEXTURES_RARE.get(name).get(entityIn.getVariant()).get(Math.min(entityIn.getSkin() - 100, ComplexMob.TEXTURES_RARE.get(name).get(entityIn.getVariant()).size() - 1));
         }
         return ComplexMob.TEXTURES_COMMON.get(name).get(entityIn.getVariant()).get(Math.min(entityIn.getSkin(), ComplexMob.TEXTURES_COMMON.get(name).get(entityIn.getVariant()).size() - 1));
+    }
+
+    // Tests an ItemStack and consumes it if found to be a Food. Also applies it's effects
+    public static void consumeItemStack(TameableEntity entityIn, ItemStack itemstack) {
+        if (itemstack.isFood()) {
+            Food itemFood = itemstack.getItem().getFood();
+            if (itemFood != null) {
+                entityIn.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
+                if (entityIn instanceof ComplexMobTerrestrial)
+                    ((ComplexMobTerrestrial)entityIn).addHunger(itemFood.getHealing() * 10);
+                else
+                    entityIn.heal(itemFood.getHealing());
+
+                for (Pair<EffectInstance, Float> pair : itemFood.getEffects()) {
+                    if (pair.getFirst() != null && entityIn.world.rand.nextFloat() < pair.getSecond()) {
+                        entityIn.addPotionEffect(new EffectInstance(pair.getFirst()));
+                    }
+                }
+            }
+        }
+        else if (itemstack.hasEffect()) {
+            entityIn.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1, 1);
+            if (entityIn instanceof ComplexMobTerrestrial)
+                ((ComplexMobTerrestrial)entityIn).addHunger(10);
+
+            for(EffectInstance effectinstance : PotionUtils.getEffectsFromStack(itemstack)) {
+                if (effectinstance.getPotion().isInstant())
+                    effectinstance.getPotion().affectEntity(entityIn.getOwner(), entityIn.getOwner(), entityIn, effectinstance.getAmplifier(), 1.0D);
+                else
+                    entityIn.addPotionEffect(new EffectInstance(effectinstance));
+            }
+        }
+    }
+
+    public static Vector3d getOvershootPath(Entity entityIn, Entity targetIn, double overshoot) {
+        double x = targetIn.getPosX() - entityIn.getPosX();
+        double z = targetIn.getPosZ() - entityIn.getPosZ();
+        float angle = (float) (Math.atan2(z, x));
+        double dist = MathHelper.sqrt(Math.pow(x, 2) + Math.pow(z, 2));
+        double add_x = MathHelper.cos(angle) * (dist + overshoot);
+        double add_z = MathHelper.sin(angle) * (dist + overshoot);
+        return new Vector3d(entityIn.getPosX() + add_x, targetIn.getPosY(), entityIn.getPosZ() + add_z);
     }
 }

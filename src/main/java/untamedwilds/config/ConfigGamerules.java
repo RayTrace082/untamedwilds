@@ -13,6 +13,8 @@ public class ConfigGamerules {
     public static ForgeConfigSpec.BooleanValue extinctMobs;
     public static ForgeConfigSpec.BooleanValue fantasyMobs;
     public static ForgeConfigSpec.BooleanValue grazerGriefing;
+    public static ForgeConfigSpec.BooleanValue mobGriefing;
+
     public static ForgeConfigSpec.BooleanValue sleepBehaviour;
     public static ForgeConfigSpec.BooleanValue easyMobCapturing;
     public static ForgeConfigSpec.IntValue cycleLength;
@@ -32,6 +34,8 @@ public class ConfigGamerules {
         extinctMobs = builder.comment("Should extinct mobs spawn naturally in the world?.").define("gamerules.extinct_mobs", true);
         fantasyMobs = builder.comment("Should fantasy mobs spawn naturally in the world?.").define("gamerules.fantasy_mobs", true);
         grazerGriefing = builder.comment("Should 'Grazing' mobs destroy Tall Grass and/or turn Grass into dirt blocks (like Vanilla Sheep do).").define("gamerules.grazer_griefing", true);
+        mobGriefing = builder.comment("Should mobs potentially destroy the terrain? Keep in mind 'mobGriefing' is still required").define("gamerules.mob_griefing", false);
+
         sleepBehaviour = builder.comment("Should the 'Sleeping' behaviour run? Disabling this option also disables the activity").define("gamerules.mob_sleeping", true);
         easyMobCapturing = builder.comment("If set to false, makes mobs a lot harder to catch by preventing the capture of hostile mobs").define("gamerules.easy_mob_capture", true);
 

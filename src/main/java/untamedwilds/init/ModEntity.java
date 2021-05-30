@@ -31,6 +31,7 @@ import untamedwilds.entity.fish.EntitySunfish;
 import untamedwilds.entity.fish.EntityTrevally;
 import untamedwilds.entity.mammal.EntityAardvark;
 import untamedwilds.entity.mammal.EntityHippo;
+import untamedwilds.entity.mammal.EntityRhino;
 import untamedwilds.entity.mammal.bear.*;
 import untamedwilds.entity.mammal.bigcat.*;
 import untamedwilds.entity.mollusk.EntityGiantClam;
@@ -67,6 +68,7 @@ public class ModEntity {
     // Mammals
     public static EntityType<EntityHippo> HIPPO = createEntity(ConfigMobControl.addHippo.get(), EntityHippo::new,  "hippo",  1.8F, 1.8F, 0x463A31, 0x956761, animalType.APEX_PRED, 6);
     public static EntityType<EntityAardvark> AARDVARK = createEntity(ConfigMobControl.addAardvark.get(), EntityAardvark::new,  "aardvark",  0.9F, 0.9F, 0x463A31, 0x956761, animalType.CRITTER, 2);
+    public static EntityType<EntityRhino> RHINO = createEntity(ConfigMobControl.addRhino.get(), EntityRhino::new,  "rhino",  2.0F, 1.8F, 0x787676, 0x665956, animalType.APEX_PRED, 2);
     // Bears
     public static EntityType<EntityBlackBear> BLACK_BEAR = createEntity(ConfigMobControl.addBear.get(), EntityBlackBear::new,  "bear_black",  1.3F, 1.3F, 0x0B0A08, 0x3D3226, animalType.APEX_PRED, 1);
     public static EntityType<EntityBlindBear> BLIND_BEAR = createEntity(ConfigMobControl.addBear.get() && ConfigGamerules.fantasyMobs.get(), EntityBlindBear::new,  "bear_blind",  1.6F, 1.6F, 0x241D1B, 0x4B3B35, animalType.LARGE_UNDERGROUND, 20);
@@ -165,6 +167,8 @@ public class ModEntity {
             event.put(HIPPO, EntityHippo.registerAttributes().create());
         if (ConfigMobControl.addAardvark.get())
             event.put(AARDVARK, EntityAardvark.registerAttributes().create());
+        if (ConfigMobControl.addRhino.get())
+            event.put(RHINO, EntityRhino.registerAttributes().create());
         if (ConfigMobControl.addBear.get()) {
             event.put(BLACK_BEAR, EntityBlackBear.registerAttributes().create());
             event.put(BROWN_BEAR, EntityBrownBear.registerAttributes().create());
@@ -236,6 +240,10 @@ public class ModEntity {
         if (ConfigMobControl.addAardvark.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.AARDVARK, RendererAardvark::new);
             EntityAardvark.processSkins();
+        }
+        if (ConfigMobControl.addRhino.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.RHINO, RendererRhino::new);
+            EntityRhino.processSkins();
         }
         if (ConfigMobControl.addBear.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, RendererBear::new);

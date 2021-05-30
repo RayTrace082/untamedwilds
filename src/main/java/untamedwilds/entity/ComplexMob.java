@@ -145,11 +145,9 @@ public abstract class ComplexMob extends TameableEntity {
         for (int i = 0; i < bound; i++) {
             T child = (T) this.func_241840_a((ServerWorld) this.world, this);
             if (child != null) {
-                child.setGrowingAge(this.getAdulthoodTime() * -1);
+                child.setGrowingAge(this.getAdulthoodTime() * -2);
                 child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
-                if (this instanceof ISkins) {
-                    child.setVariant(this.getVariant());
-                }
+                child.setVariant(this.getVariant());
                 if (this.getOwner() != null) {
                     child.setTamedBy((PlayerEntity) this.getOwner());
                 }
@@ -158,13 +156,12 @@ public abstract class ComplexMob extends TameableEntity {
             }
         }
     }
+    // TODO: WTF? Very redundant, and should be removed
     protected <T extends ComplexMob> T create_offspring(T entity) {
         entity.setGender(this.rand.nextInt(2));
         entity.setMobSize(this.rand.nextFloat());
         entity.setGrowingAge(entity.getAdulthoodTime() * -2);
-        if (entity instanceof ISkins) {
-            entity.setVariant(this.getVariant());
-        }
+        entity.setVariant(this.getVariant());
         return entity;
     }
 

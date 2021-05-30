@@ -1,7 +1,6 @@
 package untamedwilds.entity.mammal.bigcat;
 
 import com.github.alexthe666.citadel.animation.Animation;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -14,7 +13,6 @@ import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -205,26 +203,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
                         this.setSitting(false);
                     }
                 }
-                if (itemstack.isFood()) {
-                    this.playSound(SoundEvents.ENTITY_PLAYER_BURP, 1, 1);
-                    this.addHunger((itemstack.getItem().getFood().getHealing() * 10 * itemstack.getCount()));
-                    for (Pair<EffectInstance, Float> pair : itemstack.getItem().getFood().getEffects()) {
-                        if (pair.getFirst() != null && this.world.rand.nextFloat() < pair.getSecond()) {
-                            this.addPotionEffect(new EffectInstance(pair.getFirst()));
-                        }
-                    }
-                }
-                else if (itemstack.hasEffect()) {
-                    this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1, 1);
-                    this.addHunger(10);
-                    for(EffectInstance effectinstance : PotionUtils.getEffectsFromStack(itemstack)) {
-                        if (effectinstance.getPotion().isInstant()) {
-                            effectinstance.getPotion().affectEntity(this.getOwner(), this.getOwner(), this, effectinstance.getAmplifier(), 1.0D);
-                        } else {
-                            this.addPotionEffect(new EffectInstance(effectinstance));
-                        }
-                    }
-                }
+                EntityUtils.consumeItemStack(this, itemstack);
             }
             if (!this.isTamed() && this.isChild() && EntityUtils.hasFullHealth(this) && this.isFavouriteFood(itemstack)) {
                 this.playSound(SoundEvents.ENTITY_HORSE_EAT, 1.5F, 0.8F);
