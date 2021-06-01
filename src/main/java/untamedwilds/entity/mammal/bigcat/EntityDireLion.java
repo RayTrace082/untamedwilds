@@ -59,13 +59,6 @@ public class EntityDireLion extends AbstractBigCat {
                 .createMutableAttribute(Attributes.ARMOR, 0D);
     }
 
-    /* Crepuscular: Active between 10:00 and 1:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time > 4000 && time < 19000;
-    }
-
     /* Breeding conditions for the Cave Lion are:
      * Cold Biome (T between -1.0 and 0.4)
      * No other entities nearby */
@@ -91,6 +84,9 @@ public class EntityDireLion extends AbstractBigCat {
         return bear;
     }
 
+    protected activityType getActivityType() {
+        return activityType.CREPUSCULAR;
+    }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEEF; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }

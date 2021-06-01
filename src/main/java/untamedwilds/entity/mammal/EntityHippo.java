@@ -88,12 +88,6 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins {
                 .createMutableAttribute(Attributes.ARMOR, 0D);
     }
 
-    public boolean isActive() {
-        super.isActive();
-        float f = this.world.getCelestialAngleRadians(0F);
-        return (f > 0.21F && f < 0.78F);
-    }
-
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && this.growingAge == 0) {
             return this.getHunger() >= 80;
@@ -203,6 +197,9 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins {
 
     public Animation getAnimationEat() { return EAT; }
 
+    protected activityType getActivityType() {
+        return activityType.CATHEMERAL;
+    }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.MELON_SLICE; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }

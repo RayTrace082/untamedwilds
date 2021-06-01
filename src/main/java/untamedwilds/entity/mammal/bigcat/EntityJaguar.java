@@ -70,13 +70,6 @@ public class EntityJaguar extends AbstractBigCat implements ISkins {
                 .createMutableAttribute(Attributes.ARMOR, 0D);
     }
 
-    /* Crepuscular: Active between 10:00 and 1:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time > 4000 && time < 19000;
-    }
-
     /* Breeding conditions for the Jaguar are:
      * Warm Biome (T higher than 0.6)
      * No other entities nearby */
@@ -99,6 +92,9 @@ public class EntityJaguar extends AbstractBigCat implements ISkins {
         return create_offspring(new EntityJaguar(ModEntity.JAGUAR, this.world));
     }
 
+    protected activityType getActivityType() {
+        return activityType.CREPUSCULAR;
+    }
     @Override
     protected ResourceLocation getLootTable() {
         return ModLootTables.BIGCAT_LOOT_JAGUAR;

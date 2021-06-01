@@ -60,13 +60,6 @@ public class EntityGiantPanda extends AbstractBear {
                 .createMutableAttribute(Attributes.ARMOR, 4D);
     }
 
-    /* Crepuscular-Nocturnal: Active between 6:00 and 9:00 and between 20:00 and 2:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time < 3000 || (time > 14000 && time < 20000);
-    }
-
     /* Breeding conditions for the Black Bear are:
      * Warm Biome (T between than 0.7 and 1.0)
      * No other entities nearby */
@@ -88,7 +81,9 @@ public class EntityGiantPanda extends AbstractBear {
         return create_offspring(new EntityGiantPanda(ModEntity.PANDA_BEAR, this.world));
     }
 
-
+    protected activityType getActivityType() {
+        return activityType.CREPUSCULAR;
+    }
     @Override
     protected ResourceLocation getLootTable() {
         return ModLootTables.BEAR_LOOT_PANDA;

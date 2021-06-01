@@ -22,6 +22,7 @@ import untamedwilds.util.EntityUtils;
 import javax.annotation.Nullable;
 import java.util.List;
 
+// TODO: May be worth moving Sun Bears to the Badger body plan?
 public class EntitySunBear extends AbstractBear {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/bear/sun.png");
@@ -59,13 +60,6 @@ public class EntitySunBear extends AbstractBear {
                 .createMutableAttribute(Attributes.ARMOR, 4D);
     }
 
-    /* Diurnal: Active between 9:00 and 21:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time > 3000 && time < 15000;
-    }
-
     /* Breeding conditions for the Spectacled Bear are:
      * Hot Biome (T between 0.7 and 2)
      * No other entities nearby */
@@ -87,6 +81,9 @@ public class EntitySunBear extends AbstractBear {
         return create_offspring(new EntitySunBear(ModEntity.SUN_BEAR, this.world));
     }
 
+    protected activityType getActivityType() {
+        return activityType.DIURNAL;
+    }
     @Override
     protected ResourceLocation getLootTable() {
         return ModLootTables.BEAR_LOOT_SUN;

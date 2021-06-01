@@ -63,13 +63,6 @@ public class EntityPuma extends AbstractBigCat {
                 .createMutableAttribute(Attributes.ARMOR, 0D);
     }
 
-    /* Crepuscular: Active between 10:00 and 1:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time > 4000 && time < 19000;
-    }
-
     /* Breeding conditions for the Mountain Lion are:
      * Temperate Biome (T between 0.2 and 0.7)
      * No other entities nearby */
@@ -107,6 +100,9 @@ public class EntityPuma extends AbstractBigCat {
         return SoundEvents.ENTITY_OCELOT_DEATH;
     }
 
+    protected activityType getActivityType() {
+        return activityType.CREPUSCULAR;
+    }
     protected ResourceLocation getLootTable() {
         return ModLootTables.BIGCAT_LOOT_PUMA;
     }

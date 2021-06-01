@@ -3,11 +3,10 @@ package untamedwilds.entity.ai;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.LightType;
-import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
 import javax.annotation.Nullable;
@@ -20,28 +19,41 @@ public class GotoSleepGoal extends Goal {
     protected Vector3f target;
     private final int executionChance;
     private final double speed;
+    private final boolean usesHome;
 
     public GotoSleepGoal(ComplexMobTerrestrial entityIn, double speedIn) {
-        this(entityIn, speedIn, 120);
+        this(entityIn, speedIn, 200, true);
     }
 
     public GotoSleepGoal(ComplexMobTerrestrial entityIn, double speedIn, int chance) {
+        this(entityIn, speedIn, chance, true);
+    }
+
+    public GotoSleepGoal(ComplexMobTerrestrial entityIn, double speedIn, int chance, boolean usesHome) {
         this.creature = entityIn;
         this.speed = speedIn;
         this.executionChance = chance;
+        this.usesHome = usesHome;
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Flag.JUMP));
     }
 
     @Override
     public boolean shouldExecute() {
-        if (this.creature.getCommandInt() != 0 || this.creature.isActive() || this.creature.isBeingRidden() || !ConfigGamerules.sleepBehaviour.get() || !this.creature.canMove() || !this.creature.getNavigator().noPath()) {
+        if (this.creature.getRNG().nextInt(this.executionChance) != 0) {
             return false;
         }
-        /*if (this.creature.getIdleTime() >= 100) {
-                return false;
-        }*/
-        if (this.creature.getRNG().nextInt(this.executionChance) != 0) { return false; }
-        //UntamedWilds.LOGGER.info("Trying to Sleep");
+        if (this.creature.isSleeping() && this.creature.isActive() && this.creature.forceSleep <= 0) {
+            this.creature.setSleeping(false);
+            return false;
+        }
+        if (this.creature.getCommandInt() != 0 || this.creature.isActive() || this.creature.isBeingRidden() || !this.creature.canMove()) {
+            return false;
+        }
+        if (isValidShelter(this.creature.getPosition().offset(Direction.UP)) || !this.usesHome) {
+            this.creature.setHome(this.creature.getPosition());
+            this.creature.setSleeping(true);
+            return false;
+        }
         if (this.creature.getHome() == BlockPos.ZERO || !canEasilyReach(this.creature.getHome()) || this.creature.getDistanceSq(this.creature.getHomeAsVec()) > 100000) {
             this.creature.setHome(BlockPos.ZERO);
             BlockPos pos = this.checkForNewHome();
@@ -98,8 +110,8 @@ public class GotoSleepGoal extends Goal {
     }
 
     private boolean isValidShelter(BlockPos blockPos) {
-        // We consider a valid shelter a dark location, with Sky Light Level less than 13 (mostly, to prevent mobs sleeping under broad daylight)
-        //return this.creature.world.canBlockSeeSky(blockPos);
-        return this.creature.world.getLightFor(LightType.SKY, blockPos) <= 12; // Was 12
+        // We consider a valid shelter a dark location, with Sky Light Level less than 14 (mostly, to prevent mobs sleeping under broad daylight)
+        return !this.creature.world.canBlockSeeSky(blockPos);
+        //return this.creature.world.getLightFor(LightType.SKY, blockPos) <= 14; // Was 12
     }
 }

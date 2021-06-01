@@ -65,13 +65,6 @@ public class EntityBrownBear extends AbstractBear implements ISkins {
                 .createMutableAttribute(Attributes.ARMOR, 4D);
     }
 
-    /* Crepuscular: Active between 8:00 and 20:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time > 2000 && time < 14000;
-    }
-
     /* Breeding conditions for the Black Bear are:
      * Temperate Biome (T between 0.2 and 0.7)
      * No other entities nearby */
@@ -98,6 +91,9 @@ public class EntityBrownBear extends AbstractBear implements ISkins {
             EntityBrownBear.TEXTURES.add(new ResourceLocation(UntamedWilds.MOD_ID, String.format("textures/entity/bear/brown_%d.png", i)));
     }
 
+    protected activityType getActivityType() {
+        return activityType.DIURNAL;
+    }
     @Override
     protected ResourceLocation getLootTable() {
         return ModLootTables.BEAR_LOOT_BROWN;

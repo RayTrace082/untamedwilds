@@ -62,13 +62,6 @@ public class EntityLion extends AbstractBigCat implements IPackEntity {
                 .createMutableAttribute(Attributes.ARMOR, 0D);
     }
 
-    /* Diurnal: Active between 7:00 and 22:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time > 1000 && time < 16000;
-    }
-
     /* Breeding conditions for the Lion are:
      * Warm Biome (T higher than 0.6)
      * No more than 3 other entities nearby */
@@ -104,6 +97,9 @@ public class EntityLion extends AbstractBigCat implements IPackEntity {
         return bear;
     }
 
+    protected activityType getActivityType() {
+        return activityType.DIURNAL;
+    }
     protected ResourceLocation getLootTable() {
         return ModLootTables.BIGCAT_LOOT_LION;
     }

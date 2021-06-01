@@ -63,13 +63,6 @@ public class EntitySpectacledBear extends AbstractBear {
                 .createMutableAttribute(Attributes.ARMOR, 4D);
     }
 
-    /* Crepuscular: Active between 17:00 and 7:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time < 1000 || time > 11000;
-    }
-
     /* Breeding conditions for the Spectacled Bear are:
      * Temperate Biome (T between 0.2 and 0.7)
      * No other entities nearby */
@@ -91,7 +84,9 @@ public class EntitySpectacledBear extends AbstractBear {
         return create_offspring(new EntitySpectacledBear(ModEntity.SPECTACLED_BEAR, this.world));
     }
 
-
+    protected activityType getActivityType() {
+        return activityType.CREPUSCULAR;
+    }
     @Override
     protected ResourceLocation getLootTable() {
         return ModLootTables.BEAR_LOOT_SPECTACLED;

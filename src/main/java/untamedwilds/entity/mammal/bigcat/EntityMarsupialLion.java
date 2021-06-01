@@ -62,13 +62,6 @@ public class EntityMarsupialLion extends AbstractBigCat {
                 .createMutableAttribute(Attributes.ARMOR, 0D);
     }
 
-    /* Nocturnal: Active between 19:00 and 10:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time > 13000 || time < 4000;
-    }
-
     /* Breeding conditions for the Marsupial Lion are:
      * Warm Biome (T higher than 0.6)
      * No other entities nearby */
@@ -104,6 +97,9 @@ public class EntityMarsupialLion extends AbstractBigCat {
 
     protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_PANDA_DEATH; }
 
+    protected activityType getActivityType() {
+        return activityType.NOCTURNAL;
+    }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.CHICKEN; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }

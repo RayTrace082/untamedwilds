@@ -63,13 +63,6 @@ public class EntityBlindBear extends AbstractBear {
                 .createMutableAttribute(Attributes.ARMOR, 4D);
     }
 
-    /* Crepuscular: Active between 22:00 and 12:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time < 6000 || time > 16000;
-    }
-
     /* Breeding conditions for the Blind Cave Bear are:
      * Cold Biome (T between 0.0 and 0.5)
      * Darkness
@@ -92,7 +85,9 @@ public class EntityBlindBear extends AbstractBear {
         return create_offspring(new EntityBlindBear(ModEntity.BLIND_BEAR, this.world));
     }
 
-
+    protected activityType getActivityType() {
+        return activityType.CATHEMERAL;
+    }
     @Override
     protected ResourceLocation getLootTable() {
         return ModLootTables.BEAR_LOOT_BLIND;

@@ -60,13 +60,6 @@ public class EntitySnowLeopard extends AbstractBigCat {
                 .createMutableAttribute(Attributes.ARMOR, 0D);
     }
 
-    /* Nocturnal: Active between 19:00 and 10:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time > 13000 || time < 4000;
-    }
-
     /* Breeding conditions for the Snow Leopard are:
      * Cold Biome (T between -1.0 and 0.4)
      * No other entities nearby */
@@ -92,6 +85,9 @@ public class EntitySnowLeopard extends AbstractBigCat {
         return bear;
     }
 
+    protected activityType getActivityType() {
+        return activityType.NOCTURNAL;
+    }
     protected ResourceLocation getLootTable() {
         return ModLootTables.BIGCAT_LOOT_SNOW_LEOPARD;
     }

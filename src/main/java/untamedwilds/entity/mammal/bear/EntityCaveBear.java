@@ -63,13 +63,6 @@ public class EntityCaveBear extends AbstractBear {
                 .createMutableAttribute(Attributes.ARMOR, 4D);
     }
 
-    /* Crepuscular: Active between 19:00 and 9:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time < 3000 || time > 13000;
-    }
-
     /* Breeding conditions for the Cave Bear are:
      * Cold Biome (T between 0.0 and 0.5)
      * No other entities nearby */
@@ -91,7 +84,9 @@ public class EntityCaveBear extends AbstractBear {
         return create_offspring(new EntityCaveBear(ModEntity.CAVE_BEAR, this.world));
     }
 
-
+    protected activityType getActivityType() {
+        return activityType.CREPUSCULAR;
+    }
     @Override
     protected ResourceLocation getLootTable() {
         return ModLootTables.BEAR_LOOT_CAVE;

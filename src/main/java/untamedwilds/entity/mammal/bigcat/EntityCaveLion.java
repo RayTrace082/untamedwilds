@@ -60,13 +60,6 @@ public class EntityCaveLion extends AbstractBigCat {
                 .createMutableAttribute(Attributes.ARMOR, 0D);
     }
 
-    /* Diurnal: Active between 7:00 and 22:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time > 1000 && time < 16000;
-    }
-
     /* Breeding conditions for the Snow Leopard are:
      * Cold Biome (T between -1.0 and 0.4)
      * No other entities nearby */
@@ -92,6 +85,7 @@ public class EntityCaveLion extends AbstractBigCat {
         return bear;
     }
 
+    protected activityType getActivityType() { return activityType.DIURNAL; }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEEF; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }

@@ -3,6 +3,7 @@ package untamedwilds.entity;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -41,7 +42,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
     public int sitProgress; // A counter which defines the progress towards the Sitting Poses
     public int ticksToSit;
     public int sleepProgress; // A counter which defines the progress towards the Sleeping Poses
-    protected int forceSleep;
+    public int forceSleep;
     protected int tiredCounter = 0;
     protected int buoyancy = 1;
     private static final DataParameter<Integer> HUNGER = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.VARINT);
@@ -75,14 +76,13 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
                 this.setSitting(false);
                 this.setSleeping(false);
             }
-            if (this.isSleeping() && this.forceSleep <= 0 && this.isActive()) {
-                this.setSleeping(false);
-            }
-            if (!this.isSleeping() && this.forceSleep > 0) {
-                this.setSleeping(true);
-            }
+
             if (this.getAir() < 40 && this.ticksExisted % 10 == 0) { // TODO: There's probably a better place to dump this (mobs about to drown will go to the surface for air), but it refuses to work everywhere else
                 this.jump();
+            }
+
+            if (!this.isSleeping() && this.forceSleep > 0) {
+                this.setSleeping(true);
             }
             if (this.ticksExisted % 200 == 0) {
                 if (!this.isActive() && this.getNavigator().noPath()) {
@@ -129,11 +129,51 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
         return super.func_230254_b_(player, hand);
     }
 
+    protected activityType getActivityType() {
+        return activityType.INSOMNIAC;
+    }
+
     public boolean isActive() {
-        if (this.isTamed() || !ConfigGamerules.sleepBehaviour.get()) {
+        activityType type = this.getActivityType();
+        Pair<Integer, Integer> times = type.getTimes();
+        if ((this.isTamed() && this.getCommandInt() != 0) || !ConfigGamerules.sleepBehaviour.get()) {
             return true;
         }
+        if (type == activityType.CATHEMERAL) {
+            return this.ticksExisted % 17000 < 3000;
+        }
+        long time = this.world.getDayTime();
+        if (!times.getFirst().equals(times.getSecond())) {
+            if (times.getFirst() > times.getSecond()) {
+                return time > times.getFirst() || time < times.getSecond();
+            }
+            else {
+                return time > times.getFirst() && time < times.getSecond();
+            }
+        }
         return this.forceSleep >= 0;
+    }
+
+    protected enum activityType implements IStringSerializable {
+        DIURNAL         (1000, 16000), // From 7 AM to 10 PM
+        NOCTURNAL       (13000, 4000), // From 7 PM to 10 AM
+        CREPUSCULAR     (8000, 23000), // From 14 PM to 5 AM ; 4000 - 19000 ???
+        CATHEMERAL      (-1, -1),      // Random naps throughout the day
+        INSOMNIAC       (-1, -1);      // No sleep, redundant, should just not add the GoToSleepGoal
+
+        public int wakeUp;
+        public int sleep;
+
+        activityType(int wakeUp, int sleep) {
+            this.wakeUp = wakeUp;
+            this.sleep = sleep;
+        }
+
+        public Pair<Integer, Integer> getTimes() {
+            return new Pair<>(this.wakeUp, this.sleep);
+        }
+
+        public String getString() { return null; }
     }
 
     private void setHunger(int hunger){

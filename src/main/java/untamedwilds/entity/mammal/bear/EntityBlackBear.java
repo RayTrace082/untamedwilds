@@ -71,13 +71,6 @@ public class EntityBlackBear extends AbstractBear implements ISkins {
                 .createMutableAttribute(Attributes.ARMOR, 4D);
     }
 
-    /* Crepuscular: Active between 10:00 and 22:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time > 4000 && time < 16000;
-    }
-
     /* Breeding conditions for the Black Bear are:
      * Temperate Biome (T between 0.2 and 0.7)
      * No other entities nearby */
@@ -100,6 +93,9 @@ public class EntityBlackBear extends AbstractBear implements ISkins {
         return create_offspring(new EntityBlackBear(ModEntity.BLACK_BEAR, this.world));
     }
 
+    protected activityType getActivityType() {
+        return activityType.CREPUSCULAR;
+    }
     @Override
     protected ResourceLocation getLootTable() {
         return ModLootTables.BEAR_LOOT_BLACK;

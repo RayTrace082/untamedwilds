@@ -64,13 +64,6 @@ public class EntityPolarBear extends AbstractBear {
                 .createMutableAttribute(Attributes.ARMOR, 4D);
     }
 
-    /* Diurnal: Active between 8:00 and 0:00 */
-    public boolean isActive() {
-        super.isActive();
-        long time = this.world.getDayTime();
-        return time < 13000 || time > 23000;
-    }
-
     /* Breeding conditions for the Polar Bear are:
      * Frozen Biome (T between -1.0 and 0.1)
      * No other entities nearby */
@@ -95,6 +88,9 @@ public class EntityPolarBear extends AbstractBear {
 
     public boolean hasLongBody() { return true; }
 
+    protected activityType getActivityType() {
+        return activityType.DIURNAL;
+    }
     @Override
     protected ResourceLocation getLootTable() {
         return ModLootTables.BEAR_LOOT_POLAR;
