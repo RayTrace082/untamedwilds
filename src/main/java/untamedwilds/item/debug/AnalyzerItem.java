@@ -30,7 +30,7 @@ public class AnalyzerItem extends Item {
         if (target instanceof ComplexMob) {
             ComplexMob entity = (ComplexMob)target;
             String entityName = entity instanceof ISpecies ? ((ISpecies) entity).getSpeciesName() : entity.getName().getString();
-            playerIn.sendMessage(new StringTextComponent("Diagnose: " + entity.getGenderString() + " " + entityName + " " + entity.getHealth() + "/" + entity.getMaxHealth() + " HP"), playerIn.getUniqueID());
+            playerIn.sendMessage(new StringTextComponent("Diagnose: " + (ConfigGamerules.genderedBreeding.get() ? entity.getGenderString() + " " : "") + entityName + " " + entity.getHealth() + "/" + entity.getMaxHealth() + " HP"), playerIn.getUniqueID());
 
             if (ConfigGamerules.scientificNames.get()) {
                 String useVarName = entity instanceof ISpecies ? "_" + ((ISpecies) entity).getRawSpeciesName(entity.getVariant()) : "";

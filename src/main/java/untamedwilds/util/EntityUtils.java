@@ -306,4 +306,9 @@ public abstract class EntityUtils {
         double add_z = MathHelper.sin(angle) * (dist + overshoot);
         return new Vector3d(entityIn.getPosX() + add_x, targetIn.getPosY(), entityIn.getPosZ() + add_z);
     }
+
+    // Checks if a mob is NOT a valid partner for the input. Both entityIn and partnerIn should be the same class
+    public static boolean isInvalidPartner(ComplexMob entityIn, ComplexMob partnerIn, boolean isHermaphrodite) {
+        return (ConfigGamerules.genderedBreeding.get() && (partnerIn.getGender() == entityIn.getGender() || isHermaphrodite)) || (partnerIn.getVariant() != entityIn.getVariant()) || partnerIn.getGrowingAge() != 0;
+    }
 }

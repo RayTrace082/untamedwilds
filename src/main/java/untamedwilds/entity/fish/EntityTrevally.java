@@ -103,7 +103,7 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
             List<EntityTrevally> list = this.world.getEntitiesWithinAABB(EntityTrevally.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
-            list.removeIf(input -> (input.getGender() == this.getGender()) || input.getGrowingAge() != 0);
+            list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
             if (list.size() >= 1) {
                 this.setGrowingAge(GROWING);
                 list.get(0).setGrowingAge(GROWING);

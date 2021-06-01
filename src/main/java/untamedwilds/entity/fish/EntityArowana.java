@@ -96,7 +96,7 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies, INewSk
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
             List<EntityArowana> list = this.world.getEntitiesWithinAABB(EntityArowana.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
-            list.removeIf(input -> (input.getGender() == this.getGender()) || (input.getVariant() != this.getVariant()) || input.getGrowingAge() != 0);
+            list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
             if (list.size() >= 1) {
                 this.setGrowingAge(GROWING);
                 list.get(0).setGrowingAge(GROWING);

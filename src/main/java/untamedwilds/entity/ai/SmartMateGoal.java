@@ -98,7 +98,7 @@ public class SmartMateGoal extends Goal {
     }
 
     private boolean canMateWith(ComplexMob father, ComplexMob mother) {
-        if (father.getGender() == mother.getGender()) {
+        if (ConfigGamerules.genderedBreeding.get() && father.getGender() == mother.getGender()) {
             return false;
         }
         else if (!(father instanceof ISkins) && father.getVariant() != mother.getVariant()) {
