@@ -55,7 +55,6 @@ public class UntamedWildsGenerator {
 
     private static final RegistryObject<Feature<NoFeatureConfig>> CRITTER_BURROW = regFeature("burrow", () -> new FeatureCritterBurrow(NoFeatureConfig.field_236558_a_));
 
-
     private static <B extends Feature<?>> RegistryObject<B> regFeature(String name, Supplier<? extends B> supplier) {
         return FEATURES.register(name, supplier);
     }

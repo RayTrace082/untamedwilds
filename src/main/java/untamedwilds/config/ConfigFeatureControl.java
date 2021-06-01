@@ -22,7 +22,7 @@ public class ConfigFeatureControl {
         addAnemones = builder.comment("Controls whether to add Anemones and their associated items to oceans.").define("gencontrol.anemone", true);
         addReeds = builder.comment("Controls whether to add Reeds and their associated items.").define("gencontrol.reeds", true);
         addBushes = builder.comment("Controls whether to add Bushes and their associated items to most biomes.").define("gencontrol.bush", true);
-        addTreeOrchids = builder.comment("Controls whether to add Tree Orchids and their associated items. (NYI)").define("gencontrol.tree_orchid", false);
+        addTreeOrchids = builder.comment("Controls whether to add Tree Orchids and their associated items.").define("gencontrol.tree_orchid", true);
         addAlgae = builder.comment("Controls whether to add Amazon Sword and their associated items").define("gencontrol.algae", true);
         addBurrows = builder.comment("Controls whether to use Burrows to spawn Critters, instead of having them clog up the Spawns").define("gencontrol.burrows", true);
 
