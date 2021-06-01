@@ -363,6 +363,7 @@
   "block.untamedwilds.trap_cage": "Cage Trap",
   "block.trap_cage.state_empty": "Empty",
   "block.trap_cage.state_full": "Contains:",
+  "block.untamedwilds.block_burrow": "Burrow",
   "block.burrow.state": "This burrow belongs to some kind of %s",
 
   "tetra.variant.sword_socket/pearl": "Socket [§3Pearl§r]",
