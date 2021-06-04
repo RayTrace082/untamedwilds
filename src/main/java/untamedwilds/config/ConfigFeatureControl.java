@@ -15,6 +15,7 @@ public class ConfigFeatureControl {
     public static ForgeConfigSpec.IntValue freqSessile;
     public static ForgeConfigSpec.IntValue freqOcean;
     public static ForgeConfigSpec.IntValue freqApex;
+    public static ForgeConfigSpec.DoubleValue probUnderground;
 
     ConfigFeatureControl(final ForgeConfigSpec.Builder builder) {
         //builder.push("feature_control");
@@ -31,6 +32,7 @@ public class ConfigFeatureControl {
         freqOcean = builder.comment("Frequency of Ocean Mobs, 1 in N chunks will generate with Ocean Mobs (0 to disable)").defineInRange("gencontrol.freqocean", 16, 0, Integer.MAX_VALUE);
         freqApex = builder.comment("Frequency of Apex Predators, 1 in N chunks will generate with an Apex Predator (0 to disable)").defineInRange("gencontrol.freqapex", 24, 0, Integer.MAX_VALUE);
         freqWater = builder.comment("Frequency of Freshwater Mobs, 1 in N chunks will generate with Freshwater Mobs (0 to disable)").defineInRange("gencontrol.freqwater", 4, 0, Integer.MAX_VALUE);
+        probUnderground = builder.comment("Probability that an Underground block in a cave will attempt to spawn a mob (0 to disable). If YUNG's Better Caves is installed, this value is further reduced to 0.33x").defineInRange("gencontrol.probunderground", 0.0004, 0, 1);
 
         //builder.pop();
     }

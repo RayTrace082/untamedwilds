@@ -21,12 +21,10 @@ public class FeatureUndergroundFaunaLarge extends Feature<NoFeatureConfig> {
 
     public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         if (pos.getY() < 52) {
-            if (rand.nextFloat() > 0.96) {
-                for (int i = 0; i < 5; i++) {
-                    FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND));
-                    if (FaunaSpawn.performWorldGenSpawning(entry.entityType, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, world, pos, rand, entry.groupCount)) {
-                        return true;
-                    }
+            for (int i = 0; i < 5; i++) {
+                FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND));
+                if (FaunaSpawn.performWorldGenSpawning(entry.entityType, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, world, pos, rand, entry.groupCount)) {
+                    return true;
                 }
             }
         }
