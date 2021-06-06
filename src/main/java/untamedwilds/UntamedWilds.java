@@ -52,8 +52,8 @@ public class UntamedWilds {
         eventBus.addListener(this::setupClient);
         ModBlock.BLOCKS.register(eventBus);
         ModBlock.TILE_ENTITY_TYPES.register(eventBus);
-        ModItems.registerSpawnItems();
         ModItems.ITEMS.register(eventBus);
+        ModItems.registerSpawnItems();
         UntamedWildsGenerator.FEATURES.register(eventBus);
         CompatBridge.RegisterCompat();
         MinecraftForge.EVENT_BUS.register(ModVillagerTrades.class); // Custom Villager Trades

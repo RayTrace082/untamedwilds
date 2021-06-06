@@ -5,6 +5,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -121,6 +122,7 @@ public class ModItems {
                 ModItems.ITEMS.register("egg_giant_clam_" + EntityGiantClam.SpeciesGiantClam.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.GIANT_CLAM, giant_clamSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             }
         }
+
         // Sunfish Items
         if (ConfigMobControl.addSunfish.get()) {
             for (int i = 0; i < EntitySunfish.SpeciesSunfish.values().length; i++) {
@@ -160,5 +162,11 @@ public class ModItems {
                 ModItems.ITEMS.register("tortoise_" + EntityTortoise.SpeciesTortoise.values()[i].name().toLowerCase(), () -> new MobSpawnItem(ModEntity.TORTOISE, tortoise, EntityTortoise.SpeciesTortoise.values()[tortoise].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             }
         }
+    }
+
+    public static void addSpawnEggWithData(int speciesNumber, String typeName) {
+        NonNullList<ItemStack> items = NonNullList.create();
+
+        ItemGroupUT.untamedwilds_items.fill(items);
     }
 }

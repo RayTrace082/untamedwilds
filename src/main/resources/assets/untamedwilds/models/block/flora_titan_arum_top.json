@@ -1,0 +1,23 @@
+{
+	"parent": "block/block",
+	"ambientocclusion": false,
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "untamedwilds:block/flora/titan_arum_bottom",
+		"particle": "untamedwilds:block/flora/titan_arum_bottom"
+	},
+	"elements": [
+		{
+			"from": [5, 0, 5],
+			"to": [11, 16, 11],
+			"faces": {
+				"north": {"uv": [10.5, 0, 13.5, 8], "texture": "#0"},
+				"east": {"uv": [10.5, 0, 13.5, 8], "texture": "#0"},
+				"south": {"uv": [10.5, 0, 13.5, 8], "texture": "#0"},
+				"west": {"uv": [10.5, 0, 13.5, 8], "texture": "#0"},
+				"up": {"uv": [10.5, 2.5, 13.5, 5.5], "texture": "#0"},
+				"down": {"uv": [10.5, 2.5, 13.5, 5.5], "texture": "#0"}
+			}
+		}
+	]
+}
