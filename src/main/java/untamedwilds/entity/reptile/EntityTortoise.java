@@ -99,7 +99,10 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
                     }
                 }
                 else if (this.rand.nextInt(30) == 0) {
-                    this.setSitting(false);
+                    List<PlayerEntity> list = this.world.getEntitiesWithinAABB(PlayerEntity.class, this.getBoundingBox().grow(4.0D, 2.0D, 4.0D));
+                    if (list.isEmpty()) {
+                        this.setSitting(false);
+                    }
                 }
             }
         }
