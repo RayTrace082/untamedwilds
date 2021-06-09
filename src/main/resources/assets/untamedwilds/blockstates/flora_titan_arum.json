@@ -1,0 +1,12 @@
+{
+	"variants": {
+		"age=0,stage=0": {	"model": "untamedwilds:block/flora_titan_arum_corm" },
+		"age=1,stage=0": {	"model": "untamedwilds:block/flora_titan_arum_bottom_young" },
+		"age=2,stage=0": {	"model": "untamedwilds:block/flora_titan_arum_middle_young" },
+		"age=3,stage=0": {	"model": "untamedwilds:block/flora_titan_arum_middle_young" },
+		"age=0,stage=1": {	"model": "untamedwilds:block/flora_titan_arum_corm" },
+		"age=1,stage=1": {	"model": "untamedwilds:block/flora_titan_arum_bottom" },
+		"age=2,stage=1": {	"model": "untamedwilds:block/flora_titan_arum_middle" },
+		"age=3,stage=1": {	"model": "untamedwilds:block/flora_titan_arum_top" }
+	}
+}

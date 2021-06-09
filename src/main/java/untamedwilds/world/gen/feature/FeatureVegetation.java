@@ -1,5 +1,6 @@
 package untamedwilds.world.gen.feature;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -11,6 +12,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureSpreadConfig;
+import untamedwilds.block.IPostGenUpdate;
 import untamedwilds.config.ConfigFeatureControl;
 import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModTags.BlockTags;
@@ -30,14 +32,22 @@ public class FeatureVegetation extends Feature<FeatureSpreadConfig> {
         int x = rand.nextInt(16) - 8;
         int z = rand.nextInt(16) - 8;
         BlockPos pos = genPos.add(x, 0, z);
-        for(int i = 0; i < 32; ++i) {
-            BlockPos blockpos = pos.add(rand.nextInt(6) - rand.nextInt(6), rand.nextInt(2) - rand.nextInt(2), rand.nextInt(6) - rand.nextInt(6));
-            if(world.getBlockState(blockpos.down()).getBlock().isIn(BlockTags.REEDS_PLANTABLE_ON)) {
-                if(world.isAirBlock(blockpos) || (world.getBlockState(blockpos).getBlock() == Blocks.WATER && world.isAirBlock(blockpos.up()))) {
-                    Block block = FloraTypes.getFloraForPos(world, blockpos);
-                    if (block != null) {
-                        world.setBlockState(blockpos, block.getDefaultState(), 2);
-                        flag = true;
+        Pair<Block, Integer> flora = FloraTypes.getFloraForPos(world, genPos);
+        if (flora != null) {
+            Block block = flora.getFirst();
+            int size = flora.getSecond();
+            for(int i = 0; i < size; ++i) {
+                BlockPos blockpos = pos.add(rand.nextInt(6) - rand.nextInt(6), rand.nextInt(2) - rand.nextInt(2), rand.nextInt(6) - rand.nextInt(6));
+                if(world.getBlockState(blockpos.down()).getBlock().isIn(BlockTags.REEDS_PLANTABLE_ON)) {
+                    if (world.getBlockState(blockpos).canBeReplacedByLeaves(world, blockpos) && (world.getFluidState(blockpos).isEmpty())) {
+                        if (block != null) {
+                            world.setBlockState(blockpos, block.getDefaultState(), 2);
+                            if (block.getBlock() instanceof IPostGenUpdate) {
+                                world.setBlockState(blockpos.east(), Blocks.TORCH.getDefaultState(), 2);
+                                ((IPostGenUpdate)block.getBlock()).updatePostGen(world, blockpos);
+                            }
+                            flag = true;
+                        }
                     }
                 }
             }
@@ -49,23 +59,26 @@ public class FeatureVegetation extends Feature<FeatureSpreadConfig> {
     // Plants available, referenced to properly distribute them in the world if their conditions are filled
     public enum FloraTypes implements IStringSerializable {
 
-        TEMPERATE_BUSH	(ModBlock.BUSH_TEMPERATE.get(), 8, ConfigFeatureControl.addBushes.get(), false, Biome.Category.FOREST, Biome.Category.SWAMP, Biome.Category.EXTREME_HILLS, Biome.Category.TAIGA, Biome.Category.PLAINS),
-        ELEPHANT_EAR	(ModBlock.ELEPHANT_EAR.get(), 8, ConfigFeatureControl.addBushes.get(), false, Biome.Category.JUNGLE),
-        HEMLOCK     	(ModBlock.HEMLOCK.get(), 1, ConfigFeatureControl.addBushes.get(), false, Biome.Category.FOREST, Biome.Category.PLAINS);
+        TEMPERATE_BUSH	(ModBlock.BUSH_TEMPERATE.get(), 8, ConfigFeatureControl.addBushes.get(), false, 32, Biome.Category.FOREST, Biome.Category.SWAMP, Biome.Category.EXTREME_HILLS, Biome.Category.TAIGA, Biome.Category.PLAINS),
+        ELEPHANT_EAR	(ModBlock.ELEPHANT_EAR.get(), 4, ConfigFeatureControl.addBushes.get(), false, 32, Biome.Category.JUNGLE),
+        HEMLOCK     	(ModBlock.HEMLOCK.get(), 1, ConfigFeatureControl.addBushes.get(), false, 16, Biome.Category.FOREST, Biome.Category.PLAINS),
+        TITAN_ARUM     	(ModBlock.TITAN_ARUM.get(), 12, ConfigFeatureControl.addBushes.get(), false, 1, Biome.Category.JUNGLE);
 
 
         public Block type;
         public int rarity;
         public boolean enabled;
         public boolean spawnsInWater;
+        public int size;
         public Biome.Category[] spawnBiomes;
 
-        FloraTypes(Block type, int rolls, boolean add, boolean spawnsInWater, Biome.Category... biomes) {
+        FloraTypes(Block type, int rolls, boolean add, boolean spawnsInWater, int size, Biome.Category... biomes) {
             this.type = type;
             this.rarity = rolls;
             this.enabled = add;
             this.spawnsInWater = spawnsInWater;
             this.spawnBiomes = biomes;
+            this.size = size;
         }
 
         @Override
@@ -73,7 +86,7 @@ public class FeatureVegetation extends Feature<FeatureSpreadConfig> {
             return "why would you do this?";
         }
 
-        public static Block getFloraForPos(IWorld world, BlockPos pos) {
+        public static Pair<Block, Integer> getFloraForPos(IWorld world, BlockPos pos) {
             Biome biome = world.getBiome(pos);
             List<FeatureVegetation.FloraTypes> types = new ArrayList<>();
             for (FeatureVegetation.FloraTypes type : values()) {
@@ -87,7 +100,11 @@ public class FeatureVegetation extends Feature<FeatureSpreadConfig> {
                     }
                 }
             }
-            return !types.isEmpty() ? types.get(new Random().nextInt(types.size())).type : null;
+            if (!types.isEmpty()) {
+                int i = new Random().nextInt(types.size());
+                return new Pair(types.get(i).type, types.get(i).size);
+            }
+            return null;
         }
     }
 }

@@ -5,6 +5,7 @@
 	"textures": {
 		"0": "untamedwilds:block/flora/titan_arum_bottom",
 		"1": "untamedwilds:block/flora/titan_arum_flower",
+		"2": "untamedwilds:block/flora/orchid_roots",
 		"particle": "untamedwilds:block/flora/titan_arum_bottom"
 	},
 	"elements": [
@@ -36,12 +37,16 @@
 			"from": [-8, 16.26, -8],
 			"to": [24, 16.26, 24],
 			"faces": {
-				"north": {"uv": [0, 0, 16, 0], "texture": "#1"},
-				"east": {"uv": [0, 0, 16, 0], "texture": "#1"},
-				"south": {"uv": [0, 0, 16, 0], "texture": "#1"},
-				"west": {"uv": [0, 0, 16, 0], "texture": "#1"},
 				"up": {"uv": [0, 0, 16, 16], "texture": "#1"},
 				"down": {"uv": [0, 0, 16, 16], "rotation": 180, "texture": "#1"}
+			}
+		},
+		{
+			"from": [0, 0, 0],
+			"to": [16, 0.1, 16],
+			"faces": {
+				"up": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#2"}
 			}
 		}
 	]

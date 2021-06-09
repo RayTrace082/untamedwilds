@@ -1,0 +1,77 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "untamedwilds:flora_titan_arum_corm"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:match_tool",
+          "predicate": {
+            "item": "minecraft:shears"
+          }
+        },
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "untamedwilds:flora_titan_arum",
+          "properties": {
+            "age": "0"
+          }
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "untamedwilds:flora_titan_arum_corm"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:match_tool",
+          "predicate": {
+            "item": "minecraft:shears"
+          }
+        },
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "untamedwilds:flora_titan_arum",
+          "properties": {
+            "age": "1"
+          }
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "untamedwilds:flora_titan_arum_corm"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:match_tool",
+          "predicate": {
+            "item": "minecraft:shears"
+          }
+        },
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "untamedwilds:flora_titan_arum",
+          "properties": {
+            "age": "4"
+          }
+        }
+      ]
+    }
+  ]
+}
