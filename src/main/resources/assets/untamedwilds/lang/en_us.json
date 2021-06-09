@@ -209,6 +209,13 @@
   "entity.untamedwilds.shark_tiger": "Tiger Shark",
   "entity.untamedwilds.shark_tiger.sciname": "Galeocerdo cuvier",
 
+  "item.untamedwilds.football_fish_spawn_egg": "Football Fish Spawn Egg",
+  "item.untamedwilds.egg_football_fish": "Football Fish Roe",
+  "entity.untamedwilds.football_fish": "football fish",
+  "entity.untamedwilds.football_fish_atlantic": "Atlantic Football Fish",
+  "entity.untamedwilds.football_fish_atlantic.sciname": "Himantolophus groenlandicus",
+  "item.untamedwilds.bucket_football_fish_atlantic": "Bucket of Football Fish",
+
   "item.untamedwilds.softshell_turtle_spawn_egg": "Softshell Turtle Spawn Egg",
   "item.untamedwilds.food_turtle_raw": "Raw Turtle Meat",
   "item.untamedwilds.food_turtle_cooked": "Cooked Turtle Meat",

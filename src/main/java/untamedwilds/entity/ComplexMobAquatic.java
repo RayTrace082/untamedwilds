@@ -170,18 +170,17 @@ public abstract class ComplexMobAquatic extends ComplexMob {
 
     protected static class SwimGoal extends RandomSwimmingGoal {
 
-        public boolean offset;
+        public int heightFromBottom;
 
         public SwimGoal(ComplexMobAquatic entity) {
             super(entity, 1.0D, 20);
-            this.offset = false;
+            this.heightFromBottom = -1;
         }
 
-        public SwimGoal(ComplexMobAquatic entity, boolean offset) {
+        public SwimGoal(ComplexMobAquatic entity, int offset) {
             super(entity, 1.0D, 20);
-            this.offset = offset;
+            this.heightFromBottom = offset;
         }
-
 
         public boolean shouldExecute() {
             return super.shouldExecute();
@@ -194,8 +193,8 @@ public abstract class ComplexMobAquatic extends ComplexMob {
             for(int i = 0; vector3d != null && !this.creature.world.getBlockState(new BlockPos(vector3d)).allowsMovement(this.creature.world, new BlockPos(vector3d), PathType.WATER) && i++ < 10; vector3d = RandomPositionGenerator.findRandomTarget(this.creature, 10, 7)) {
             }
 
-            if (vector3d != null && this.offset) {
-                int offset = 5 + this.creature.getRNG().nextInt(7) - 4;
+            if (vector3d != null && this.heightFromBottom > 0 && this.creature.world.canBlockSeeSky(this.creature.getPosition())) {
+                int offset = this.heightFromBottom + this.creature.getRNG().nextInt(7) - 4;
                 return new Vector3d(vector3d.getX(), this.creature.world.getHeight(Heightmap.Type.OCEAN_FLOOR, (int)vector3d.getX(), (int)vector3d.getZ()) + offset, vector3d.getZ());
             }
             return vector3d;

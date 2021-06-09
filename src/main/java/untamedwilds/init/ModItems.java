@@ -15,6 +15,7 @@ import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
 import untamedwilds.entity.arthropod.EntityTarantula;
 import untamedwilds.entity.fish.EntityArowana;
+import untamedwilds.entity.fish.EntityFootballFish;
 import untamedwilds.entity.fish.EntitySunfish;
 import untamedwilds.entity.fish.EntityTrevally;
 import untamedwilds.entity.mollusk.EntityGiantClam;
@@ -145,6 +146,14 @@ public class ModItems {
                 int arowanaSpecies = i;
                 ModItems.ITEMS.register("egg_arowana_" + EntityArowana.SpeciesArowana.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.AROWANA, arowanaSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
                 ModItems.ITEMS.register("bucket_arowana_" + EntityArowana.SpeciesArowana.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.AROWANA, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), arowanaSpecies, EntityArowana.SpeciesArowana.values()[arowanaSpecies].name().toLowerCase()));
+            }
+        }
+        // Football Fish Items
+        if (ConfigMobControl.addFootballFish.get()) {
+            for (int i = 0; i < EntityFootballFish.SpeciesFootballFish.values().length; i++) {
+                int footballFishSpecies = i;
+                ModItems.ITEMS.register("egg_football_fish_" + EntityFootballFish.SpeciesFootballFish.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.FOOTBALL_FISH, footballFishSpecies, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("bucket_football_fish_" + EntityFootballFish.SpeciesFootballFish.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.FOOTBALL_FISH, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), footballFishSpecies, EntityFootballFish.SpeciesFootballFish.values()[footballFishSpecies].name().toLowerCase()));
             }
         }
         // Giant Salamander Items

@@ -17,6 +17,7 @@ public class ConfigMobControl {
     public static ForgeConfigSpec.BooleanValue addTrevally;
     public static ForgeConfigSpec.BooleanValue addArowana;
     public static ForgeConfigSpec.BooleanValue addShark;
+    public static ForgeConfigSpec.BooleanValue addFootballFish;
     public static ForgeConfigSpec.BooleanValue addTarantula;
     public static ForgeConfigSpec.BooleanValue addGiantClam;
     public static ForgeConfigSpec.BooleanValue addGiantSalamander;
@@ -38,6 +39,7 @@ public class ConfigMobControl {
         addTrevally = builder.comment("Controls whether to add Trevally and their associated items.").define("mobcontrol.trevally", true);
         addArowana = builder.comment("Controls whether to add Arowana and their associated items.").define("mobcontrol.arowana", true);
         addShark = builder.comment("Controls whether to add Sharks and their associated items.").define("mobcontrol.shark", true);
+        addFootballFish = builder.comment("Controls whether to add Football Fish and their associated items.").define("mobcontrol.football_fish", true);
         addTarantula = builder.comment("Controls whether to add Tarantulas and their associated items.").define("mobcontrol.tarantula", true);
         addGiantClam = builder.comment("Controls whether to add Giant Clams and their associated items.").define("mobcontrol.giant_clam", true);
         addGiantSalamander = builder.comment("Controls whether to add Giant Salamanders and their associated items.").define("mobcontrol.giant_salamander", true);

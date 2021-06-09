@@ -25,10 +25,7 @@ import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
 import untamedwilds.entity.arthropod.EntityTarantula;
-import untamedwilds.entity.fish.EntityArowana;
-import untamedwilds.entity.fish.EntityShark;
-import untamedwilds.entity.fish.EntitySunfish;
-import untamedwilds.entity.fish.EntityTrevally;
+import untamedwilds.entity.fish.*;
 import untamedwilds.entity.mammal.EntityAardvark;
 import untamedwilds.entity.mammal.EntityHippo;
 import untamedwilds.entity.mammal.EntityRhino;
@@ -92,10 +89,11 @@ public class ModEntity {
     public static EntityType<EntityDireLion> DIRE_LION = createEntity(UntamedWilds.DEBUG, EntityDireLion::new,  "bigcat_dire_lion",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1, 0);
 
     // Fish
-    public static EntityType<EntitySunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), EntitySunfish::new,  "sunfish",  1.6F, 1.6F, 0x2C545B, 0xB6D0D3, animalType.LARGE_OCEAN, 2, EntitySunfish.SpeciesSunfish.values().length);
-    public static EntityType<EntityTrevally> TREVALLY = createEntity(ConfigMobControl.addTrevally.get(), EntityTrevally::new,  "trevally",  0.8F, 0.8F, 0xA5B4AF, 0xC89D17, animalType.LARGE_OCEAN, 4, 8, EntityTrevally.SpeciesTrevally.values().length);
+    public static EntityType<EntitySunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), EntitySunfish::new,  "sunfish",  1.6F, 1.6F, 0x2C545B, 0xB6D0D3, animalType.LARGE_OCEAN, 3, EntitySunfish.SpeciesSunfish.values().length);
+    public static EntityType<EntityTrevally> TREVALLY = createEntity(ConfigMobControl.addTrevally.get(), EntityTrevally::new,  "trevally",  0.8F, 0.8F, 0xA5B4AF, 0xC89D17, animalType.LARGE_OCEAN, 6, 8, EntityTrevally.SpeciesTrevally.values().length);
     public static EntityType<EntityArowana> AROWANA = createEntity(ConfigMobControl.addArowana.get(), EntityArowana::new,  "arowana",  0.6F, 0.6F, 0x645C45, 0xB29F52, animalType.DENSE_WATER, 1, EntityArowana.SpeciesArowana.values().length);
-    public static EntityType<EntityShark> SHARK = createEntity(ConfigMobControl.addShark.get(), EntityShark::new,  "shark",  1.8F, 1.3F, 0x6B5142, 0xB0B0A3, animalType.LARGE_OCEAN, 1, EntityShark.SpeciesShark.values().length);
+    public static EntityType<EntityShark> SHARK = createEntity(ConfigMobControl.addShark.get(), EntityShark::new,  "shark",  1.8F, 1.3F, 0x6B5142, 0xB0B0A3, animalType.LARGE_OCEAN, 2, EntityShark.SpeciesShark.values().length);
+    public static EntityType<EntityFootballFish> FOOTBALL_FISH = createEntity(ConfigMobControl.addFootballFish.get(), EntityFootballFish::new,  "football_fish",  0.8F, 0.8F, 0x53556C, 0x2F3037, animalType.LARGE_OCEAN, 1, EntityFootballFish.SpeciesFootballFish.values().length);
 
     // Amphibians
     public static EntityType<EntityGiantSalamander> GIANT_SALAMANDER = createEntity(ConfigMobControl.addGiantSalamander.get(), EntityGiantSalamander::new,  "giant_salamander",  1F, 0.6f, 0x3A2C23, 0x6B5142, animalType.DENSE_WATER, 1, EntityGiantSalamander.SpeciesGiantSalamander.values().length);
@@ -204,6 +202,8 @@ public class ModEntity {
             event.put(AROWANA, EntityArowana.registerAttributes().create());
         if (ConfigMobControl.addShark.get())
             event.put(SHARK, EntityShark.registerAttributes().create());
+        if (ConfigMobControl.addFootballFish.get())
+            event.put(FOOTBALL_FISH, EntityFootballFish.registerAttributes().create());
 
         if (ConfigMobControl.addGiantSalamander.get())
             event.put(GIANT_SALAMANDER, EntityGiantSalamander.registerAttributes().create());
@@ -290,6 +290,10 @@ public class ModEntity {
         if (ConfigMobControl.addShark.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.SHARK, RendererShark::new);
             EntityShark.processSkins();
+        }
+        if (ConfigMobControl.addFootballFish.get()) {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntity.FOOTBALL_FISH, RendererFootballFish::new);
+            EntityFootballFish.processSkins();
         }
         if (ConfigMobControl.addGiantSalamander.get()) {
             RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
