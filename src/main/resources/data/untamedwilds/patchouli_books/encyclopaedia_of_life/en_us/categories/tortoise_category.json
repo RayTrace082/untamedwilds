@@ -1,6 +1,6 @@
 {
-    "name": "Tortoises" ,
-    "description": "List of all discovered Tortoise species" , 
-    "icon": "minecraft:writable_book" , 
+    "name": "Tortoise" ,
+    "description": "List of all discovered Tortoise species" ,
+    "icon": "untamedwilds:textures/icon/tortoise/category.png",
     "parent": "taxon_reptile"
 }

@@ -31,7 +31,7 @@ import java.util.Random;
 
 public class TitanArumBlock extends Block implements IGrowable, IPostGenUpdate {
    protected static final VoxelShape SHAPE_NORMAL = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
-   protected static final VoxelShape SHAPE_POKE = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
+   protected static final VoxelShape SHAPE_SPATHE = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
    protected static final VoxelShape SHAPE_CORM = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 1.0D, 14.0D);
    public static final IntegerProperty PROPERTY_AGE = BlockStateProperties.AGE_0_5; // AGE 5 is not used
    public static final IntegerProperty PROPERTY_STAGE = BlockStateProperties.STAGE_0_1;
@@ -58,7 +58,7 @@ public class TitanArumBlock extends Block implements IGrowable, IPostGenUpdate {
          return SHAPE_CORM;
       }
       Vector3d vector3d = state.getOffset(worldIn, pos);
-      VoxelShape shape = state.get(PROPERTY_AGE) == 1 ? SHAPE_NORMAL : SHAPE_POKE;
+      VoxelShape shape = state.get(PROPERTY_AGE) == 1 && state.get(PROPERTY_STAGE) == 1 ? SHAPE_NORMAL : SHAPE_SPATHE;
       return shape.withOffset(vector3d.x, vector3d.y, vector3d.z);
    }
 
@@ -71,25 +71,9 @@ public class TitanArumBlock extends Block implements IGrowable, IPostGenUpdate {
    }
 
    @Nullable
-   public BlockState getStateForWorldgen(ISeedReader world, BlockPos pos) {
-      BlockState blockstate = world.getBlockState(pos.down());
-      if (blockstate.getBlock() == ModBlock.TITAN_ARUM.get()) {
-         return this.getDefaultState().with(PROPERTY_AGE, Math.min(3, world.getBlockState(pos.down()).get(PROPERTY_AGE) + 1)).with(PROPERTY_STAGE, 1);
-      }
-      else if (blockstate.isIn(BlockTags.REEDS_PLANTABLE_ON)) {
-         return this.getDefaultState().with(PROPERTY_AGE, 1).with(PROPERTY_STAGE, 1);
-      }
-      return null;
-   }
-
-   @Nullable
    public BlockState getStateForPlacement(BlockItemUseContext context) {
       BlockState blockstate = context.getWorld().getBlockState(context.getPos().down());
-      if (blockstate.getBlock() == ModBlock.TITAN_ARUM.get()) {
-         int i = blockstate.get(PROPERTY_AGE);
-         return this.getDefaultState().with(PROPERTY_AGE, Math.min(2, i + 1));
-      }
-      else if (blockstate.isIn(BlockTags.REEDS_PLANTABLE_ON)) {
+      if (blockstate.isIn(BlockTags.REEDS_PLANTABLE_ON)) {
          return this.getDefaultState().with(PROPERTY_AGE, 0);
       }
       return null;
@@ -105,16 +89,27 @@ public class TitanArumBlock extends Block implements IGrowable, IPostGenUpdate {
       return state.get(PROPERTY_STAGE) == 0;
    }
 
-   public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
-      if (state.get(PROPERTY_STAGE) == 0 && random.nextInt(8) == 0) {
+   public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+      if (state.get(PROPERTY_STAGE) == 0 && rand.nextInt(8) == 0) {
          if (worldIn.isAirBlock(pos.up()) && worldIn.getLightSubtracted(pos.up(), 0) >= 9) {
             int i = this.getNumReedBlocksBelow(worldIn, pos) + 1;
-            if (i < 4 && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, random.nextInt(3) == 0)) {
-               this.grow(state, worldIn, pos, random, i);
+            if (i < 4 && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, rand.nextInt(3) == 0)) {
+               this.grow(state, worldIn, pos, rand, i);
                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state);
             }
          }
       }
+      // TODO: Re-enable mob luring in the future
+      /* if (state.get(PROPERTY_STAGE) == 1 && state.get(PROPERTY_AGE) > 1) {
+         List<MobEntity> list = worldIn.getEntitiesWithinAABB(MobEntity.class, VoxelShapes.fullCube().getBoundingBox().grow(12, 4, 12));
+         list.removeIf(input -> !(input.getCreatureAttribute() == CreatureAttribute.ARTHROPOD || input.getCreatureAttribute() == CreatureAttribute.UNDEAD || input.getAttackTarget() != null));
+         if (!list.isEmpty()) {
+            MobEntity lured_entity = list.get(rand.nextInt(list.size()));
+            EntityUtils.spawnParticlesOnEntity(worldIn, lured_entity, ParticleTypes.END_ROD, 8, 1);
+            lured_entity.getNavigator().tryMoveToXYZ(pos.getX() + rand.nextInt(6) - 3, pos.getY(), pos.getZ() + rand.nextInt(6) - 3, 1);
+         }
+         // Attract Undead and Arthropods, spawn new ones 10% of the time?
+      } */
    }
 
    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
