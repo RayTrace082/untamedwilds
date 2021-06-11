@@ -20,7 +20,7 @@ public class HuntWeakerTarget<T extends LivingEntity> extends HuntMobTarget<T> {
     }
 
     public HuntWeakerTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, boolean onlyNearby) {
-        this(creature, classTarget, 300, checkSight, onlyNearby, null);
+        this(creature, classTarget, 300, checkSight, onlyNearby, input -> !EntityUtils.hasFullHealth(input));
     }
 
     public HuntWeakerTarget(ComplexMob creature, Class<T> classTarget, int chance, boolean checkSight, boolean onlyNearby, final Predicate <? super LivingEntity> targetSelector) {
@@ -29,6 +29,10 @@ public class HuntWeakerTarget<T extends LivingEntity> extends HuntMobTarget<T> {
         this.targetEntitySelector = (Predicate<T>) entity -> {
             if (targetSelector != null && !targetSelector.test(entity)) {
                 return false;
+            }
+            if (entity instanceof ComplexMob) {
+                ComplexMob ctarget = (ComplexMob)entity;
+                return (this.goalOwner.getClass() == entity.getClass() && ((ComplexMob)this.goalOwner).getVariant() == ctarget.getVariant()) || !ctarget.canBeTargeted();
             }
             return this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
         };
@@ -40,7 +44,7 @@ public class HuntWeakerTarget<T extends LivingEntity> extends HuntMobTarget<T> {
             return false;
         }
         double perception = this.goalOwner.getAttribute(Attributes.FOLLOW_RANGE).getValue();
-        List<T> list = this.goalOwner.world.getEntitiesWithinAABB(this.targetClass, this.goalOwner.getBoundingBox().grow(perception, 8.0D, perception));
+        List<T> list = this.goalOwner.world.getEntitiesWithinAABB(this.targetClass, this.goalOwner.getBoundingBox().grow(perception, 8.0D, perception), this.targetEntitySelector);
         list.removeIf((Predicate<LivingEntity>) this::shouldRemoveTarget);
 
         if (list.isEmpty()) {

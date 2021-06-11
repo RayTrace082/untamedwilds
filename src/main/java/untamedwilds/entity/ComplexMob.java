@@ -286,39 +286,37 @@ public abstract class ComplexMob extends TameableEntity {
     @Nullable
     @Override
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        if (reason != SpawnReason.DISPENSER) {
-            this.setRandomMobSize();
-            this.setGender(this.rand.nextInt(2));
-            if (this instanceof ISpecies) {
-                Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(this.getPosition());
-                if (optional.isPresent()) {
-                    int i = ((ISpecies)this).setSpeciesByBiome(optional.get(), worldIn.getBiome(this.getPosition()), reason);
-                    this.setVariant(i);
-                    if (i == 99) {
-                        this.remove();
-                        return null;
-                    }
-                    if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
-                        UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + ((ISpecies) this).getSpeciesName());
-                    }
+        this.setRandomMobSize();
+        this.setGender(this.rand.nextInt(2));
+        if (this instanceof ISpecies) {
+            Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(this.getPosition());
+            if (optional.isPresent()) {
+                int i = ((ISpecies)this).setSpeciesByBiome(optional.get(), worldIn.getBiome(this.getPosition()), reason);
+                this.setVariant(i);
+                if (i == 99) {
+                    this.remove();
+                    return null;
                 }
-            } else if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
-                UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + this.getName().getString());
+                if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
+                    UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + ((ISpecies) this).getSpeciesName());
+                }
             }
-            if (TEXTURES_COMMON.containsKey(this.getType().getRegistryName().getPath())) {
-                chooseSkinForSpecies(this, ConfigGamerules.wildRareSkins.get());
-            }
-            if (this instanceof ISkins) {
-                this.setVariant(this.rand.nextInt(((ISkins)this).getSkinNumber()));
-            }
-            if (this instanceof IPackEntity) {
-                IPackEntity.initPack(this);
-            }
-            if (this instanceof INeedsPostUpdate) {
-                ((INeedsPostUpdate) this).updateAttributes();
-            }
-            this.setGrowingAge(0);
+        } else if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
+            UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + this.getName().getString());
         }
+        if (TEXTURES_COMMON.containsKey(this.getType().getRegistryName().getPath())) {
+            chooseSkinForSpecies(this, ConfigGamerules.wildRareSkins.get());
+        }
+        if (this instanceof ISkins) {
+            this.setVariant(this.rand.nextInt(((ISkins)this).getSkinNumber()));
+        }
+        if (this instanceof IPackEntity) {
+            IPackEntity.initPack(this);
+        }
+        if (this instanceof INeedsPostUpdate) {
+            ((INeedsPostUpdate) this).updateAttributes();
+        }
+        this.setGrowingAge(0);
         return spawnDataIn;
     }
 }

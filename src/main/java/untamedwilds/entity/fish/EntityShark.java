@@ -60,7 +60,7 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         this.goalSelector.addGoal(3, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(4, new SharkSwimmingGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(3, new HuntWeakerTarget<>(this, LivingEntity.class, true, true));
+        this.targetSelector.addGoal(3, new HuntWeakerTarget<>(this, LivingEntity.class, true));
     }
 
     public static void processSkins() {

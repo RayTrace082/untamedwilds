@@ -1,25 +1,25 @@
 package untamedwilds.entity.fish;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.PanicGoal;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
-import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ComplexMobAquatic;
-import untamedwilds.entity.INewSkins;
-import untamedwilds.entity.ISpecies;
+import untamedwilds.entity.*;
 import untamedwilds.entity.ai.SmartMeleeAttackGoal;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.util.EntityUtils;
@@ -29,20 +29,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, INewSkins {
+public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, INewSkins, INeedsPostUpdate {
 
     private static final String BREEDING = "EARLY_AUTUMN";
     private static final int GROWING = 12 * ConfigGamerules.cycleLength.get();
 
     public EntityFootballFish(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
-        this.experienceValue = 5;
+        this.experienceValue = 2;
+    }
+
+    protected void registerData() {
+        super.registerData();
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MobEntity.func_233666_p_()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.45D)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.42D)
                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 8.0D)
                 .createMutableAttribute(Attributes.MAX_HEALTH, 8.0D)
                 .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0D)
@@ -79,17 +83,18 @@ public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, I
     }
 
     /* Breeding conditions for the Football Fish are:
-     * Nothing, males don't really exist */
-    // TODO: DO THIS
+     * Be really deep in the ocean (16 blocks at least), and that's it */
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
-            List<EntityFootballFish> list = this.world.getEntitiesWithinAABB(EntityFootballFish.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
-            list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
-            if (list.size() >= 1) {
-                this.setGrowingAge(GROWING);
-                list.get(0).setGrowingAge(GROWING);
-                return true;
+            BlockPos.Mutable blockPos = new BlockPos.Mutable();
+            for (int i = 0; i <= 16; i++) {
+                BlockState state = world.getBlockState(blockPos.setPos(this.getPosX(), this.getPosY() + i, this.getPosZ()));
+                if (!state.getFluidState().isTagged(FluidTags.WATER)) {
+                    return false;
+                }
             }
+            this.setGrowingAge(GROWING);
+            return true;
         }
         return false;
     }
@@ -111,10 +116,7 @@ public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, I
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (biomekey.equals(Biomes.DEEP_LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_OCEAN) || biomekey.equals(Biomes.DEEP_COLD_OCEAN)) {
-            //if (ConfigGamerules.randomSpecies.get()) {
             return this.rand.nextInt(SpeciesFootballFish.values().length);
-            //}
-            //return Sunfish.SpeciesSunfish.getSpeciesByBiome(biome);
         }
         if (reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET) {
             return this.rand.nextInt(SpeciesFootballFish.values().length);
@@ -124,6 +126,12 @@ public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, I
 
     public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.football_fish_" + getRawSpeciesName(i)).getString(); }
     public String getRawSpeciesName(int i) { return SpeciesFootballFish.values()[i].name().toLowerCase(); }
+
+    @Override
+    public void updateAttributes() {
+        // All Football Fish are female, for the purpose of the mod, males do not exist
+        this.setGender(1);
+    }
 
     public enum SpeciesFootballFish implements IStringSerializable {
 
