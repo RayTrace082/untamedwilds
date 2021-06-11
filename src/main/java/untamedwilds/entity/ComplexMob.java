@@ -154,7 +154,7 @@ public abstract class ComplexMob extends TameableEntity {
             }
         }
     }
-    // TODO: WTF? Very redundant, and should be removed
+
     protected <T extends ComplexMob> T create_offspring(T entity) {
         entity.setGender(this.rand.nextInt(2));
         entity.setMobSize(this.rand.nextFloat());

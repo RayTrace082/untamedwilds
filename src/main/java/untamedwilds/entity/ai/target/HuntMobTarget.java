@@ -14,7 +14,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 
-// TODO: Figure out if Hunger is properly working
 public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
     protected final Class<T> targetClass;
     protected final Sorter sorter;

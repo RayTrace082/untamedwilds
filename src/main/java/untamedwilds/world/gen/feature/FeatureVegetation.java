@@ -43,7 +43,6 @@ public class FeatureVegetation extends Feature<FeatureSpreadConfig> {
                         if (block != null) {
                             world.setBlockState(blockpos, block.getDefaultState(), 2);
                             if (block.getBlock() instanceof IPostGenUpdate) {
-                                world.setBlockState(blockpos.east(), Blocks.TORCH.getDefaultState(), 2);
                                 ((IPostGenUpdate)block.getBlock()).updatePostGen(world, blockpos);
                             }
                             flag = true;

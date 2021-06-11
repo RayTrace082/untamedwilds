@@ -100,14 +100,6 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         return create_offspring(new EntityShark(ModEntity.SHARK, this.world));
     }
 
-    protected <T extends ComplexMob> T create_offspring(T entity) {
-        entity.setGender(this.rand.nextInt(2));
-        entity.setMobSize(this.rand.nextFloat());
-        entity.setGrowingAge(entity.getAdulthoodTime() * -2);
-        entity.setVariant(this.getVariant());
-        return entity;
-    }
-
     public boolean isBottomDweller() { return SpeciesShark.values()[this.getVariant()].bottomDweller; }
 
     @Override
