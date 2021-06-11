@@ -23,11 +23,10 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
 
    private int currentSpecies;
    private final int speciesNumber;
-   private final EntityType<?> type;
 
+   // TODO: The currently selected species doesn't display on new loads, despite the NBT data existing
    public UntamedSpawnEggItem(EntityType<?> typeIn, int species, int primaryColorIn, int secondaryColorIn, Properties builder) {
       super(typeIn, primaryColorIn, secondaryColorIn, builder);
-      this.type = typeIn;
       this.speciesNumber = species + 1;
       this.currentSpecies = 0;
    }
