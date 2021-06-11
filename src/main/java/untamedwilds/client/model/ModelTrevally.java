@@ -43,7 +43,7 @@ public class ModelTrevally extends AdvancedEntityModel<EntityTrevally> {
         this.fin_bottom.addBox(0.0F, -1.0F, -3.0F, 0, 8, 6, 0.0F);
         this.setRotateAngle(fin_bottom, 0.5918411493512771F, 0.0F, 0.0F);
         this.body_main = new AdvancedModelBox(this, 0, 0);
-        this.body_main.setRotationPoint(0.0F, 19.0F, 0.0F);
+        this.body_main.setRotationPoint(0.0F, 22.0F, 0.0F);
         this.body_main.addBox(-1.5F, -4.0F, -5.0F, 3, 8, 10, 0.0F);
         this.fin_dorsal = new AdvancedModelBox(this, 28, 21);
         this.fin_dorsal.setRotationPoint(0.0F, -3.5F, -1.4F);
