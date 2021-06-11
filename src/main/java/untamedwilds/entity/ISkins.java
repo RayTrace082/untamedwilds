@@ -10,6 +10,7 @@ import java.util.List;
  * This interface should not be used alongside ISpecies, as both make use of the "Variant" parameter to define variants
  */
 
+@Deprecated
 public interface ISkins {
 
     List<ResourceLocation> TEXTURES = new ArrayList<>();

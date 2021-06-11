@@ -8,7 +8,6 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -20,6 +19,8 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.ComplexMob;
+import untamedwilds.entity.INeedsPostUpdate;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -54,7 +55,7 @@ public class MobEggItem extends Item {
 
             BlockPos spawnPos = blockState.getCollisionShape(worldIn, pos).isEmpty() ? pos : pos.offset(facing);
 
-            EntityType<?> entity = this.getType(itemStack.getTag());
+            EntityType<?> entity = EntityUtils.getEntityTypeFromTag(itemStack.getTag(), this.entity);
             Entity spawn = entity.create((ServerWorld) worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, !Objects.equals(pos, spawnPos) && facing == Direction.UP);
             if (!itemStack.hasTag()) {
                 if (spawn instanceof ComplexMob) {
@@ -62,6 +63,9 @@ public class MobEggItem extends Item {
                     entitySpawn.setVariant(this.species);
                     entitySpawn.chooseSkinForSpecies(entitySpawn, true);
                     entitySpawn.setGrowingAge(entitySpawn.getAdulthoodTime() * -1);
+                    if (spawn instanceof INeedsPostUpdate) {
+                        ((INeedsPostUpdate) spawn).updateAttributes();
+                    }
                 }
             }
             if (spawn != null) {
@@ -107,15 +111,4 @@ public class MobEggItem extends Item {
 
         return super.onEntityItemUpdate(entityItem);
     }*/
-
-    public EntityType<?> getType(@Nullable CompoundNBT nbt) {
-        if (nbt != null && nbt.contains("EntityTag", 10)) {
-            CompoundNBT entityNBT = nbt.getCompound("EntityTag");
-            if (entityNBT.contains("id", 8)) {
-                return EntityType.byKey(entityNBT.getString("id")).orElse(this.entity);
-            }
-        }
-
-        return this.entity;
-    }
 }
