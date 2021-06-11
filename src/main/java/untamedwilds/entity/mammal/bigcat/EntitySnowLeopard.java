@@ -20,6 +20,7 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntitySnowLeopard extends AbstractBigCat {
@@ -77,12 +78,9 @@ public class EntitySnowLeopard extends AbstractBigCat {
         return false;
     }
 
+    @Nullable
     public EntitySnowLeopard func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        EntitySnowLeopard bear = new EntitySnowLeopard(ModEntity.SNOW_LEOPARD, this.world);
-        bear.setVariant(this.getVariant());
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        return bear;
+        return create_offspring(new EntitySnowLeopard(ModEntity.SNOW_LEOPARD, this.world));
     }
 
     protected activityType getActivityType() {

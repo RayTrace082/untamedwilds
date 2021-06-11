@@ -21,6 +21,7 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityLion extends AbstractBigCat implements IPackEntity {
@@ -89,12 +90,9 @@ public class EntityLion extends AbstractBigCat implements IPackEntity {
         super.livingTick();
     }
 
+    @Nullable
     public EntityLion func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        EntityLion bear = new EntityLion(ModEntity.LION, this.world);
-        bear.setVariant(this.getVariant());
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        return bear;
+        return create_offspring(new EntityLion(ModEntity.LION, this.world));
     }
 
     protected activityType getActivityType() {

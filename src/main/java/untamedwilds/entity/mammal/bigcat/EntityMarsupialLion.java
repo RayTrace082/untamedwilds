@@ -22,6 +22,7 @@ import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.init.ModEntity;
 import untamedwilds.util.EntityUtils;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityMarsupialLion extends AbstractBigCat {
@@ -79,12 +80,9 @@ public class EntityMarsupialLion extends AbstractBigCat {
         return false;
     }
 
+    @Nullable
     public EntityMarsupialLion func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        EntityMarsupialLion bear = new EntityMarsupialLion(ModEntity.MARSUPIAL_LION, this.world);
-        bear.setVariant(this.getVariant());
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        return bear;
+        return create_offspring(new EntityMarsupialLion(ModEntity.MARSUPIAL_LION, this.world));
     }
 
     protected SoundEvent getAmbientSound() {

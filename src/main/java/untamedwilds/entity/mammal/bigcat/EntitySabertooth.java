@@ -19,6 +19,7 @@ import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.init.ModEntity;
 import untamedwilds.util.EntityUtils;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntitySabertooth extends AbstractBigCat {
@@ -76,12 +77,9 @@ public class EntitySabertooth extends AbstractBigCat {
         return false;
     }
 
+    @Nullable
     public EntitySabertooth func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        EntitySabertooth bear = new EntitySabertooth(ModEntity.SABERTOOTH, this.world);
-        bear.setVariant(this.getVariant());
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        return bear;
+        return create_offspring(new EntitySabertooth(ModEntity.SABERTOOTH, this.world));
     }
 
     protected activityType getActivityType() {

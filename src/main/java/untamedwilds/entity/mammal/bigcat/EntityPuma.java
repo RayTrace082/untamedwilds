@@ -23,6 +23,7 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityPuma extends AbstractBigCat {
@@ -80,12 +81,9 @@ public class EntityPuma extends AbstractBigCat {
         return false;
     }
 
+    @Nullable
     public EntityPuma func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        EntityPuma bear = new EntityPuma(ModEntity.PUMA, this.world);
-        bear.setVariant(this.getVariant());
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        return bear;
+        return create_offspring(new EntityPuma(ModEntity.PUMA, this.world));
     }
 
     protected SoundEvent getAmbientSound() {

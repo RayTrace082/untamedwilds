@@ -20,6 +20,7 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityTiger extends AbstractBigCat {
@@ -77,12 +78,9 @@ public class EntityTiger extends AbstractBigCat {
         return false;
     }
 
+    @Nullable
     public EntityTiger func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        EntityTiger bear = new EntityTiger(ModEntity.TIGER, this.world);
-        bear.setVariant(this.getVariant());
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        return bear;
+        return create_offspring(new EntityTiger(ModEntity.TIGER, this.world));
     }
 
     protected activityType getActivityType() {

@@ -19,6 +19,7 @@ import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.init.ModEntity;
 import untamedwilds.util.EntityUtils;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityCaveLion extends AbstractBigCat {
@@ -77,12 +78,9 @@ public class EntityCaveLion extends AbstractBigCat {
         return false;
     }
 
+    @Nullable
     public EntityCaveLion func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        EntityCaveLion bear = new EntityCaveLion(ModEntity.CAVE_LION, this.world);
-        bear.setVariant(this.getVariant());
-        bear.setGender(this.rand.nextInt(2));
-        bear.setMobSize(this.rand.nextFloat());
-        return bear;
+        return create_offspring(new EntityCaveLion(ModEntity.CAVE_LION, this.world));
     }
 
     protected activityType getActivityType() { return activityType.DIURNAL; }
