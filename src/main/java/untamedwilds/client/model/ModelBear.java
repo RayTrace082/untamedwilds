@@ -439,6 +439,8 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
         bob(leg_right_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
         bob(leg_left_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
 
+        this.body_torso.scaleY = bear.hasHump() ? 1.2F : 1; // TODO: Shitty fix for torso scale
+
         // Blinking Animation
         if (!bear.shouldRenderEyes()) {
             this.head_eyes.setRotationPoint(0.0F, -1.5F, -5.01F);

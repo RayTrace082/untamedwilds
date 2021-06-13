@@ -1,10 +1,5 @@
 package untamedwilds.entity;
 
-import net.minecraft.util.ResourceLocation;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Interface reserved for mobs which make use of Skins, defined as a List of skins
  * This interface should not be used alongside ISpecies, as both make use of the "Variant" parameter to define variants
@@ -13,7 +8,7 @@ import java.util.List;
 @Deprecated
 public interface ISkins {
 
-    List<ResourceLocation> TEXTURES = new ArrayList<>();
+    //List<ResourceLocation> TEXTURES = new ArrayList<>();
 
     int getSkinNumber();
 

@@ -24,10 +24,12 @@ import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntityBrownBear extends AbstractBear implements ISkins {
 
+    public static List<ResourceLocation> TEXTURES = new ArrayList<>();
     public static final int SKIN_NUMBER = 4;
     private static final float SIZE = 1.1f; // Was 1f
     private static final String BREEDING = "EARLY_SUMMER";
@@ -104,7 +106,7 @@ public class EntityBrownBear extends AbstractBear implements ISkins {
     public int getAdulthoodTime() { return GROWING; }
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
-    public ResourceLocation getTexture() { return TEXTURES.get(this.getVariant()); }
+    public ResourceLocation getTexture() { return this.TEXTURES.get(this.getVariant()); }
     public int getSkinNumber() { return SKIN_NUMBER; }
     public boolean hasHump() { return true; }
     protected int getOffspring() { return 1; }

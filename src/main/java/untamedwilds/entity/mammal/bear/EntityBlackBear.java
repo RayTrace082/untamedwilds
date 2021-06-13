@@ -24,10 +24,12 @@ import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntityBlackBear extends AbstractBear implements ISkins {
 
+    public static List<ResourceLocation> TEXTURES = new ArrayList<>();
     public static final int SKIN_NUMBER = 5;
     private static final float SIZE = 0.8f;
     private static final String BREEDING = "EARLY_SUMMER";
@@ -41,7 +43,7 @@ public class EntityBlackBear extends AbstractBear implements ISkins {
 
     public static void registerTextures(int count) {
         for(int i = 1; i < count + 1; i++) {
-            EntityBlackBear.TEXTURES.add(new ResourceLocation(UntamedWilds.MOD_ID, String.format("textures/entity/bear/black_%d.png", i)));
+            TEXTURES.add(new ResourceLocation(UntamedWilds.MOD_ID, String.format("textures/entity/bear/black_%d.png", i)));
         }
     }
 
