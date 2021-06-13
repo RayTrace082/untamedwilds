@@ -1,9 +1,9 @@
 {
   "type": "minecraft:campfire_cooking",
   "ingredient": {
-    "item": "untamedwilds:food_hippo_raw"
+    "item": "untamedwilds:food_pachyderm_raw"
   },
-  "result": "untamedwilds:food_hippo_cooked",
+  "result": "untamedwilds:food_pachyderm_cooked",
   "experience": 0.35,
   "cookingtime": 600
 }
