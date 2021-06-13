@@ -49,7 +49,7 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
     }
 
     protected void registerGoals() {
-        super.registerGoals();
+        //super.registerGoals();
         this.goalSelector.addGoal(0, new PanicGoal(this, 1.25D));
         this.goalSelector.addGoal(4, new FishWanderAsSchoolGoal(this));
         this.goalSelector.addGoal(4, new FishReturnToSchoolGoal(this));

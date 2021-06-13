@@ -6,8 +6,8 @@
   "entity.untamedwilds.command.3": "This mob is now Guarding the area",
 
   "item.untamedwilds.hippo_spawn_egg": "Hippopotamus Spawn Egg",
-  "item.untamedwilds.food_hippo_raw": "Raw Pachyderm Meat",
-  "item.untamedwilds.food_hippo_cooked": "Cooked Pachyderm Meat",
+  "item.untamedwilds.food_pachyderm_raw": "Raw Pachyderm Meat",
+  "item.untamedwilds.food_pachyderm_cooked": "Cooked Pachyderm Meat",
   "entity.untamedwilds.hippo": "Common Hippo",
   "entity.untamedwilds.hippo.sciname": "Hippopotamus amphibius",
   "entity.untamedwilds.hippo_common": "Common Hippo",
