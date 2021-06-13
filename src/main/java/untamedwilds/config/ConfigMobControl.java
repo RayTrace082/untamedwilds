@@ -24,7 +24,7 @@ public class ConfigMobControl {
 
     ConfigMobControl(final ForgeConfigSpec.Builder builder) {
         builder.comment("Pest Control");
-        masterSpawner = builder.comment("This toggle can used to fully disable the spawning of all UntamedWilds entities, giving flexibility if somebody chooses to use alternative mob spawning methods. [default: false]").define("mobcontrol.masterspawner", true);
+        masterSpawner = builder.comment("This toggle can used to fully disable the spawning of all UntamedWilds entities, giving flexibility if somebody chooses to use alternative mob spawning methods.").define("mobcontrol.masterspawner", true);
 
         addBear = builder.comment("Controls whether to add Bears and their associated items.").define("mobcontrol.bear", true);
         addBigCat = builder.comment("Controls whether to add Big Cats and their associated items.").define("mobcontrol.bigcat", true);

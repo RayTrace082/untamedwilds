@@ -21,6 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.config.ConfigFeatureControl;
+import untamedwilds.config.ConfigMobControl;
 import untamedwilds.world.gen.feature.*;
 import untamedwilds.world.gen.treedecorator.TreeOrchidDecorator;
 
@@ -100,14 +101,14 @@ public class UntamedWildsGenerator {
         if (!FaunaHandler.getSpawnableList(FaunaHandler.animalType.APEX_PRED).isEmpty())
             registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqApex.get());
 
-        if (ConfigFeatureControl.probUnderground.get() != 0 && !FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND).isEmpty()) {
+        if (ConfigFeatureControl.probUnderground.get() != 0 && !FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND).isEmpty() && ConfigMobControl.masterSpawner.get()) {
             float prob = ConfigFeatureControl.probUnderground.get().floatValue() / (CompatBridge.betterCaves || CompatBridge.cavesAndCliffs ? 3 : 1);
             event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, prob)).chance(2)));
         }
     }
 
     private static void registerFeatureWithFreq(BiomeLoadingEvent event, GenerationStage.Decoration decoration, ConfiguredFeature<?, ?> feature, int freq) {
-        if (freq > 0) {
+        if (freq > 0 && ConfigMobControl.masterSpawner.get()) {
             registerFeature(event, decoration, feature.chance(freq), feature.getFeature().getRegistryName());
         }
     }
