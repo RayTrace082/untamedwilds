@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
+import untamedwilds.config.ConfigFeatureControl;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
 import untamedwilds.entity.arthropod.EntityTarantula;
@@ -64,7 +65,7 @@ public class ModItems {
     public static RegistryObject<Item> FOOD_PEMMICAN = createItem("food_pemmican", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(6).saturation(1.0F).build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> VEGETABLE_AARDVARK_CUCUMBER = createItem(ConfigMobControl.addAardvark.get(),"food_aardvark_cucumber", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.2F).build()).group(ItemGroup.FOOD)));
     public static RegistryObject<Item> FOOD_HEMLOCK_STEW = createItem("food_hemlock_stew", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(6).saturation(0.1F).effect(new EffectInstance(Effects.POISON, 1200, 3), 1.0F).setAlwaysEdible().build()).group(ItemGroup.FOOD).maxStackSize(1))); // Advancement Trigger: "Asebeia"
-    public static RegistryObject<Item> SEED_TITAN_ARUM = createItem("flora_titan_arum_corm", () -> new BlockNamedItem(ModBlock.TITAN_ARUM.get(), new Item.Properties().group(ItemGroup.DECORATIONS)));
+    public static RegistryObject<Item> SEED_TITAN_ARUM = createItem(ConfigFeatureControl.addBushes.get(), "flora_titan_arum_corm", () -> new BlockNamedItem(ModBlock.TITAN_ARUM.get(), new Item.Properties().group(ItemGroup.DECORATIONS)));
 
     // Hides
     public static RegistryObject<Item> HIDE_BEAR_ASHEN = createItem(ConfigMobControl.addBear.get(),"hide_bear_ashen", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));

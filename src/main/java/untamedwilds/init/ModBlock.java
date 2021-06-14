@@ -66,7 +66,7 @@ public class ModBlock {
     public static RegistryObject<Block> HEMLOCK = createBlock("flora_hemlock", () -> new UndergrowthPoisonousBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement(), AbstractBlock.OffsetType.XYZ), ItemGroup.DECORATIONS, ConfigFeatureControl.addBushes.get());
     public static RegistryObject<Block> TITAN_ARUM = createBlock("flora_titan_arum", () -> new TitanArumBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(2.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement()), null, ConfigFeatureControl.addBushes.get());
 
-    public static RegistryObject<Block> BURROW = createBlock("block_burrow", () -> new CritterBurrowBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS, ConfigFeatureControl.addBushes.get());
+    public static RegistryObject<Block> BURROW = createBlock("block_burrow", () -> new CritterBurrowBlock(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement()), ItemGroup.DECORATIONS);
 
     public static RegistryObject<TileEntityType<CageBlockEntity>> BLOCKENTITY_CAGE = TILE_ENTITY_TYPES.register("trap_cage", () -> new TileEntityType<>(CageBlockEntity::new, Sets.newHashSet(ModBlock.TRAP_CAGE.get()), null));
     public static RegistryObject<TileEntityType<CritterBurrowBlockEntity>> BLOCKENTITY_BURROW = TILE_ENTITY_TYPES.register("critter_burrow", () -> new TileEntityType<>(CritterBurrowBlockEntity::new, Sets.newHashSet(ModBlock.BURROW.get()), null));
