@@ -58,10 +58,10 @@ public class FeatureVegetation extends Feature<FeatureSpreadConfig> {
     // Plants available, referenced to properly distribute them in the world if their conditions are filled
     public enum FloraTypes implements IStringSerializable {
 
-        TEMPERATE_BUSH	(ModBlock.BUSH_TEMPERATE.get(), 8, ConfigFeatureControl.addBushes.get(), false, 32, Biome.Category.FOREST, Biome.Category.SWAMP, Biome.Category.EXTREME_HILLS, Biome.Category.TAIGA, Biome.Category.PLAINS),
-        ELEPHANT_EAR	(ModBlock.ELEPHANT_EAR.get(), 4, ConfigFeatureControl.addBushes.get(), false, 32, Biome.Category.JUNGLE),
-        HEMLOCK     	(ModBlock.HEMLOCK.get(), 1, ConfigFeatureControl.addBushes.get(), false, 16, Biome.Category.FOREST, Biome.Category.PLAINS),
-        TITAN_ARUM     	(ModBlock.TITAN_ARUM.get(), 12, ConfigFeatureControl.addBushes.get(), false, 1, Biome.Category.JUNGLE);
+        TEMPERATE_BUSH	(ModBlock.BUSH_TEMPERATE.get(), 8, ConfigFeatureControl.addFlora.get(), false, 32, Biome.Category.FOREST, Biome.Category.SWAMP, Biome.Category.EXTREME_HILLS, Biome.Category.TAIGA, Biome.Category.PLAINS),
+        ELEPHANT_EAR	(ModBlock.ELEPHANT_EAR.get(), 4, ConfigFeatureControl.addFlora.get(), false, 32, Biome.Category.JUNGLE),
+        HEMLOCK     	(ModBlock.HEMLOCK.get(), 1, ConfigFeatureControl.addFlora.get(), false, 16, Biome.Category.FOREST, Biome.Category.PLAINS),
+        TITAN_ARUM     	(ModBlock.TITAN_ARUM.get(), 12, ConfigFeatureControl.addFlora.get(), false, 1, Biome.Category.JUNGLE);
 
 
         public Block type;

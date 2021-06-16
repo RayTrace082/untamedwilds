@@ -76,15 +76,18 @@ public class UntamedWildsGenerator {
                 }
             }
         }
-        if (ConfigFeatureControl.addReeds.get()) {
+        if (ConfigFeatureControl.addReeds.get() && !ConfigFeatureControl.reedBlacklist.get().contains(event.getName().toString())) {
             if (event.getCategory() == Biome.Category.RIVER || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) {
                 registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.KELP_PLACEMENT).chance(4), REEDS.get().getRegistryName());
             }
+        }
+        if (ConfigFeatureControl.addAlgae.get()) {
             if (event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) {
                 registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, ALGAE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).chance(1), ALGAE.get().getRegistryName());
             }
+        }
+        if (ConfigFeatureControl.addFlora.get()) {
             registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, VEGETATION.get().withConfiguration(new FeatureSpreadConfig(4)).withPlacement(Features.Placements.KELP_PLACEMENT).chance(4), VEGETATION.get().getRegistryName());
-
         }
 
         if (!FaunaHandler.getSpawnableList(FaunaHandler.animalType.DENSE_WATER).isEmpty())
