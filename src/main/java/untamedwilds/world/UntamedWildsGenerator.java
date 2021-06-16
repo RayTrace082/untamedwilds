@@ -76,19 +76,13 @@ public class UntamedWildsGenerator {
                 }
             }
         }
-        if (ConfigFeatureControl.addReeds.get() && !ConfigFeatureControl.reedBlacklist.get().contains(event.getName().toString())) {
-            if (event.getCategory() == Biome.Category.RIVER || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) {
-                registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.KELP_PLACEMENT).chance(4), REEDS.get().getRegistryName());
-            }
-        }
-        if (ConfigFeatureControl.addAlgae.get()) {
-            if (event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) {
-                registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, ALGAE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).chance(1), ALGAE.get().getRegistryName());
-            }
-        }
-        if (ConfigFeatureControl.addFlora.get()) {
-            registerFeature(event, GenerationStage.Decoration.VEGETAL_DECORATION, VEGETATION.get().withConfiguration(new FeatureSpreadConfig(4)).withPlacement(Features.Placements.KELP_PLACEMENT).chance(4), VEGETATION.get().getRegistryName());
-        }
+        if ((event.getCategory() == Biome.Category.RIVER || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) && !ConfigFeatureControl.reedBlacklist.get().contains(event.getName().toString()))
+            registerFeatureWithFreq(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.KELP_PLACEMENT), ConfigFeatureControl.freqReeds.get(), ConfigFeatureControl.addReeds.get());
+        if ((event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) && !ConfigFeatureControl.algaeBlacklist.get().contains(event.getName().toString()))
+            registerFeatureWithFreq(event, GenerationStage.Decoration.VEGETAL_DECORATION, ALGAE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT), ConfigFeatureControl.freqAlgae.get(), ConfigFeatureControl.addAlgae.get());
+        if (!ConfigFeatureControl.floraBlacklist.get().contains(event.getName().toString()))
+            registerFeatureWithFreq(event, GenerationStage.Decoration.VEGETAL_DECORATION, VEGETATION.get().withConfiguration(new FeatureSpreadConfig(4)).withPlacement(Features.Placements.KELP_PLACEMENT), ConfigFeatureControl.freqFlora.get(), ConfigFeatureControl.addFlora.get());
+
 
         if (!FaunaHandler.getSpawnableList(FaunaHandler.animalType.DENSE_WATER).isEmpty())
             registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, DENSE_WATER.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqWater.get());
@@ -111,7 +105,11 @@ public class UntamedWildsGenerator {
     }
 
     private static void registerFeatureWithFreq(BiomeLoadingEvent event, GenerationStage.Decoration decoration, ConfiguredFeature<?, ?> feature, int freq) {
-        if (freq > 0 && ConfigMobControl.masterSpawner.get()) {
+        registerFeatureWithFreq(event, decoration, feature, freq, ConfigMobControl.masterSpawner.get());
+    }
+
+    private static void registerFeatureWithFreq(BiomeLoadingEvent event, GenerationStage.Decoration decoration, ConfiguredFeature<?, ?> feature, int freq, boolean enable) {
+        if (freq > 0 && enable) {
             registerFeature(event, decoration, feature.chance(freq), feature.getFeature().getRegistryName());
         }
     }

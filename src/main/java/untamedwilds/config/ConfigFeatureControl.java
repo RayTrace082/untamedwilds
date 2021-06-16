@@ -17,6 +17,10 @@ public class ConfigFeatureControl {
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> floraBlacklist;
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> algaeBlacklist;
 
+    public static ForgeConfigSpec.IntValue freqReeds;
+    public static ForgeConfigSpec.IntValue freqFlora;
+    public static ForgeConfigSpec.IntValue freqAlgae;
+
     public static ForgeConfigSpec.IntValue freqCritter;
     public static ForgeConfigSpec.IntValue freqWater;
     public static ForgeConfigSpec.IntValue freqSessile;
@@ -35,8 +39,11 @@ public class ConfigFeatureControl {
         addBurrows = builder.comment("Controls whether to use Burrows to spawn Critters, instead of having them clog up the Spawns").define("gencontrol.burrows", true);
 
         reedBlacklist = builder.comment("Prevent spawns of Reeds in these biomes").defineList("gencontrol.reed_blacklist", Lists.newArrayList(), string -> string instanceof String);
+        freqReeds = builder.comment("Frequency of Reeds, 1 in N chunks will generate Reeds (0 to disable)").defineInRange("gencontrol.freqreeds", 4, 0, Integer.MAX_VALUE);
         floraBlacklist = builder.comment("Prevent spawns of Flora in these biomes").defineList("gencontrol.flora_blacklist", Lists.newArrayList(), string -> string instanceof String);
+        freqFlora = builder.comment("Frequency of Flora, 1 in N chunks will generate random Flora (0 to disable)").defineInRange("gencontrol.freqflora", 4, 0, Integer.MAX_VALUE);
         algaeBlacklist = builder.comment("Prevent spawns of Algae in these biomes").defineList("gencontrol.algae_blacklist", Lists.newArrayList(), string -> string instanceof String);
+        freqAlgae = builder.comment("Frequency of Algae, abstract value (0 to disable)").defineInRange("gencontrol.freqalgae", 1, 0, Integer.MAX_VALUE);
 
         freqCritter = builder.comment("Frequency of Critters, 1 in N chunks will generate with Critters (0 to disable)").defineInRange("gencontrol.freqcritter", 3, 0, Integer.MAX_VALUE);
         freqSessile = builder.comment("Frequency of Sessile Ocean Mobs, 1 in N chunks will generate with Sessile Mobs (0 to disable)").defineInRange("gencontrol.freqsessile", 8, 0, Integer.MAX_VALUE);
