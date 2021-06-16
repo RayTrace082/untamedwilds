@@ -256,7 +256,7 @@ public class EntityRhino extends ComplexMobTerrestrial implements INewSkins, ISp
         INDIAN		(1, 1.1F, 4, 8, 60, Biome.Category.JUNGLE, Biome.Category.EXTREME_HILLS),
         JAVAN		(2, 0.8F, 1, 6, 45, Biome.Category.JUNGLE),
         SUMATRAN	(3, 0.8F, 1, 5, 30, Biome.Category.JUNGLE),
-        WHITE		(4, 1.0F, 2, 10, 60, Biome.Category.SWAMP, Biome.Category.SAVANNA),
+        WHITE		(4, 1.0F, 2, 10, 60, Biome.Category.SAVANNA),
         WOOLY		(5, 1.2F, ConfigGamerules.extinctMobs.get() ? 1 : 0, 10, 60, Biome.Category.ICY, Biome.Category.TAIGA);
 
         public int species;
