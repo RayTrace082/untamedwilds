@@ -84,7 +84,7 @@ public class CritterBurrowBlock extends Block implements IWaterLoggable {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-        if (worldIn.isRemote) {
+        if (worldIn.isRemote || hand.equals(Hand.OFF_HAND)) {
             return ActionResultType.FAIL;
         }
         else {
