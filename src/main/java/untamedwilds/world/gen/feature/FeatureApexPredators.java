@@ -30,7 +30,7 @@ public class FeatureApexPredators extends Feature<NoFeatureConfig> {
         Biome biome = world.getBiome(pos);
         EntityType<? extends ComplexMob> type;
         int groupSize = 1;
-        int rng_type = rand.nextInt(4);
+        int rng_type = rand.nextInt(5);
         switch (rng_type) {
             default:
             case 0:
@@ -48,6 +48,10 @@ public class FeatureApexPredators extends Feature<NoFeatureConfig> {
                 break;
             case 3:
                 type = ModEntity.RHINO;
+                break;
+            case 4:
+                type = ModEntity.HYENA;
+                groupSize += 1 + rand.nextInt(4);
                 break;
         }
 

@@ -114,6 +114,7 @@ public abstract class EntityUtils {
         if (itemstack.getTag() != null) {
             if (itemstack.getTag().contains("EntityTag")) {
                 if (itemstack.getChildTag("EntityTag").contains("UUID")) {
+                    UntamedWilds.LOGGER.info(worldIn.getEntityByUuid(itemstack.getChildTag("EntityTag").getUniqueId("UUID")));
                     if (worldIn.getEntityByUuid(itemstack.getChildTag("EntityTag").getUniqueId("UUID")) != null) {
                         itemstack.getChildTag("EntityTag").putUniqueId("UUID", MathHelper.getRandomUUID(worldIn.rand));
                     }
@@ -124,7 +125,6 @@ public abstract class EntityUtils {
                     if (itemstack.hasDisplayName()) {
                         spawn.setCustomName(itemstack.getDisplayName());
                     }
-                    worldIn.func_242417_l(spawn);
                 }
             }
         }

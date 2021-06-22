@@ -104,6 +104,51 @@
 		"subtitle": "untamedwilds.subtitles.hippo.ambient"
 	},
 
+	"entity.hyena.laugh": {
+		"category": "neutral",
+		"sounds": [
+			"mob/wolf/growl1",
+			"mob/wolf/growl2",
+			"mob/wolf/growl3"
+		],
+		"subtitle": "untamedwilds.subtitles.hyena.laugh"
+	},
+	"entity.hyena.growl": {
+		"category": "neutral",
+		"sounds": [
+			"mob/wolf/growl1",
+			"mob/wolf/growl2",
+			"mob/wolf/growl3"
+		],
+		"subtitle": "untamedwilds.subtitles.hyena.growl"
+	},
+	"entity.hyena.ambient": {
+		"category": "neutral",
+		"sounds": [
+			"mob/wolf/bark1",
+			"mob/wolf/bark2",
+			"mob/wolf/bark3",
+			"mob/wolf/panting"
+		],
+		"subtitle": "untamedwilds.subtitles.hyena.ambient"
+	},
+	"entity.hyena.hurt": {
+		"category": "neutral",
+		"sounds": [
+			"mob/wolf/hurt1",
+			"mob/wolf/hurt2",
+			"mob/wolf/hurt3"
+		],
+		"subtitle": "untamedwilds.subtitles.hyena.hurt"
+	},
+	"entity.hyena.death": {
+		"category": "neutral",
+		"sounds": [
+			"mob/wolf/death"
+		],
+		"subtitle": "untamedwilds.subtitles.hyena.death"
+	},
+
 	"entity.snake.warning": {
 		"category": "neutral",
 		"sounds": [
