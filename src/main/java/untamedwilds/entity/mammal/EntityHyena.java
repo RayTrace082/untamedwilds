@@ -282,7 +282,7 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
         this.setHealth(this.getMaxHealth());
     }
 
-    // Species available, referenced to properly distribute Rhinoceroses in the world
+    // Species available, referenced to properly distribute Hyenas in the world
     public enum SpeciesHyena implements IStringSerializable {
 
         AARDWOlF	(0, 0.8F,3, 1, 4, 10, Biome.Category.SAVANNA),
