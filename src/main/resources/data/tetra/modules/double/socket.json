@@ -2,10 +2,11 @@
     "variants": [
         {
             "key": "double_socket/pearl",
+            "category": "gem",
             "durability": 64,
             "integrity": -1,
 			"effects": {
-                "toughness": 1
+                "generic.armor_toughness": 2
             },
             "glyph": {
                 "tint": "D3EAF4",
@@ -19,10 +20,11 @@
         },
 		{
             "key": "double_socket/pristine_pearl",
+            "category": "gem",
             "durability": 92,
             "integrity": -1,
 			"effects": {
-                "toughness": 2
+                "generic.armor_toughness": 4
             },
             "glyph": {
                 "tint": "D3EAF4",
