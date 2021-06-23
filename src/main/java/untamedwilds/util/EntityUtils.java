@@ -119,7 +119,6 @@ public abstract class EntityUtils {
                         itemstack.getChildTag("EntityTag").putUniqueId("UUID", MathHelper.getRandomUUID(worldIn.rand));
                     }
                 }
-
                 spawn = entity.spawn(worldIn, itemstack, player, spawnPos, SpawnReason.BUCKET, true, offset);
                 if (spawn != null) {
                     if (itemstack.hasDisplayName()) {
@@ -132,17 +131,9 @@ public abstract class EntityUtils {
             // If no NBT data is assigned to the entity (eg. Item taken from the Creative menu), create a new, random mob
             spawn = entity.create(worldIn, null, null, player, spawnPos, SpawnReason.SPAWN_EGG, true, offset);
             if (spawn != null) {
-                if (spawn instanceof MobEntity) {
-                    ((MobEntity)spawn).onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(spawnPos), SpawnReason.SPAWN_EGG, null, null);
+                if (itemstack.hasDisplayName()) {
+                    spawn.setCustomName(itemstack.getDisplayName());
                 }
-                if (spawn instanceof ComplexMob) {
-                    ComplexMob entitySpawn = (ComplexMob) spawn;
-                    entitySpawn.setVariant(species);
-                    if (itemstack.hasDisplayName()) {
-                        entitySpawn.setCustomName(itemstack.getDisplayName());
-                    }
-                }
-                worldIn.addEntity(spawn);
             }
         }
     }

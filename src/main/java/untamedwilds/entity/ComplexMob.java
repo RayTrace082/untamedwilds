@@ -12,11 +12,13 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
@@ -291,36 +293,68 @@ public abstract class ComplexMob extends TameableEntity {
     @Override
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         this.setRandomMobSize();
-        this.setGender(this.rand.nextInt(2));
-        if (this instanceof ISpecies) {
-            Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(this.getPosition());
-            if (optional.isPresent()) {
-                int i = ((ISpecies)this).setSpeciesByBiome(optional.get(), worldIn.getBiome(this.getPosition()), reason);
-                this.setVariant(i);
-                if (i == 99) {
-                    this.remove();
-                    return null;
+        if (reason != SpawnReason.DISPENSER && reason != SpawnReason.BUCKET) {
+            this.setGender(this.rand.nextInt(2));
+            if (this instanceof ISpecies) {
+                Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(this.getPosition());
+                if (optional.isPresent()) {
+                    int i = ((ISpecies)this).setSpeciesByBiome(optional.get(), worldIn.getBiome(this.getPosition()), reason);
+                    this.setVariant(i);
+                    if (i == 99) {
+                        this.remove();
+                        return null;
+                    }
+                    if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
+                        UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + ((ISpecies) this).getSpeciesName());
+                    }
                 }
-                if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
-                    UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + ((ISpecies) this).getSpeciesName());
-                }
+            } else if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
+                UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + this.getName().getString());
             }
-        } else if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
-            UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + this.getName().getString());
-        }
-        if (TEXTURES_COMMON.containsKey(this.getType().getRegistryName().getPath())) {
-            chooseSkinForSpecies(this, ConfigGamerules.wildRareSkins.get());
-        }
-        if (this instanceof ISkins) {
-            this.setVariant(this.rand.nextInt(((ISkins)this).getSkinNumber()));
+            if (TEXTURES_COMMON.containsKey(this.getType().getRegistryName().getPath())) {
+                chooseSkinForSpecies(this, ConfigGamerules.wildRareSkins.get());
+            }
+            if (this instanceof ISkins) {
+                this.setVariant(this.rand.nextInt(((ISkins)this).getSkinNumber()));
+            }
+            if (this instanceof INeedsPostUpdate) {
+                ((INeedsPostUpdate) this).updateAttributes();
+            }
+            this.setGrowingAge(0);
         }
         if (this instanceof IPackEntity) {
             IPackEntity.initPack(this);
         }
-        if (this instanceof INeedsPostUpdate) {
-            ((INeedsPostUpdate) this).updateAttributes();
-        }
-        this.setGrowingAge(0);
         return spawnDataIn;
+    }
+
+    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+        if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
+            ItemStack itemstack = player.getHeldItem(hand);
+
+            // Highlight mobs in the same pack if Player is in Creative mode
+            if (player.isCreative() && itemstack.isEmpty() && this instanceof IPackEntity) {
+                for (int i = 0; i < this.herd.creatureList.size(); ++i) {
+                    ComplexMob creature = this.herd.creatureList.get(i);
+                    creature.addPotionEffect(new EffectInstance(Effects.GLOWING, 80, 0));
+                }
+            }
+
+            // Command handler for tamed mobs, includes Food/Potion consumption
+            if (this.isTamed() && this.getOwner() == player) {
+                if (itemstack.isEmpty()) {
+                    this.setCommandInt(this.getCommandInt() + 1);
+                    player.sendMessage(new TranslationTextComponent("entity.untamedwilds.command." + this.getCommandInt()), Util.DUMMY_UUID);
+                    if (this.getCommandInt() > 1) {
+                        this.getNavigator().clearPath();
+                        this.setSitting(true);
+                    } else if (this.getCommandInt() <= 1 && this.isSitting()) {
+                        this.setSitting(false);
+                    }
+                }
+                EntityUtils.consumeItemStack(this, itemstack);
+            }
+        }
+        return super.func_230254_b_(player, hand);
     }
 }

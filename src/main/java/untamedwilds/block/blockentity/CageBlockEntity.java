@@ -55,7 +55,7 @@ public class CageBlockEntity extends TileEntity {
                         UntamedWilds.LOGGER.info("Randomizing UUID for mob");
                         this.spawndata.getCompound("EntityTag").putUniqueId("UUID", MathHelper.getRandomUUID(worldIn.rand));
                     }
-                    Entity caged_entity = entity.create(worldIn, this.spawndata, null, null, pos, SpawnReason.BUCKET, true, !Objects.equals(pos, this.getPos()));
+                    Entity caged_entity = entity.create(worldIn, this.spawndata, null, null, pos, SpawnReason.DISPENSER, true, !Objects.equals(pos, this.getPos()));
                     caged_entity.setLocationAndAngles(pos.getX() + 0.5F, pos.getY() - (offsetHitbox ? caged_entity.getHeight() + 0.4 : 0.8), pos.getZ() + 0.5F, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
                     if (!worldIn.addEntityIfNotDuplicate(caged_entity)) {
                         caged_entity.setUniqueId(MathHelper.getRandomUUID(worldIn.rand));

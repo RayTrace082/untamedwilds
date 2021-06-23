@@ -126,6 +126,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
             this.world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_GENERIC_EAT, this.getSoundCategory(), 1F, 1, true);
             return ActionResultType.CONSUME;
         }
+
         return super.func_230254_b_(player, hand);
     }
 

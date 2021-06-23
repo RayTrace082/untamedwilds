@@ -11,8 +11,6 @@ import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.*;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -84,12 +82,6 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
         if (hand == Hand.MAIN_HAND) {
-            if (player.isCreative() && itemstack.isEmpty()) {
-                for (int i = 0; i < this.herd.creatureList.size(); ++i) {
-                    ComplexMob creature = this.herd.creatureList.get(i);
-                    creature.addPotionEffect(new EffectInstance(Effects.GLOWING, 80, 0));
-                }
-            }
             if (itemstack.getItem().equals(Items.WATER_BUCKET) && this.isAlive()) {
                 EntityUtils.mutateEntityIntoItem(this, player, hand, "bucket_trevally_" + getRawSpeciesName(this.getVariant()).toLowerCase(), itemstack);
                 return ActionResultType.func_233537_a_(this.world.isRemote);
@@ -141,9 +133,9 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
             return 99;
         }
         if (reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET || ConfigGamerules.randomSpecies.get()) {
-            return this.rand.nextInt(EntityTrevally.SpeciesTrevally.values().length);
+            return this.rand.nextInt(SpeciesTrevally.values().length);
         }
-        return EntityTrevally.SpeciesTrevally.getSpeciesByBiome(biome);
+        return SpeciesTrevally.getSpeciesByBiome(biome);
     }
 
     public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.trevally_" + getRawSpeciesName(i)).getString(); }

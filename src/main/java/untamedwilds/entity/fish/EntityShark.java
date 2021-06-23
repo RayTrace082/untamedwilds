@@ -8,10 +8,10 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.*;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -110,16 +110,6 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
     public int getPregnancyTime() { return GESTATION; }
     public String getBreedingSeason() { return BREEDING; }
     protected int getOffspring() { return 3; }
-
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
-        ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
-        if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
-            if (itemstack.getItem() == Items.BLAZE_ROD) {
-                this.setAnimation(ATTACK_THRASH);
-            }
-        }
-        return super.func_230254_b_(player, hand);
-    }
 
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {

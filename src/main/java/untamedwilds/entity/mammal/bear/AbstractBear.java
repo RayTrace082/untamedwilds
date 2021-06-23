@@ -15,7 +15,6 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -212,19 +211,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
         if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
-            if (this.isTamed() && this.getOwner() == player) {
-                if (itemstack.isEmpty()) {
-                    this.setCommandInt(this.getCommandInt() + 1);
-                    player.sendMessage(new TranslationTextComponent("entity.untamedwilds.command." + this.getCommandInt()), Util.DUMMY_UUID);
-                    if (this.getCommandInt() > 1) {
-                        this.getNavigator().clearPath();
-                        this.setSitting(true);
-                    } else if (this.getCommandInt() <= 1 && this.isSitting()) {
-                        this.setSitting(false);
-                    }
-                }
-                EntityUtils.consumeItemStack(this, itemstack);
-            }
+
             if (!this.isTamed() && this.isChild() && EntityUtils.hasFullHealth(this) && this.isFavouriteFood(itemstack)) {
                 this.playSound(SoundEvents.ENTITY_HORSE_EAT, 1.5F, 0.8F);
                 if (this.getRNG().nextInt(3) == 0) {
