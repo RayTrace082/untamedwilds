@@ -1,7 +1,6 @@
 package untamedwilds.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
@@ -21,7 +20,7 @@ public class RendererHyena extends MobRenderer<EntityHyena, EntityModel<EntityHy
         super(renderManager, HYENA_MODEL, 1F);
     }
 
-    @Override
+    /*@Override
     public void render(EntityHyena entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         if (entityIn.isChild()) {
             entityModel = HYENA_MODEL;
@@ -29,11 +28,12 @@ public class RendererHyena extends MobRenderer<EntityHyena, EntityModel<EntityHy
             entityModel = HYENA_MODEL;
         }
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-    }
+    }*/
 
     protected void preRenderCallback(EntityHyena entity, MatrixStack matrixStackIn, float partialTickTime) {
         float f = entity.getModelScale();
         f += (entity.getMobSize() * 0.25f);
+        f *= entity.getRenderScale();
         matrixStackIn.scale(f, f, f);
         this.shadowSize = entity.getModelScale() * 0.6f;
     }
