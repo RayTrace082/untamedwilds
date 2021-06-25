@@ -80,7 +80,7 @@ public class ModBlock {
     }
 
     public static <B extends Block> RegistryObject<B> createBlock(String name, Supplier<? extends B> supplier, @Nullable ItemGroup group, boolean add, int burnTime) {
-        if (add) {
+        if (true) {
             RegistryObject<B> block = ModBlock.BLOCKS.register(name, supplier);
             if (burnTime != 0) {
                 ModItems.ITEMS.register(name, () -> new FuelBlockItem(block.get(), burnTime, new Item.Properties().group(group)));

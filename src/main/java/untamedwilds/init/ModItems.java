@@ -85,10 +85,11 @@ public class ModItems {
     }
 
     public static <I extends Item> RegistryObject<I> createItem(boolean enable, String name, Supplier<? extends I> supplier) {
-        if (enable) {
-            return ModItems.ITEMS.register(name, supplier);
-        }
-        return null;
+        return ModItems.ITEMS.register(name, supplier);
+        //if (enable) {
+        //    return ModItems.ITEMS.register(name, supplier);
+        //}
+        //return null;
     }
 
     public static void registerSpawnItems() {

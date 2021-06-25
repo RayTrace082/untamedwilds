@@ -125,23 +125,22 @@ public class ModEntity {
     }
 
     private static <T extends Entity> EntityType<T> createEntity(boolean enable, EntityType.IFactory<T> factory, EntityClassification classification, String name, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, float sizeX, float sizeY, int maincolor, int backcolor, FaunaHandler.animalType spawnType, int weight, int groupCount, int species) {
+        ResourceLocation location = new ResourceLocation(UntamedWilds.MOD_ID, name);
+        EntityType<T> type = EntityType.Builder.create(factory, classification)
+                .size(sizeX, sizeY)
+                .setTrackingRange(trackingRange)
+                .setUpdateInterval(updateFrequency)
+                .setShouldReceiveVelocityUpdates(sendsVelocityUpdates)
+                .build(location.toString());
+        type.setRegistryName(name);
+        entities.add(type);
         if (enable) {
-            ResourceLocation location = new ResourceLocation(UntamedWilds.MOD_ID, name);
-            EntityType<T> type = EntityType.Builder.create(factory, classification)
-                    .size(sizeX, sizeY)
-                    .setTrackingRange(trackingRange)
-                    .setUpdateInterval(updateFrequency)
-                    .setShouldReceiveVelocityUpdates(sendsVelocityUpdates)
-                    .build(location.toString());
             spawnEggs.add(registerEntitySpawnEgg(type, name, maincolor, backcolor, species));
-            type.setRegistryName(name);
-            entities.add(type);
             if (ConfigMobControl.masterSpawner.get()) {
                 addWorldSpawn(type, weight, spawnType, groupCount);
             }
-            return type;
         }
-        return null;
+        return type;
     }
 
     private static Item registerEntitySpawnEgg(EntityType<?> type, String name, int maincolor, int backcolor, int species) {
