@@ -153,63 +153,46 @@ public class ModEntity {
     @SubscribeEvent
     public static void bakeAttributes(EntityAttributeCreationEvent event) {
         // TODO: I am 95% sure that with some fuckery this can be abstracted with a for-loop through `entities`
-        if (ConfigMobControl.addTarantula.get())
-            event.put(TARANTULA, EntityTarantula.registerAttributes().create());
+        event.put(TARANTULA, EntityTarantula.registerAttributes().create());
 
-        if (ConfigMobControl.addSnake.get())
-            event.put(SNAKE, EntitySnake.registerAttributes().create());
-        if (ConfigMobControl.addSoftshellTurtle.get())
-            event.put(SOFTSHELL_TURTLE, EntitySoftshellTurtle.registerAttributes().create());
-        if (ConfigMobControl.addTortoise.get())
-            event.put(TORTOISE, EntityTortoise.registerAttributes().create());
+        event.put(SNAKE, EntitySnake.registerAttributes().create());
+        event.put(SOFTSHELL_TURTLE, EntitySoftshellTurtle.registerAttributes().create());
+        event.put(TORTOISE, EntityTortoise.registerAttributes().create());
 
-        if (ConfigMobControl.addGiantClam.get())
-            event.put(GIANT_CLAM, EntityGiantClam.registerAttributes().create());
+        event.put(GIANT_CLAM, EntityGiantClam.registerAttributes().create());
 
-        if (ConfigMobControl.addHippo.get())
-            event.put(HIPPO, EntityHippo.registerAttributes().create());
-        if (ConfigMobControl.addAardvark.get())
-            event.put(AARDVARK, EntityAardvark.registerAttributes().create());
-        if (ConfigMobControl.addRhino.get())
-            event.put(RHINO, EntityRhino.registerAttributes().create());
-        if (ConfigMobControl.addHyena.get())
-            event.put(HYENA, EntityHyena.registerAttributes().create());
-        if (ConfigMobControl.addBear.get()) {
-            event.put(BLACK_BEAR, EntityBlackBear.registerAttributes().create());
-            event.put(BROWN_BEAR, EntityBrownBear.registerAttributes().create());
-            event.put(CAVE_BEAR, EntityCaveBear.registerAttributes().create());
-            event.put(BLIND_BEAR, EntityBlindBear.registerAttributes().create());
-            event.put(PANDA_BEAR, EntityGiantPanda.registerAttributes().create());
-            event.put(POLAR_BEAR, EntityPolarBear.registerAttributes().create());
-            event.put(SPECTACLED_BEAR, EntitySpectacledBear.registerAttributes().create());
-            event.put(SUN_BEAR, EntitySunBear.registerAttributes().create());
-        }
-        if (ConfigMobControl.addBigCat.get()) {
-            event.put(JAGUAR, EntityJaguar.registerAttributes().create());
-            event.put(LEOPARD, EntityLeopard.registerAttributes().create());
-            event.put(LION, EntityLion.registerAttributes().create());
-            event.put(PUMA, EntityPuma.registerAttributes().create());
-            event.put(SNOW_LEOPARD, EntitySnowLeopard.registerAttributes().create());
-            event.put(TIGER, EntityTiger.registerAttributes().create());
+        event.put(HIPPO, EntityHippo.registerAttributes().create());
+        event.put(AARDVARK, EntityAardvark.registerAttributes().create());
+        event.put(RHINO, EntityRhino.registerAttributes().create());
+        event.put(HYENA, EntityHyena.registerAttributes().create());
+        event.put(BLACK_BEAR, EntityBlackBear.registerAttributes().create());
+        event.put(BROWN_BEAR, EntityBrownBear.registerAttributes().create());
+        event.put(CAVE_BEAR, EntityCaveBear.registerAttributes().create());
+        event.put(BLIND_BEAR, EntityBlindBear.registerAttributes().create());
+        event.put(PANDA_BEAR, EntityGiantPanda.registerAttributes().create());
+        event.put(POLAR_BEAR, EntityPolarBear.registerAttributes().create());
+        event.put(SPECTACLED_BEAR, EntitySpectacledBear.registerAttributes().create());
+        event.put(SUN_BEAR, EntitySunBear.registerAttributes().create());
+
+        event.put(JAGUAR, EntityJaguar.registerAttributes().create());
+        event.put(LEOPARD, EntityLeopard.registerAttributes().create());
+        event.put(LION, EntityLion.registerAttributes().create());
+        event.put(PUMA, EntityPuma.registerAttributes().create());
+        event.put(SNOW_LEOPARD, EntitySnowLeopard.registerAttributes().create());
+        event.put(TIGER, EntityTiger.registerAttributes().create());
             //event.put(CAVE_LION, CaveLionBigCat.registerAttributes().create());
             //event.put(DIRE_LION, DireLionBigCat.registerAttributes().create());
             //event.put(MARSUPIAL_LION, MarsupialLionBigCat.registerAttributes().create());
             //event.put(SABERTOOTH, SabertoothBigCat.registerAttributes().create());
-        }
 
-        if (ConfigMobControl.addSunfish.get())
-            event.put(SUNFISH, EntitySunfish.registerAttributes().create());
-        if (ConfigMobControl.addTrevally.get())
-            event.put(TREVALLY, EntityTrevally.registerAttributes().create());
-        if (ConfigMobControl.addArowana.get())
-            event.put(AROWANA, EntityArowana.registerAttributes().create());
-        if (ConfigMobControl.addShark.get())
-            event.put(SHARK, EntityShark.registerAttributes().create());
-        if (ConfigMobControl.addFootballFish.get())
-            event.put(FOOTBALL_FISH, EntityFootballFish.registerAttributes().create());
 
-        if (ConfigMobControl.addGiantSalamander.get())
-            event.put(GIANT_SALAMANDER, EntityGiantSalamander.registerAttributes().create());
+        event.put(SUNFISH, EntitySunfish.registerAttributes().create());
+        event.put(TREVALLY, EntityTrevally.registerAttributes().create());
+        event.put(AROWANA, EntityArowana.registerAttributes().create());
+        event.put(SHARK, EntityShark.registerAttributes().create());
+        event.put(FOOTBALL_FISH, EntityFootballFish.registerAttributes().create());
+
+        event.put(GIANT_SALAMANDER, EntityGiantSalamander.registerAttributes().create());
     }
 
     @SubscribeEvent
@@ -220,92 +203,63 @@ public class ModEntity {
     }
 
     public static void registerRendering() {
-        if (ConfigMobControl.addTarantula.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TARANTULA, RendererTarantula::new);
-            EntityTarantula.processSkins();
-        }
-        if (ConfigMobControl.addSoftshellTurtle.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SOFTSHELL_TURTLE, RendererSoftshellTurtle::new);
-            EntitySoftshellTurtle.processSkins();
-        }
-        if (ConfigMobControl.addSnake.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNAKE, RendererSnake::new);
-            EntitySnake.processSkins();
-        }
-        if (ConfigMobControl.addTortoise.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TORTOISE, RendererTortoise::new);
-            EntityTortoise.processSkins();
-        }
-        if (ConfigMobControl.addGiantClam.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, RendererGiantClam::new);
-            EntityGiantClam.processSkins();
-        }
-        if (ConfigMobControl.addHippo.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.HIPPO, RendererHippo::new);
-            EntityHippo.processSkins();
-        }
-        if (ConfigMobControl.addAardvark.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.AARDVARK, RendererAardvark::new);
-            EntityAardvark.processSkins();
-        }
-        if (ConfigMobControl.addRhino.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.RHINO, RendererRhino::new);
-            EntityRhino.processSkins();
-        }
-        if (ConfigMobControl.addHyena.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.HYENA, RendererHyena::new);
-            EntityHyena.processSkins();
-        }
-        if (ConfigMobControl.addBear.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, RendererBear::new);
-            EntityBlackBear.registerTextures(EntityBlackBear.SKIN_NUMBER);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLIND_BEAR, RendererBear::new);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.BROWN_BEAR, RendererBear::new);
-            EntityBrownBear.registerTextures(EntityBrownBear.SKIN_NUMBER);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_BEAR, RendererBear::new);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANDA_BEAR, RendererBear::new);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.POLAR_BEAR, RendererBear::new);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SPECTACLED_BEAR, RendererBear::new);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUN_BEAR, RendererBear::new);
-        }
-        if (ConfigMobControl.addBigCat.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.JAGUAR, RendererBigCat::new);
-            EntityJaguar.registerTextures(EntityJaguar.SKIN_NUMBER);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.PUMA, RendererBigCat::new);
-            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_LION, RendererBigCat::new);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TIGER, RendererBigCat::new);
-            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.SABERTOOTH, RendererBigCat::new);
-            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.MARSUPIAL_LION, RendererBigCat::new);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.LION, RendererBigCat::new);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.LEOPARD, RendererBigCat::new);
-            EntityLeopard.registerTextures(EntityLeopard.SKIN_NUMBER);
-            //RenderingRegistry.registerEntityRenderingHandler(ModEntity.DIRE_LION, RendererBigCat::new);
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNOW_LEOPARD, RendererBigCat::new);
-        }
-        if (ConfigMobControl.addSunfish.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUNFISH, RendererSunfish::new);
-            EntitySunfish.processSkins();
-        }
-        if (ConfigMobControl.addTrevally.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.TREVALLY, RendererTrevally::new);
-            EntityTrevally.processSkins();
-        }
-        if (ConfigMobControl.addArowana.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.AROWANA, RendererArowana::new);
-            EntityArowana.processSkins();
-        }
-        if (ConfigMobControl.addShark.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.SHARK, RendererShark::new);
-            EntityShark.processSkins();
-        }
-        if (ConfigMobControl.addFootballFish.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.FOOTBALL_FISH, RendererFootballFish::new);
-            EntityFootballFish.processSkins();
-        }
-        if (ConfigMobControl.addGiantSalamander.get()) {
-            RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
-            EntityGiantSalamander.processSkins();
-        }
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.TARANTULA, RendererTarantula::new);
+        EntityTarantula.processSkins();
+
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SOFTSHELL_TURTLE, RendererSoftshellTurtle::new);
+        EntitySoftshellTurtle.processSkins();
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNAKE, RendererSnake::new);
+        EntitySnake.processSkins();
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.TORTOISE, RendererTortoise::new);
+        EntityTortoise.processSkins();
+
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, RendererGiantClam::new);
+        EntityGiantClam.processSkins();
+
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.HIPPO, RendererHippo::new);
+        EntityHippo.processSkins();
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.AARDVARK, RendererAardvark::new);
+        EntityAardvark.processSkins();
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.RHINO, RendererRhino::new);
+        EntityRhino.processSkins();
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.HYENA, RendererHyena::new);
+        EntityHyena.processSkins();
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, RendererBear::new);
+        EntityBlackBear.registerTextures(EntityBlackBear.SKIN_NUMBER);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLIND_BEAR, RendererBear::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BROWN_BEAR, RendererBear::new);
+        EntityBrownBear.registerTextures(EntityBrownBear.SKIN_NUMBER);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_BEAR, RendererBear::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANDA_BEAR, RendererBear::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.POLAR_BEAR, RendererBear::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SPECTACLED_BEAR, RendererBear::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUN_BEAR, RendererBear::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.JAGUAR, RendererBigCat::new);
+        EntityJaguar.registerTextures(EntityJaguar.SKIN_NUMBER);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.PUMA, RendererBigCat::new);
+        //RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_LION, RendererBigCat::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.TIGER, RendererBigCat::new);
+        //RenderingRegistry.registerEntityRenderingHandler(ModEntity.SABERTOOTH, RendererBigCat::new);
+        //RenderingRegistry.registerEntityRenderingHandler(ModEntity.MARSUPIAL_LION, RendererBigCat::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.LION, RendererBigCat::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.LEOPARD, RendererBigCat::new);
+        EntityLeopard.registerTextures(EntityLeopard.SKIN_NUMBER);
+        //RenderingRegistry.registerEntityRenderingHandler(ModEntity.DIRE_LION, RendererBigCat::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNOW_LEOPARD, RendererBigCat::new);
+
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUNFISH, RendererSunfish::new);
+        EntitySunfish.processSkins();
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.TREVALLY, RendererTrevally::new);
+        EntityTrevally.processSkins();
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.AROWANA, RendererArowana::new);
+        EntityArowana.processSkins();
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SHARK, RendererShark::new);
+        EntityShark.processSkins();
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.FOOTBALL_FISH, RendererFootballFish::new);
+        EntityFootballFish.processSkins();
+
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
+        EntityGiantSalamander.processSkins();
 
         if (UntamedWilds.DEBUG) {
             UntamedWilds.LOGGER.info("---Dump of Common and Rare Texture arrays---");
