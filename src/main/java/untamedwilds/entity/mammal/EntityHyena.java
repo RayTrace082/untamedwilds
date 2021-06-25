@@ -75,7 +75,7 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, true));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
-        this.targetSelector.addGoal(1, new HurtPackByTargetGoal(this));
+        this.targetSelector.addGoal(1, new HurtPackByTargetGoal(this).setCallsForHelp(EntityHyena.class));
         this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntityLion)));
         this.targetSelector.addGoal(3, new HuntPackMobTarget<>(this, LivingEntity.class, true, 30, false, input -> getEcoLevel(input) < 6));
     }
