@@ -114,7 +114,6 @@ public abstract class EntityUtils {
         if (itemstack.getTag() != null) {
             if (itemstack.getTag().contains("EntityTag")) {
                 if (itemstack.getChildTag("EntityTag").contains("UUID")) {
-                    UntamedWilds.LOGGER.info(worldIn.getEntityByUuid(itemstack.getChildTag("EntityTag").getUniqueId("UUID")));
                     if (worldIn.getEntityByUuid(itemstack.getChildTag("EntityTag").getUniqueId("UUID")) != null) {
                         itemstack.getChildTag("EntityTag").putUniqueId("UUID", MathHelper.getRandomUUID(worldIn.rand));
                     }
@@ -191,6 +190,9 @@ public abstract class EntityUtils {
         entity.writeUnlessRemoved(entityTag);
         entityTag.remove("Pos"); // Remove the Position from the NBT data, as it would fuck things up later on
         entityTag.remove("Motion");
+        if (entityTag.contains("BoundingBox")) {
+            entityTag.remove("BoundingBox"); // TODO: Shitty RandomPatches solution
+        }
         if (entity instanceof ISpecies) {
             entityTag.remove("HomePosX");
             entityTag.remove("HomePosY");
