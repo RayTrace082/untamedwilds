@@ -32,10 +32,10 @@ public class ConfigFeatureControl {
         //builder.push("feature_control");
         builder.comment("Options pertaining to blocks and their worldgen");
         addAnemones = builder.comment("Controls whether to add Anemones and their associated items to oceans.").define("gencontrol.anemone", true);
-        addReeds = builder.comment("Controls whether to add Reeds and their associated items.").define("gencontrol.reeds", true);
-        addFlora = builder.comment("Controls whether to add Bushes and their associated items to most biomes.").define("gencontrol.bush", true);
-        addTreeOrchids = builder.comment("Controls whether to add Tree Orchids and their associated items.").define("gencontrol.tree_orchid", true);
-        addAlgae = builder.comment("Controls whether to add Amazon Sword and their associated items").define("gencontrol.algae", true);
+        addReeds = builder.comment("Controls whether to spawn Reeds in River/Swamp biomes").define("gencontrol.reeds", true);
+        addFlora = builder.comment("Controls whether to spawn random Flora in the world").define("gencontrol.bush", true);
+        addTreeOrchids = builder.comment("Controls whether to add Tree Orchids (NOT YET IMPLEMENTED)").define("gencontrol.tree_orchid", true);
+        addAlgae = builder.comment("Controls whether to spawn Amazon Sword in Swamp/Jungle biomes").define("gencontrol.algae", true);
         addBurrows = builder.comment("Controls whether to use Burrows to spawn Critters, instead of having them clog up the Spawns").define("gencontrol.burrows", true);
 
         reedBlacklist = builder.comment("Prevent spawns of Reeds in these biomes").defineList("gencontrol.reed_blacklist", Lists.newArrayList(), string -> string instanceof String);
