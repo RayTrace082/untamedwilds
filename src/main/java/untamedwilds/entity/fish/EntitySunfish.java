@@ -125,7 +125,7 @@ public class EntitySunfish extends ComplexMobAquatic implements ISpecies, INewSk
             //}
             //return Sunfish.SpeciesSunfish.getSpeciesByBiome(biome);
         }
-        if (reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET) {
+        if (isArtificialSpawnReason(reason)) {
             return this.rand.nextInt(EntitySunfish.SpeciesSunfish.values().length);
         }
         return 99;

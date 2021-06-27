@@ -144,7 +144,7 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
 
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET) {
+        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
             return this.rand.nextInt(EntityAardvark.SpeciesAardvark.values().length);
         }
         return EntityAardvark.SpeciesAardvark.getSpeciesByBiome(biome);

@@ -22,4 +22,8 @@ public interface ISpecies {
     default String getSpeciesName() {
         return this instanceof ComplexMob ? getSpeciesName(((ComplexMob)this).getVariant()) : "";
     }
+
+    default boolean isArtificialSpawnReason(SpawnReason reason) {
+        return reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET || reason == SpawnReason.MOB_SUMMONED || reason == SpawnReason.COMMAND;
+    }
 }

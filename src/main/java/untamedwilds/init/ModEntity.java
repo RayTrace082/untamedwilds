@@ -295,6 +295,7 @@ public class ModEntity {
         } catch (JsonParseException | IOException ioexception) {
             UntamedWilds.LOGGER.error("Couldn't read data from /data/untamedwilds/eco_levels.json", ioexception);
         }
+
     }
 
     /*public static void addVanillaSpawn(Class <? extends LivingEntity> entityClass, int weightedProb, int min, int max, BiomeDictionary.Type... biomes) {

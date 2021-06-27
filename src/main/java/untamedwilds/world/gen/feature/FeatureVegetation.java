@@ -101,7 +101,7 @@ public class FeatureVegetation extends Feature<FeatureSpreadConfig> {
             }
             if (!types.isEmpty()) {
                 int i = new Random().nextInt(types.size());
-                return new Pair(types.get(i).type, types.get(i).size);
+                return new Pair<>(types.get(i).type, types.get(i).size);
             }
             return null;
         }

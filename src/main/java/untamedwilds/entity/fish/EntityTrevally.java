@@ -132,7 +132,7 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
         if (biomekey.equals(Biomes.COLD_OCEAN) || biomekey.equals(Biomes.DEEP_COLD_OCEAN) || biomekey.equals(Biomes.FROZEN_OCEAN) || biomekey.equals(Biomes.DEEP_FROZEN_OCEAN)) {
             return 99;
         }
-        if (reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET || ConfigGamerules.randomSpecies.get()) {
+        if (isArtificialSpawnReason(reason) || ConfigGamerules.randomSpecies.get()) {
             return this.rand.nextInt(SpeciesTrevally.values().length);
         }
         return SpeciesTrevally.getSpeciesByBiome(biome);

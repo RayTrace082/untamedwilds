@@ -181,7 +181,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
 
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomeKey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET) {
+        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
             return this.rand.nextInt(EntitySnake.SpeciesSnake.values().length);
         }
         return EntitySnake.SpeciesSnake.getSpeciesByBiome(biome);

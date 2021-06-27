@@ -64,6 +64,7 @@ public class UntamedWildsGenerator {
     @SubscribeEvent
     public static void onBiomesLoad(BiomeLoadingEvent event) {
         // Thanks Mojang, very cool 😎
+        // event.getSpawns().withSpawner()
         if (event.getCategory() == Biome.Category.OCEAN) {
             if (!FaunaHandler.getSpawnableList(FaunaHandler.animalType.SESSILE).isEmpty())
                 registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SESSILE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqSessile.get());

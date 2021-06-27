@@ -169,7 +169,7 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
 
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET) {
+        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
             return this.rand.nextInt(SpeciesTarantula.values().length);
         }
         return SpeciesTarantula.getSpeciesByBiome(biome);

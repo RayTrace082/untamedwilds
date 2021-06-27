@@ -118,7 +118,7 @@ public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, I
         if (biomekey.equals(Biomes.DEEP_LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_OCEAN) || biomekey.equals(Biomes.DEEP_COLD_OCEAN)) {
             return this.rand.nextInt(SpeciesFootballFish.values().length);
         }
-        if (reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET) {
+        if (isArtificialSpawnReason(reason)) {
             return this.rand.nextInt(SpeciesFootballFish.values().length);
         }
         return 99;

@@ -122,7 +122,7 @@ public class EntityArowana extends ComplexMobAquatic implements ISpecies, INewSk
 
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET || ConfigGamerules.randomSpecies.get()) {
+        if (isArtificialSpawnReason(reason) || ConfigGamerules.randomSpecies.get()) {
             return this.rand.nextInt(EntityArowana.SpeciesArowana.values().length);
         }
         return EntityArowana.SpeciesArowana.getSpeciesByBiome(biome);

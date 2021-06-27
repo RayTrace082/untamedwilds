@@ -157,7 +157,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
             }
             return SpeciesGiantClam.getSpeciesByBiome(biome);
         }
-        if (reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET) {
+        if (isArtificialSpawnReason(reason)) {
             return this.rand.nextInt(SpeciesGiantClam.values().length);
         }
         return 99;
