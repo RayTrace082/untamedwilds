@@ -37,8 +37,11 @@ public class PandaBreakBamboo extends Goal {
         BlockPos pos = this.taskOwner.getPosition();
 
         this.targetPos = findNearbyBamboo(pos);
-        this.path = this.taskOwner.getNavigator().getPathToPos(this.targetPos, 0);
-        return this.path != null;
+        if (this.targetPos != null) {
+            this.path = this.taskOwner.getNavigator().getPathToPos(this.targetPos, 0);
+            return this.path != null;
+        }
+        return false;
     }
 
     public void startExecuting() {
