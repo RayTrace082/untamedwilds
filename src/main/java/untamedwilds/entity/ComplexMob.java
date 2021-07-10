@@ -104,12 +104,14 @@ public abstract class ComplexMob extends TameableEntity {
     public int getSkin(){ return (this.dataManager.get(SKIN)); }
     public void setSkin(int skin){ this.dataManager.set(SKIN, skin); }
     public <T extends ComplexMob> int chooseSkinForSpecies(T entityIn, boolean allowRares) {
-        String name = entityIn.getType().getRegistryName().getPath();
-        if (!TEXTURES_COMMON.get(name).isEmpty()) {
-            boolean isRare = allowRares && TEXTURES_RARE.get(name).containsKey(this.getVariant()) && this.rand.nextFloat() < ConfigGamerules.rareSkinChance.get();
-            int skin = this.rand.nextInt(isRare ? TEXTURES_RARE.get(name).get(this.getVariant()).size() : TEXTURES_COMMON.get(name).get(this.getVariant()).size()) + (isRare ? 100 : 0);
-            this.setSkin(skin);
-            return skin;
+        if (entityIn.getType().getRegistryName() != null) {
+            String name = entityIn.getType().getRegistryName().getPath();
+            if (!TEXTURES_COMMON.get(name).isEmpty()) {
+                boolean isRare = allowRares && TEXTURES_RARE.get(name).containsKey(this.getVariant()) && this.rand.nextFloat() < ConfigGamerules.rareSkinChance.get();
+                int skin = this.rand.nextInt(isRare ? TEXTURES_RARE.get(name).get(this.getVariant()).size() : TEXTURES_COMMON.get(name).get(this.getVariant()).size()) + (isRare ? 100 : 0);
+                this.setSkin(skin);
+                return skin;
+            }
         }
         return 0;
     }
@@ -320,6 +322,7 @@ public abstract class ComplexMob extends TameableEntity {
             if (this instanceof INeedsPostUpdate) {
                 ((INeedsPostUpdate) this).updateAttributes();
             }
+
             this.setGrowingAge(0);
         }
         if (this instanceof IPackEntity) {

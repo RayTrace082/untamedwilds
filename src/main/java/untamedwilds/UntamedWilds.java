@@ -32,7 +32,7 @@ public class UntamedWilds {
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     /*private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(

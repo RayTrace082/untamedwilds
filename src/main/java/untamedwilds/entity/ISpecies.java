@@ -24,6 +24,6 @@ public interface ISpecies {
     }
 
     default boolean isArtificialSpawnReason(SpawnReason reason) {
-        return reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET || reason == SpawnReason.MOB_SUMMONED || reason == SpawnReason.COMMAND;
+        return reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET || reason == SpawnReason.MOB_SUMMONED || reason == SpawnReason.COMMAND || reason == SpawnReason.SPAWNER;
     }
 }

@@ -128,7 +128,11 @@ public abstract class EntityUtils {
         }
         else {
             // If no NBT data is assigned to the entity (eg. Item taken from the Creative menu), create a new, random mob
-            spawn = entity.create(worldIn, null, null, player, spawnPos, SpawnReason.SPAWN_EGG, true, offset);
+            spawn = entity.spawn(worldIn, null, null, player, spawnPos, SpawnReason.SPAWN_EGG, true, offset);
+            if (spawn instanceof ComplexMob) {
+                ((ComplexMob)spawn).setVariant(species);
+                ((ComplexMob) spawn).chooseSkinForSpecies((ComplexMob)spawn, true);
+            }
             if (spawn != null) {
                 if (itemstack.hasDisplayName()) {
                     spawn.setCustomName(itemstack.getDisplayName());
@@ -230,9 +234,15 @@ public abstract class EntityUtils {
         for (int i = 0; i < 99; i++) {
             int k = i;
             try {
-                final String full_path = String.format(path + suffix, i + 1);
-                Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
-                list.get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
+                if (!suffix.matches("[^a-z0-9/._:-]")) {
+                    final String full_path = String.format(path + suffix, i + 1);
+                    Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
+                    list.get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
+                }
+                else {
+                    UntamedWilds.LOGGER.error("Invalid character in " + suffix + ", terminating Skin registry");
+                    break;
+                }
             } catch (Exception e) {
                 if (k == 0 && addDefault) {
                     //UntamedWilds.LOGGER.info("Using the default path instead");
