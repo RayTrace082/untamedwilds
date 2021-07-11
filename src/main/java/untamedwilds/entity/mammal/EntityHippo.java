@@ -7,10 +7,8 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
@@ -30,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntityHippo extends ComplexMobAmphibious implements INewSkins {
+public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpecies {
 
     private static final float SIZE = 1.1f;
     private static final String BREEDING = "EARLY_SUMMER";
@@ -191,6 +189,16 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins {
     }
 
     @Override
+    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
+        if (ConfigGamerules.randomSpecies.get() || reason == SpawnReason.SPAWN_EGG) {
+            return this.rand.nextInt(SpeciesHippo.values().length);
+        }
+        return SpeciesHippo.getSpeciesByBiome(biome);
+    }
+    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.hippo_" + getRawSpeciesName(i)).getString(); }
+    public String getRawSpeciesName(int i) { return SpeciesHippo.values()[i].name().toLowerCase(); }
+
+    @Override
     public Animation[] getAnimations() {
         return new Animation[]{NO_ANIMATION, EAT, IDLE_YAWN, IDLE_LOOK, IDLE_TALK, ATTACK};
     }
@@ -211,14 +219,14 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins {
     // Species available, referenced to properly distribute Hippos in the world
     public enum SpeciesHippo implements IStringSerializable {
 
-        COMMON		(ModEntity.HIPPO, 1, Biome.Category.SWAMP, Biome.Category.SAVANNA);
+        COMMON		(0, 1, Biome.Category.SWAMP, Biome.Category.SAVANNA);
 
-        public EntityType<? extends EntityHippo> type;
+        public int species;
         public int rarity;
         public Biome.Category[] spawnBiomes;
 
-        SpeciesHippo(EntityType<? extends EntityHippo> type, int rolls, Biome.Category... biomes) {
-            this.type = type;
+        SpeciesHippo(int species, int rolls, Biome.Category... biomes) {
+            this.species = species;
             this.rarity = rolls;
             this.spawnBiomes = biomes;
         }
@@ -228,7 +236,7 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins {
             return "why would you do this?";
         }
 
-        public static EntityType<? extends EntityHippo> getSpeciesByBiome(Biome biome) {
+        public static int getSpeciesByBiome(Biome biome) {
             List<EntityHippo.SpeciesHippo> types = new ArrayList<>();
             for (EntityHippo.SpeciesHippo type : values()) {
                 for(Biome.Category biomeTypes : type.spawnBiomes) {
@@ -240,9 +248,9 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins {
                 }
             }
             if (types.isEmpty()) {
-                return null;
+                return 99;
             }
-            return types.get(new Random().nextInt(types.size())).type;
+            return types.get(new Random().nextInt(types.size())).species;
         }
     }
 }

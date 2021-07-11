@@ -2,6 +2,7 @@ package untamedwilds.world.gen.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
@@ -9,6 +10,8 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import untamedwilds.entity.mammal.bear.AbstractBear;
+import untamedwilds.entity.mammal.bigcat.AbstractBigCat;
 import untamedwilds.world.FaunaHandler;
 import untamedwilds.world.FaunaSpawn;
 
@@ -24,9 +27,20 @@ public class FeatureApexPredators extends Feature<NoFeatureConfig> {
         pos = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos);
         for (int i = 0; i < 5; i++) {
             FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.APEX_PRED));
-            boolean offsetY = Math.abs(pos.getY() - world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos).getY()) >= 10;
-            if (FaunaSpawn.performWorldGenSpawning(entry.entityType, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, world, offsetY ? world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos).up(4) : pos, rand, entry.groupCount)) {
-                return true;
+            // TODO: Hardcoded Bear and Big Cats until they get integrated into the Species system
+            EntityType<?> type = entry.entityType;
+            if (type.create(world.getWorld()) instanceof AbstractBear) {
+                type = AbstractBear.SpeciesBear.getSpeciesByBiome(world, pos);
+            }
+            else if (type.create(world.getWorld()) instanceof AbstractBigCat) {
+                type = AbstractBigCat.SpeciesBigCat.getSpeciesByBiome(world.getBiome(pos));
+            }
+
+            if (type != null) {
+                boolean offsetY = Math.abs(pos.getY() - world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos).getY()) >= 10;
+                if (FaunaSpawn.performWorldGenSpawning(type, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, world, offsetY ? world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos).up(4) : pos, rand, entry.groupCount)) {
+                    return true;
+                }
             }
         }
         return false;
