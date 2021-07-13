@@ -44,38 +44,47 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
 
    private int currentSpecies;
    private final int speciesNumber;
+   private boolean isCached;
 
-   // TODO: The currently selected species doesn't display on new loads, despite the NBT data existing
+   // TODO: Egg-Spawner interaction is screwed
    public UntamedSpawnEggItem(EntityType<?> typeIn, int species, int primaryColorIn, int secondaryColorIn, Properties builder) {
       super(typeIn, primaryColorIn, secondaryColorIn, builder);
       this.speciesNumber = species + 1;
       this.currentSpecies = 0;
+      this.isCached = false;
    }
 
    @Override
    @OnlyIn(Dist.CLIENT)
    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
       tooltip.add(new TranslationTextComponent("item.untamedwilds.spawn_egg_info").mergeStyle(TextFormatting.GRAY));
-      tooltip.add(new TranslationTextComponent("item.untamedwilds.spawn_egg_current",  this.getCurrentSpeciesNumber()).mergeStyle(TextFormatting.ITALIC).mergeStyle(TextFormatting.GRAY));
+      tooltip.add(new TranslationTextComponent("item.untamedwilds.spawn_egg_current",  this.getCurrentSpeciesNumber(stack)).mergeStyle(TextFormatting.ITALIC).mergeStyle(TextFormatting.GRAY));
    }
 
-   private String getCurrentSpeciesNumber() {
+   private String getCurrentSpeciesNumber(ItemStack stack) {
+      if (!this.isCached && stack.hasTag()) {
+         if (stack.getTag().contains("EntityTag")) {
+            this.currentSpecies = stack.getTag().getCompound("EntityTag").getInt("Variant");
+            this.isCached = true;
+         }
+      }
       int i = this.currentSpecies - 1;
       return i >= 0 ? String.valueOf(i) : "Random";
    }
 
    public void increaseSpeciesNumber(int intIn) {
-      UntamedWilds.LOGGER.info(intIn % this.speciesNumber);
+      //UntamedWilds.LOGGER.info(intIn % this.speciesNumber);
       this.currentSpecies = (intIn % this.speciesNumber);
+      this.isCached = true;
    }
 
    @Override
    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
       ItemStack itemstack = playerIn.getHeldItem(handIn);
       if (!worldIn.isRemote && playerIn.isSneaking()) {
-         UntamedWilds.LOGGER.info(this.currentSpecies);
+         //UntamedWilds.LOGGER.info(this.currentSpecies);
          this.increaseSpeciesNumber(this.currentSpecies + 1);
-         playerIn.sendStatusMessage(new TranslationTextComponent("item.untamedwilds.spawn_egg_change",  this.getCurrentSpeciesNumber()), true);
+         playerIn.sendStatusMessage(new TranslationTextComponent("item.untamedwilds.spawn_egg_change",  this.getCurrentSpeciesNumber(itemstack)), true);
 
          itemstack.setTag(new CompoundNBT());
          if (this.currentSpecies != 0) {
@@ -86,17 +95,16 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
          return ActionResult.resultPass(itemstack);
       }
 
-      RayTraceResult raytraceresult = rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
+      BlockRayTraceResult raytraceresult = rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
       if (raytraceresult.getType() != RayTraceResult.Type.BLOCK) {
          return ActionResult.resultPass(itemstack);
       } else if (!(worldIn instanceof ServerWorld)) {
          return ActionResult.resultSuccess(itemstack);
       } else {
-         BlockRayTraceResult blockraytraceresult = (BlockRayTraceResult)raytraceresult;
-         BlockPos blockpos = blockraytraceresult.getPos();
+         BlockPos blockpos = raytraceresult.getPos();
          if (!(worldIn.getBlockState(blockpos).getBlock() instanceof FlowingFluidBlock)) {
             return ActionResult.resultPass(itemstack);
-         } else if (worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, blockraytraceresult.getFace(), itemstack)) {
+         } else if (worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, raytraceresult.getFace(), itemstack)) {
             EntityType<?> entitytype = this.getType(itemstack.getTag());
             Entity spawn = entitytype.spawn((ServerWorld)worldIn, itemstack, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
             if (spawn == null) {
