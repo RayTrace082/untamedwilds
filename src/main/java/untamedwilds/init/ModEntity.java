@@ -180,11 +180,10 @@ public class ModEntity {
         event.put(PUMA, EntityPuma.registerAttributes().create());
         event.put(SNOW_LEOPARD, EntitySnowLeopard.registerAttributes().create());
         event.put(TIGER, EntityTiger.registerAttributes().create());
-            //event.put(CAVE_LION, CaveLionBigCat.registerAttributes().create());
-            //event.put(DIRE_LION, DireLionBigCat.registerAttributes().create());
-            //event.put(MARSUPIAL_LION, MarsupialLionBigCat.registerAttributes().create());
-            //event.put(SABERTOOTH, SabertoothBigCat.registerAttributes().create());
-
+        //event.put(CAVE_LION, EntityCaveLion.registerAttributes().create());
+        //event.put(DIRE_LION, EntityDireLion.registerAttributes().create());
+        //event.put(MARSUPIAL_LION, EntityMarsupialLion.registerAttributes().create());
+        //event.put(SABERTOOTH, EntitySabertooth.registerAttributes().create());
 
         event.put(SUNFISH, EntitySunfish.registerAttributes().create());
         event.put(TREVALLY, EntityTrevally.registerAttributes().create());

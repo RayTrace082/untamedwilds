@@ -77,9 +77,10 @@ public class UntamedWildsGenerator {
                 }
             }
         }
+
         if ((event.getCategory() == Biome.Category.RIVER || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) && !ConfigFeatureControl.reedBlacklist.get().contains(event.getName().toString()))
             registerFeatureWithFreq(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.KELP_PLACEMENT), ConfigFeatureControl.freqReeds.get(), ConfigFeatureControl.addReeds.get());
-        if ((event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) && !ConfigFeatureControl.algaeBlacklist.get().contains(event.getName().toString()))
+        if (!ConfigFeatureControl.algaeBlacklist.get().contains(event.getName().toString()))
             registerFeatureWithFreq(event, GenerationStage.Decoration.VEGETAL_DECORATION, ALGAE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT), ConfigFeatureControl.freqAlgae.get(), ConfigFeatureControl.addAlgae.get());
         if (!ConfigFeatureControl.floraBlacklist.get().contains(event.getName().toString()))
             registerFeatureWithFreq(event, GenerationStage.Decoration.VEGETAL_DECORATION, VEGETATION.get().withConfiguration(new FeatureSpreadConfig(4)).withPlacement(Features.Placements.KELP_PLACEMENT), ConfigFeatureControl.freqFlora.get(), ConfigFeatureControl.addFlora.get());
@@ -111,7 +112,7 @@ public class UntamedWildsGenerator {
 
     private static void registerFeatureWithFreq(BiomeLoadingEvent event, GenerationStage.Decoration decoration, ConfiguredFeature<?, ?> feature, int freq, boolean enable) {
         if (freq > 0 && enable) {
-            registerFeature(event, decoration, feature.chance(freq), feature.getFeature().getRegistryName());
+            registerFeature(event, decoration, feature.chance(freq), feature.feature.getRegistryName());
         }
     }
 

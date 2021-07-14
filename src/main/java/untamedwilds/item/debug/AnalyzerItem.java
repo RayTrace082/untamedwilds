@@ -38,9 +38,9 @@ public class AnalyzerItem extends Item {
             }
             if (target instanceof ComplexMobTerrestrial) {
                 playerIn.sendMessage(new StringTextComponent("Hunger: " + ((ComplexMobTerrestrial)entity).getHunger() + "/100 Hunger"), playerIn.getUniqueID());
-                if (!entity.isMale() && entity.getGrowingAge() > 0 && !ConfigGamerules.easyBreeding.get()) {
-                    playerIn.sendMessage(new StringTextComponent("This female will give birth in " + TimeUtils.convertTicksToDays(world, entity.getGrowingAge()) + " (" + entity.getGrowingAge() + " ticks)"), playerIn.getUniqueID());
-                }
+            }
+            if (!entity.isMale() && entity.getGrowingAge() > 0 && !ConfigGamerules.easyBreeding.get()) {
+                playerIn.sendMessage(new StringTextComponent("This female will give birth in " + TimeUtils.convertTicksToDays(world, entity.getGrowingAge()) + " (" + entity.getGrowingAge() + " ticks)"), playerIn.getUniqueID());
             }
             if (entity.wantsToBreed()) {
                 playerIn.sendMessage(new StringTextComponent("This mob is looking for a suitable mate"), playerIn.getUniqueID());

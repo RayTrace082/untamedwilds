@@ -154,9 +154,11 @@ public abstract class ComplexMob extends TameableEntity {
                     child.setTamedBy((PlayerEntity) this.getOwner());
                 }
                 if (this instanceof INeedsPostUpdate) {
-                    ((INeedsPostUpdate) this).updateAttributes();
+                    ((INeedsPostUpdate) child).updateAttributes();
                 }
-                child.chooseSkinForSpecies(child, true);
+                if (TEXTURES_COMMON.containsKey(child.getType().getRegistryName().getPath())) {
+                    chooseSkinForSpecies(child, true);
+                }
                 this.world.addEntity(child);
             }
         }
