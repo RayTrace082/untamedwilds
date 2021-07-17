@@ -30,7 +30,7 @@ import java.util.Random;
 
 public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpecies {
 
-    private static final float SIZE = 1.1f;
+    private static final float SIZE = 1.2f;
     private static final String BREEDING = "EARLY_SUMMER";
     private static final int GESTATION = 8 * ConfigGamerules.cycleLength.get();
     private static final int GROWING = 12 * ConfigGamerules.cycleLength.get();

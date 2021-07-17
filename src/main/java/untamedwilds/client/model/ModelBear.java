@@ -423,7 +423,8 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
         float shortSnout = bear.hasShortSnout() ? 0.7F : 1;
         this.head_snout.scaleY = shortSnout;
         this.head_jaw.scaleY = shortSnout;
-        this.body_torso.scaleY = bear.hasHump() ? 1.2F : 1;
+        float torsoScale = bear.hasHump() ? 1.2F : 1;
+        this.body_torso.scaleY = torsoScale;
         boolean longBody = bear.hasLongBody();
         this.body_torso.rotationPointZ = longBody ? -2 : -1;
         this.body_buttocks.rotationPointZ = longBody ? 4 : 2;
@@ -432,14 +433,12 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
         // Breathing Animation
         this.body_main.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
         this.body_buttocks.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
-        this.body_torso.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
+        this.body_torso.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (torsoScale + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
         bob(body_main, 0.4F * globalSpeed, 0.03F, false, ageInTicks / 20, 2);
         bob(arm_right_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
         bob(arm_left_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
         bob(leg_right_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
         bob(leg_left_1, 0.4F * globalSpeed, 0.03F, false, -ageInTicks / 20, 2);
-
-        this.body_torso.scaleY = bear.hasHump() ? 1.2F : 1; // TODO: Shitty fix for torso scale
 
         // Blinking Animation
         if (!bear.shouldRenderEyes()) {

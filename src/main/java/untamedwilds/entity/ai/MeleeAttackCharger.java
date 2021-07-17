@@ -5,24 +5,24 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
+import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.entity.mammal.EntityRhino;
 import untamedwilds.util.EntityUtils;
 
 import java.util.EnumSet;
 import java.util.List;
 
-// TODO: Detach this class to work with anything, and not just Rhinos
 public class MeleeAttackCharger extends Goal {
 
     private final int executionChance;
     private final float speed;
-    private final EntityRhino taskOwner;
+    private final ComplexMobTerrestrial taskOwner;
     private double chargeX;
     private double chargeY;
     private double chargeZ;
     private int charge;
 
-    public MeleeAttackCharger(EntityRhino entityIn, float speedIn, int chance) {
+    public MeleeAttackCharger(ComplexMobTerrestrial entityIn, float speedIn, int chance) {
         this.taskOwner = entityIn;
         this.speed = speedIn;
         this.executionChance = chance;
@@ -69,10 +69,9 @@ public class MeleeAttackCharger extends Goal {
             if (--charge == 0) {
                 this.taskOwner.getNavigator().tryMoveToXYZ(chargeX, chargeY, chargeZ, this.speed * 1.2F);
             } else {
-                this.taskOwner.setCharging(true);
                 this.taskOwner.setSprinting(true);
             }
-        } else if (this.taskOwner.isCharging()) { // AABB checking
+        } else { // AABB checking
             AxisAlignedBB offset_box = this.taskOwner.getBoundingBox().offset(Math.cos(Math.toRadians(this.taskOwner.rotationYaw + 90)) * 1.2, 0, Math.sin(Math.toRadians(this.taskOwner.rotationYaw + 90)) * 1.2);
             //AxisAlignedBB offset_box = this.taskOwner.getBoundingBox().offset(Math.cos(this.taskOwner.rotationYaw * ((float)Math.PI / 180F)), 0, Math.sin(this.taskOwner.rotationYaw * ((float)Math.PI / 180F)));
             /*for (int i = 0; i < 4;  i++) {
@@ -90,7 +89,6 @@ public class MeleeAttackCharger extends Goal {
 
     public void resetTask() {
         this.charge = 0;
-        this.taskOwner.setCharging(false);
         this.taskOwner.setSprinting(false);
     }
 }
