@@ -14,7 +14,6 @@ public class SmartSwimGoal extends Goal {
     private final MobEntity entity;
     private final float speed;
 
-    // TODO: Make use of getNavigator().getCanSwim() to check whether a mob should be able to swim or not
     public SmartSwimGoal(MobEntity entityIn) {
         this(entityIn, 0.7f);
     }
@@ -28,7 +27,7 @@ public class SmartSwimGoal extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        if (this.entity.getAttackTarget() == null) {
+        if (this.entity.getAttackTarget() == null && this.entity.getNavigator().getCanSwim()) {
             double eyeHeight = (double) this.entity.getEyeHeight() - 0.18F; // Tiny offset because otherwise the Mob drowns
             return this.entity.func_233571_b_(FluidTags.WATER) > eyeHeight || this.entity.isInLava();
         }

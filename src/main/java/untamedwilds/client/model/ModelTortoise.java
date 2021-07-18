@@ -144,7 +144,7 @@ public class ModelTortoise extends AdvancedEntityModel<EntityTortoise> {
         swing(body_main, globalSpeed / 2, globalDegree * 0.1f, false, 0F, 0.1f, limbSwing / 2, limbSwingAmount);
 
         // Sitting Animation
-        if (tortoise.isSitting()) {
+        if (tortoise.sitProgress != 0) {
             this.progressPosition(body_main, tortoise.sitProgress, 0.0F, 22.6F, 0.0F, 20);
             this.progressPosition(neck, tortoise.sitProgress, 0.0F, -1.1F, 0.5F, 20);
             this.progressRotation(neck, tortoise.sitProgress, (float) Math.toRadians(-2.61F), 0, 0, 20);

@@ -21,7 +21,11 @@ import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.entity.INewSkins;
 import untamedwilds.entity.ISpecies;
-import untamedwilds.entity.ai.*;
+import untamedwilds.entity.ai.SmartMateGoal;
+import untamedwilds.entity.ai.SmartMeleeAttackGoal;
+import untamedwilds.entity.ai.SmartSwimGoal;
+import untamedwilds.entity.ai.SmartWanderGoal;
+import untamedwilds.entity.ai.unique.TortoiseHideInShellGoal;
 import untamedwilds.init.ModItems;
 import untamedwilds.util.EntityUtils;
 
@@ -56,7 +60,7 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
         this.goalSelector.addGoal(1, new SmartSwimGoal(this));
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
-        this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1D, 1.1D, input -> getEcoLevel(input) > 4));
+        this.goalSelector.addGoal(2, new TortoiseHideInShellGoal<>(this, LivingEntity.class, 7, input -> getEcoLevel(input) > 4));
         this.goalSelector.addGoal(3, new SmartWanderGoal(this, 1.0D, 400, 0,true));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
@@ -89,21 +93,6 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
             }
             if (this.world.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
-            }
-            if (this.ticksExisted % 8 == 0) {
-                if (!this.isSitting()) {
-                    List<PlayerEntity> list = this.world.getEntitiesWithinAABB(PlayerEntity.class, this.getBoundingBox().grow(4.0D, 2.0D, 4.0D));
-                    if (!list.isEmpty()) {
-                        this.getNavigator().clearPath();
-                        this.setSitting(true);
-                    }
-                }
-                else if (this.rand.nextInt(30) == 0) {
-                    List<PlayerEntity> list = this.world.getEntitiesWithinAABB(PlayerEntity.class, this.getBoundingBox().grow(4.0D, 2.0D, 4.0D));
-                    if (list.isEmpty()) {
-                        this.setSitting(false);
-                    }
-                }
             }
         }
     }
