@@ -210,7 +210,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
         boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), f);
         if (flag && SpeciesSnake.values()[this.getVariant()].getVenomTier() > 0) {
             if (entityIn instanceof LivingEntity) {
-                ((LivingEntity)entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 200, SpeciesSnake.values()[this.getVariant()].getVenomTier() - 1));
+                ((LivingEntity)entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 140, SpeciesSnake.values()[this.getVariant()].getVenomTier() - 1));
             }
             return true;
         }
