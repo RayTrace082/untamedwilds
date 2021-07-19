@@ -1,6 +1,7 @@
 package untamedwilds.entity.reptile;
 
 import com.github.alexthe666.citadel.animation.Animation;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -13,6 +14,7 @@ import net.minecraft.item.Items;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -131,6 +133,9 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
             }
         }
         return false;
+    }
+
+    protected void playStepSound(BlockPos pos, BlockState blockIn) {
     }
 
     protected SoundEvent getAmbientSound() {
