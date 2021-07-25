@@ -78,6 +78,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
             }
 
             if (this.getAir() < 40 && this.ticksExisted % 10 == 0) { // TODO: There's probably a better place to dump this (mobs about to drown will go to the surface for air), but it refuses to work everywhere else
+                this.getMoveHelper().strafe(0.6F, 0);
                 this.jump();
             }
 
