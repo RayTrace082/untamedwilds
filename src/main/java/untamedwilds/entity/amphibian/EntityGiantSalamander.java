@@ -36,7 +36,6 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
     private static final String BREEDING = "EARLY_SUMMER";
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
     public int swimProgress;
-    public int peacefulTicks;
 
     public EntityGiantSalamander(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
@@ -64,7 +63,7 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
         this.goalSelector.addGoal(3, new AmphibiousTransition(this, 1D));
         this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 600));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, false, input -> getEcoLevel(input) < 6 && this.peacefulTicks == 0));
+        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, false, input -> getEcoLevel(input) < 6));
     }
 
     public static void processSkins() {
@@ -92,9 +91,6 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
             }
             if (this.world.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
-            }
-            if (this.peacefulTicks > 0) {
-                this.peacefulTicks--;
             }
         }
         else {

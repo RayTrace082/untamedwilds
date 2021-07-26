@@ -54,6 +54,7 @@ public abstract class ComplexMob extends TameableEntity {
     private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     public HerdEntity herd = null;
+    public int peacefulTicks;
 
     public ComplexMob(EntityType<? extends ComplexMob> type, World worldIn){
         super(type, worldIn);
@@ -71,6 +72,13 @@ public abstract class ComplexMob extends TameableEntity {
         this.dataManager.register(COMMAND, 0);
         this.dataManager.register(SLEEPING, false);
         this.dataManager.register(SITTING, false);
+    }
+
+    public void livingTick() {
+        super.livingTick();
+        if (!this.world.isRemote && this.peacefulTicks > 0) {
+            this.peacefulTicks--;
+        }
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
@@ -273,6 +281,7 @@ public abstract class ComplexMob extends TameableEntity {
         compound.putFloat("Size", this.getMobSize());
         compound.putInt("Gender", this.getGender());
         compound.putBoolean("isAngry", this.isAngry());
+        compound.putInt("PeacefulTicks", this.peacefulTicks);
     }
 
     public void readAdditional(CompoundNBT compound){
@@ -291,6 +300,7 @@ public abstract class ComplexMob extends TameableEntity {
         this.setMobSize(compound.getFloat("Size"));
         this.setGender(compound.getInt("Gender"));
         this.setAngry(compound.getBoolean("isAngry"));
+        this.peacefulTicks = compound.getInt("PeacefulTicks");
     }
 
     @Nullable

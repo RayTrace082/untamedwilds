@@ -45,10 +45,15 @@ public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
         if (this.goalOwner.isChild() || this.goalOwner.getHealth() < this.goalOwner.getMaxHealth() / 3) {
             return false;
         }
-        if (this.goalOwner instanceof ComplexMobTerrestrial) {
-            ComplexMobTerrestrial temp = (ComplexMobTerrestrial) this.goalOwner;
-            if (temp.isTamed() || temp.getHunger() > this.threshold) {
+        if (this.goalOwner instanceof ComplexMob) {
+            if (((ComplexMob)this.goalOwner).peacefulTicks != 0) {
                 return false;
+            }
+            if (this.goalOwner instanceof ComplexMobTerrestrial) {
+                ComplexMobTerrestrial temp = (ComplexMobTerrestrial) this.goalOwner;
+                if (temp.isTamed() || temp.getHunger() > this.threshold) {
+                    return false;
+                }
             }
         }
         List<T> list = this.goalOwner.world.getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
@@ -60,6 +65,9 @@ public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
         else {
             list.sort(this.sorter);
             this.targetEntity = list.get(0);
+            if (this.goalOwner instanceof ComplexMob) {
+                ((ComplexMob)this.goalOwner).peacefulTicks = 6000;
+            }
             return true;
         }
     }

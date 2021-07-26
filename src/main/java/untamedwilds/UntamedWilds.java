@@ -29,6 +29,7 @@ public class UntamedWilds {
     // TODO: Define list of diggable items, maybe extend it to it's own weighted list and include Truffles and funsies
     // TODO: Store the children's UUID in their mother's NBT, to allow checking for Children without constant AABB checking
     // TODO: Cut down on model .json files by replacing entries in "ItemModelMesher.register"
+    // TODO: Have carnivorous mobs gain hunger when attacking
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";
