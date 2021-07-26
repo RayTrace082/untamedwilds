@@ -5,7 +5,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -62,7 +61,7 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
         this.goalSelector.addGoal(2, new TortoiseHideInShellGoal<>(this, LivingEntity.class, 7, input -> getEcoLevel(input) > 4));
         this.goalSelector.addGoal(3, new SmartWanderGoal(this, 1.0D, 400, 0,true));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        //this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
     public static void processSkins() {
