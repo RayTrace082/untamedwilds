@@ -71,7 +71,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
                 }
             }
             // Angry Sleepers
-            if (this.isSleeping() && this.forceSleep == 0) {
+            if (!this.isTamed() && this.isSleeping() && this.forceSleep == 0) {
                 List<PlayerEntity> list = this.world.getEntitiesWithinAABB(PlayerEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                 if (!list.isEmpty()) {
                     PlayerEntity player = list.get(0);
