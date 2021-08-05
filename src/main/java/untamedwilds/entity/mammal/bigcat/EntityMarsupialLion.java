@@ -41,7 +41,7 @@ public class EntityMarsupialLion extends AbstractBigCat {
     public void registerGoals() {
         this.goalSelector.addGoal(1, new SmartSwimGoal(this));
         this.goalSelector.addGoal(2, new FindItemsGoal(this, 12)); // This is purely speculative, but Marsupial Lions are able to eat Veggies
-        this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 2.3D, false, 1));
+        this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 2.3D, false, 1, false, true));
         this.goalSelector.addGoal(3, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> getEcoLevel(input) > 6));
         this.goalSelector.addGoal(4, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D));
