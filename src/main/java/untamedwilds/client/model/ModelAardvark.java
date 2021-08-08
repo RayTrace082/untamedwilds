@@ -104,6 +104,7 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
         this.head_neck.setRotationPoint(0.0F, -1.0F, -1.0F);
         this.head_neck.addBox(-1.5F, -2.0F, -4.0F, 3, 3, 4, 0.0F);
         this.setRotateAngle(head_neck, -0.5462880558742251F, 0.0F, 0.0F);
+        this.head_neck.scaleX = 0.99F;
         this.arm_left_2 = new AdvancedModelBox(this, 30, 23);
         this.arm_left_2.setRotationPoint(0.0F, 3.5F, 0.01F);
         this.arm_left_2.addBox(-1.0F, 0.0F, -1.0F, 2, 4, 2, 0.0F);
@@ -205,6 +206,37 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
             animator.endKeyframe();
         }
         animator.resetKeyframe(10);
+
+        animator.setAnimation(EntityAardvark.ATTACK);
+        animator.startKeyframe(6);
+        animator.move(body_main, 0, -4.6F, 0);
+        this.rotate(animator, body_main, -26.09F, 0, 0);
+        this.rotate(animator, body_booty, -33.91F, 0, 0);
+        animator.move(leg_right_1, 0, -1, -1);
+        this.rotate(animator, leg_right_1, 46.96F, 0, 0);
+        animator.move(leg_left_1, 0, -1, -1);
+        this.rotate(animator, leg_left_1, 46.96F, 0, 0);
+        animator.move(body_tail_1, 0, -1, -2);
+        this.rotate(animator, body_tail_1, 23.48F, 0, 0);
+
+        this.rotate(animator, arm_left_1, -46.96F, -10.43F, -18.26F);
+        animator.endKeyframe();
+        for (int i = 0; i < 3; i++) {
+            AdvancedModelBox limb = i % 2 == 0 ? arm_right_1 : arm_left_1;
+            animator.startKeyframe(3);
+            animator.move(body_main, 0, -4.6F, 0);
+            this.rotate(animator, body_main, -26.09F, 0, 0);
+            this.rotate(animator, body_booty, -33.91F, 0, 0);
+            animator.move(leg_right_1, 0, -1, -1);
+            this.rotate(animator, leg_right_1, 46.96F, 0, 0);
+            animator.move(leg_left_1, 0, -1, -1);
+            this.rotate(animator, leg_left_1, 46.96F, 0, 0);
+            animator.move(body_tail_1, 0, -1, -2);
+            this.rotate(animator, body_tail_1, 23.48F, 0, 0);
+            this.rotate(animator, limb, -46.96F, -10.43F, -18.26F); // Forwards
+            animator.endKeyframe();
+        }
+        animator.resetKeyframe(3);
     }
 
     public void setRotationAngles(EntityAardvark aardvark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
@@ -216,6 +248,7 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
 
         // Breathing Animation
         this.body_main.setScale((float) (1.0F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1.0F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
+        this.body_booty.setScale((float) (1.0F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1.0F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
         bob(body_main, 0.4F * globalSpeed, 0.1F, false, ageInTicks / 20, 2);
         bob(arm_right_1, 0.4F * globalSpeed, 0.1F, false, -ageInTicks / 20, 2);
         bob(arm_left_1, 0.4F * globalSpeed, 0.1F, false, -ageInTicks / 20, 2);

@@ -42,11 +42,13 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
     private BlockPos lastDugPos = null;
 
     public static Animation WORK_DIG;
+    public static Animation ATTACK;
 
     public EntityAardvark(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
         this.turn_speed = 0.8F;
         WORK_DIG = Animation.create(76);
+        ATTACK = Animation.create(18);
     }
 
     public static void processSkins() {
@@ -120,6 +122,11 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
                 }
             }
         }
+        if (this.getAnimation() != NO_ANIMATION) {
+            if (this.getAnimation() == ATTACK && (this.getAnimationTick() == 8 || this.getAnimationTick() == 12)) {
+                this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 0.7F);
+            }
+        }
         super.livingTick();
     }
 
@@ -137,8 +144,18 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
     protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_PIG_DEATH; }
 
     @Override
+    public boolean attackEntityAsMob(Entity entityIn) {
+        boolean flag = super.attackEntityAsMob(entityIn);
+        if (flag && this.getAnimation() == NO_ANIMATION && !this.isChild()) {
+            this.setAnimation(ATTACK);
+            this.setAnimationTick(0);
+        }
+        return flag;
+    }
+
+    @Override
     public Animation[] getAnimations() {
-        return new Animation[]{NO_ANIMATION, WORK_DIG};
+        return new Animation[]{NO_ANIMATION, WORK_DIG, ATTACK};
     }
 
     @Nullable
