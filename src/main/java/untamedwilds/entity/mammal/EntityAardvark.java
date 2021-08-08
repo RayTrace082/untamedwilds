@@ -7,9 +7,11 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -37,6 +39,7 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
     private static final int GESTATION = 7 * ConfigGamerules.cycleLength.get();
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
     private static final int RARITY = 5;
+    private BlockPos lastDugPos = null;
 
     public static Animation WORK_DIG;
 
@@ -104,14 +107,15 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
                 this.setSitting(false);
             }
             if (i > 2980 && !this.isInWater() && this.getHunger() < 60 && this.canMove() && this.getAnimation() == NO_ANIMATION) {
-                if (this.world.getBlockState(this.getPosition().down()).getHarvestTool() == ToolType.SHOVEL) {
+                if ((this.lastDugPos == null || this.getDistanceSq(this.lastDugPos.getX(), this.getPosY(), this.lastDugPos.getZ()) > 50) && this.world.getBlockState(this.getPosition().down()).getHarvestTool() == ToolType.SHOVEL) {
                     this.setAnimation(WORK_DIG);
+                    this.lastDugPos = this.getPosition();
                 }
             }
             if (this.getAnimation() == WORK_DIG && this.getAnimationTick() % 8 == 0) {
                 ((ServerWorld)this.world).spawnParticle(new BlockParticleData(ParticleTypes.BLOCK, this.world.getBlockState(this.getPosition().down())), this.getPosX(), this.getPosY(), this.getPosZ(), 20, 0.0D, 0.0D, 0.0D, 0.15F);
                 this.playSound(SoundEvents.ITEM_SHOVEL_FLATTEN, 0.8F, 0.6F);
-                if (this.getAnimationTick() == 64 && this.rand.nextInt(10) == 0) {
+                if (this.getAnimationTick() == 64 && this.rand.nextInt(6) == 0) {
                     this.entityDropItem(new ItemStack(ModItems.VEGETABLE_AARDVARK_CUCUMBER.get()), 0.2F);
                 }
             }
@@ -164,6 +168,21 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
     protected int getOffspring() { return 1; }
+
+    public void writeAdditional(CompoundNBT compound){
+        super.writeAdditional(compound);
+        if (this.lastDugPos != null) {
+            compound.putInt("DugPosX", this.lastDugPos.getX());
+            compound.putInt("DugPosZ", this.lastDugPos.getZ());
+        }
+    }
+
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        if (compound.contains("LastDugPos")) {
+            this.lastDugPos = new BlockPos(compound.getInt("DugPosX"), 0, compound.getInt("DugPosZ"));
+        }
+    }
 
     // Species available, referenced to properly distribute Aardvarks in the world. if any is ever added
     public enum SpeciesAardvark implements IStringSerializable {
