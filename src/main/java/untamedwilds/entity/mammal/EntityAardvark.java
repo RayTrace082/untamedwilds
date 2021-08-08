@@ -108,7 +108,7 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
             if (i == 14 && this.isSitting()) {
                 this.setSitting(false);
             }
-            if (i > 2980 && !this.isInWater() && this.getHunger() < 60 && this.canMove() && this.getAnimation() == NO_ANIMATION) {
+            if (i > 2980 && this.getAttackTarget() != null && !this.isInWater() && this.getHunger() < 60 && this.canMove() && this.getAnimation() == NO_ANIMATION) {
                 if ((this.lastDugPos == null || this.getDistanceSq(this.lastDugPos.getX(), this.getPosY(), this.lastDugPos.getZ()) > 50) && this.world.getBlockState(this.getPosition().down()).getHarvestTool() == ToolType.SHOVEL) {
                     this.setAnimation(WORK_DIG);
                     this.lastDugPos = this.getPosition();
