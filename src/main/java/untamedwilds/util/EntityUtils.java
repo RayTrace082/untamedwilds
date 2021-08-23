@@ -62,6 +62,7 @@ public abstract class EntityUtils {
     }
 
     // Spawn particles throughout the entity
+    // TODO: Account for Multipart entites
     public static <T extends IParticleData> void spawnParticlesOnEntity(World worldIn, LivingEntity entityIn, T particle, int count, int iter) {
         if (worldIn.isRemote) return;
         for (int i = 0; i < iter;  i++) {
@@ -187,8 +188,12 @@ public abstract class EntityUtils {
         }
     }
 
-    // This method writes this entity into a CompoundNBT Tag
     public static CompoundNBT writeEntityToNBT(LivingEntity entity) {
+        return writeEntityToNBT(entity, false);
+    }
+
+    // This method writes this entity into a CompoundNBT Tag
+    public static CompoundNBT writeEntityToNBT(LivingEntity entity, boolean keepHomeData) {
         CompoundNBT baseTag = new CompoundNBT();
         CompoundNBT entityTag = new CompoundNBT();
         entity.writeUnlessRemoved(entityTag);
@@ -197,7 +202,7 @@ public abstract class EntityUtils {
         if (entityTag.contains("BoundingBox")) {
             entityTag.remove("BoundingBox"); // TODO: Shitty RandomPatches solution
         }
-        if (entity instanceof ISpecies) {
+        if (entity instanceof ISpecies && !keepHomeData) {
             entityTag.remove("HomePosX");
             entityTag.remove("HomePosY");
             entityTag.remove("HomePosZ");

@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
@@ -38,13 +39,13 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
     public void tryEnterBurrow(LivingEntity entityIn) {
         entityIn.stopRiding();
         entityIn.removePassengers();
-        CompoundNBT compoundnbt = EntityUtils.writeEntityToNBT(entityIn);
+        CompoundNBT compoundnbt = EntityUtils.writeEntityToNBT(entityIn, true);
         this.inhabitants.add(new Inhabitants(compoundnbt));
         if (this.world != null) {
             BlockPos blockpos = this.getPos();
             this.world.playSound(null, blockpos.getX(), blockpos.getY(), blockpos.getZ(), SoundEvents.BLOCK_BEEHIVE_ENTER, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            EntityUtils.spawnParticlesOnEntity(this.world, entityIn, ParticleTypes.POOF, 3, 6);
         }
-
         entityIn.remove();
         markDirty();
     }
@@ -69,10 +70,7 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
             this.cooldown--;
         if (this.cooldown == 0 && this.world != null && !this.world.isRemote && !this.hasNoMobs() && this.getEntityType() != null && this.world.getRandom().nextFloat() < (Math.min(0.01, 0.002D * (this.getSumMobs() * this.getSumMobs())))) {
             BlockPos blockpos = this.getPos();
-            if (this.world.getRandom().nextInt(10) == 0) {
-                this.setCount(this.getCount() + 1);
-            }
-            else if (this.getWorld().isPlayerWithin((double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D, ConfigMobControl.critterSpawnRange.get())) {
+            if (this.getWorld().isPlayerWithin((double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D, ConfigMobControl.critterSpawnRange.get())) {
                 ServerWorld worldIn = (ServerWorld)this.world;
                 if (!this.getInhabitants().isEmpty()) {
                     int i = worldIn.rand.nextInt(this.inhabitants.size());
@@ -98,6 +96,9 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
                         this.setCount(this.getCount() - 1);
                         markDirty();
                     }
+                }
+                if (this.world.getRandom().nextInt(10) == 0 && this.getCount() < 10) {
+                    this.setCount(this.getCount() + 1);
                 }
                 this.cooldown = 200 + this.world.getRandom().nextInt(2000);
             }
