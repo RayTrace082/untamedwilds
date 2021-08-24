@@ -174,10 +174,10 @@ public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
         swing(body_9, 0.5f * globalSpeed, 0.8f * globalDegree, false, 4.4f, 0, limbSwing, limbSwingAmount);
         swing(body_10, 0.5f * globalSpeed, 0.6f * globalDegree, false, 5.4f, 0, limbSwing, limbSwingAmount);
         if (snake.isAngry()) { // Angry/Stalking Animation
-            this.setRotateAngle(body_1, (float) Math.toRadians(-18.26F),0F,  0F);
-            this.setRotateAngle(main_neck, (float) Math.toRadians(18.26F), 0F, 0F);
-            this.setRotateAngle(head_face, (float) Math.toRadians(-41.74F), 0F, 0F);
-            this.setRotateAngle(head_jaw, (float) Math.toRadians(49.57F),0F,  0F);
+            body_1.rotateAngleX += (float) Math.toRadians(-18.26F);
+            main_neck.rotateAngleX += (float) Math.toRadians(18.26F);
+            head_face.rotateAngleX += (float) Math.toRadians(-41.74F);
+            head_jaw.rotateAngleX += (float) Math.toRadians(49.57F);
             if (snake.isRattler()) {
                 body_9.rotateAngleX += Math.toRadians(31.30F);
                 body_10.rotateAngleX += Math.toRadians(60F);
