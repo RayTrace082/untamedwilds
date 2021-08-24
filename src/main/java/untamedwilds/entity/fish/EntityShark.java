@@ -88,8 +88,14 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
     /* Breeding conditions for the Shark are:
      * A nearby Shark of different gender */
     public boolean wantsToBreed() {
-        if (super.wantsToBreed()) {
-            return this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this);
+        if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
+            List<EntityShark> list = this.world.getEntitiesWithinAABB(EntityShark.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
+            list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
+            if (list.size() >= 1) {
+                this.setGrowingAge(GROWING);
+                list.get(0).setGrowingAge(GROWING);
+                return true;
+            }
         }
         return false;
     }
