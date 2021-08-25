@@ -13,6 +13,7 @@ import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigFeatureControl;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
+import untamedwilds.entity.amphibian.EntityNewt;
 import untamedwilds.entity.arthropod.EntityTarantula;
 import untamedwilds.entity.fish.EntityArowana;
 import untamedwilds.entity.fish.EntityFootballFish;
@@ -166,7 +167,7 @@ public class ModItems {
             }
         }
         // Tortoise Items
-        if (ConfigMobControl.addGiantSalamander.get()) {
+        if (ConfigMobControl.addTortoise.get()) {
             for (int i = 0; i < EntityTortoise.SpeciesTortoise.values().length; i++) {
                 int tortoise = i;
                 ModItems.ITEMS.register("egg_tortoise_" + EntityTortoise.SpeciesTortoise.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.TORTOISE, tortoise, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
