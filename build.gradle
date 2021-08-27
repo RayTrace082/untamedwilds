@@ -1,19 +1,19 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url='https://dist.creeper.host/Sponge/maven' }
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        //maven { url='https://dist.creeper.host/Sponge/maven' }
+        //maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         jcenter()
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        //classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
+//apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
@@ -33,9 +33,11 @@ repositories{
         name = "ModMaven"
         url = "https://modmaven.k-4u.nl"
     }
-    maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
     maven {
         url = 'https://maven.blamejared.com'
+    }
+    maven {
+        url = 'https://repo.repsy.io/mvn/gandiber/geckolib'
     }
     maven {
         name = "CurseMaven"
@@ -136,7 +138,6 @@ jar {
 // This is the preferred method to reobfuscate your jar file
 jar.finalizedBy('reobfJar') 
 // However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-//publish.dependsOn('reobfJar')
 
 publishing {
     publications {

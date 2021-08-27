@@ -7,6 +7,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -39,7 +40,7 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
 
     public EntityGiantSalamander(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
-        this.moveController = new ComplexMobAquatic.MoveHelperController(this);
+        this.moveController = new ComplexMobAquatic.MoveHelperController(this, 0.6F);
         ATTACK_SWALLOW = Animation.create(15);
         this.experienceValue = 1;
         this.swimSpeedMult = 3;
@@ -123,7 +124,7 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
         float f = (float)this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
         boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), f);
         if (flag) {
-            if (entityIn instanceof LivingEntity && entityIn.getWidth() * entityIn.getHeight() < 0.4F) {
+            if (entityIn instanceof LivingEntity && entityIn.getWidth() * entityIn.getHeight() < 0.4F && (entityIn instanceof TameableEntity && !((TameableEntity) entityIn).isTamed())) {
                 this.setAnimation(ATTACK_SWALLOW);
                 this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.BLOCK_BEEHIVE_ENTER, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 EntityUtils.spawnParticlesOnEntity(this.world, (LivingEntity)entityIn, ParticleTypes.POOF, 6, 2);
