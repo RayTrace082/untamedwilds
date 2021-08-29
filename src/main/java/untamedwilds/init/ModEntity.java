@@ -24,6 +24,7 @@ import untamedwilds.config.ConfigGamerules;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
+import untamedwilds.entity.amphibian.EntityNewt;
 import untamedwilds.entity.arthropod.EntityTarantula;
 import untamedwilds.entity.fish.*;
 import untamedwilds.entity.mammal.EntityAardvark;
@@ -33,6 +34,7 @@ import untamedwilds.entity.mammal.EntityRhino;
 import untamedwilds.entity.mammal.bear.*;
 import untamedwilds.entity.mammal.bigcat.*;
 import untamedwilds.entity.mollusk.EntityGiantClam;
+import untamedwilds.entity.reptile.EntityAnaconda;
 import untamedwilds.entity.reptile.EntitySnake;
 import untamedwilds.entity.reptile.EntitySoftshellTurtle;
 import untamedwilds.entity.reptile.EntityTortoise;
@@ -60,6 +62,7 @@ public class ModEntity {
     public static EntityType<EntitySnake> SNAKE = createEntity(ConfigMobControl.addSnake.get(), EntitySnake::new,  "snake",  0.6f, 0.3f, 0xD8A552, 0x5C3525, animalType.CRITTER, 4, 1, EntitySnake.SpeciesSnake.values().length);
     public static EntityType<EntitySoftshellTurtle> SOFTSHELL_TURTLE = createEntity(ConfigMobControl.addSoftshellTurtle.get(), EntitySoftshellTurtle::new,  "softshell_turtle",  0.6f, 0.3f, 0x828444, 0x26292B, animalType.CRITTER, 3, 2, EntitySoftshellTurtle.SpeciesSoftshellTurtle.values().length);
     public static EntityType<EntityTortoise> TORTOISE = createEntity(ConfigMobControl.addTortoise.get(), EntityTortoise::new,  "tortoise",  0.6f, 0.6f, 0xAF9F74, 0x775232, animalType.CRITTER, 3, 2, EntityTortoise.SpeciesTortoise.values().length);
+    public static EntityType<EntityAnaconda> ANACONDA = createEntity(ConfigMobControl.addLargeSnake.get(), EntityAnaconda::new,  "large_snake",  1.4f, 0.9f, 0x65704C, 0x42291A, animalType.APEX_PRED, 4, 1, EntityAnaconda.SpeciesAnaconda.values().length);
 
     // Mollusks
     public static EntityType<EntityGiantClam> GIANT_CLAM = createEntity(ConfigMobControl.addGiantClam.get(), EntityGiantClam::new, EntityClassification.WATER_CREATURE, "giant_clam", 32, 10, true, 1.0F, 1.0F, 0x346B70, 0xAD713C, animalType.SESSILE, 1, EntityGiantClam.SpeciesGiantClam.values().length);
@@ -88,7 +91,6 @@ public class ModEntity {
     public static EntityType<EntityCaveLion> CAVE_LION = createEntity(UntamedWilds.DEBUG, EntityCaveLion::new,  "bigcat_cave_lion",  1.3F, 1.0F, 0x5B4924, 0xCCBC8F, animalType.APEX_PRED, 1, 3, 0);
     public static EntityType<EntityMarsupialLion> MARSUPIAL_LION = createEntity(UntamedWilds.DEBUG, EntityMarsupialLion::new,  "bigcat_marsupial_lion",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntitySabertooth> SABERTOOTH = createEntity(UntamedWilds.DEBUG, EntitySabertooth::new,  "bigcat_sabertooth",  1.2F, 1.0F, 0x97845A, 0x3A3026, animalType.APEX_PRED, 1, 0);
-    public static EntityType<EntityDireLion> DIRE_LION = createEntity(UntamedWilds.DEBUG, EntityDireLion::new,  "bigcat_dire_lion",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1, 0);
 
     // Fish
     public static EntityType<EntitySunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), EntitySunfish::new,  "sunfish",  1.6F, 1.6F, 0x2C545B, 0xB6D0D3, animalType.LARGE_OCEAN, 3, EntitySunfish.SpeciesSunfish.values().length);
@@ -99,6 +101,7 @@ public class ModEntity {
 
     // Amphibians
     public static EntityType<EntityGiantSalamander> GIANT_SALAMANDER = createEntity(ConfigMobControl.addGiantSalamander.get(), EntityGiantSalamander::new,  "giant_salamander",  1F, 0.6f, 0x3A2C23, 0x6B5142, animalType.DENSE_WATER, 1, EntityGiantSalamander.SpeciesGiantSalamander.values().length);
+    public static EntityType<EntityNewt> NEWT = createEntity(ConfigMobControl.addNewt.get(), EntityNewt::new,  "newt",  0.6F, 0.3f, 0x232323, 0xFF8D00, animalType.CRITTER, 2, EntityNewt.SpeciesNewt.values().length);
 
     @SubscribeEvent
     public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
@@ -158,6 +161,7 @@ public class ModEntity {
         event.put(SNAKE, EntitySnake.registerAttributes().create());
         event.put(SOFTSHELL_TURTLE, EntitySoftshellTurtle.registerAttributes().create());
         event.put(TORTOISE, EntityTortoise.registerAttributes().create());
+        event.put(ANACONDA, EntityAnaconda.registerAttributes().create());
 
         event.put(GIANT_CLAM, EntityGiantClam.registerAttributes().create());
 
@@ -180,10 +184,9 @@ public class ModEntity {
         event.put(PUMA, EntityPuma.registerAttributes().create());
         event.put(SNOW_LEOPARD, EntitySnowLeopard.registerAttributes().create());
         event.put(TIGER, EntityTiger.registerAttributes().create());
-        //event.put(CAVE_LION, EntityCaveLion.registerAttributes().create());
-        //event.put(DIRE_LION, EntityDireLion.registerAttributes().create());
-        //event.put(MARSUPIAL_LION, EntityMarsupialLion.registerAttributes().create());
-        //event.put(SABERTOOTH, EntitySabertooth.registerAttributes().create());
+        event.put(CAVE_LION, EntityCaveLion.registerAttributes().create());
+        event.put(MARSUPIAL_LION, EntityMarsupialLion.registerAttributes().create());
+        event.put(SABERTOOTH, EntitySabertooth.registerAttributes().create());
 
         event.put(SUNFISH, EntitySunfish.registerAttributes().create());
         event.put(TREVALLY, EntityTrevally.registerAttributes().create());
@@ -192,6 +195,8 @@ public class ModEntity {
         event.put(FOOTBALL_FISH, EntityFootballFish.registerAttributes().create());
 
         event.put(GIANT_SALAMANDER, EntityGiantSalamander.registerAttributes().create());
+        event.put(NEWT, EntityNewt.registerAttributes().create());
+
     }
 
     @SubscribeEvent
@@ -211,6 +216,8 @@ public class ModEntity {
         EntitySnake.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.TORTOISE, RendererTortoise::new);
         EntityTortoise.processSkins();
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.ANACONDA, RendererAnaconda::new);
+        EntityAnaconda.processSkins();
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, RendererGiantClam::new);
         EntityGiantClam.processSkins();
@@ -236,14 +243,13 @@ public class ModEntity {
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.JAGUAR, RendererBigCat::new);
         EntityJaguar.registerTextures(EntityJaguar.SKIN_NUMBER);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.PUMA, RendererBigCat::new);
-        //RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_LION, RendererBigCat::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_LION, RendererBigCat::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.TIGER, RendererBigCat::new);
-        //RenderingRegistry.registerEntityRenderingHandler(ModEntity.SABERTOOTH, RendererBigCat::new);
-        //RenderingRegistry.registerEntityRenderingHandler(ModEntity.MARSUPIAL_LION, RendererBigCat::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SABERTOOTH, RendererBigCat::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.MARSUPIAL_LION, RendererBigCat::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.LION, RendererBigCat::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.LEOPARD, RendererBigCat::new);
         EntityLeopard.registerTextures(EntityLeopard.SKIN_NUMBER);
-        //RenderingRegistry.registerEntityRenderingHandler(ModEntity.DIRE_LION, RendererBigCat::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNOW_LEOPARD, RendererBigCat::new);
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUNFISH, RendererSunfish::new);
@@ -259,6 +265,8 @@ public class ModEntity {
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
         EntityGiantSalamander.processSkins();
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.NEWT, RendererNewt::new);
+        EntityNewt.processSkins();
 
         if (UntamedWilds.DEBUG) {
             UntamedWilds.LOGGER.info("---Dump of Common and Rare Texture arrays---");

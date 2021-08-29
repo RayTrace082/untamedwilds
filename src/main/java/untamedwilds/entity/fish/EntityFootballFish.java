@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+// TODO: Make all Football fish female, make some of them spawn with attached males
 public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, INewSkins, INeedsPostUpdate {
 
     private static final String BREEDING = "EARLY_AUTUMN";

@@ -9,7 +9,7 @@ import untamedwilds.entity.IPackEntity;
 import java.util.EnumSet;
 
 public class SmartWanderGoal extends Goal {
-    private final ComplexMobTerrestrial creature;
+    public final ComplexMobTerrestrial creature;
     protected double x;
     protected double y;
     protected double z;

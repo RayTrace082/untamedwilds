@@ -122,10 +122,18 @@ public abstract class ComplexMobAquatic extends ComplexMob {
 
     public static class MoveHelperController extends MovementController {
         private final ComplexMob entity;
+        private final float landMoveFactor;
 
         public MoveHelperController(ComplexMob entity) {
             super(entity);
             this.entity = entity;
+            this.landMoveFactor = 0.1F;
+        }
+
+        public MoveHelperController(ComplexMob entity, float landMoveFactor) {
+            super(entity);
+            this.entity = entity;
+            this.landMoveFactor = landMoveFactor;
         }
 
         public void tick() {
@@ -156,7 +164,7 @@ public abstract class ComplexMobAquatic extends ComplexMob {
                         this.entity.moveForward = f3 * f1;
                         this.entity.moveVertical = -f4 * f1;
                     } else {
-                        this.entity.setAIMoveSpeed(f1 * 0.1F);
+                        this.entity.setAIMoveSpeed(f1 * landMoveFactor);
                     }
                 }
             } else {

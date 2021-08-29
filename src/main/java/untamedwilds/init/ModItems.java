@@ -20,6 +20,7 @@ import untamedwilds.entity.fish.EntityFootballFish;
 import untamedwilds.entity.fish.EntitySunfish;
 import untamedwilds.entity.fish.EntityTrevally;
 import untamedwilds.entity.mollusk.EntityGiantClam;
+import untamedwilds.entity.reptile.EntityAnaconda;
 import untamedwilds.entity.reptile.EntitySnake;
 import untamedwilds.entity.reptile.EntitySoftshellTurtle;
 import untamedwilds.entity.reptile.EntityTortoise;
@@ -166,12 +167,27 @@ public class ModItems {
                 ModItems.ITEMS.register("bucket_giant_salamander_" + EntityGiantSalamander.SpeciesGiantSalamander.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.GIANT_SALAMANDER, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), giant_salamander, EntityGiantSalamander.SpeciesGiantSalamander.values()[giant_salamander].name().toLowerCase()));
             }
         }
+        // Newt Items
+        if (ConfigMobControl.addNewt.get()) {
+            for (int i = 0; i < EntityNewt.SpeciesNewt.values().length; i++) {
+                int newt = i;
+                ModItems.ITEMS.register("egg_newt_" + EntityNewt.SpeciesNewt.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.NEWT, newt, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+                ModItems.ITEMS.register("bucket_newt_" + EntityNewt.SpeciesNewt.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.NEWT, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), newt, EntityNewt.SpeciesNewt.values()[newt].name().toLowerCase()));
+            }
+        }
         // Tortoise Items
         if (ConfigMobControl.addTortoise.get()) {
             for (int i = 0; i < EntityTortoise.SpeciesTortoise.values().length; i++) {
                 int tortoise = i;
                 ModItems.ITEMS.register("egg_tortoise_" + EntityTortoise.SpeciesTortoise.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.TORTOISE, tortoise, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
                 ModItems.ITEMS.register("tortoise_" + EntityTortoise.SpeciesTortoise.values()[i].name().toLowerCase(), () -> new MobSpawnItem(ModEntity.TORTOISE, tortoise, EntityTortoise.SpeciesTortoise.values()[tortoise].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+            }
+        }
+        // Large Snake Items
+        if (ConfigMobControl.addLargeSnake.get()) {
+            for (int i = 0; i < EntityAnaconda.SpeciesAnaconda.values().length; i++) {
+                int large_snake = i;
+                ModItems.ITEMS.register("egg_large_snake_" + EntityAnaconda.SpeciesAnaconda.values()[i].name().toLowerCase(), () -> new MobEggItem(ModEntity.ANACONDA, large_snake, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             }
         }
     }
