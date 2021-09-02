@@ -149,6 +149,43 @@
 		"subtitle": "untamedwilds.subtitles.hyena.death"
 	},
 
+	"entity.boar.squeal": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:boar/squeal_1",
+			"untamedwilds:boar/squeal_2"
+		],
+		"subtitle": "untamedwilds.subtitles.boar.squeal"
+	},
+	"entity.boar.ambient": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:boar/idle_1",
+			"untamedwilds:boar/idle_2",
+			"untamedwilds:boar/idle_3"
+		],
+		"subtitle": "untamedwilds.subtitles.boar.ambient"
+	},
+	"entity.boar.hurt": {
+		"category": "neutral",
+		"sounds": [
+			"mob/hoglin/hurt1",
+			"mob/hoglin/hurt2",
+			"mob/hoglin/hurt3",
+			"mob/hoglin/hurt4"
+		],
+		"subtitle": "untamedwilds.subtitles.boar.hurt"
+	},
+	"entity.boar.death": {
+		"category": "neutral",
+		"sounds": [
+			"mob/hoglin/death1",
+			"mob/hoglin/death2",
+			"mob/hoglin/death3"
+		],
+		"subtitle": "untamedwilds.subtitles.boar.death"
+	},
+
 	"entity.snake.warning": {
 		"category": "neutral",
 		"sounds": [

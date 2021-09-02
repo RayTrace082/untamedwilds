@@ -219,10 +219,13 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
 
     public enum SpeciesBigCat implements IStringSerializable {
 
+        CAVE_LION	(ModEntity.CAVE_LION, EntityCaveLion.getRarity(), Biome.Category.TAIGA, Biome.Category.ICY),
         JAGUAR		(ModEntity.JAGUAR, EntityJaguar.getRarity(), Biome.Category.JUNGLE),
         LEOPARD		(ModEntity.LEOPARD, EntityLeopard.getRarity(), Biome.Category.SAVANNA, Biome.Category.TAIGA),
         LION		(ModEntity.LION, EntityLion.getRarity(), Biome.Category.SAVANNA),
+        MARSUPIAL_LION(ModEntity.MARSUPIAL_LION, EntityMarsupialLion.getRarity(), Biome.Category.JUNGLE),
         PUMA		(ModEntity.PUMA, EntityPuma.getRarity(), Biome.Category.MESA, Biome.Category.FOREST, Biome.Category.TAIGA),
+        SABERTOOTH  (ModEntity.SABERTOOTH, EntitySabertooth.getRarity(), Biome.Category.TAIGA),
         SNOW_LEOPARD(ModEntity.SNOW_LEOPARD, EntitySnowLeopard.getRarity(), Biome.Category.ICY, Biome.Category.TAIGA),
         TIGER		(ModEntity.TIGER, EntityTiger.getRarity(), Biome.Category.JUNGLE, Biome.Category.TAIGA);
 

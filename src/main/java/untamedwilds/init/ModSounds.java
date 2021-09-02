@@ -30,6 +30,11 @@ public class ModSounds {
     public static final SoundEvent ENTITY_HYENA_HURT = registerSound("entity.hyena.hurt");
     public static final SoundEvent ENTITY_HYENA_DEATH = registerSound("entity.hyena.death");
 
+    public static final SoundEvent ENTTIY_BOAR_SQUEAL = registerSound("entity.boar.squeal");
+    public static final SoundEvent ENTTIY_BOAR_AMBIENT = registerSound("entity.boar.ambient");
+    public static final SoundEvent ENTTIY_BOAR_HURT = registerSound("entity.boar.hurt");
+    public static final SoundEvent ENTTIY_BOAR_DEATH = registerSound("entity.boar.death");
+
     public static final SoundEvent ENTITY_TARANTULA_AMBIENT = registerSound("entity.tarantula.ambient");
 
     public static final SoundEvent ENTITY_SNAKE_HISS = registerSound("entity.snake.warning");

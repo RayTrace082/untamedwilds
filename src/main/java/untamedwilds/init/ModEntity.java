@@ -27,10 +27,7 @@ import untamedwilds.entity.amphibian.EntityGiantSalamander;
 import untamedwilds.entity.amphibian.EntityNewt;
 import untamedwilds.entity.arthropod.EntityTarantula;
 import untamedwilds.entity.fish.*;
-import untamedwilds.entity.mammal.EntityAardvark;
-import untamedwilds.entity.mammal.EntityHippo;
-import untamedwilds.entity.mammal.EntityHyena;
-import untamedwilds.entity.mammal.EntityRhino;
+import untamedwilds.entity.mammal.*;
 import untamedwilds.entity.mammal.bear.*;
 import untamedwilds.entity.mammal.bigcat.*;
 import untamedwilds.entity.mollusk.EntityGiantClam;
@@ -72,6 +69,7 @@ public class ModEntity {
     public static EntityType<EntityAardvark> AARDVARK = createEntity(ConfigMobControl.addAardvark.get(), EntityAardvark::new,  "aardvark",  0.9F, 0.9F, 0x463A31, 0x956761, animalType.CRITTER, 2, EntityAardvark.SpeciesAardvark.values().length);
     public static EntityType<EntityRhino> RHINO = createEntity(ConfigMobControl.addRhino.get(), EntityRhino::new,  "rhino",  2.0F, 1.8F, 0x787676, 0x665956, animalType.APEX_PRED, 6, EntityRhino.SpeciesRhino.values().length);
     public static EntityType<EntityHyena> HYENA = createEntity(ConfigMobControl.addHyena.get(), EntityHyena::new,  "hyena",  0.9F, 1.1F, 0x6C6857, 0x978966, animalType.APEX_PRED, 10, 6, EntityHyena.SpeciesHyena.values().length);
+    public static EntityType<EntityBoar> BOAR = createEntity(ConfigMobControl.addBoar.get(), EntityBoar::new,  "boar",  1.2F, 1.2F, 0x503C2A, 0x605449, animalType.APEX_PRED, 6, EntityBoar.SpeciesBoar.values().length);
     // Bears
     public static EntityType<EntityBlackBear> BLACK_BEAR = createEntity(ConfigMobControl.addBear.get(), EntityBlackBear::new,  "bear_black",  1.3F, 1.3F, 0x0B0A08, 0x3D3226, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntityBlindBear> BLIND_BEAR = createEntity(ConfigMobControl.addBear.get() && ConfigGamerules.fantasyMobs.get(), EntityBlindBear::new,  "bear_blind",  1.6F, 1.6F, 0x241D1B, 0x4B3B35, animalType.LARGE_UNDERGROUND, 1, 0);
@@ -88,9 +86,9 @@ public class ModEntity {
     public static EntityType<EntityPuma> PUMA = createEntity(ConfigMobControl.addBigCat.get(), EntityPuma::new,  "bigcat_puma",  1.2F, 1.0F, 0x774C23, 0xECC38E, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntitySnowLeopard> SNOW_LEOPARD = createEntity(ConfigMobControl.addBigCat.get(), EntitySnowLeopard::new,  "bigcat_snow_leopard",  1.2F, 1.0F, 0xD3C38D, 0x46361C, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntityTiger> TIGER = createEntity(ConfigMobControl.addBigCat.get(), EntityTiger::new,  "bigcat_tiger",  1.3F, 1.0F, 0xD1741D, 0x1A0400, animalType.APEX_PRED, 1, 0);
-    public static EntityType<EntityCaveLion> CAVE_LION = createEntity(UntamedWilds.DEBUG, EntityCaveLion::new,  "bigcat_cave_lion",  1.3F, 1.0F, 0x5B4924, 0xCCBC8F, animalType.APEX_PRED, 1, 3, 0);
-    public static EntityType<EntityMarsupialLion> MARSUPIAL_LION = createEntity(UntamedWilds.DEBUG, EntityMarsupialLion::new,  "bigcat_marsupial_lion",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1, 0);
-    public static EntityType<EntitySabertooth> SABERTOOTH = createEntity(UntamedWilds.DEBUG, EntitySabertooth::new,  "bigcat_sabertooth",  1.2F, 1.0F, 0x97845A, 0x3A3026, animalType.APEX_PRED, 1, 0);
+    public static EntityType<EntityCaveLion> CAVE_LION = createEntity(ConfigMobControl.addBigCat.get() && ConfigGamerules.extinctMobs.get(), EntityCaveLion::new,  "bigcat_cave_lion",  1.3F, 1.0F, 0x5B4924, 0xCCBC8F, animalType.APEX_PRED, 1, 3, 0);
+    public static EntityType<EntityMarsupialLion> MARSUPIAL_LION = createEntity(ConfigMobControl.addBigCat.get() && ConfigGamerules.extinctMobs.get(), EntityMarsupialLion::new,  "bigcat_marsupial_lion",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1, 0);
+    public static EntityType<EntitySabertooth> SABERTOOTH = createEntity(ConfigMobControl.addBigCat.get() && ConfigGamerules.extinctMobs.get(), EntitySabertooth::new,  "bigcat_sabertooth",  1.2F, 1.0F, 0x97845A, 0x3A3026, animalType.APEX_PRED, 1, 0);
 
     // Fish
     public static EntityType<EntitySunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), EntitySunfish::new,  "sunfish",  1.6F, 1.6F, 0x2C545B, 0xB6D0D3, animalType.LARGE_OCEAN, 3, EntitySunfish.SpeciesSunfish.values().length);
@@ -169,6 +167,7 @@ public class ModEntity {
         event.put(AARDVARK, EntityAardvark.registerAttributes().create());
         event.put(RHINO, EntityRhino.registerAttributes().create());
         event.put(HYENA, EntityHyena.registerAttributes().create());
+        event.put(BOAR, EntityBoar.registerAttributes().create());
         event.put(BLACK_BEAR, EntityBlackBear.registerAttributes().create());
         event.put(BROWN_BEAR, EntityBrownBear.registerAttributes().create());
         event.put(CAVE_BEAR, EntityCaveBear.registerAttributes().create());
@@ -230,6 +229,8 @@ public class ModEntity {
         EntityRhino.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.HYENA, RendererHyena::new);
         EntityHyena.processSkins();
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BOAR, RendererBoar::new);
+        EntityBoar.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, RendererBear::new);
         EntityBlackBear.registerTextures(EntityBlackBear.SKIN_NUMBER);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLIND_BEAR, RendererBear::new);

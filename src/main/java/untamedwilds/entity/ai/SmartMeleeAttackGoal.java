@@ -199,7 +199,7 @@ public class SmartMeleeAttackGoal extends Goal {
 
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
         double d0 = this.getAttackReachSqr(enemy);
-        if (distToEnemySqr <= d0 && this.attackTick <= 0) {
+        if (this.attacker.canEntityBeSeen(enemy) && distToEnemySqr <= d0 && this.attackTick <= 0) {
             this.attackTick = 20;
             this.attacker.attackEntityAsMob(enemy);
         }

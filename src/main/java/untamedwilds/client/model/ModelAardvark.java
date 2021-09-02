@@ -32,6 +32,7 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
     public AdvancedModelBox body_tail_3;
     public AdvancedModelBox leg_right_2;
     public AdvancedModelBox arm_right_2;
+
     private final ModelAnimator animator;
 
     public ModelAardvark() {
@@ -46,10 +47,6 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
         this.body_tail_2.setRotationPoint(0.0F, 0.0F, 3.5F);
         this.body_tail_2.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 6, 0.0F);
         this.setRotateAngle(body_tail_2, -0.22759093446006054F, 0.0F, 0.0F);
-        this.eye_right = new AdvancedModelBox(this, 0, 27);
-        this.eye_right.mirror = true;
-        this.eye_right.setRotationPoint(-1.51F, -1.0F, -3.0F);
-        this.eye_right.addBox(0.0F, -1.0F, -1.0F, 0, 1, 2, 0.0F);
         this.body_booty = new AdvancedModelBox(this, 28, 0);
         this.body_booty.setRotationPoint(0.0F, 0.0F, 2.0F);
         this.body_booty.addBox(-3.0F, -4.0F, 0.0F, 6, 6, 8, 0.0F);
@@ -97,6 +94,10 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
         this.arm_right_1.setRotationPoint(-1.5F, -0.75F, 0.2F);
         this.arm_right_1.addBox(-1.5F, 0.0F, -1.5F, 3, 4, 3, 0.0F);
         this.setRotateAngle(arm_right_1, -0.36425021489121656F, 0.0F, 0.136659280431156F);
+        this.eye_right = new AdvancedModelBox(this, 0, 27);
+        this.eye_right.mirror = true;
+        this.eye_right.setRotationPoint(-1.51F, -1.0F, -3.0F);
+        this.eye_right.addBox(0.0F, -1.0F, -1.0F, 0, 1, 2, 0.0F);
         this.eye_left = new AdvancedModelBox(this, 0, 27);
         this.eye_left.setRotationPoint(1.51F, -1.0F, -3.0F);
         this.eye_left.addBox(0.0F, -1.0F, -1.0F, 0, 1, 2, 0.0F);

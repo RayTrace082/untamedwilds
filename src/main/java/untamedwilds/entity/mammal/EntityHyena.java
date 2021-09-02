@@ -206,9 +206,6 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
         if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
-            if (itemstack.getItem() == Items.BLAZE_ROD) { // DEBUG
-                this.setAnimation(ATTACK_BITE);
-            }
 
             if (!this.isTamed() && this.isChild() && EntityUtils.hasFullHealth(this) && this.isFavouriteFood(itemstack)) {
                 this.playSound(SoundEvents.ENTITY_HORSE_EAT, 1.5F, 0.8F);

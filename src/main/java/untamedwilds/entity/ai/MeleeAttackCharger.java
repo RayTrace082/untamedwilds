@@ -80,7 +80,7 @@ public class MeleeAttackCharger extends Goal {
             }*/
             List<LivingEntity> entitiesHit = this.taskOwner.getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, offset_box, EntityPredicates.CAN_AI_TARGET);
             for (LivingEntity entityHit : entitiesHit) {
-                if (!(entityHit instanceof EntityRhino)) {
+                if (!(entityHit instanceof EntityRhino) && this.taskOwner.canEntityBeSeen(entityHit)) {
                     this.taskOwner.attackEntityAsMob(entityHit);
                 }
             }
