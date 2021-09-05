@@ -166,7 +166,7 @@ public class EntityNewt extends ComplexMobAmphibious implements ISpecies, INewSk
         return SpeciesNewt.getSpeciesByBiome(biome);
     }
 
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.newt" + getRawSpeciesName(i)).getString(); }
+    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.newt_" + getRawSpeciesName(i)).getString(); }
     public String getRawSpeciesName(int i) { return SpeciesNewt.values()[i].name().toLowerCase(); }
 
     public enum SpeciesNewt implements IStringSerializable {
