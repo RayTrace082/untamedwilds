@@ -142,10 +142,11 @@ public class ModelNewt extends AdvancedEntityModel<EntityNewt> {
         // Movement Animation
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{head_main, body_main, body_hip, tail_1, tail_2};
         chainSwing(bodyParts, globalSpeed * 1.4F, globalDegree * 1.2F, -4, limbSwing, limbSwingAmount * (newt.isInWater() ? 0.8F : 0.2F));
-        swing(arm_left, globalSpeed, globalDegree * 2f, false, 0.8F, 1f, limbSwing, limbSwingAmount);
-        swing(leg_left, globalSpeed, globalDegree * 1.8f, false, 1.6F, 1f, limbSwing, limbSwingAmount);
-        swing(arm_right, globalSpeed, globalDegree * 2f, false, 2.4F, 1f, limbSwing, limbSwingAmount);
-        swing(arm_left, globalSpeed, globalDegree * 1.8f, false, 3.2F, 1f, limbSwing, limbSwingAmount);
+        float onGround = Math.min(0.8F, limbSwingAmount * (newt.isOnGround() ? 2 : 1));
+        swing(arm_left, globalSpeed, globalDegree * 2f, false, 0.8F, 1f, limbSwing, onGround);
+        swing(leg_left, globalSpeed, globalDegree * 1.8f, false, 1.6F, 1f, limbSwing, onGround);
+        swing(arm_right, globalSpeed, globalDegree * 2f, false, 2.4F, 1f, limbSwing, onGround);
+        swing(leg_right, globalSpeed, globalDegree * 1.8f, false, 3.2F, 1f, limbSwing, onGround);
         if (newt.isInWater()) {
             flap(arm_left, globalSpeed, globalDegree * 1.4f, false, 0.8F, 1f, limbSwing, limbSwingAmount);
             flap(leg_left, globalSpeed, globalDegree * 1.2f, false, 1.6F, 1f, limbSwing, limbSwingAmount);

@@ -38,10 +38,9 @@ import java.util.Random;
 public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewSkins {
 
     private static final float SIZE = 1.0f;
-    private static final String BREEDING = "LATE_SPRING";
+    private static final String BREEDING = "MID_WINTER";
     private static final int GESTATION = 4 * ConfigGamerules.cycleLength.get();
     private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
-    private static final int RARITY = 5;
     private BlockPos lastDugPos = null;
 
     public static Animation WORK_DIG;
@@ -136,14 +135,14 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
                 }
             }
             if (this.getAnimation() == TALK && this.getAnimationTick() == 1) {
-                this.playSound(ModSounds.ENTTIY_BOAR_AMBIENT, 1.5F, 1);
+                this.playSound(ModSounds.ENTITY_BOAR_AMBIENT, 1.5F, 1);
             }
             if (this.getAttackTarget() != null && this.ticksExisted % 120 == 0) {
-                this.playSound(ModSounds.ENTTIY_BOAR_SQUEAL, 1.5F, 1);
+                this.playSound(ModSounds.ENTITY_BOAR_SQUEAL, 1.5F, 1);
             }
             if (this.getAnimation() != NO_ANIMATION) {
                 if (this.getAnimation() == ATTACK && this.getAnimationTick() == 8 && this.rand.nextInt(3) == 0) {
-                    this.playSound(ModSounds.ENTTIY_BOAR_SQUEAL, 1.5F, 1F);
+                    this.playSound(ModSounds.ENTITY_BOAR_SQUEAL, 1.5F, 1F);
                 }
             }
         }
@@ -169,17 +168,17 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return ModSounds.ENTTIY_BOAR_AMBIENT;
+        return ModSounds.ENTITY_BOAR_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSounds.ENTTIY_BOAR_HURT;
+        return ModSounds.ENTITY_BOAR_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return ModSounds.ENTTIY_BOAR_DEATH;
+        return ModSounds.ENTITY_BOAR_DEATH;
     }
 
     @Override
@@ -219,11 +218,10 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
     }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEETROOT; }
     public String getBreedingSeason() { return BREEDING; }
-    public static int getRarity() { return RARITY; }
     public int getAdulthoodTime() { return GROWING; }
     public int getPregnancyTime() { return GESTATION; }
     public float getModelScale() { return SIZE; }
-    protected int getOffspring() { return 1; }
+    protected int getOffspring() { return 5; }
 
     public void writeAdditional(CompoundNBT compound){
         super.writeAdditional(compound);

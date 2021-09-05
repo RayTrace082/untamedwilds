@@ -62,6 +62,10 @@
   "entity.untamedwilds.boar_peccary.sciname": "Tayassu pecari",
   "entity.untamedwilds.boar_red_river": "Red River Hog",
   "entity.untamedwilds.boar_red_river.sciname": "Potamochoerus porcus",
+  "untamedwilds.subtitles.boar.squeal": "Boar squeals",
+  "untamedwilds.subtitles.boar.ambient": "Boar grunts",
+  "untamedwilds.subtitles.boar.hurt": "Boar hurts",
+  "untamedwilds.subtitles.boar.death": "Boar dies",
 
   "item.untamedwilds.bear_black_spawn_egg": "Black Bear Spawn Egg",
   "item.untamedwilds.food_bear_raw": "Raw Bear Meat",
