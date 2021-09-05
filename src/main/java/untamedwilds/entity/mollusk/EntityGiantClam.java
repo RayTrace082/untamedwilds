@@ -59,7 +59,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(CLAM_OPEN, true);
+        //this.dataManager.register(CLAM_OPEN, true);
         this.entityCollisionReduction = 1F;
     }
 
