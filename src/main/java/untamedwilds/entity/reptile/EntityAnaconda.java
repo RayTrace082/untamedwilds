@@ -299,7 +299,7 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
         float f = (float)this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
         boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), f);
         if (flag) {
-            if (entityIn instanceof LivingEntity && !(entityIn instanceof PlayerEntity) && entityIn.getWidth() * entityIn.getHeight() < 1.2F && (entityIn instanceof TameableEntity && !((TameableEntity) entityIn).isTamed())) {
+            if (this.peacefulTicks == 0 && entityIn instanceof LivingEntity && !(entityIn instanceof PlayerEntity) && entityIn.getWidth() * entityIn.getHeight() < 1.2F && (entityIn instanceof TameableEntity && !((TameableEntity) entityIn).isTamed())) {
                 this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.BLOCK_BEEHIVE_ENTER, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 EntityUtils.spawnParticlesOnEntity(this.world, (LivingEntity)entityIn, ParticleTypes.POOF, 6, 2);
                 this.setMotion(new Vector3d(entityIn.getPosX() - this.getPosX(), entityIn.getPosY() - this.getPosY(), entityIn.getPosZ() - this.getPosZ()).scale(0.15F));

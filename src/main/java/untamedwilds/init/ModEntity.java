@@ -69,7 +69,7 @@ public class ModEntity {
     public static EntityType<EntityAardvark> AARDVARK = createEntity(ConfigMobControl.addAardvark.get(), EntityAardvark::new,  "aardvark",  0.9F, 0.9F, 0x463A31, 0x956761, animalType.CRITTER, 2, EntityAardvark.SpeciesAardvark.values().length);
     public static EntityType<EntityRhino> RHINO = createEntity(ConfigMobControl.addRhino.get(), EntityRhino::new,  "rhino",  2.0F, 1.8F, 0x787676, 0x665956, animalType.APEX_PRED, 6, EntityRhino.SpeciesRhino.values().length);
     public static EntityType<EntityHyena> HYENA = createEntity(ConfigMobControl.addHyena.get(), EntityHyena::new,  "hyena",  0.9F, 1.1F, 0x6C6857, 0x978966, animalType.APEX_PRED, 10, 6, EntityHyena.SpeciesHyena.values().length);
-    public static EntityType<EntityBoar> BOAR = createEntity(ConfigMobControl.addBoar.get(), EntityBoar::new,  "boar",  1.2F, 1.2F, 0x503C2A, 0x605449, animalType.APEX_PRED, 6, EntityBoar.SpeciesBoar.values().length);
+    public static EntityType<EntityBoar> BOAR = createEntity(ConfigMobControl.addBoar.get(), EntityBoar::new,  "boar",  1.2F, 1.2F, 0x503C2A, 0x605449, animalType.APEX_PRED, 6, 3, EntityBoar.SpeciesBoar.values().length);
     // Bears
     public static EntityType<EntityBlackBear> BLACK_BEAR = createEntity(ConfigMobControl.addBear.get(), EntityBlackBear::new,  "bear_black",  1.3F, 1.3F, 0x0B0A08, 0x3D3226, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntityBlindBear> BLIND_BEAR = createEntity(ConfigMobControl.addBear.get() && ConfigGamerules.fantasyMobs.get(), EntityBlindBear::new,  "bear_blind",  1.6F, 1.6F, 0x241D1B, 0x4B3B35, animalType.LARGE_UNDERGROUND, 1, 0);
