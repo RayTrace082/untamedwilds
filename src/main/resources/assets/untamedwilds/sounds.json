@@ -86,6 +86,36 @@
 		"subtitle": "untamedwilds.subtitles.big_cat.death"
 	},
 
+	"entity.aardvark.ambient": {
+		"category": "neutral",
+		"sounds": [
+			"mob/rabbit/idle1",
+			"mob/rabbit/idle2",
+			"mob/rabbit/idle3",
+			"mob/rabbit/idle4"
+		],
+		"subtitle": "untamedwilds.subtitles.aardvark.ambient"
+	},
+	"entity.aardvark.hurt": {
+		"category": "neutral",
+		"sounds": [
+			"mob/hoglin/hurt1",
+			"mob/hoglin/hurt2",
+			"mob/hoglin/hurt3",
+			"mob/hoglin/hurt4"
+		],
+		"subtitle": "untamedwilds.subtitles.aardvark.hurt"
+	},
+	"entity.aardvark.death": {
+		"category": "neutral",
+		"sounds": [
+			"mob/hoglin/death1",
+			"mob/hoglin/death2",
+			"mob/hoglin/death3"
+		],
+		"subtitle": "untamedwilds.subtitles.aardvark.death"
+	},
+
 	"entity.tarantula.ambient": {
 		"category": "neutral",
 		"sounds": [

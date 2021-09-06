@@ -25,6 +25,7 @@ import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.*;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
+import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
@@ -130,18 +131,22 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
         super.livingTick();
     }
 
+    protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
+        return sizeIn.height * 0.85F;
+    }
+
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_PIG_AMBIENT;
+        return ModSounds.ENTITY_AARDVARK_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ENTITY_PIG_HURT;
+        return ModSounds.ENTITY_AARDVARK_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_PIG_DEATH; }
+    protected SoundEvent getDeathSound() { return ModSounds.ENTITY_AARDVARK_DEATH; }
 
     @Override
     public boolean attackEntityAsMob(Entity entityIn) {
@@ -170,7 +175,6 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
         }
         return EntityAardvark.SpeciesAardvark.getSpeciesByBiome(biome);
     }
-
 
     public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.aardvark_" + getRawSpeciesName(i)).getString(); }
     public String getRawSpeciesName(int i) { return SpeciesAardvark.values()[i].name().toLowerCase(); }

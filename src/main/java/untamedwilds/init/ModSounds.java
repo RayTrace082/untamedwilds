@@ -24,6 +24,10 @@ public class ModSounds {
     public static final SoundEvent ENTITY_BIG_CAT_HURT = registerSound("entity.big_cat.hurt");
     public static final SoundEvent ENTITY_BIG_CAT_DEATH = registerSound("entity.big_cat.death");
 
+    public static final SoundEvent ENTITY_AARDVARK_AMBIENT = registerSound("entity.aardvark.ambient");
+    public static final SoundEvent ENTITY_AARDVARK_HURT = registerSound("entity.aardvark.hurt");
+    public static final SoundEvent ENTITY_AARDVARK_DEATH = registerSound("entity.aardvark.death");
+
     public static final SoundEvent ENTITY_HYENA_LAUGHING = registerSound("entity.hyena.laugh");
     public static final SoundEvent ENTITY_HYENA_GROWL = registerSound("entity.hyena.growl");
     public static final SoundEvent ENTITY_HYENA_AMBIENT = registerSound("entity.hyena.ambient");

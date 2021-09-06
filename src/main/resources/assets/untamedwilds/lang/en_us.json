@@ -20,6 +20,9 @@
   "entity.untamedwilds.aardvark.sciname": "Orycteropus afer",
   "entity.untamedwilds.aardvark_common": "Aardvark",
   "entity.untamedwilds.aardvark_common.sciname": "Orycteropus afer",
+  "untamedwilds.subtitles.aardvark.ambient": "Aardvark grunts",
+  "untamedwilds.subtitles.aardvark.hurt": "Aardvark hurts",
+  "untamedwilds.subtitles.aardvark.death": "Aardvark dies",
 
   "item.untamedwilds.rhino_spawn_egg": "Rhinoceros Spawn Egg",
   "entity.untamedwilds.rhino": "Rhinoceros",
