@@ -1,0 +1,17 @@
+{
+    "name": "Titanoboa" , 
+    "icon": "untamedwilds:textures/icon/large_snake/titanoboa.png" ,
+    "category": "large_snake_category" ,
+    "pages": [
+        {
+            "type": "text" , 
+            "title": "Titanoboa" , 
+            "text": "Titanoboa ($(o)$()) is an extinct genus of very large snakes that lived in what is now La Guajira in northeastern Colombia."
+        } , 
+        {
+            "type": "entity" , 
+            "entity": "untamedwilds:large_snake{Variant: 2}" ,
+            "text": ""
+        }
+    ]
+}
