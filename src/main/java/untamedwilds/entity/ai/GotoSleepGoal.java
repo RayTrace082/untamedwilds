@@ -7,6 +7,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
+import untamedwilds.entity.ComplexMobAmphibious;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
 import javax.annotation.Nullable;
@@ -37,16 +38,17 @@ public class GotoSleepGoal extends Goal {
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Flag.JUMP));
     }
 
+    // TODO: Sweet jesus, this needs to get cleaned up
     @Override
     public boolean shouldExecute() {
         if (this.creature.getRNG().nextInt(this.executionChance) != 0) {
             return false;
         }
-        if (this.creature.isSleeping() && this.creature.isActive() && this.creature.forceSleep <= 0) {
+        if (this.creature.isSleeping() && (this.creature.isActive() && this.creature.forceSleep <= 0) || (!(this.creature instanceof ComplexMobAmphibious) && this.creature.isInWater())) {
             this.creature.setSleeping(false);
             return false;
         }
-        if (this.creature.getCommandInt() != 0 || this.creature.isActive() || this.creature.isBeingRidden() || !this.creature.canMove()) {
+        if (this.creature.getCommandInt() != 0 || this.creature.isActive() || this.creature.isBeingRidden() || !this.creature.canMove() || (this.creature.isInWater() && !(this.creature instanceof ComplexMobAmphibious))) {
             return false;
         }
         if (isValidShelter(this.creature.getPosition().offset(Direction.UP)) || !this.usesHome) {

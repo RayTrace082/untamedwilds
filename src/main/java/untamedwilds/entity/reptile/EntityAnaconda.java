@@ -380,7 +380,7 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
         }
     }
 
-    public class EntityAnacondaPart extends PartEntity<EntityAnaconda> {
+    public static class EntityAnacondaPart extends PartEntity<EntityAnaconda> {
 
         private final EntitySize size;
         public float scale = 1;
