@@ -196,6 +196,8 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
         return new Animation[]{NO_ANIMATION, WORK_DIG, ATTACK, TALK};
     }
 
+    public Animation getAnimationEat() { return WORK_DIG; }
+
     @Nullable
     public EntityBoar func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
         return create_offspring(new EntityBoar(ModEntity.BOAR, this.world));

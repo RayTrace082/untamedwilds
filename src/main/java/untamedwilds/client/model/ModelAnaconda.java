@@ -191,16 +191,20 @@ public class ModelAnaconda extends AdvancedEntityModel<EntityAnaconda> {
         }
         if (!anaconda.isInWater() && !anaconda.isChild() && anaconda.canMove()) {
             Vector3d position;
-            float difference = 0F;
+            double difference = 0F;
             int counter = 0;
             int parts = 0;
+            //UntamedWilds.LOGGER.info("---ANACONDA CLIENT DATA---");
             for (EntityAnaconda.EntityAnacondaPart multipart : anaconda.anacondaParts) {
                 if (counter > 0 && counter < 3 && multipart.getParent() == anaconda) {
                     position = multipart.getPositionVec().add(0, difference, 0);
                     BlockRayTraceResult rayTrace = anaconda.world.rayTraceBlocks(new RayTraceContext(position.add(0, 3, 0), position.add(0, -3, 0), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.ANY, null));
                     Vector3d vec3d = rayTrace.getHitVec();
-                    difference = (float) (vec3d.getY() - position.getY());
-                    float angle = (float) MathHelper.atan2(difference, 0);
+                    difference = vec3d.getY() - position.getY();
+                    float angle = Math.abs(difference) > 0.2 ? (float) MathHelper.atan2(difference, 0) : 0;
+                    /*UntamedWilds.LOGGER.info("Joint " + counter + ": " + angle);
+                    UntamedWilds.LOGGER.info("Ray Trace " + rayTrace.getHitVec() + " BlockPos: " + position);
+                    UntamedWilds.LOGGER.info("Difference: " + difference + " (" + vec3d.getY() + " " + position.getY() + ")"); */
                     float newZ = MathHelper.lerp(0.1F, anaconda.buffer[counter], this.bodyParts[counter].defaultRotationX + angle);
                     this.bodyParts[parts].rotateAngleX = newZ / 2;
                     this.bodyParts[parts + 1].rotateAngleX = newZ / 4;
@@ -215,7 +219,7 @@ public class ModelAnaconda extends AdvancedEntityModel<EntityAnaconda> {
 
         // Sitting Animation
         if (anaconda.sitProgress != 0) {
-            this.progressPosition(body_5, anaconda.sitProgress, -4.0F, 23.0F, -3.0F, anaconda.ticksToSit);
+            this.progressPosition(body_5, anaconda.sitProgress, -8.0F, 23.0F, -3.0F, anaconda.ticksToSit);
             this.progressRotation(body_1, anaconda.sitProgress, (float) Math.toRadians(39.13F), (float) Math.toRadians(67.83F), (float) Math.toRadians(44.35F), anaconda.ticksToSit);
             this.progressRotation(body_2, anaconda.sitProgress,(float) Math.toRadians(-15.65F), (float) Math.toRadians(70.43F), 0, anaconda.ticksToSit);
             this.progressRotation(body_3, anaconda.sitProgress,0F, (float) Math.toRadians(75.65F), 0F, anaconda.ticksToSit);

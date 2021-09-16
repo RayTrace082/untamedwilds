@@ -202,7 +202,6 @@ public class ModelBoar extends BaseModel<EntityBoar> {
         this.rotate(animator, arm_left_2, -54.78F, 0, 7.83F);
         this.rotate(animator, arm_right_1, 15.65F, 0, 7.83F);
         this.rotate(animator, arm_right_2, -54.78F, 0, -7.83F);
-        this.rotate(animator, arm_left_1, -46.96F, -10.43F, -18.26F);
         this.rotate(animator, leg_left_1, -23.48F, 0, -8);
         animator.move(leg_left_1, 0, 1F, 0);
         this.rotate(animator, leg_right_1, -23.48F, 0, 8);
@@ -218,7 +217,6 @@ public class ModelBoar extends BaseModel<EntityBoar> {
             this.rotate(animator, arm_left_2, -54.78F, 0, 7.83F);
             this.rotate(animator, arm_right_1, 15.65F, 0, 7.83F);
             this.rotate(animator, arm_right_2, -54.78F, 0, -7.83F);
-            this.rotate(animator, arm_left_1, -46.96F, -10.43F, -18.26F);
             this.rotate(animator, leg_left_1, -23.48F, 0, -8);
             animator.move(leg_left_1, 0, 1F, 0);
             this.rotate(animator, leg_right_1, -23.48F, 0, 8);
