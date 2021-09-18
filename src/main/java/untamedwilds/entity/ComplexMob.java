@@ -19,10 +19,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
@@ -83,6 +80,11 @@ public abstract class ComplexMob extends TameableEntity {
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return true;
+    }
+
+    // Why is a method called 'isNotColliding()' also checking for Water?
+    public boolean isNotColliding(IWorldReader worldIn) {
+        return worldIn.checkNoEntityCollision(this);
     }
 
     public boolean canBeLeashedTo(PlayerEntity player) {

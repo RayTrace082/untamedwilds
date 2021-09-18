@@ -12,6 +12,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.*;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -38,6 +39,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
 
     public EntityGiantClam(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
+        this.setPathPriority(PathNodeType.WATER, 0.0F);
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

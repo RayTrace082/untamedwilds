@@ -1,6 +1,7 @@
 package untamedwilds.client.model;
 
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
@@ -8,7 +9,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import untamedwilds.entity.mammal.EntityBoar;
 
-public class ModelBoar extends BaseModel<EntityBoar> {
+public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
 
     public AdvancedModelBox main_body;
     public AdvancedModelBox head_main;

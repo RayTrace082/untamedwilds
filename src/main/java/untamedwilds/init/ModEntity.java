@@ -82,11 +82,11 @@ public class ModEntity {
     // Big Cats
     public static EntityType<EntityJaguar> JAGUAR = createEntity(ConfigMobControl.addBigCat.get(), EntityJaguar::new,  "bigcat_jaguar",  1.2F, 1.0F, 0xC59F45,0x383121, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntityLeopard> LEOPARD = createEntity(ConfigMobControl.addBigCat.get(), EntityLeopard::new,  "bigcat_leopard",  1.2F, 1.0F, 0xC59F45, 0x383121, animalType.APEX_PRED, 1, 0);
-    public static EntityType<EntityLion> LION = createEntity(ConfigMobControl.addBigCat.get(), EntityLion::new, "bigcat_lion", 1.3F, 1.2F, 0xDCBA84, 0x442917, animalType.APEX_PRED, 4, 3, 0);
+    public static EntityType<EntityLion> LION = createEntity(ConfigMobControl.addBigCat.get(), EntityLion::new, "bigcat_lion", 1.3F, 1.2F, 0xDCBA84, 0x442917, animalType.APEX_PRED, 4, 0); // TODO: Have lions/cave lions spawn in groups (currently hardcoded because it could be applied to other Big Cats)
     public static EntityType<EntityPuma> PUMA = createEntity(ConfigMobControl.addBigCat.get(), EntityPuma::new,  "bigcat_puma",  1.2F, 1.0F, 0x774C23, 0xECC38E, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntitySnowLeopard> SNOW_LEOPARD = createEntity(ConfigMobControl.addBigCat.get(), EntitySnowLeopard::new,  "bigcat_snow_leopard",  1.2F, 1.0F, 0xD3C38D, 0x46361C, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntityTiger> TIGER = createEntity(ConfigMobControl.addBigCat.get(), EntityTiger::new,  "bigcat_tiger",  1.3F, 1.0F, 0xD1741D, 0x1A0400, animalType.APEX_PRED, 1, 0);
-    public static EntityType<EntityCaveLion> CAVE_LION = createEntity(ConfigMobControl.addBigCat.get() && ConfigGamerules.extinctMobs.get(), EntityCaveLion::new,  "bigcat_cave_lion",  1.3F, 1.0F, 0x5B4924, 0xCCBC8F, animalType.APEX_PRED, 1, 3, 0);
+    public static EntityType<EntityCaveLion> CAVE_LION = createEntity(ConfigMobControl.addBigCat.get() && ConfigGamerules.extinctMobs.get(), EntityCaveLion::new,  "bigcat_cave_lion",  1.3F, 1.0F, 0x5B4924, 0xCCBC8F, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntityMarsupialLion> MARSUPIAL_LION = createEntity(ConfigMobControl.addBigCat.get() && ConfigGamerules.extinctMobs.get(), EntityMarsupialLion::new,  "bigcat_marsupial_lion",  1.2F, 1.0F, 0xA37341, 0xE2CBA4, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntitySabertooth> SABERTOOTH = createEntity(ConfigMobControl.addBigCat.get() && ConfigGamerules.extinctMobs.get(), EntitySabertooth::new,  "bigcat_sabertooth",  1.2F, 1.0F, 0x97845A, 0x3A3026, animalType.APEX_PRED, 1, 0);
 

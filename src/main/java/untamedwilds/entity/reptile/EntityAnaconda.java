@@ -174,7 +174,6 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
                     float f20 = MathHelper.sin(f7) * (1 - Math.abs(this.rotationPitch / 90F));
                     float f21 = MathHelper.cos(f7) * (1 - Math.abs(this.rotationPitch / 90F));
                     float f23 = k == 0 ? (float) (k + 1) : (k + 1) * -1;
-                    // TODO: No pitch shift out of water
                     float value = pitch * (k);
                     this.setPartPosition(anaconda_part, -(f3 * 0.5F + f20 * f23) * f16, value, (f18 * 0.5F + f21 * f23) * f16);
 
@@ -189,7 +188,13 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
             else {
                 for (int k = 0; k < SpeciesAnaconda.values()[this.getVariant()].multiParts; ++k) {
                     EntityAnacondaPart anaconda_part = this.anacondaParts[k];
-                    this.setPartPosition(anaconda_part, this.getPosX(), this.getPosY(), this.getPosZ());
+                    this.setPartPosition(anaconda_part, 0, 0, 0);
+                    this.anacondaParts[k].prevPosX = this.getPosX();
+                    this.anacondaParts[k].prevPosY = this.getPosY();
+                    this.anacondaParts[k].prevPosZ = this.getPosZ();
+                    this.anacondaParts[k].lastTickPosX = this.getPosX();
+                    this.anacondaParts[k].lastTickPosY = this.getPosY();
+                    this.anacondaParts[k].lastTickPosZ = this.getPosZ();
                 }
             }
         }
@@ -327,7 +332,7 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
 
         ANACONDA			(0, 0.9F,	4F, 30F, false, 3, 0, 3, Biome.Category.JUNGLE, Biome.Category.SWAMP),
         RETICULATED_PYTHON	(1, 1.0F,	4F, 30F, true, 3, 0, 3, Biome.Category.JUNGLE, Biome.Category.SWAMP),
-        TITANOBOA			(2, 1.6F,	6F, 50F, false, 5, 0, 3, Biome.Category.JUNGLE, Biome.Category.SWAMP);
+        TITANOBOA			(2, 1.6F,	6F, 50F, false, 5, 0, 0, Biome.Category.JUNGLE, Biome.Category.SWAMP);
 
         public Float scale;
         public int species;
@@ -391,25 +396,19 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
             this.recalculateSize();
         }
 
-        public EntityAnacondaPart(EntityAnaconda entityCachalotWhale, float sizeX, float sizeY, EntitySize size) {
-            super(entityCachalotWhale);
-            this.size = size;
-        }
-
         protected void collideWithNearbyEntities() {
             List<Entity> entities = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
             Entity parent = this.getParent();
             if (parent != null) {
                 entities.stream().filter(entity -> entity != parent && !(entity instanceof EntityAnacondaPart && ((EntityAnacondaPart) entity).getParent() == parent) && entity.canBePushed()).forEach(entity -> entity.applyEntityCollision(parent));
-
             }
         }
 
-        public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+        public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
             return this.getParent() == null ? ActionResultType.PASS : this.getParent().func_230254_b_(player, hand);
         }
 
-        protected void collideWithEntity(Entity entityIn) {
+        public void applyEntityCollision(Entity entityIn) {
             entityIn.applyEntityCollision(this);
         }
 

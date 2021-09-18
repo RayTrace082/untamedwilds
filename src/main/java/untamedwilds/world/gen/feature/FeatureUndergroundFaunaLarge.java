@@ -23,7 +23,7 @@ public class FeatureUndergroundFaunaLarge extends Feature<NoFeatureConfig> {
         if (pos.getY() < 52) {
             for (int i = 0; i < 5; i++) {
                 FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND));
-                if (FaunaSpawn.performWorldGenSpawning(entry.entityType, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, world, pos, rand, entry.groupCount)) {
+                if (FaunaSpawn.performWorldGenSpawning(entry.entityType, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, null, world, pos, rand, entry.groupCount)) {
                     return true;
                 }
             }
