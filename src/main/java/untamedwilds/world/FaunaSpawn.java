@@ -130,7 +130,6 @@ public class FaunaSpawn {
                                 if (net.minecraftforge.common.ForgeHooks.canEntitySpawn(mobentity, worldIn, d0, blockpos.getY(), d1, null, SpawnReason.CHUNK_GENERATION) == -1) continue;
                                 if (mobentity.canSpawn(worldIn, SpawnReason.CHUNK_GENERATION) && mobentity.isNotColliding(worldIn)) {
                                     mobentity.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(mobentity.getPosition()), SpawnReason.CHUNK_GENERATION, null, null);
-                                    worldIn.func_242417_l(mobentity);
                                     if (mobentity instanceof ComplexMob) {
                                         if (mobentity instanceof ISpecies) {
                                             if (species == -1) {
@@ -144,6 +143,16 @@ public class FaunaSpawn {
                                             return false;
                                         }
                                     }
+                                    if (UntamedWilds.DEBUG && mobentity instanceof ComplexMob) {
+                                        if (mobentity instanceof ISpecies) {
+                                            UntamedWilds.LOGGER.info("Spawned: " + ((ComplexMob)mobentity).getGenderString() + " " + ((ISpecies)mobentity).getSpeciesName());
+                                        }
+                                        else {
+                                            UntamedWilds.LOGGER.info("Spawned: " + ((ComplexMob)mobentity).getGenderString() + " " + mobentity.getName().getString());
+                                        }
+                                    }
+
+                                    worldIn.func_242417_l(mobentity);
                                     break;
                                 }
                             }

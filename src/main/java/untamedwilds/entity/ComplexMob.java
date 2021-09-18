@@ -22,7 +22,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.UntamedWilds;
 import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
@@ -320,12 +319,7 @@ public abstract class ComplexMob extends TameableEntity {
                         this.remove();
                         return null;
                     }
-                    if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
-                        UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + ((ISpecies) this).getSpeciesName());
-                    }
                 }
-            } else if (UntamedWilds.DEBUG && reason == SpawnReason.CHUNK_GENERATION) {
-                UntamedWilds.LOGGER.info("Spawned: " + this.getGenderString() + " " + this.getName().getString());
             }
             if (TEXTURES_COMMON.containsKey(this.getType().getRegistryName().getPath())) {
                 chooseSkinForSpecies(this, ConfigGamerules.wildRareSkins.get());
