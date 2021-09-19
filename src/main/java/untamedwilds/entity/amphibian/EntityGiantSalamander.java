@@ -190,7 +190,7 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
         return SpeciesGiantSalamander.getSpeciesByBiome(biome);
     }
 
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.giant_salamander" + getRawSpeciesName(i)).getString(); }
+    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.giant_salamander_" + getRawSpeciesName(i)).getString(); }
     public String getRawSpeciesName(int i) { return SpeciesGiantSalamander.values()[i].name().toLowerCase(); }
 
     @Override
