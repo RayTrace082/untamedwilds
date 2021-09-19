@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 public class ProtectChildrenTarget<T extends LivingEntity> extends HuntMobTarget<T> {
 
     private final int executionChance;
+    private MobEntity protectTarget;
 
     public ProtectChildrenTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight) {
         this(creature, classTarget, checkSight, false);
@@ -46,7 +47,7 @@ public class ProtectChildrenTarget<T extends LivingEntity> extends HuntMobTarget
 
             for (MobEntity child : this.goalOwner.world.getEntitiesWithinAABB(this.goalOwner.getClass(), goalOwner.getBoundingBox().grow(8.0D, 4.0D, 8.0D))) {
                 if (child.isChild() && ((ComplexMob)child).getVariant() == temp.getVariant()) {
-
+                    this.protectTarget = child;
                     List<T> list = this.goalOwner.world.getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
                     list.removeIf((Predicate<LivingEntity>) this::shouldRemoveTarget);
 
@@ -64,10 +65,18 @@ public class ProtectChildrenTarget<T extends LivingEntity> extends HuntMobTarget
         return false;
     }
 
-    @Override
-    protected double getTargetDistance()
-        {
-            return super.getTargetDistance() * 0.5D;
+    public boolean shouldContinueExecuting() {
+        if (this.protectTarget.getDistance(this.goalOwner) > 12) {
+            this.goalOwner.setAttackTarget(null);
+            this.target = null;
+            this.goalOwner.getNavigator().tryMoveToEntityLiving(this.protectTarget, 1);
+            return false;
         }
+        return super.shouldContinueExecuting();
+    }
 
+    @Override
+    protected double getTargetDistance() {
+        return super.getTargetDistance() * 0.5D;
+    }
 }

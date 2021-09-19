@@ -21,6 +21,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
+import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.entity.ai.SmartFollowOwnerGoal;
 import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
@@ -79,7 +80,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
                 this.forceSleep = -1200;
             }
             // Angry sleepers
-            if (!this.isTamed() && this.isSleeping() && this.forceSleep == 0) {
+            if (ConfigGamerules.angrySleepers.get() && !this.isTamed() && this.isSleeping() && this.forceSleep == 0) {
                 List<PlayerEntity> list = this.world.getEntitiesWithinAABB(PlayerEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                 if (!list.isEmpty()) {
                     PlayerEntity player = list.get(0);

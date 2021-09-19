@@ -7,6 +7,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.util.EntityPredicates;
+import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ISpecies;
 
@@ -52,7 +53,7 @@ public class DontThreadOnMeTarget<T extends LivingEntity> extends TargetGoal {
     }
 
     public boolean shouldExecute() {
-        if (this.goalOwner.getRNG().nextInt(this.targetChance) != 0 || this.goalOwner.getNavigator().noPath()) {
+        if (!ConfigGamerules.contactAgression.get() || this.goalOwner.getRNG().nextInt(this.targetChance) != 0 || this.goalOwner.getNavigator().noPath()) {
             return false;
         } else {
             List<T> list = this.goalOwner.world.getEntitiesWithinAABB(this.targetClass, this.goalOwner.getBoundingBox(), this.targetEntitySelector);

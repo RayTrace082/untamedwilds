@@ -16,6 +16,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import untamedwilds.UntamedWilds;
+import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.entity.ai.SmartFollowOwnerGoal;
 import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
@@ -71,7 +72,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
                 }
             }
             // Angry Sleepers
-            if (!this.isTamed() && this.isSleeping() && this.forceSleep == 0) {
+            if (ConfigGamerules.angrySleepers.get() && !this.isTamed() && this.isSleeping() && this.forceSleep == 0) {
                 List<PlayerEntity> list = this.world.getEntitiesWithinAABB(PlayerEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                 if (!list.isEmpty()) {
                     PlayerEntity player = list.get(0);

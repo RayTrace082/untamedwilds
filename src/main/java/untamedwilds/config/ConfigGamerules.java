@@ -15,6 +15,8 @@ public class ConfigGamerules {
     public static ForgeConfigSpec.BooleanValue fantasyMobs;
     public static ForgeConfigSpec.BooleanValue grazerGriefing;
     public static ForgeConfigSpec.BooleanValue mobGriefing;
+    public static ForgeConfigSpec.BooleanValue angrySleepers;
+    public static ForgeConfigSpec.BooleanValue contactAgression;
 
     public static ForgeConfigSpec.BooleanValue sleepBehaviour;
     public static ForgeConfigSpec.BooleanValue easyMobCapturing;
@@ -37,6 +39,9 @@ public class ConfigGamerules {
         fantasyMobs = builder.comment("Should fantasy mobs spawn naturally in the world?.").define("gamerules.fantasy_mobs", true);
         grazerGriefing = builder.comment("Should 'Grazing' mobs destroy Tall Grass and/or turn Grass into dirt blocks (like Vanilla Sheep do).").define("gamerules.grazer_griefing", true);
         mobGriefing = builder.comment("Should mobs potentially destroy the terrain? Keep in mind 'mobGriefing' is still required").define("gamerules.mob_griefing", false);
+
+        angrySleepers = builder.comment("Defines whether certain large predators will be angered if a player approaches them while they are sleeping.").define("gamerules.angry_sleepers", true);
+        contactAgression = builder.comment("Defines whether certain critters will become angry if a mob/player 'steps' on them, by coming too close.").define("gamerules.contact_agression", true);
 
         sleepBehaviour = builder.comment("Should the 'Sleeping' behaviour run? Disabling this option also disables the activity").define("gamerules.mob_sleeping", true);
         easyMobCapturing = builder.comment("If set to false, makes mobs a lot harder to catch by preventing the capture of hostile mobs").define("gamerules.easy_mob_capture", true);
