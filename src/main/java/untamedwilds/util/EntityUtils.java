@@ -1,5 +1,6 @@
 package untamedwilds.util;
 
+import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.Minecraft;
@@ -12,6 +13,8 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Food;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameterSet;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.potion.EffectInstance;
@@ -186,6 +189,15 @@ public abstract class EntityUtils {
             }
             entity.remove();
         }
+    }
+
+    // This function pulls X items from the defined LootTable
+    public static List<ItemStack> getItemFromLootTable(ResourceLocation lootTableIn, World worldIn) {
+        LootContext.Builder lootcontext$builder = new LootContext.Builder((ServerWorld) worldIn);
+        if (worldIn.getServer() != null) {
+            return worldIn.getServer().getLootTableManager().getLootTableFromLocation(lootTableIn).generate(lootcontext$builder.build(new LootParameterSet.Builder().build()));
+        }
+        return Lists.newArrayList();
     }
 
     public static CompoundNBT writeEntityToNBT(LivingEntity entity) {

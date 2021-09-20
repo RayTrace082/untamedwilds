@@ -7,8 +7,6 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameterSet;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
@@ -19,7 +17,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ToolType;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
@@ -129,12 +126,9 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
                 if (this.getAnimationTick() == 64) {
                     int rand = this.rand.nextInt(6);
                     if (rand == 0) {
-                        LootContext.Builder lootcontext$builder = new LootContext.Builder((ServerWorld) this.world);
-                        List<ItemStack> result = this.world.getServer().getLootTableManager().getLootTableFromLocation(ModLootTables.LOOT_DIGGING).generate(lootcontext$builder.build(new LootParameterSet.Builder().build()));
-                        UntamedWilds.LOGGER.info(result);
-                        for (ItemStack itemstack : result) {
+                        List<ItemStack> result = EntityUtils.getItemFromLootTable(ModLootTables.LOOT_DIGGING, this.world);
+                        for (ItemStack itemstack : result)
                             this.entityDropItem(itemstack);
-                        }
                     }
                     else if (rand == 1) {
                         this.entityDropItem(new ItemStack(ModItems.VEGETABLE_AARDVARK_CUCUMBER.get()));

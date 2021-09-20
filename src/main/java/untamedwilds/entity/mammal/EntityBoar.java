@@ -9,8 +9,6 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameterSet;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
@@ -131,11 +129,9 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
                 ((ServerWorld)this.world).spawnParticle(new BlockParticleData(ParticleTypes.BLOCK, this.world.getBlockState(this.getPosition().down())), this.getPosX(), this.getPosY(), this.getPosZ(), 20, 0.0D, 0.0D, 0.0D, 0.15F);
                 this.playSound(SoundEvents.ITEM_SHOVEL_FLATTEN, 0.8F, 0.6F);
                 if (this.getAnimationTick() == 64 && this.rand.nextInt(5) == 0) {
-                    LootContext.Builder lootcontext$builder = new LootContext.Builder((ServerWorld) this.world);
-                    List<ItemStack> result = this.world.getServer().getLootTableManager().getLootTableFromLocation(ModLootTables.LOOT_DIGGING).generate(lootcontext$builder.build(new LootParameterSet.Builder().build()));
-                    for (ItemStack itemstack : result) {
+                    List<ItemStack> result = EntityUtils.getItemFromLootTable(ModLootTables.LOOT_DIGGING, this.world);
+                    for (ItemStack itemstack : result)
                         this.entityDropItem(itemstack);
-                    }
                 }
             }
             if (this.getAnimation() == TALK && this.getAnimationTick() == 1) {
