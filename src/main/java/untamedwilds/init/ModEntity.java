@@ -59,7 +59,7 @@ public class ModEntity {
     public static EntityType<EntitySnake> SNAKE = createEntity(ConfigMobControl.addSnake.get(), EntitySnake::new,  "snake",  0.6f, 0.3f, 0xD8A552, 0x5C3525, animalType.CRITTER, 4, 1, EntitySnake.SpeciesSnake.values().length);
     public static EntityType<EntitySoftshellTurtle> SOFTSHELL_TURTLE = createEntity(ConfigMobControl.addSoftshellTurtle.get(), EntitySoftshellTurtle::new,  "softshell_turtle",  0.6f, 0.3f, 0x828444, 0x26292B, animalType.CRITTER, 3, 2, EntitySoftshellTurtle.SpeciesSoftshellTurtle.values().length);
     public static EntityType<EntityTortoise> TORTOISE = createEntity(ConfigMobControl.addTortoise.get(), EntityTortoise::new,  "tortoise",  0.6f, 0.6f, 0xAF9F74, 0x775232, animalType.CRITTER, 3, 2, EntityTortoise.SpeciesTortoise.values().length);
-    public static EntityType<EntityAnaconda> ANACONDA = createEntity(ConfigMobControl.addLargeSnake.get(), EntityAnaconda::new,  "large_snake",  1.4f, 0.9f, 0x65704C, 0x42291A, animalType.APEX_PRED, 4, 1, EntityAnaconda.SpeciesAnaconda.values().length);
+    public static EntityType<EntityAnaconda> ANACONDA = createEntity(ConfigMobControl.addLargeSnake.get(), EntityAnaconda::new,  "large_snake",  1.5f, 0.6f, 0x65704C, 0x42291A, animalType.APEX_PRED, 4, 1, EntityAnaconda.SpeciesAnaconda.values().length);
 
     // Mollusks
     public static EntityType<EntityGiantClam> GIANT_CLAM = createEntity(ConfigMobControl.addGiantClam.get(), EntityGiantClam::new, EntityClassification.WATER_CREATURE, "giant_clam", 32, 10, true, 1.0F, 1.0F, 0x346B70, 0xAD713C, animalType.SESSILE, 1, EntityGiantClam.SpeciesGiantClam.values().length);

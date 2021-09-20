@@ -1,7 +1,6 @@
 package untamedwilds.entity.reptile;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -263,18 +262,6 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
         return create_offspring(new EntityAnaconda(ModEntity.ANACONDA, this.world));
     }
 
-    @Override
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
-        ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
-
-        if (itemstack.isEmpty() && this.isAlive()) {
-            Minecraft.getInstance().getRenderManager().setDebugBoundingBox(true);
-            //EntityUtils.turnEntityIntoItem(this,"snake_" + getRawSpeciesName(this.getVariant()).toLowerCase());
-            return ActionResultType.func_233537_a_(this.world.isRemote);
-        }
-        return super.func_230254_b_(player, hand);
-    }
-
     public String getBreedingSeason() {
         return BREEDING;
     }
@@ -331,8 +318,8 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
     public enum SpeciesAnaconda implements IStringSerializable {
 
         ANACONDA			(0, 0.9F,	4F, 30F, false, 3, 0, 3, Biome.Category.JUNGLE, Biome.Category.SWAMP),
-        RETICULATED_PYTHON	(1, 1.0F,	4F, 30F, true, 3, 0, 3, Biome.Category.JUNGLE, Biome.Category.SWAMP),
-        TITANOBOA			(2, 1.6F,	6F, 50F, false, 5, 0, 0, Biome.Category.JUNGLE, Biome.Category.SWAMP);
+        RETICULATED_PYTHON	(1, 1.0F,	4F, 30F, true, 3, 0, 3, Biome.Category.JUNGLE, Biome.Category.SWAMP);
+        //TITANOBOA			(2, 1.6F,	6F, 50F, false, 5, 0, 0, Biome.Category.JUNGLE, Biome.Category.SWAMP);
 
         public Float scale;
         public int species;
