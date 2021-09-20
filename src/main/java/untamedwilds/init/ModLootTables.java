@@ -20,6 +20,8 @@ public class ModLootTables {
     public static ResourceLocation BIGCAT_LOOT_SNOW_LEOPARD = new ResourceLocation(UntamedWilds.MOD_ID, "entities/big_cat/snow_leopard");
     public static ResourceLocation BIGCAT_LOOT_TIGER = new ResourceLocation(UntamedWilds.MOD_ID, "entities/big_cat/tiger");
 
+    public static ResourceLocation LOOT_DIGGING = new ResourceLocation(UntamedWilds.MOD_ID, "gameplay/digging");
+
     public static void init() {
     }
 }

@@ -7,6 +7,8 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameterSet;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
@@ -17,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ToolType;
+import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
@@ -25,6 +28,7 @@ import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.*;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
+import untamedwilds.init.ModLootTables;
 import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
 
@@ -102,24 +106,39 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
                     this.heal(1.0F);
                 }
             }
-            int i = this.rand.nextInt(3000);
-            if (i == 13 && !this.isInWater() && this.isNotMoving() && this.canMove() && this.getAnimation() == NO_ANIMATION) {
-                this.setSitting(true);
-            }
-            if (i == 14 && this.isSitting()) {
-                this.setSitting(false);
-            }
-            if (i > 2980 && this.getAttackTarget() != null && !this.isInWater() && this.getHunger() < 60 && this.canMove() && this.getAnimation() == NO_ANIMATION) {
-                if ((this.lastDugPos == null || this.getDistanceSq(this.lastDugPos.getX(), this.getPosY(), this.lastDugPos.getZ()) > 50) && this.world.getBlockState(this.getPosition().down()).getHarvestTool() == ToolType.SHOVEL) {
-                    this.setAnimation(WORK_DIG);
-                    this.lastDugPos = this.getPosition();
+            // Random idle animations
+            if (this.getAnimation() == NO_ANIMATION && this.getAttackTarget() == null && !this.isSleeping() && this.getCommandInt() == 0) {
+                int i = this.rand.nextInt(3000);
+                if (i == 13 && !this.isInWater() && this.isNotMoving() && this.canMove()) {
+                    this.setSitting(true);
+                }
+                if (i == 14 && this.isSitting()) {
+                    this.setSitting(false);
+                }
+                if (i > 2980 && !this.isInWater() && this.getHunger() < 60 && this.canMove() && this.getAnimation() == NO_ANIMATION) {
+                    if ((this.lastDugPos == null || this.getDistanceSq(this.lastDugPos.getX(), this.getPosY(), this.lastDugPos.getZ()) > 50) && this.world.getBlockState(this.getPosition().down()).getHarvestTool() == ToolType.SHOVEL) {
+                        this.setAnimation(WORK_DIG);
+                        this.lastDugPos = this.getPosition();
+                    }
                 }
             }
+
             if (this.getAnimation() == WORK_DIG && this.getAnimationTick() % 8 == 0) {
                 ((ServerWorld)this.world).spawnParticle(new BlockParticleData(ParticleTypes.BLOCK, this.world.getBlockState(this.getPosition().down())), this.getPosX(), this.getPosY(), this.getPosZ(), 20, 0.0D, 0.0D, 0.0D, 0.15F);
                 this.playSound(SoundEvents.ITEM_SHOVEL_FLATTEN, 0.8F, 0.6F);
-                if (this.getAnimationTick() == 64 && this.rand.nextInt(6) == 0) {
-                    this.entityDropItem(new ItemStack(ModItems.VEGETABLE_AARDVARK_CUCUMBER.get()), 0.2F);
+                if (this.getAnimationTick() == 64) {
+                    int rand = this.rand.nextInt(6);
+                    if (rand == 0) {
+                        LootContext.Builder lootcontext$builder = new LootContext.Builder((ServerWorld) this.world);
+                        List<ItemStack> result = this.world.getServer().getLootTableManager().getLootTableFromLocation(ModLootTables.LOOT_DIGGING).generate(lootcontext$builder.build(new LootParameterSet.Builder().build()));
+                        UntamedWilds.LOGGER.info(result);
+                        for (ItemStack itemstack : result) {
+                            this.entityDropItem(itemstack);
+                        }
+                    }
+                    else if (rand == 1) {
+                        this.entityDropItem(new ItemStack(ModItems.VEGETABLE_AARDVARK_CUCUMBER.get()));
+                    }
                 }
             }
         }
