@@ -32,7 +32,6 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.spawner.AbstractSpawner;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.INeedsPostUpdate;
 
@@ -145,7 +144,6 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
                abstractspawner.setEntityType(entitytype1);
                CompoundNBT entityNBT = new CompoundNBT();
                abstractspawner.write(entityNBT);
-               UntamedWilds.LOGGER.info(entityNBT);
 
                ListNBT listnbt = new ListNBT();
                CompoundNBT compoundnbt = new CompoundNBT();
@@ -158,7 +156,6 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
 
                entityNBT.getList("SpawnPotentials", 10).clear();
                entityNBT.getList("SpawnPotentials", 10).add(listnbt);
-               UntamedWilds.LOGGER.info(entityNBT);
 
                abstractspawner.read(entityNBT);
                tileentity.markDirty();
