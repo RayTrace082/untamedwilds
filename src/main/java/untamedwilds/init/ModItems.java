@@ -82,7 +82,7 @@ public class ModItems {
     public static RegistryObject<Item> HIDE_BIGCAT_TIGER = createItem(ConfigMobControl.addBigCat.get(),"hide_bigcat_tiger", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
 
     // Item Blocks
-    //public static RegistryObject<Item> WATER_HYACINTH_BLOCK = createItem("flora_water_hyacinth_item", () -> new LilyPadItem(ModBlock.WATER_HYACINTH.get(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> WATER_HYACINTH_BLOCK = createItem("flora_water_hyacinth_item", () -> new LilyPadItem(ModBlock.WATER_HYACINTH.get(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
 
 
     public static <I extends Item> RegistryObject<I> createItem(String name, Supplier<? extends I> supplier) {
