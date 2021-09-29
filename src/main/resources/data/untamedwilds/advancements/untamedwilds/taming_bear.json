@@ -1,0 +1,96 @@
+{
+  "parent": "untamedwilds:untamedwilds/root",
+  "display": {
+    "icon": {
+      "item": "untamedwilds:hide_bear_black"
+    },
+    "title": {
+      "translate": "advancements.untamedwilds.taming_bear.title"
+    },
+    "description": {
+      "translate": "advancements.untamedwilds.taming_bear.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "bear_black": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "untamedwilds:bear_black"
+        }
+      }
+    },
+    "bear_blind": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "untamedwilds:bear_blind"
+        }
+      }
+    },
+    "bear_brown": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "untamedwilds:bear_brown"
+        }
+      }
+    },
+    "bear_cave": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "untamedwilds:bear_cave"
+        }
+      }
+    },
+    "bear_panda": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "untamedwilds:bear_panda"
+        }
+      }
+    },
+    "bear_polar": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "untamedwilds:bear_polar"
+        }
+      }
+    },
+    "bear_spectacled": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "untamedwilds:bear_spectacled"
+        }
+      }
+    },
+    "bear_sun": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "untamedwilds:bear_sun"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "bear_black",
+      "bear_blind",
+      "bear_brown",
+      "bear_cave",
+      "bear_panda",
+      "bear_polar",
+      "bear_spectacled",
+      "bear_sun"
+    ]
+  ]
+}

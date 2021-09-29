@@ -216,7 +216,6 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
             if (!this.isTamed() && this.isChild() && EntityUtils.hasFullHealth(this) && this.isFavouriteFood(itemstack)) {
                 this.playSound(SoundEvents.ENTITY_HORSE_EAT, 1.5F, 0.8F);
                 if (this.getRNG().nextInt(3) == 0) {
-                    // Advancement Trigger: "Bear Force One"
                     this.setTamedBy(player);
                     EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.HEART, 3, 6);
                 } else {
@@ -239,6 +238,7 @@ public abstract class AbstractBear extends ComplexMobTerrestrial {
     public boolean hasShortSnout() { return false; }
     public boolean hasLongBody() { return false; }
 
+    // TODO: When bears are unified, take it into account in the achievements
     // Species available, referenced to properly distribute Bears in the world
     public enum SpeciesBear implements IStringSerializable {
 

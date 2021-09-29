@@ -464,6 +464,11 @@
   "block.untamedwilds.block_burrow": "Burrow",
   "block.burrow.state": "This burrow belongs to some kind of %s",
 
+  "advancements.untamedwilds.zoologist.title": "Zoology",
+  "advancements.untamedwilds.zoologist.description": "It's time to explore the world",
+  "advancements.untamedwilds.taming_bear.title": "BEAR FORCE ONE",
+  "advancements.untamedwilds.taming_bear.description": "Tame a Bear",
+
   "tetra.variant.sword_socket/pearl": "Socket [§3Pearl§r]",
   "tetra.variant.sword_socket/pristine_pearl": "Socket [§3Pearl+§r]",
   "tetra.variant.sword_socket/pristine_pearl.description": "A gem, fitted onto the sword where the blade meets the hilt. The gem is enchanted and provides magical boons to the wielder of the sword.\n\nThe gem is of pristine quality and provides improved effects compared to a gem of lesser quality.",

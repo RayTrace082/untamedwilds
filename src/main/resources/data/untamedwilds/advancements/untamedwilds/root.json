@@ -1,22 +1,36 @@
 {
   "display": {
     "icon": {
-      "item": "untamedwilds:hide_bear_brown"
+      "item": "untamedwilds:material_pearl"
     },
     "title": {
-      "translate": "advancements.untamedwilds.root.title"
+      "translate": "advancements.untamedwilds.zoologist.title"
     },
     "description": {
-      "translate": "advancements.untamedwilds.root.description"
+      "translate": "advancements.untamedwilds.zoologist.description"
     },
     "background": "minecraft:textures/gui/advancements/backgrounds/husbandry.png",
+    "frame": "task",
     "show_toast": false,
-    "announce_to_chat": true,
-    "hidden" : true
+    "announce_to_chat": false,
+    "hidden": false
   },
   "criteria": {
-    "tick": {
-      "tame_animal ": "untamedwilds:sunfish"
+    "encyclopedia_of_life": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "patchouli:guide_book",
+            "nbt": "{\"patchouli:book\":\"untamedwilds:encyclopaedia_of_life\"}"
+          }
+        ]
+      }
     }
-  }
+  },
+  "requirements": [
+    [
+      "encyclopedia_of_life"
+    ]
+  ]
 }
