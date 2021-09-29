@@ -279,11 +279,11 @@ public class ModelHyena extends AdvancedEntityModel<EntityHyena> {
         }
 
         // Movement Animation
-        float newZ = MathHelper.lerp(0.4F, this.tailX, this.tail_1.defaultRotationX + (float)hyena.getSpeed() * 2);
+        float newZ = MathHelper.lerp(0.4F, this.tailX, this.tail_1.defaultRotationX + (float)hyena.getCurrentSpeed() * 2);
         this.tail_1.rotateAngleX = newZ;
         this.tailX = newZ;
         if (hyena.canMove()) {
-            if (hyena.getSpeed() > 0.06f || hyena.isAngry()) { // Running animation
+            if (hyena.getCurrentSpeed() > 0.06f || hyena.isAngry()) { // Running animation
                 bob(body_main, 0.3F * globalSpeed, 0.5F, false, limbSwing, limbSwingAmount);
                 walk(body_main, 0.3f * globalSpeed, 0.5f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
                 walk(head_neck, 0.3f * globalSpeed, -0.5f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);

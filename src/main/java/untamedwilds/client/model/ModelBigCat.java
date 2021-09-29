@@ -464,11 +464,11 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat> {
         }
 
         // Movement Animation
-        float newZ = MathHelper.lerp(0.4F, this.tailX, this.tail_1.defaultRotationX + (float)big_cat.getSpeed() * 2);
+        float newZ = MathHelper.lerp(0.4F, this.tailX, this.tail_1.defaultRotationX + (float)big_cat.getCurrentSpeed() * 2);
         this.tail_1.rotateAngleX = newZ;
         this.tailX = newZ;
         if (big_cat.canMove()) {
-            if (big_cat.getSpeed() > 0.1f || big_cat.isAngry()) { // Running animation
+            if (big_cat.getCurrentSpeed() > 0.1f || big_cat.isAngry()) { // Running animation
                 bob(body_main, 0.5F * globalSpeed, 0.5F, false, limbSwing, limbSwingAmount);
                 walk(body_main, 0.5f * globalSpeed, 0.5f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
                 walk(head_neck, 0.5f * globalSpeed, -0.5f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);

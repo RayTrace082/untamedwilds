@@ -279,7 +279,7 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
 
         // Movement Animation
         if (aardvark.canMove()) {
-            if (aardvark.getSpeed() > 0.1f || aardvark.isAngry()) { // Running animation
+            if (aardvark.getCurrentSpeed() > 0.1f || aardvark.isAngry()) { // Running animation
                 bob(body_main, 0.5F * globalSpeed, 0.5F, false, limbSwing, limbSwingAmount);
                 walk(body_main, 0.5f * globalSpeed, 0.5f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
                 walk(head_neck, 0.5f * globalSpeed, -0.5f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);

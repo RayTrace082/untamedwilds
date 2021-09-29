@@ -106,7 +106,7 @@ public abstract class ComplexMob extends TameableEntity {
         return this.getMotion().x == 0 && this.getMotion().z == 0;
     }
     public boolean canBeTargeted() { return true; }
-    public double getSpeed() { return Math.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z); }
+    public double getCurrentSpeed() { return Math.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z); }
 
     public int getVariant(){ return (this.dataManager.get(VARIANT)); }
     public void setVariant(int variant){ this.dataManager.set(VARIANT, variant); }
