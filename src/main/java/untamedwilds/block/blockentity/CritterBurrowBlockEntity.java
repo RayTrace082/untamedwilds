@@ -28,7 +28,7 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
     private int cooldown = 0;
 
     public CritterBurrowBlockEntity() {
-        super(ModBlock.BLOCKENTITY_BURROW.get());
+        super(ModBlock.TILE_ENTITY_BURROW.get());
     }
 
     public int getSumMobs() { return this.inhabitants.size() + this.count; }

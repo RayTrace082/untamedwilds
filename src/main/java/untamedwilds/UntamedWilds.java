@@ -50,7 +50,7 @@ public class UntamedWilds {
         eventBus.addListener(this::setupCommon);
         eventBus.addListener(this::setupClient);
         ModBlock.BLOCKS.register(eventBus);
-        ModBlock.TILE_ENTITY_TYPES.register(eventBus);
+        ModBlock.TILE_ENTITIES.register(eventBus);
         ModItems.ITEMS.register(eventBus);
         ModItems.registerSpawnItems();
         UntamedWildsGenerator.FEATURES.register(eventBus);

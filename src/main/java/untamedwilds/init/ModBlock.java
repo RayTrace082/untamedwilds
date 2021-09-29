@@ -33,7 +33,7 @@ import java.util.function.Supplier;
 public class ModBlock {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, UntamedWilds.MOD_ID);
-    public static final DeferredRegister<TileEntityType<?>> TILE_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, UntamedWilds.MOD_ID);
+    public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, UntamedWilds.MOD_ID);
 
     private final static List<Pair<RegistryObject<Block>, RenderType>> RENDER_TYPE_DATA = Lists.newArrayList();
 
@@ -85,8 +85,8 @@ public class ModBlock {
     public static RegistryObject<Block> BURROW = createBlock("block_burrow", () -> new CritterBurrowBlock(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(1.0F).sound(SoundType.GROUND).doesNotBlockMovement()),  RenderType.getTranslucent(), ItemGroup.DECORATIONS);
 
     // Block Entities
-    public static RegistryObject<TileEntityType<CageBlockEntity>> BLOCKENTITY_CAGE = TILE_ENTITY_TYPES.register("trap_cage", () -> new TileEntityType<>(CageBlockEntity::new, Sets.newHashSet(ModBlock.TRAP_CAGE.get()), null));
-    public static RegistryObject<TileEntityType<CritterBurrowBlockEntity>> BLOCKENTITY_BURROW = TILE_ENTITY_TYPES.register("critter_burrow", () -> new TileEntityType<>(CritterBurrowBlockEntity::new, Sets.newHashSet(ModBlock.BURROW.get()), null));
+    public static RegistryObject<TileEntityType<CageBlockEntity>> TILE_ENTITY_CAGE = TILE_ENTITIES.register("trap_cage", () -> new TileEntityType<>(CageBlockEntity::new, Sets.newHashSet(ModBlock.TRAP_CAGE.get()), null));
+    public static RegistryObject<TileEntityType<CritterBurrowBlockEntity>> TILE_ENTITY_BURROW = TILE_ENTITIES.register("critter_burrow", () -> new TileEntityType<>(CritterBurrowBlockEntity::new, Sets.newHashSet(ModBlock.BURROW.get()), null));
 
     public static <B extends Block> RegistryObject<Block> createBlock(String name, Supplier<? extends B> supplier, ItemGroup group) {
         return createBlock(name, supplier, null, group, 0);

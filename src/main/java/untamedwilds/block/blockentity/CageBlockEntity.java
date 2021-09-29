@@ -26,7 +26,7 @@ public class CageBlockEntity extends TileEntity {
     private boolean caged;
 
     public CageBlockEntity() {
-        super(ModBlock.BLOCKENTITY_CAGE.get());
+        super(ModBlock.TILE_ENTITY_CAGE.get());
     }
 
     public static boolean isBlacklisted(Entity entity) {
