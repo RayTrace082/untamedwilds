@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
-import untamedwilds.config.ConfigFeatureControl;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
 import untamedwilds.entity.amphibian.EntityNewt;
@@ -51,50 +50,41 @@ public class ModItems {
 
     // Materials
     public static RegistryObject<Item> MATERIAL_FAT = createItem("material_fat", () -> new LardItem(new Item.Properties().food((new Food.Builder()).hunger(1).saturation(1F).meat().build()).group(ItemGroup.FOOD)));
-    public static RegistryObject<Item> MATERIAL_PEARL = createItem(ConfigMobControl.addGiantClam.get(),"material_pearl", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> RARE_GIANT_PEARL = createItem(ConfigMobControl.addGiantClam.get(), "material_giant_pearl", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON).group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> MATERIAL_SNAKE_SKIN = createItem(ConfigMobControl.addSnake.get(),"material_snake_skin", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> MATERIAL_PEARL = createItem("material_pearl", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> RARE_GIANT_PEARL = createItem("material_giant_pearl", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON).group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> MATERIAL_SNAKE_SKIN = createItem("material_snake_skin", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
 
     // Food
-    public static RegistryObject<Item> MEAT_BEAR_RAW = createItem(ConfigMobControl.addBear.get(),"food_bear_raw", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.6F).meat().build()).group(ItemGroup.FOOD)));
-    public static RegistryObject<Item> MEAT_BEAR_COOKED = createItem(ConfigMobControl.addBear.get(),"food_bear_cooked", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(7).saturation(1F).meat().build()).group(ItemGroup.FOOD)));
-    public static RegistryObject<Item> MEAT_TURTLE_RAW = createItem(ConfigMobControl.addSoftshellTurtle.get(),"food_turtle_raw", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(2).saturation(0.3F).meat().build()).group(ItemGroup.FOOD)));
-    public static RegistryObject<Item> MEAT_TURTLE_COOKED = createItem(ConfigMobControl.addSoftshellTurtle.get(),"food_turtle_cooked", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(6).saturation(0.6F).meat().build()).group(ItemGroup.FOOD)));
-    public static RegistryObject<Item> MEAT_HIPPO_RAW = createItem(ConfigMobControl.addHippo.get(),"food_pachyderm_raw", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.7F).meat().build()).group(ItemGroup.FOOD)));
-    public static RegistryObject<Item> MEAT_HIPPO_COOKED = createItem(ConfigMobControl.addHippo.get(),"food_pachyderm_cooked", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(7).saturation(1.1F).meat().build()).group(ItemGroup.FOOD)));
-    public static RegistryObject<Item> FOOD_TURTLE_SOUP = createItem(ConfigMobControl.addSoftshellTurtle.get(),"food_turtle_soup", () -> new SoupItem(new Item.Properties().food((new Food.Builder()).hunger(8).saturation(0.6F).build()).group(ItemGroup.FOOD).maxStackSize(1)));
+    public static RegistryObject<Item> MEAT_BEAR_RAW = createItem("food_bear_raw", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.6F).meat().build()).group(ItemGroup.FOOD)));
+    public static RegistryObject<Item> MEAT_BEAR_COOKED = createItem("food_bear_cooked", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(7).saturation(1F).meat().build()).group(ItemGroup.FOOD)));
+    public static RegistryObject<Item> MEAT_TURTLE_RAW = createItem("food_turtle_raw", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(2).saturation(0.3F).meat().build()).group(ItemGroup.FOOD)));
+    public static RegistryObject<Item> MEAT_TURTLE_COOKED = createItem("food_turtle_cooked", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(6).saturation(0.6F).meat().build()).group(ItemGroup.FOOD)));
+    public static RegistryObject<Item> MEAT_HIPPO_RAW = createItem("food_pachyderm_raw", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.7F).meat().build()).group(ItemGroup.FOOD)));
+    public static RegistryObject<Item> MEAT_HIPPO_COOKED = createItem("food_pachyderm_cooked", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(7).saturation(1.1F).meat().build()).group(ItemGroup.FOOD)));
+    public static RegistryObject<Item> FOOD_TURTLE_SOUP = createItem("food_turtle_soup", () -> new SoupItem(new Item.Properties().food((new Food.Builder()).hunger(8).saturation(0.6F).build()).group(ItemGroup.FOOD).maxStackSize(1)));
     public static RegistryObject<Item> FOOD_PEMMICAN = createItem("food_pemmican", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(6).saturation(1.0F).build()).group(ItemGroup.FOOD)));
-    public static RegistryObject<Item> VEGETABLE_AARDVARK_CUCUMBER = createItem(ConfigMobControl.addAardvark.get(),"food_aardvark_cucumber", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.2F).build()).group(ItemGroup.FOOD)));
-    public static RegistryObject<Item> FOOD_HEMLOCK_STEW = createItem("food_hemlock_stew", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(6).saturation(0.1F).effect(new EffectInstance(Effects.POISON, 1200, 3), 1.0F).setAlwaysEdible().build()).group(ItemGroup.FOOD).maxStackSize(1))); // Advancement Trigger: "Asebeia"
-    public static RegistryObject<Item> SEED_TITAN_ARUM = createItem(ConfigFeatureControl.addFlora.get(), "flora_titan_arum_corm", () -> new BlockNamedItem(ModBlock.TITAN_ARUM.get(), new Item.Properties().group(ItemGroup.DECORATIONS)));
+    public static RegistryObject<Item> VEGETABLE_AARDVARK_CUCUMBER = createItem("food_aardvark_cucumber", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.2F).build()).group(ItemGroup.FOOD)));
+    public static RegistryObject<Item> FOOD_HEMLOCK_STEW = createItem("food_hemlock_stew", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(6).saturation(0.1F).effect(() -> new EffectInstance(Effects.POISON, 1200, 3), 1.0F).setAlwaysEdible().build()).group(ItemGroup.FOOD).maxStackSize(1)));
 
     // Hides
-    public static RegistryObject<Item> HIDE_BEAR_ASHEN = createItem(ConfigMobControl.addBear.get(),"hide_bear_ashen", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> HIDE_BEAR_BLACK = createItem(ConfigMobControl.addBear.get(),"hide_bear_black", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> HIDE_BEAR_BROWN = createItem(ConfigMobControl.addBear.get(),"hide_bear_brown", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> HIDE_BEAR_WHITE = createItem(ConfigMobControl.addBear.get(),"hide_bear_white", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> HIDE_BIGCAT_JAGUAR = createItem(ConfigMobControl.addBigCat.get(),"hide_bigcat_jaguar", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> HIDE_BIGCAT_LEOPARD = createItem(ConfigMobControl.addBigCat.get(), "hide_bigcat_leopard", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> HIDE_BIGCAT_LION = createItem(ConfigMobControl.addBigCat.get(),"hide_bigcat_lion", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> HIDE_BIGCAT_PANTHER = createItem(ConfigMobControl.addBigCat.get(),"hide_bigcat_panther", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> HIDE_BIGCAT_PUMA = createItem(ConfigMobControl.addBigCat.get(),"hide_bigcat_puma", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> HIDE_BIGCAT_SNOW_LEOPARD = createItem(ConfigMobControl.addBigCat.get(),"hide_bigcat_snow_leopard", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-    public static RegistryObject<Item> HIDE_BIGCAT_TIGER = createItem(ConfigMobControl.addBigCat.get(),"hide_bigcat_tiger", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> HIDE_BEAR_ASHEN = createItem("hide_bear_ashen", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> HIDE_BEAR_BLACK = createItem("hide_bear_black", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> HIDE_BEAR_BROWN = createItem("hide_bear_brown", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> HIDE_BEAR_WHITE = createItem("hide_bear_white", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> HIDE_BIGCAT_JAGUAR = createItem("hide_bigcat_jaguar", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> HIDE_BIGCAT_LEOPARD = createItem("hide_bigcat_leopard", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> HIDE_BIGCAT_LION = createItem("hide_bigcat_lion", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> HIDE_BIGCAT_PANTHER = createItem("hide_bigcat_panther", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> HIDE_BIGCAT_PUMA = createItem("hide_bigcat_puma", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> HIDE_BIGCAT_SNOW_LEOPARD = createItem("hide_bigcat_snow_leopard", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> HIDE_BIGCAT_TIGER = createItem("hide_bigcat_tiger", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
 
     // Item Blocks
+    public static RegistryObject<Item> SEED_TITAN_ARUM = createItem("flora_titan_arum_corm", () -> new BlockNamedItem(ModBlock.TITAN_ARUM.get(), new Item.Properties().group(ItemGroup.DECORATIONS)));
     public static RegistryObject<Item> WATER_HYACINTH_BLOCK = createItem("flora_water_hyacinth_item", () -> new LilyPadItem(ModBlock.WATER_HYACINTH.get(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
 
-
     public static <I extends Item> RegistryObject<I> createItem(String name, Supplier<? extends I> supplier) {
-        return createItem(true, name, supplier);
-    }
-
-    public static <I extends Item> RegistryObject<I> createItem(boolean enable, String name, Supplier<? extends I> supplier) {
         return ModItems.ITEMS.register(name, supplier);
-        //if (enable) {
-        //    return ModItems.ITEMS.register(name, supplier);
-        //}
-        //return null;
     }
 
     public static void registerSpawnItems() {
