@@ -77,7 +77,8 @@ public class FaunaSpawn {
 
             if (heightMap != null) {
                 pos.add(i, 0, j);
-                pos = worldIn.getHeight(heightMap, pos).up();
+                pos = worldIn.getHeight(heightMap, pos);
+                //worldIn.setBlockState(pos, Blocks.TORCH.getDefaultState(), 2);
             }
 
             if (rand.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(Objects.requireNonNull(worldIn.getBiome(pos).getRegistryName()))) {
@@ -87,9 +88,9 @@ public class FaunaSpawn {
                     k = 1 + rand.nextInt(groupSize);
                 }
                 for(int packSize = 0; packSize < k; ++packSize) {
-                    int x = i;
+                    int x = pos.getX();
                     int y = pos.getY();
-                    int z = j;
+                    int z = pos.getZ();
                     if (packSize != 0) {
                         // Do not offset the first entity of the pack
                         x += rand.nextInt(6);
@@ -110,8 +111,8 @@ public class FaunaSpawn {
 
                         if (entityType.isSummonable() && canCreatureTypeSpawnAtLocation(spawnType, worldIn, blockpos, entityType)) {
                             float f = entityType.getWidth();
-                            double d0 = MathHelper.clamp(x, (double)x + (double)f, (double)x + 16.0D - (double)f);
-                            double d1 = MathHelper.clamp(z, (double)z + (double)f, (double)z + 16.0D - (double)f);
+                            double d0 = MathHelper.clamp(x, (double)blockpos.getX() + (double)f, (double)blockpos.getX() + 16.0D - (double)f);
+                            double d1 = MathHelper.clamp(z, (double)blockpos.getZ() + (double)f, (double)blockpos.getZ() + 16.0D - (double)f);
                             if (!worldIn.hasNoCollisions(entityType.getBoundingBoxWithSizeApplied(d0, y, d1)) || !EntitySpawnPlacementRegistry.canSpawnEntity(entityType, worldIn, SpawnReason.CHUNK_GENERATION, blockpos, worldIn.getRandom())) {
                                 continue;
                             }
