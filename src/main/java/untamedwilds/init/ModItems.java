@@ -53,6 +53,7 @@ public class ModItems {
     public static RegistryObject<Item> MATERIAL_PEARL = createItem("material_pearl", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
     public static RegistryObject<Item> RARE_GIANT_PEARL = createItem("material_giant_pearl", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON).group(ItemGroupUT.untamedwilds_items)));
     public static RegistryObject<Item> MATERIAL_SNAKE_SKIN = createItem("material_snake_skin", () -> new Item(new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+    public static RegistryObject<Item> CHUM = createItem("chum", () -> new ChumItem(new Item.Properties().food((new Food.Builder()).hunger(1).saturation(0.1F).effect(() -> new EffectInstance(Effects.NAUSEA, 1200, 0), 1F).meat().build()).group(ItemGroup.FOOD)));
 
     // Food
     public static RegistryObject<Item> MEAT_BEAR_RAW = createItem("food_bear_raw", () -> new Item(new Item.Properties().food((new Food.Builder()).hunger(3).saturation(0.6F).meat().build()).group(ItemGroup.FOOD)));
