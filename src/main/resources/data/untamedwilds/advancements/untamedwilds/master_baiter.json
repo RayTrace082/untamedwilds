@@ -1,0 +1,35 @@
+{
+  "parent": "untamedwilds:untamedwilds/root",
+  "display": {
+    "icon": {
+      "item": "untamedwilds:chum"
+    },
+    "title": {
+      "translate": "advancements.untamedwilds.master_baiter.title"
+    },
+    "description": {
+      "translate": "advancements.untamedwilds.master_baiter.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "using_chum": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "untamedwilds:chum"
+          ]
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "using_chum"
+    ]
+  ]
+}

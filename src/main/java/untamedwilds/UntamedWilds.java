@@ -68,5 +68,6 @@ public class UntamedWilds {
     private void setupClient(final FMLClientSetupEvent event) {
         ModEntity.registerRendering();
         ModBlock.registerRendering();
+        //ModParticles.registerParticles(); Handled through events
     }
 }

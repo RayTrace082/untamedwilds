@@ -363,7 +363,9 @@ public abstract class ComplexMob extends TameableEntity {
                         this.setSitting(false);
                     }
                 }
-                EntityUtils.consumeItemStack(this, itemstack);
+                else {
+                    EntityUtils.consumeItemStack(this, itemstack);
+                }
             }
         }
         return super.func_230254_b_(player, hand);
