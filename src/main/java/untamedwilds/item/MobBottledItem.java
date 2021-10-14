@@ -61,8 +61,8 @@ public class MobBottledItem extends Item {
             if (useContext.getPlayer() != null) {
                 if (!useContext.getPlayer().isCreative()) {
                     itemStack.shrink(1);
+                    useContext.getPlayer().inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
                 }
-                useContext.getPlayer().inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
             }
         }
         return ActionResultType.CONSUME;
