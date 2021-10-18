@@ -2,6 +2,7 @@ package untamedwilds.entity;
 
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.RegistryKey;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.biome.Biome;
 
 /**
@@ -17,7 +18,9 @@ public interface ISpecies {
 
     String getRawSpeciesName(int i);
 
-    String getSpeciesName(int i);
+    default String getSpeciesName(int i) {
+        return new TranslationTextComponent("entity.untamedwilds." + ((ComplexMob)this).getName().getString().toLowerCase() + "_" + getRawSpeciesName(i)).getString();
+    }
 
     default String getSpeciesName() {
         return this instanceof ComplexMob ? getSpeciesName(((ComplexMob)this).getVariant()) : "";
