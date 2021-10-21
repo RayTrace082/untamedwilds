@@ -12,8 +12,6 @@ import java.util.Map;
 
 public class SpeciesDataHolder {
 
-    public EntityDataHolder masterData;
-
     // Negative numbers are used to signify when to use the EntityDataHolder value instead
     public static final Codec<SpeciesDataHolder> CODEC = RecordCodecBuilder.create((p_237051_0_) -> p_237051_0_.group(
             Codec.STRING.fieldOf("name").orElse("").forGetter((p_237056_0_) -> p_237056_0_.name),
@@ -45,10 +43,6 @@ public class SpeciesDataHolder {
         this.health = health;
         this.sounds = sounds;
         this.spawnBiomes = p_i232114_4_;
-    }
-
-    public void assignMasterData(EntityDataHolder input) {
-        this.masterData = input;
     }
 
     public String getString() {
