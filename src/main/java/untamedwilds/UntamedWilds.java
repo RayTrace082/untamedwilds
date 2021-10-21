@@ -27,7 +27,6 @@ public class UntamedWilds {
 
     // TODO: Abstract Herd logic to be functional with any LivingEntity (instead of being limited to IPackEntity ComplexMob)
     // TODO: Store the children's UUID in their mother's NBT, to allow checking for Children without constant AABB checking
-    // TODO: Cut down on model .json files by replacing entries in "ItemModelMesher.register"
     // TODO: Have carnivorous mobs gain hunger when attacking
     // TODO: Make "ProtectChildren" only apply to mobs of similar ecoLevel, make HurtByTargetGoal call in adult mobs in Range if the target is children
 

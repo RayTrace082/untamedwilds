@@ -128,6 +128,7 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
             EntityUtils.turnEntityIntoItem(this, "tortoise_" + getRawSpeciesName(this.getVariant()).toLowerCase());
             return ActionResultType.func_233537_a_(this.world.isRemote);
         }
+
         return super.func_230254_b_(player, hand);
     }
 
@@ -160,7 +161,7 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
     }
     public int getAdulthoodTime() { return GROWING; }
 
-    public boolean isBreedingItem(ItemStack stack) { return stack.getItem() == Items.COD; }
+    public boolean isBreedingItem(ItemStack stack) { return stack.getItem() == Items.APPLE; }
 
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomeKey, Biome biome, SpawnReason reason) {

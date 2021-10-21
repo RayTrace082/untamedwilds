@@ -28,7 +28,7 @@ public class FeatureApexPredators extends Feature<NoFeatureConfig> {
     }
 
     public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        for (int i = 0; i < 3; i++) { // TODO: Maybe change this back to 5?
+        for (int i = 0; i < 3; i++) {
             FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.APEX_PRED));
             // TODO: Hardcoded Bear and Big Cats until they get integrated into the Species system
             int groupCount = entry.groupCount;

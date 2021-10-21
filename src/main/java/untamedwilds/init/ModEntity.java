@@ -207,7 +207,7 @@ public class ModEntity {
 
     public static void registerRendering() {
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.TARANTULA, RendererTarantula::new);
-        EntityTarantula.processSkins();
+        //EntityTarantula.processSkins();
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.SOFTSHELL_TURTLE, RendererSoftshellTurtle::new);
         EntitySoftshellTurtle.processSkins();

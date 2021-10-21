@@ -1,0 +1,17 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "untamedwilds:item/spawn/bottle_tarantula_black"
+    },
+
+    "overrides":[
+        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/bottle_tarantula_black"},
+        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/bottle_tarantula_black_and_white"},
+        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/bottle_tarantula_cobalt"},
+        {"predicate": {"custom_model_data":3}, "model":"untamedwilds:item/bottle_tarantula_king"},
+        {"predicate": {"custom_model_data":4}, "model":"untamedwilds:item/bottle_tarantula_red_knee"},
+        {"predicate": {"custom_model_data":5}, "model":"untamedwilds:item/bottle_tarantula_regalis"},
+        {"predicate": {"custom_model_data":6}, "model":"untamedwilds:item/bottle_tarantula_rose"},
+        {"predicate": {"custom_model_data":7}, "model":"untamedwilds:item/bottle_tarantula_tiger"}
+    ]
+}

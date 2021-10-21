@@ -21,9 +21,9 @@ public class RendererTarantula extends MobRenderer<EntityTarantula, EntityModel<
     @Override
     protected void preRenderCallback(EntityTarantula entity, MatrixStack matrixStackIn, float partialTickTime) {
         float f = 0.5F;
-        f += (entity.getMobSize() * 0.2f);
+        f += entity.getMobSize() * 0.2f;
         f *= entity.getRenderScale();
-        f *= (EntityTarantula.SpeciesTarantula.values()[entity.getVariant()].scale);
+        f *= entity.getModelScale(entity.getVariant());
         matrixStackIn.scale(f, f, f);
     }
 

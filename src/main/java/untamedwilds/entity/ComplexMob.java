@@ -22,6 +22,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
+import untamedwilds.UntamedWilds;
 import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
@@ -29,7 +30,9 @@ import untamedwilds.config.ConfigGamerules;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
+import untamedwilds.util.EntityDataHolder;
 import untamedwilds.util.EntityUtils;
+import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -51,6 +54,7 @@ public abstract class ComplexMob extends TameableEntity {
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     public HerdEntity herd = null;
     public int peacefulTicks;
+    protected static HashMap<EntityType<?>, EntityDataHolder> ENTITY_DATA_HASH = new HashMap<>();
 
     public ComplexMob(EntityType<? extends ComplexMob> type, World worldIn){
         super(type, worldIn);
@@ -108,14 +112,27 @@ public abstract class ComplexMob extends TameableEntity {
     public boolean canBeTargeted() { return true; }
     public double getCurrentSpeed() { return Math.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z); }
 
+    public static void processData(EntityDataHolder dataIn, EntityType<?> typeIn) {
+        ENTITY_DATA_HASH.put(typeIn, dataIn);
+        UntamedWilds.LOGGER.info(ENTITY_DATA_HASH);
+        processSkins(dataIn, typeIn.getRegistryName().getPath());
+    }
+
+    public static void processSkins(EntityDataHolder dataIn, String nameIn) {
+        for (SpeciesDataHolder speciesDatum : dataIn.getSpeciesData()) {
+            EntityUtils.buildSkinArrays(nameIn, speciesDatum.getName().toLowerCase(), speciesDatum.getVariant(), TEXTURES_COMMON, TEXTURES_RARE);
+        }
+    }
+
     public int getVariant(){ return (this.dataManager.get(VARIANT)); }
     public void setVariant(int variant){ this.dataManager.set(VARIANT, variant); }
     public int getSkin(){ return (this.dataManager.get(SKIN)); }
     public void setSkin(int skin){ this.dataManager.set(SKIN, skin); }
     public <T extends ComplexMob> int chooseSkinForSpecies(T entityIn, boolean allowRares) {
-        if (entityIn.getType().getRegistryName() != null && this instanceof INewSkins) {
+        if (entityIn.getType().getRegistryName() != null && this instanceof INewSkins && this.world.isRemote) {
             String name = entityIn.getType().getRegistryName().getPath();
             if (!TEXTURES_COMMON.get(name).isEmpty()) {
+                UntamedWilds.LOGGER.info(TEXTURES_COMMON);
                 boolean isRare = allowRares && TEXTURES_RARE.get(name).containsKey(this.getVariant()) && this.rand.nextFloat() < ConfigGamerules.rareSkinChance.get();
                 int skin = this.rand.nextInt(isRare ? TEXTURES_RARE.get(name).get(this.getVariant()).size() : TEXTURES_COMMON.get(name).get(this.getVariant()).size()) + (isRare ? 100 : 0);
                 this.setSkin(skin);

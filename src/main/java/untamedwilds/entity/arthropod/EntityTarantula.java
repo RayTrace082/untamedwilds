@@ -13,7 +13,6 @@ import net.minecraft.item.Items;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.*;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
@@ -26,8 +25,8 @@ import untamedwilds.entity.ai.SmartMateGoal;
 import untamedwilds.entity.ai.SmartSwimGoal;
 import untamedwilds.entity.ai.target.DontThreadOnMeTarget;
 import untamedwilds.entity.ai.target.HuntMobTarget;
-import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
+import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -44,6 +43,11 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
 
     public EntityTarantula(EntityType<? extends EntityTarantula> type, World worldIn) {
         super(type, worldIn);
+    }
+
+    @Override
+    public CreatureAttribute getCreatureAttribute() {
+        return CreatureAttribute.ARTHROPOD;
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -67,12 +71,6 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
         this.targetSelector.addGoal(3, new DontThreadOnMeTarget<>(this, LivingEntity.class, true));
     }
 
-    public static void processSkins() {
-        for (int i = 0; i < SpeciesTarantula.values().length; i++) {
-            EntityUtils.buildSkinArrays("tarantula", SpeciesTarantula.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
-        }
-    }
-
     public void livingTick() {
         super.livingTick();
         if (!this.world.isRemote) {
@@ -93,11 +91,6 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
         }
     }
 
-    @Override
-    public CreatureAttribute getCreatureAttribute() {
-        return CreatureAttribute.ARTHROPOD;
-    }
-
     /* Breeding conditions for the Tarantula are:
      * A nearby Tarantula of the opposite gender and the same species */
     public boolean wantsToBreed() {
@@ -116,7 +109,7 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_tarantula_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_tarantula", 4);
         return null;
     }
 
@@ -149,15 +142,21 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
     }
 
     protected SoundEvent getAmbientSound() {
-        return ModSounds.ENTITY_TARANTULA_AMBIENT;
+        return ENTITY_DATA_HASH.get(this.getType()).getSounds(this.getVariant(), "ambient");
     }
 
     protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
-        return SoundEvents.ENTITY_SPIDER_HURT;
+        SoundEvent result = ENTITY_DATA_HASH.get(this.getType()).getSounds(this.getVariant(), "hurt");
+        return result != null ? result : SoundEvents.ENTITY_GENERIC_HURT;
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_SPIDER_DEATH;
+        SoundEvent result = ENTITY_DATA_HASH.get(this.getType()).getSounds(this.getVariant(), "death");
+        return result != null ? result : SoundEvents.ENTITY_GENERIC_DEATH;
+    }
+
+    protected SoundEvent getThreatSound() {
+        return ENTITY_DATA_HASH.get(this.getType()).getSounds(this.getVariant(), "threat");
     }
 
     public String getBreedingSeason() {
@@ -167,16 +166,28 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
 
     public boolean isBreedingItem(ItemStack stack) { return stack.getItem() == Items.CHICKEN; }
 
+    // TODO: Move this to ComplexMob.class
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(SpeciesTarantula.values().length);
+            return this.rand.nextInt(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
         }
-        return SpeciesTarantula.getSpeciesByBiome(biome);
+        List<Integer> validTypes = new ArrayList<>();
+        for (SpeciesDataHolder speciesDatum : ENTITY_DATA_HASH.get(this.getType()).getSpeciesData()) {
+            for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
+                if(biome.getCategory() == biomeTypes){
+                    for (int i=0; i < speciesDatum.getRarity(); i++) {
+                        validTypes.add(speciesDatum.getVariant());
+                    }
+                }
+            }
+        }
+        if (validTypes.isEmpty()) {
+            return 99;
+        } else {
+            return validTypes.get(new Random().nextInt(validTypes.size()));
+        }
     }
-
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.tarantula_" + getRawSpeciesName(i)).getString(); }
-    public String getRawSpeciesName(int i) { return SpeciesTarantula.values()[i].name().toLowerCase(); }
 
     public enum SpeciesTarantula implements IStringSerializable {
 

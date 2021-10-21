@@ -16,7 +16,13 @@ public interface ISpecies {
 
     int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason);
 
-    String getRawSpeciesName(int i);
+    default String getRawSpeciesName(int i) {
+        return ComplexMob.ENTITY_DATA_HASH.get(((ComplexMob)this).getType()).getSpeciesData().get(i).getName().toLowerCase();
+    }
+
+    default float getModelScale(int i) {
+        return ComplexMob.ENTITY_DATA_HASH.get(((ComplexMob)this).getType()).getScale(i);
+    }
 
     default String getSpeciesName(int i) {
         return new TranslationTextComponent("entity.untamedwilds." + ((ComplexMob)this).getName().getString().toLowerCase() + "_" + getRawSpeciesName(i)).getString();

@@ -146,8 +146,13 @@ public abstract class EntityUtils {
     }
 
     // This function makes the entity drop some Eggs of the given item_name, and with random stacksize between 1 and number
-    public static void dropEggs(LivingEntity entity, String item_name, int number) {
-        ItemEntity entityitem = entity.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase()))), 0.2F);
+    public static void dropEggs(ComplexMob entity, String item_name, int number) {
+        CompoundNBT baseTag = new CompoundNBT();
+        ItemStack item = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase())));
+        baseTag.putInt("variant", entity.getVariant());
+        baseTag.putInt("custom_model_data", entity.getVariant());
+        item.setTag(baseTag);
+        ItemEntity entityitem = entity.entityDropItem(item, 0.2F);
         if (entityitem != null) {
             entityitem.getItem().setCount(1 + entity.getRNG().nextInt(number - 1));
         }
@@ -160,7 +165,7 @@ public abstract class EntityUtils {
             Random rand = entity.getRNG();
             if (entityitem != null) {
                 entityitem.setMotion((rand.nextFloat() - rand.nextFloat()) * 0.1F, rand.nextFloat() * 0.05F, (rand.nextFloat() - rand.nextFloat()) * 0.1F);
-                entityitem.getItem().setTag(writeEntityToNBT(entity));
+                entityitem.getItem().setTag(writeEntityToNBT(entity, false, true));
                 if (entity.hasCustomName()) {
                     entityitem.getItem().setDisplayName(entity.getCustomName());
                 }
@@ -175,7 +180,7 @@ public abstract class EntityUtils {
             entity.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
             itemstack.shrink(1);
             ItemStack newitem = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase())));
-            newitem.setTag(writeEntityToNBT(entity));
+            newitem.setTag(writeEntityToNBT(entity, false, true));
             if (entity.hasCustomName()) {
                 newitem.setDisplayName(entity.getCustomName());
             }
@@ -204,8 +209,12 @@ public abstract class EntityUtils {
         return writeEntityToNBT(entity, false);
     }
 
-    // This method writes this entity into a CompoundNBT Tag
     public static CompoundNBT writeEntityToNBT(LivingEntity entity, boolean keepHomeData) {
+        return writeEntityToNBT(entity, keepHomeData, false);
+    }
+
+    // This method writes this entity into a CompoundNBT Tag
+    public static CompoundNBT writeEntityToNBT(LivingEntity entity, boolean keepHomeData, boolean attachModelData) {
         CompoundNBT baseTag = new CompoundNBT();
         CompoundNBT entityTag = new CompoundNBT();
         entity.writeUnlessRemoved(entityTag);
@@ -218,6 +227,9 @@ public abstract class EntityUtils {
             entityTag.remove("HomePosX");
             entityTag.remove("HomePosY");
             entityTag.remove("HomePosZ");
+        }
+        if (attachModelData && entity instanceof ComplexMob) {
+            baseTag.putInt("custom_model_data", ((ComplexMob) entity).getVariant());
         }
         baseTag.put("EntityTag", entityTag); // Put the entity in the Tag
         return baseTag;
