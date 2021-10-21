@@ -14,7 +14,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.*;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
@@ -24,6 +23,7 @@ import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.INewSkins;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.util.EntityUtils;
+import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -129,7 +129,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_giant_clam_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_giant_clam", 4);
         return null;
     }
 
@@ -152,21 +152,34 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
         return super.func_230254_b_(player, hand);
     }
 
+    // TODO: Again, move to ComplexMob
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (biomekey.equals(Biomes.WARM_OCEAN) || biomekey.equals(Biomes.LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_WARM_OCEAN) || biome.getRegistryName().equals(new ResourceLocation("terraforged:warm_beach"))) {
             if (ConfigGamerules.randomSpecies.get()) {
-                return this.rand.nextInt(SpeciesGiantClam.values().length);
+                return this.rand.nextInt(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
             }
-            return SpeciesGiantClam.getSpeciesByBiome(biome);
+            List<Integer> validTypes = new ArrayList<>();
+            for (SpeciesDataHolder speciesDatum : ENTITY_DATA_HASH.get(this.getType()).getSpeciesData()) {
+                for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
+                    if(biome.getCategory() == biomeTypes){
+                        for (int i=0; i < speciesDatum.getRarity(); i++) {
+                            validTypes.add(speciesDatum.getVariant());
+                        }
+                    }
+                }
+            }
+            if (validTypes.isEmpty()) {
+                return 99;
+            } else {
+                return validTypes.get(new Random().nextInt(validTypes.size()));
+            }
         }
         if (isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(SpeciesGiantClam.values().length);
+            return this.rand.nextInt(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
         }
         return 99;
     }
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.giant_clam_" + getRawSpeciesName(i)).getString(); }
-    public String getRawSpeciesName(int i) { return SpeciesGiantClam.values()[i].name().toLowerCase(); }
 
     public boolean canBeTargeted() { return false; }
     private boolean isOpen(){ return (this.dataManager.get(CLAM_OPEN)); }

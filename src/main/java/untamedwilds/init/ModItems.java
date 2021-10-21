@@ -97,10 +97,6 @@ public class ModItems {
                 int tarantulaSpecies = i;
                 ModItems.ITEMS.register("bottle_tarantula_" + EntityTarantula.SpeciesTarantula.values()[i].name().toLowerCase(), () -> new MobBottledItem(ModEntity.TARANTULA, tarantulaSpecies, EntityTarantula.SpeciesTarantula.values()[tarantulaSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             }
-            /*for (SpeciesDataHolder speciesDatum : ResourceListenerEvent.TARANTULA.getSpeciesData()) {
-                ModItems.ITEMS.register("egg_tarantula_" + speciesDatum.getName().toLowerCase(), () -> new MobEggItem(ModEntity.TARANTULA, speciesDatum.getVariant(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-                ModItems.ITEMS.register("bottle_tarantula_" + speciesDatum.getName().toLowerCase(), () -> new MobBottledItem(ModEntity.TARANTULA, speciesDatum.getVariant(), speciesDatum.getName().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            }*/
         }
         // Small Snake Items
         if (ConfigMobControl.addSnake.get()) {

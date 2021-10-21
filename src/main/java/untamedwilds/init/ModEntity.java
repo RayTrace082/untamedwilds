@@ -219,7 +219,7 @@ public class ModEntity {
         EntityAnaconda.processSkins();
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, RendererGiantClam::new);
-        EntityGiantClam.processSkins();
+        //EntityGiantClam.processSkins();
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.HIPPO, RendererHippo::new);
         EntityHippo.processSkins();

@@ -141,24 +141,6 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
         return potionEffectIn.getPotion() != Effects.POISON && super.isPotionApplicable(potionEffectIn);
     }
 
-    protected SoundEvent getAmbientSound() {
-        return ENTITY_DATA_HASH.get(this.getType()).getSounds(this.getVariant(), "ambient");
-    }
-
-    protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
-        SoundEvent result = ENTITY_DATA_HASH.get(this.getType()).getSounds(this.getVariant(), "hurt");
-        return result != null ? result : SoundEvents.ENTITY_GENERIC_HURT;
-    }
-
-    protected SoundEvent getDeathSound() {
-        SoundEvent result = ENTITY_DATA_HASH.get(this.getType()).getSounds(this.getVariant(), "death");
-        return result != null ? result : SoundEvents.ENTITY_GENERIC_DEATH;
-    }
-
-    protected SoundEvent getThreatSound() {
-        return ENTITY_DATA_HASH.get(this.getType()).getSounds(this.getVariant(), "threat");
-    }
-
     public String getBreedingSeason() {
         return BREEDING;
     }

@@ -5,6 +5,7 @@
   "favourite_food": "minecraft:chicken",
   "sounds": {
     "ambient": "untamedwilds:entity.tarantula.ambient",
+    "hurt": "entity.spider.hurt",
     "death": "entity.spider.death"
   },
 
