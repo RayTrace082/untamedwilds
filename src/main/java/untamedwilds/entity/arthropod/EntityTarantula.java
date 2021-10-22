@@ -35,9 +35,6 @@ import java.util.Random;
 
 public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
 
-    private static final String BREEDING = "EARLY_SUMMER";
-    private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
-
     public int aggroProgress;
     //public int webProgress;
 
@@ -98,8 +95,8 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
             List<EntityTarantula> list = this.world.getEntitiesWithinAABB(EntityTarantula.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
             list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
             if (list.size() >= 1) {
-                this.setGrowingAge(GROWING);
-                list.get(0).setGrowingAge(GROWING);
+                this.setGrowingAge(this.getAdulthoodTime());
+                list.get(0).setGrowingAge(this.getAdulthoodTime());
                 return true;
             }
         }
@@ -109,7 +106,7 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_tarantula", 4);
+        EntityUtils.dropEggs(this, "egg_tarantula", ENTITY_DATA_HASH.get(this.getType()).getOffspring(this.getVariant()));
         return null;
     }
 
@@ -141,12 +138,18 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
         return potionEffectIn.getPotion() != Effects.POISON && super.isPotionApplicable(potionEffectIn);
     }
 
+    // TODO: Again, move methods to ComplexMobs
     public String getBreedingSeason() {
-        return BREEDING;
+        return ENTITY_DATA_HASH.get(this.getType()).getBreedingSeason(this.getVariant());
     }
-    public int getAdulthoodTime() { return GROWING; }
 
-    public boolean isBreedingItem(ItemStack stack) { return stack.getItem() == Items.CHICKEN; }
+    public int getAdulthoodTime() {
+        return ENTITY_DATA_HASH.get(this.getType()).getGrowingTime(this.getVariant()) * ConfigGamerules.cycleLength.get();
+    }
+
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.getItem().equals(ENTITY_DATA_HASH.get(this.getType()).getFavouriteFood(this.getVariant()).getItem());
+    }
 
     // TODO: Move this to ComplexMob.class
     @Override

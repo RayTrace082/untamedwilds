@@ -2,9 +2,9 @@
   "name": "giant_clam",
   "breeding": "LATE_SUMMER",
   "growing": 6,
+  "offspring": 4,
   "favourite_food": "untamedwilds:chum",
-  "sounds": {
-  },
+  "sounds": {},
 
   "species": [{
     "name": "derasa",

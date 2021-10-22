@@ -22,7 +22,7 @@ public class EntityDataHolder {
             Codec.INT.fieldOf("rarity").orElse(0).forGetter((p_237054_0_) -> p_237054_0_.rarity),
             Codec.FLOAT.fieldOf("attack").orElse(-1F).forGetter((p_237054_0_) -> p_237054_0_.attack),
             Codec.FLOAT.fieldOf("health").orElse(-1F).forGetter((p_237054_0_) -> p_237054_0_.health),
-            Codec.STRING.fieldOf("favouriteFood").orElse("").forGetter((p_237052_0_) -> p_237052_0_.favouriteFood),
+            Codec.STRING.fieldOf("favourite_food").orElse("").forGetter((p_237052_0_) -> p_237052_0_.favouriteFood),
             Codec.INT.fieldOf("growing_time").orElse(1).forGetter((p_237054_0_) -> p_237054_0_.growing_time),
             Codec.INT.fieldOf("offspring").orElse(1).forGetter((p_237054_0_) -> p_237054_0_.offspring),
             Codec.STRING.fieldOf("breeding_season").orElse("ANY").forGetter((p_237054_0_) -> p_237054_0_.breeding_season),
@@ -105,20 +105,20 @@ public class EntityDataHolder {
 
     // TODO: May be possible to define ItemStack during resource reload, rather than calculate it every time
     public ItemStack getFavouriteFood(int i) {
-        if (this.speciesData.get(i).getFavouriteFood() == null) {
+        if (this.speciesData.get(i).getFavouriteFood().equals("")) {
             return new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryCreate(this.favouriteFood)));
         }
-        return this.speciesData.get(i).getFavouriteFood();
+        return new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryCreate(this.speciesData.get(i).getFavouriteFood())));
     }
 
-    public float getGrowingTime(int i) {
+    public int getGrowingTime(int i) {
         if (this.speciesData.get(i).getGrowingTime() < 0) {
             return this.growing_time;
         }
         return this.speciesData.get(i).getGrowingTime();
     }
 
-    public float getOffspring(int i) {
+    public int getOffspring(int i) {
         if (this.speciesData.get(i).getOffspring() < 0) {
             return this.offspring;
         }

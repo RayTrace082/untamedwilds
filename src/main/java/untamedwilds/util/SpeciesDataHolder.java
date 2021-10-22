@@ -2,11 +2,8 @@ package untamedwilds.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -24,7 +21,7 @@ public class SpeciesDataHolder {
             Codec.INT.fieldOf("rarity").orElse(-1).forGetter((p_237054_0_) -> p_237054_0_.rarity),
             Codec.FLOAT.fieldOf("attack").orElse(-1F).forGetter((p_237055_0_) -> p_237055_0_.attack),
             Codec.FLOAT.fieldOf("health").orElse(-1F).forGetter((p_237055_0_) -> p_237055_0_.health),
-            Codec.STRING.fieldOf("favouriteFood").orElse("").forGetter((p_237052_0_) -> p_237052_0_.favouriteFood),
+            Codec.STRING.fieldOf("favourite_food").orElse("").forGetter((p_237052_0_) -> p_237052_0_.favouriteFood),
             Codec.INT.fieldOf("growing_time").orElse(-1).forGetter((p_237054_0_) -> p_237054_0_.growing_time),
             Codec.INT.fieldOf("offspring").orElse(-1).forGetter((p_237054_0_) -> p_237054_0_.offspring),
             Codec.STRING.fieldOf("breeding_season").orElse("NONE").forGetter((p_237054_0_) -> p_237054_0_.breeding_season),
@@ -93,8 +90,8 @@ public class SpeciesDataHolder {
     }
 
     @Nullable
-    public ItemStack getFavouriteFood() {
-        return new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryCreate(this.favouriteFood)));
+    public String getFavouriteFood() {
+        return this.favouriteFood;
     }
 
     public Integer getGrowingTime() {
