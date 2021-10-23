@@ -110,6 +110,10 @@ public class SpeciesDataHolder {
         return this.sounds;
     }
 
+    public List<Integer> getFlags() {
+        return this.flags;
+    }
+
     public List<Biome.Category> getBiomeCategories() {
         List<Biome.Category> result = new ArrayList<>();
         for (String biomeCategories : this.spawnBiomes) {

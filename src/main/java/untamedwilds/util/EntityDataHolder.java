@@ -135,9 +135,17 @@ public class EntityDataHolder {
     @Nullable
     public SoundEvent getSounds(int i, String sound_id) {
         if (!this.speciesData.get(i).getSounds().isEmpty() && this.speciesData.get(i).getSounds().get(sound_id) != null) {
-            this.speciesData.get(i).getSounds().get(sound_id);
+            return this.speciesData.get(i).getSounds().get(sound_id);
         }
         return this.sounds.get(sound_id);
+    }
+
+    @Nullable
+    public int getFlags(int i, int flag) {
+        if (!this.speciesData.get(i).getFlags().isEmpty()) {
+            return this.speciesData.get(i).getFlags().get(flag);
+        }
+        return this.flags.get(flag);
     }
 
     public List<SpeciesDataHolder> getSpeciesData() {
