@@ -139,7 +139,6 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
 
         if (itemstack.getItem() instanceof ShovelItem && this.isAlive() && hand == Hand.MAIN_HAND) {
             if (this.rand.nextInt(4) == 0) {
-                // Advancement Trigger: "Clam Digger"
                 world.playSound(null, this.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.BLOCKS, 1.0F, 0.8F);
                 EntityUtils.turnEntityIntoItem(this, "giant_clam_" + getRawSpeciesName(this.getVariant()).toLowerCase());
                 return ActionResultType.func_233537_a_(this.world.isRemote);

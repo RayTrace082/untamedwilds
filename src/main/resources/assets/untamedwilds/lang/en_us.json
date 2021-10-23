@@ -368,6 +368,7 @@
   "item.untamedwilds.debug_eraser": "Giant Eraser",
   "item.untamedwilds.debug_growth_tonic": "Growth Tonic",
   "item.untamedwilds.debug_highlighter": "Mob Highlighter",
+  "item.untamedwilds.logo": "Untamed Wilds",
   "item.untamedwilds.material_fat": "Animal Fat",
   "item.untamedwilds.chum": "Chum",
   "item.untamedwilds.food_pemmican": "Pemmican",
@@ -471,6 +472,8 @@
   "advancements.untamedwilds.taming_bear.description": "Tame a Bear",
   "advancements.untamedwilds.master_baiter.title": "Master Baiter",
   "advancements.untamedwilds.master_baiter.description": "Use a piece of Chum in water to lure in nearby mobs",
+  "advancements.untamedwilds.clam_digger.title": "Clam Digger",
+  "advancements.untamedwilds.clam_digger.description": "Use a shovel to dig up a Giant Clam",
 
   "tetra.variant.sword_socket/pearl": "Socket [§3Pearl§r]",
   "tetra.variant.sword_socket/pristine_pearl": "Socket [§3Pearl+§r]",

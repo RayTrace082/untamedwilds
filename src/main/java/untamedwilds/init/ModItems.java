@@ -40,6 +40,7 @@ public class ModItems {
     // Wild World Item instances
 
     // Debug Tools
+    public static RegistryObject<Item> LOGO = createItem("logo", () -> new Item(new Item.Properties().maxStackSize(1).rarity(Rarity.EPIC)));
     public static RegistryObject<Item> OWNERSHIP_DEED = createItem("ownership_deed", () -> new OwnershipDeedItem(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items)));
     public static RegistryObject<Item> DEBUG_ERASER = createItem("debug_eraser", () -> new EraserItem(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
     public static RegistryObject<Item> DEBUG_ANALYZER = createItem("debug_analyzer", () -> new AnalyzerItem(new Item.Properties().maxStackSize(1).group(ItemGroupUT.untamedwilds_items).rarity(Rarity.EPIC)));
@@ -119,6 +120,7 @@ public class ModItems {
             ModItems.ITEMS.register("egg_giant_clam", () -> new MobEggItem(ModEntity.GIANT_CLAM, EntityGiantClam.SpeciesGiantClam.values().length, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             for (int i = 0; i < EntityGiantClam.SpeciesGiantClam.values().length; i++) {
                 int giant_clamSpecies = i;
+                // TODO: Keep in mind the achievement when streamlining mob spawn items
                 ModItems.ITEMS.register("giant_clam_" + EntityGiantClam.SpeciesGiantClam.values()[i].name().toLowerCase(), () -> new MobSpawnItem(ModEntity.GIANT_CLAM, giant_clamSpecies, EntityGiantClam.SpeciesGiantClam.values()[giant_clamSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             }
         }

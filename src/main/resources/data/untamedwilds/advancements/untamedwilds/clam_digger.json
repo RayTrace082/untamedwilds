@@ -1,0 +1,68 @@
+{
+  "parent": "untamedwilds:untamedwilds/root",
+  "display": {
+    "icon": {
+      "item": "untamedwilds:material_pearl"
+    },
+    "title": {
+      "translate": "advancements.untamedwilds.clam_digger.title"
+    },
+    "description": {
+      "translate": "advancements.untamedwilds.clam_digger.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "giant_clam_derasa": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "untamedwilds:giant_clam_derasa"
+          }
+        ]
+      }
+    },
+    "giant_clam_gigas": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "untamedwilds:giant_clam_gigas"
+          }
+        ]
+      }
+    },
+    "giant_clam_maxima": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "untamedwilds:giant_clam_maxima"
+          }
+        ]
+      }
+    },
+    "giant_clam_squamosa": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "untamedwilds:giant_clam_squamosa"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "giant_clam_derasa",
+      "giant_clam_gigas",
+      "giant_clam_maxima",
+      "giant_clam_squamosa"
+    ]
+  ]
+}
