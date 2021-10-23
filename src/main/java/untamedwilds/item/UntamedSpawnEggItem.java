@@ -42,14 +42,14 @@ import java.util.Objects;
 public class UntamedSpawnEggItem extends SpawnEggItem {
 
    private int currentSpecies;
-   private final int speciesNumber;
    private boolean isCached;
+   private final EntityType<?> entityType;
 
    // TODO: Egg-Spawner interaction is screwed
-   public UntamedSpawnEggItem(EntityType<?> typeIn, int species, int primaryColorIn, int secondaryColorIn, Properties builder) {
+   public UntamedSpawnEggItem(EntityType<?> typeIn, int primaryColorIn, int secondaryColorIn, Properties builder) {
       super(typeIn, primaryColorIn, secondaryColorIn, builder);
-      this.speciesNumber = species + 1;
       this.currentSpecies = 0;
+      this.entityType = typeIn;
       this.isCached = false;
    }
 
@@ -72,8 +72,7 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
    }
 
    public void increaseSpeciesNumber(int intIn) {
-      //UntamedWilds.LOGGER.info(intIn % this.speciesNumber);
-      this.currentSpecies = (intIn % this.speciesNumber);
+      this.currentSpecies = (intIn % (ComplexMob.ENTITY_DATA_HASH.get(this.entityType).getSpeciesData().size() + 1));
       this.isCached = true;
    }
 
