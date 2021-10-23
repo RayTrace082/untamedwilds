@@ -106,7 +106,7 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_tarantula", ENTITY_DATA_HASH.get(this.getType()).getOffspring(this.getVariant()));
+        EntityUtils.dropEggs(this, "egg_tarantula", this.getOffspring());
         return null;
     }
 
@@ -136,19 +136,6 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
 
     public boolean isPotionApplicable(EffectInstance potionEffectIn) {
         return potionEffectIn.getPotion() != Effects.POISON && super.isPotionApplicable(potionEffectIn);
-    }
-
-    // TODO: Again, move methods to ComplexMobs
-    public String getBreedingSeason() {
-        return ENTITY_DATA_HASH.get(this.getType()).getBreedingSeason(this.getVariant());
-    }
-
-    public int getAdulthoodTime() {
-        return ENTITY_DATA_HASH.get(this.getType()).getGrowingTime(this.getVariant()) * ConfigGamerules.cycleLength.get();
-    }
-
-    public boolean isBreedingItem(ItemStack stack) {
-        return stack.getItem().equals(ENTITY_DATA_HASH.get(this.getType()).getFavouriteFood(this.getVariant()).getItem());
     }
 
     // TODO: Move this to ComplexMob.class

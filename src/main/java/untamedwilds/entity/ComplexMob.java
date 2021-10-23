@@ -172,8 +172,6 @@ public abstract class ComplexMob extends TameableEntity {
         return this.isMale() ? "male" : "female";
     }
 
-    public int getPregnancyTime() { return 24000; }
-    public int getAdulthoodTime() { return 24000; }
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get()) {
             if (CompatBridge.SereneSeasons) {
@@ -219,12 +217,26 @@ public abstract class ComplexMob extends TameableEntity {
         return entity;
     }
 
+    public String getBreedingSeason() {
+        return ENTITY_DATA_HASH.get(this.getType()).getBreedingSeason(this.getVariant());
+    }
+
+    public int getAdulthoodTime() {
+        return ENTITY_DATA_HASH.get(this.getType()).getGrowingTime(this.getVariant()) * ConfigGamerules.cycleLength.get();
+    }
+
+    public int getPregnancyTime() {
+        return ENTITY_DATA_HASH.get(this.getType()).getGrowingTime(this.getVariant()) * ConfigGamerules.cycleLength.get();
+    }
+
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.getItem().equals(ENTITY_DATA_HASH.get(this.getType()).getFavouriteFood(this.getVariant()).getItem());
+    }
+
     protected int getOffspring() {
-        return 0;
+        return ENTITY_DATA_HASH.get(this.getType()).getOffspring(this.getVariant());
     }
-    protected String getBreedingSeason() {
-        return "ALL";
-    }
+
     public boolean isFavouriteFood(ItemStack stack) {
         return stack.getItem() == ModItems.DEBUG_LOVE_POTION.get();
     }

@@ -32,8 +32,6 @@ import java.util.Random;
 
 public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
 
-    private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
-    private static final String BREEDING = "LATE_SUMMER";
     private static final DataParameter<Boolean> CLAM_OPEN = EntityDataManager.createKey(EntityGiantClam.class, DataSerializers.BOOLEAN);
     public int closeProgress;
 
@@ -118,8 +116,8 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
             List<EntityGiantClam> list = this.world.getEntitiesWithinAABB(EntityGiantClam.class, this.getBoundingBox().grow(12.0D, 6.0D, 12.0D));
             list.removeIf(input -> input == this || input.getGrowingAge() != 0 || input.getVariant() != this.getVariant());
             if (list.size() >= 1) {
-                this.setGrowingAge(GROWING);
-                list.get(0).setGrowingAge(GROWING);
+                this.setGrowingAge(this.getGrowingAge());
+                list.get(0).setGrowingAge(this.getGrowingAge());
                 return true;
             }
         }
@@ -129,7 +127,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_giant_clam", 4);
+        EntityUtils.dropEggs(this, "egg_giant_clam", this.getOffspring());
         return null;
     }
 
@@ -183,11 +181,6 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
     public boolean canBeTargeted() { return false; }
     private boolean isOpen(){ return (this.dataManager.get(CLAM_OPEN)); }
     private void setOpen(boolean open){ this.dataManager.set(CLAM_OPEN, open); }
-
-    public String getBreedingSeason() {
-        return BREEDING;
-    }
-    public int getAdulthoodTime() { return GROWING; }
 
     public void writeAdditional(CompoundNBT compound){ // Write NBT Tags
         super.writeAdditional(compound);
