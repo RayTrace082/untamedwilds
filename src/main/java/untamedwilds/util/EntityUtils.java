@@ -229,7 +229,7 @@ public abstract class EntityUtils {
             entityTag.remove("HomePosZ");
         }
         if (attachModelData && entity instanceof ComplexMob) {
-            baseTag.putInt("custom_model_data", ((ComplexMob) entity).getVariant());
+            baseTag.putInt("CustomModelData", ((ComplexMob) entity).getVariant());
         }
         baseTag.put("EntityTag", entityTag); // Put the entity in the Tag
         return baseTag;

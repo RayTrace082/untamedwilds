@@ -13,7 +13,6 @@ import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
 import untamedwilds.entity.amphibian.EntityNewt;
-import untamedwilds.entity.arthropod.EntityTarantula;
 import untamedwilds.entity.fish.EntityArowana;
 import untamedwilds.entity.fish.EntityFootballFish;
 import untamedwilds.entity.fish.EntitySunfish;
@@ -93,11 +92,8 @@ public class ModItems {
         // These items have no associated objects, as they are not supposed to be accessed, and I do not want to register each variant
         // Tarantula Items
         if (ConfigMobControl.addTarantula.get()) {
-            ModItems.ITEMS.register("egg_tarantula", () -> new MobEggItem(ModEntity.TARANTULA, EntityTarantula.SpeciesTarantula.values().length, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            for (int i = 0; i < EntityTarantula.SpeciesTarantula.values().length; i++) {
-                int tarantulaSpecies = i;
-                ModItems.ITEMS.register("bottle_tarantula_" + EntityTarantula.SpeciesTarantula.values()[i].name().toLowerCase(), () -> new MobBottledItem(ModEntity.TARANTULA, tarantulaSpecies, EntityTarantula.SpeciesTarantula.values()[tarantulaSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            }
+            ModItems.ITEMS.register("egg_tarantula", () -> new MobEggItem(ModEntity.TARANTULA, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+            ModItems.ITEMS.register("bottle_tarantula", () -> new MobBottledItem(ModEntity.TARANTULA, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
         }
         // Small Snake Items
         if (ConfigMobControl.addSnake.get()) {

@@ -34,6 +34,13 @@ public class MobEggItem extends Item {
     private final EntityType<? extends ComplexMob> entity;
     public int species;
 
+    // TODO: Patchwork to allow multiple loading types in fillItemGroup
+    public MobEggItem(EntityType<? extends ComplexMob> typeIn, Properties properties) {
+        super(properties);
+        this.entity = typeIn;
+        this.species = -1;
+    }
+
     public MobEggItem(EntityType<? extends ComplexMob> typeIn, int species, Properties properties) {
         super(properties);
         this.entity = typeIn;
@@ -91,7 +98,12 @@ public class MobEggItem extends Item {
 
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (group == ItemGroupUT.untamedwilds_items) {
-            for(int i = 0; i < species; i++) {
+            int j = this.species;
+            if (this.species < 0) {
+                j = ComplexMob.ENTITY_DATA_HASH.get(entity).getSpeciesData().size();
+            }
+
+            for(int i = 0; i < j; i++) {
                 CompoundNBT baseTag = new CompoundNBT();
                 ItemStack item = new ItemStack(this);
                 baseTag.putInt("variant", i);

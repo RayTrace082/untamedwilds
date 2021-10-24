@@ -115,7 +115,7 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
 
         if (itemstack.getItem() == Items.GLASS_BOTTLE && this.isAlive()) {
-            EntityUtils.turnEntityIntoItem(this, "bottle_tarantula_" + getRawSpeciesName(this.getVariant()).toLowerCase());
+            EntityUtils.turnEntityIntoItem(this, "bottle_tarantula");
             itemstack.shrink(1);
             return ActionResultType.func_233537_a_(this.world.isRemote);
         }
