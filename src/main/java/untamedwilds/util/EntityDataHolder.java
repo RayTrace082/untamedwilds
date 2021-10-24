@@ -27,7 +27,7 @@ public class EntityDataHolder {
             Codec.INT.fieldOf("offspring").orElse(1).forGetter((p_237054_0_) -> p_237054_0_.offspring),
             Codec.STRING.fieldOf("breeding_season").orElse("ANY").forGetter((p_237054_0_) -> p_237054_0_.breeding_season),
             Codec.unboundedMap(Codec.STRING, SoundEvent.CODEC).fieldOf("sounds").orElse(Collections.emptyMap()).forGetter((p_237052_0_) -> p_237052_0_.sounds),
-            Codec.INT.listOf().fieldOf("flags").orElse(new ArrayList<>()).forGetter((p_237054_0_) -> p_237054_0_.flags),
+            Codec.unboundedMap(Codec.STRING, Codec.INT).fieldOf("flags").orElse(Collections.emptyMap()).forGetter((p_237054_0_) -> p_237054_0_.flags),
             SpeciesDataHolder.CODEC.listOf().fieldOf("species").orElse(new ArrayList<>()).forGetter((p_237052_0_) -> p_237052_0_.speciesData))
             .apply(p_237051_0_, EntityDataHolder::new));
     private final String name;
@@ -40,10 +40,10 @@ public class EntityDataHolder {
     private final int offspring;
     private final String breeding_season;
     public final Map<String, SoundEvent> sounds;
-    private final List<Integer> flags;
+    private final Map<String, Integer> flags;
     private final List<SpeciesDataHolder> speciesData;
 
-    public EntityDataHolder(String p_i232114_1_, float p_i232114_2_, int p_i232114_3_, float attack, float health, String favouriteFood, int growing_time, int offspring, String breeding, Map<String, SoundEvent> sounds, List<Integer> flags, List<SpeciesDataHolder> speciesData) {
+    public EntityDataHolder(String p_i232114_1_, float p_i232114_2_, int p_i232114_3_, float attack, float health, String favouriteFood, int growing_time, int offspring, String breeding, Map<String, SoundEvent> sounds, Map<String, Integer> flags, List<SpeciesDataHolder> speciesData) {
         this.name = p_i232114_1_;
         this.modelScale = p_i232114_2_;
         this.rarity = p_i232114_3_;
@@ -141,9 +141,13 @@ public class EntityDataHolder {
     }
 
     @Nullable
-    public int getFlags(int i, int flag) {
-        if (!this.speciesData.get(i).getFlags().isEmpty()) {
+    public Integer getFlags(int i, String flag) {
+        if (!this.speciesData.get(i).getFlags().isEmpty() && this.speciesData.get(i).getFlags().get(flag) != null) {
             return this.speciesData.get(i).getFlags().get(flag);
+        }
+        if (!this.flags.containsKey(flag)) {
+            UntamedWilds.LOGGER.error("Couldn't find " + flag + " flag in ENTITY_DATA");
+            return null;
         }
         return this.flags.get(flag);
     }

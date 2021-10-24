@@ -26,7 +26,7 @@ public class SpeciesDataHolder {
             Codec.INT.fieldOf("offspring").orElse(-1).forGetter((p_237054_0_) -> p_237054_0_.offspring),
             Codec.STRING.fieldOf("breeding_season").orElse("NONE").forGetter((p_237054_0_) -> p_237054_0_.breeding_season),
             Codec.unboundedMap(Codec.STRING, SoundEvent.CODEC).fieldOf("sounds").orElse(Collections.emptyMap()).forGetter((p_237052_0_) -> p_237052_0_.sounds),
-            Codec.INT.listOf().fieldOf("flags").orElse(new ArrayList<>()).forGetter((p_237054_0_) -> p_237054_0_.flags),
+            Codec.unboundedMap(Codec.STRING, Codec.INT).fieldOf("flags").orElse(Collections.emptyMap()).forGetter((p_237054_0_) -> p_237054_0_.flags),
             // TODO: Should be possible to replace this with a custom Object, with custom Codec and deeper functionality
             Codec.STRING.listOf().fieldOf("spawnBiomes").orElse(new ArrayList<>()).forGetter((p_237052_0_) -> p_237052_0_.spawnBiomes))
             .apply(p_237051_0_, SpeciesDataHolder::new));
@@ -42,10 +42,10 @@ public class SpeciesDataHolder {
     private final int offspring;
     private final String breeding_season;
     private final Map<String, SoundEvent> sounds;
-    private final List<Integer> flags;
+    private final Map<String, Integer> flags;
     private final List<String> spawnBiomes;
 
-    public SpeciesDataHolder(String p_i232114_1_, int variant, float p_i232114_2_, int p_i232114_3_, float attack, float health, String favourite_food, int growing_time, int offspring, String breeding_season, Map<String, SoundEvent> sounds, List<Integer> flags, List<String> p_i232114_4_) {
+    public SpeciesDataHolder(String p_i232114_1_, int variant, float p_i232114_2_, int p_i232114_3_, float attack, float health, String favourite_food, int growing_time, int offspring, String breeding_season, Map<String, SoundEvent> sounds, Map<String, Integer> flags, List<String> p_i232114_4_) {
         this.name = p_i232114_1_;
         this.variant = variant;
         this.modelScale = p_i232114_2_;
@@ -110,7 +110,7 @@ public class SpeciesDataHolder {
         return this.sounds;
     }
 
-    public List<Integer> getFlags() {
+    public Map<String, Integer> getFlags() {
         return this.flags;
     }
 

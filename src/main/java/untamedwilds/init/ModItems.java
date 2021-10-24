@@ -11,8 +11,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigMobControl;
-import untamedwilds.entity.amphibian.EntityGiantSalamander;
-import untamedwilds.entity.amphibian.EntityNewt;
 import untamedwilds.entity.fish.EntityArowana;
 import untamedwilds.entity.fish.EntityFootballFish;
 import untamedwilds.entity.fish.EntitySunfish;
@@ -151,19 +149,14 @@ public class ModItems {
         }
         // Giant Salamander Items
         if (ConfigMobControl.addGiantSalamander.get()) {
-            ModItems.ITEMS.register("egg_giant_salamander", () -> new MobEggItem(ModEntity.GIANT_SALAMANDER, EntityGiantSalamander.SpeciesGiantSalamander.values().length, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            for (int i = 0; i < EntityGiantSalamander.SpeciesGiantSalamander.values().length; i++) {
-                int giant_salamander = i;
-                ModItems.ITEMS.register("bucket_giant_salamander_" + EntityGiantSalamander.SpeciesGiantSalamander.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.GIANT_SALAMANDER, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), giant_salamander, EntityGiantSalamander.SpeciesGiantSalamander.values()[giant_salamander].name().toLowerCase()));
-            }
+            ModItems.ITEMS.register("egg_giant_salamander", () -> new MobEggItem(ModEntity.GIANT_SALAMANDER, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+            ModItems.ITEMS.register("bucket_giant_salamander", () -> new MobBucketedItem(ModEntity.GIANT_SALAMANDER, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+
         }
         // Newt Items
         if (ConfigMobControl.addNewt.get()) {
-            ModItems.ITEMS.register("egg_newt", () -> new MobEggItem(ModEntity.NEWT, EntityNewt.SpeciesNewt.values().length, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            for (int i = 0; i < EntityNewt.SpeciesNewt.values().length; i++) {
-                int newt = i;
-                ModItems.ITEMS.register("bucket_newt_" + EntityNewt.SpeciesNewt.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.NEWT, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), newt, EntityNewt.SpeciesNewt.values()[newt].name().toLowerCase()));
-            }
+            ModItems.ITEMS.register("egg_newt", () -> new MobEggItem(ModEntity.NEWT, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+            ModItems.ITEMS.register("bucket_newt", () -> new MobBucketedItem(ModEntity.NEWT, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
         }
         // Tortoise Items
         if (ConfigMobControl.addTortoise.get()) {

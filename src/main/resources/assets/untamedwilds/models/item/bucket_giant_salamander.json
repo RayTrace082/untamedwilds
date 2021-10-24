@@ -1,0 +1,12 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "untamedwilds:item/spawn/bucket_giant_salamander_chinese"
+    },
+
+    "overrides":[
+        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/bucket_giant_salamander_chinese"},
+        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/bucket_giant_salamander_hellbender"},
+        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/bucket_giant_salamander_japanese"}
+    ]
+}

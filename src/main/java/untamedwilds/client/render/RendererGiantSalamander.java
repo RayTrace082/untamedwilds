@@ -23,7 +23,7 @@ public class RendererGiantSalamander extends MobRenderer<EntityGiantSalamander, 
         float f = entity.getModelScale();
         f += (entity.getMobSize() * 0.2f);
         f *= entity.getRenderScale();
-        f *= (EntityGiantSalamander.SpeciesGiantSalamander.values()[entity.getVariant()].scale);
+        f *= entity.getModelScale(entity.getVariant());
         matrixStackIn.scale(f, f, f);
         this.shadowSize = entity.getModelScale() * 0.4f;
     }

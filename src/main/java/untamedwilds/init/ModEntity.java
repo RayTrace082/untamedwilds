@@ -257,9 +257,9 @@ public class ModEntity {
         EntityFootballFish.processSkins();
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
-        EntityGiantSalamander.processSkins();
+        //EntityGiantSalamander.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.NEWT, RendererNewt::new);
-        EntityNewt.processSkins();
+        //EntityNewt.processSkins();
 
         if (UntamedWilds.DEBUG) {
             UntamedWilds.LOGGER.info("---Dump of Common and Rare Texture arrays---");
