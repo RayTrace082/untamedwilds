@@ -1,6 +1,5 @@
 package untamedwilds.entity.arthropod;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -12,7 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
@@ -158,54 +160,6 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
             return 99;
         } else {
             return validTypes.get(new Random().nextInt(validTypes.size()));
-        }
-    }
-
-    public enum SpeciesTarantula implements IStringSerializable {
-
-        BLACK			(0, 0.8F, 3, Biome.Category.SAVANNA, Biome.Category.JUNGLE),
-        BLACK_AND_WHITE	(1, 0.8F, 2, Biome.Category.MESA),
-        COBALT			(2, 0.8F, 1, Biome.Category.JUNGLE),
-        KING			(3, 1.0F, 3, Biome.Category.SAVANNA),
-        RED_KNEE		(4, 0.8F, 2, Biome.Category.MESA),
-        REGALIS			(5, 0.8F, 1, Biome.Category.JUNGLE),
-        ROSE			(6, 0.8F, 3, Biome.Category.MESA),
-        TIGER			(7, 0.8F, 2, Biome.Category.JUNGLE);
-
-        public Float scale;
-        public int species;
-        public int rolls;
-        public Biome.Category[] spawnBiomes;
-
-        SpeciesTarantula(int species, Float scale, int rolls, Biome.Category... biomes) {
-            this.species = species;
-            this.scale = scale;
-            this.rolls = rolls;
-            this.spawnBiomes = biomes;
-        }
-
-        public int getSpecies() { return this.species; }
-
-        public String getString() {
-            return I18n.format("entity.tarantula." + this.name().toLowerCase());
-        }
-
-        public static int getSpeciesByBiome(Biome biome) {
-            List<SpeciesTarantula> types = new ArrayList<>();
-            for (SpeciesTarantula type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rolls; i++) {
-                            types.add(type);
-                        }
-                    }
-                }
-            }
-            if (types.isEmpty()) {
-                return 99;
-            } else {
-                return types.get(new Random().nextInt(types.size())).getSpecies();
-            }
         }
     }
 }
