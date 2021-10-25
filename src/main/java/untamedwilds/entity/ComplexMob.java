@@ -22,7 +22,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.UntamedWilds;
 import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
@@ -132,7 +131,6 @@ public abstract class ComplexMob extends TameableEntity {
 
     public static void processData(EntityDataHolder dataIn, EntityType<?> typeIn) {
         ENTITY_DATA_HASH.put(typeIn, dataIn);
-        UntamedWilds.LOGGER.info(ENTITY_DATA_HASH);
         processSkins(dataIn, typeIn.getRegistryName().getPath());
     }
 

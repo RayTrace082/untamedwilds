@@ -84,7 +84,7 @@ public class FaunaSpawn {
             if (rand.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(Objects.requireNonNull(worldIn.getBiome(pos).getRegistryName()))) {
                 int k = 1;
                 int species = -1;
-                if (groupSize != 1) {
+                if (groupSize > 1) {
                     k = 1 + rand.nextInt(groupSize);
                 }
                 for(int packSize = 0; packSize < k; ++packSize) {
