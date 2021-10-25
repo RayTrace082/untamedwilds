@@ -12,7 +12,6 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
@@ -34,9 +33,6 @@ import java.util.Random;
 public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimatedEntity, INeedsPostUpdate, INewSkins {
 
     public static Animation ATTACK_THRASH;
-    private static final String BREEDING = "MID_SUMMER";
-    private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
-    private static final int GESTATION = 8 * ConfigGamerules.cycleLength.get();
     private int animationTick;
     private Animation currentAnimation;
 
@@ -63,12 +59,6 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         this.targetSelector.addGoal(3, new HuntWeakerTarget<>(this, LivingEntity.class, true));
     }
 
-    public static void processSkins() {
-        for (int i = 0; i < SpeciesShark.values().length; i++) {
-            EntityUtils.buildSkinArrays("shark", SpeciesShark.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
-        }
-    }
-
     public void livingTick() {
         AnimationHandler.INSTANCE.updateAnimations(this);
         if (!this.world.isRemote) {
@@ -92,8 +82,8 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
             List<EntityShark> list = this.world.getEntitiesWithinAABB(EntityShark.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
             list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
             if (list.size() >= 1) {
-                this.setGrowingAge(GROWING);
-                list.get(0).setGrowingAge(GROWING);
+                this.setGrowingAge(this.getGrowingAge());
+                list.get(0).setGrowingAge(this.getGrowingAge());
                 return true;
             }
         }
@@ -106,22 +96,17 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         return create_offspring(new EntityShark(ModEntity.SHARK, this.world));
     }
 
-    public boolean isBottomDweller() { return SpeciesShark.values()[this.getVariant()].bottomDweller; }
-
     @Override
     protected SoundEvent getFlopSound() {
         return SoundEvents.ENTITY_COD_FLOP;
     }
-    public int getAdulthoodTime() { return GROWING; }
-    public int getPregnancyTime() { return GESTATION; }
-    public String getBreedingSeason() { return BREEDING; }
-    protected int getOffspring() { return 3; }
 
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (reason == SpawnReason.SPAWN_EGG || ConfigGamerules.randomSpecies.get()) {
             return this.rand.nextInt(EntityShark.SpeciesShark.values().length);
         }
+        // TODO: Needed because I can't parse individual biomes from .json
         return EntityShark.SpeciesShark.getSpeciesByBiome(biomekey);
     }
 
@@ -133,56 +118,46 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         return flag;
     }
 
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.shark_" + getRawSpeciesName(i)).getString(); }
-    public String getRawSpeciesName(int i) { return SpeciesShark.values()[i].name().toLowerCase(); }
-
     public int getAnimationTick() { return animationTick; }
     public void setAnimationTick(int tick) { animationTick = tick; }
     public Animation getAnimation() { return currentAnimation; }
     public void setAnimation(Animation animation) { currentAnimation = animation; }
     public Animation[] getAnimations() { return new Animation[]{NO_ANIMATION, ATTACK_THRASH}; }
 
-    // Model Parameters
-    public boolean hasShortFins() { return SpeciesShark.values()[this.getVariant()].shortFins; }
+    // Flags Parameters
+    public boolean hasShortFins() {
+        return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "shortFins") == 1;
+    }
+    public boolean isBottomDweller() { return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "bottomDweller") == 1; }
 
     @Override
     public void updateAttributes() {
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(SpeciesShark.values()[this.getVariant()].attack);
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(SpeciesShark.values()[this.getVariant()].health);
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
         this.setHealth(this.getMaxHealth());
     }
 
     public enum SpeciesShark implements IStringSerializable {
 
-        BIGEYE	    (0, 1.2F, 1, 8, 30, false, true, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
-        BLUNTNOSE	(1, 1.6F, 2, 14, 45, true, true, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
-        BULL    	(2, 1.0F, 4, 10, 40, false, false, Biomes.OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.WARM_OCEAN),
-        GOBLIN  	(3, 1.0F, 1, 8, 30, true, true, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
-        GREAT_WHITE	(4, 1.8F, 2, 16, 50, false, false, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
-        GREENLAND	(5, 1.8F, 1, 14, 50, true,false, Biomes.DEEP_COLD_OCEAN, Biomes.FROZEN_OCEAN, Biomes.DEEP_FROZEN_OCEAN),
-        HAMMERHEAD	(6, 1.3F, 2, 10, 40, false, false, Biomes.OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.WARM_OCEAN),
-        LEMON   	(7, 0.9F, 1, 6, 25, false, false, Biomes.WARM_OCEAN),
-        MAKO    	(8, 1.1F, 4, 8, 30, false, false, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_WARM_OCEAN),
-        TIGER	    (9, 1.3F, 2, 16, 45, false, false, Biomes.WARM_OCEAN, Biomes.DEEP_WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN);
+        BIGEYE	    (0, 1, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
+        BLUNTNOSE	(1, 2, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
+        BULL    	(2, 4, Biomes.OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.WARM_OCEAN),
+        GOBLIN  	(3, 1, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
+        GREAT_WHITE	(4, 2, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
+        GREENLAND	(5, 1, Biomes.DEEP_COLD_OCEAN, Biomes.FROZEN_OCEAN, Biomes.DEEP_FROZEN_OCEAN),
+        HAMMERHEAD	(6, 2, Biomes.OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.WARM_OCEAN),
+        LEMON   	(7, 1, Biomes.WARM_OCEAN),
+        MAKO    	(8, 4, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_WARM_OCEAN),
+        TIGER	    (9, 2, Biomes.WARM_OCEAN, Biomes.DEEP_WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN);
 
         public int species;
-        public Float scale;
         public int rolls;
-        public float attack;
-        public float health;
-        public boolean shortFins;
-        public boolean bottomDweller;
         public RegistryKey<Biome>[] spawnBiomes;
 
         @SafeVarargs
-        SpeciesShark(int species, Float scale, int rolls, int attack, int health, boolean shortFins, boolean bottomDweller, RegistryKey<Biome>... biomes) {
+        SpeciesShark(int species, int rolls, RegistryKey<Biome>... biomes) {
             this.species = species;
-            this.scale = scale;
             this.rolls = rolls;
-            this.attack = (float)attack;
-            this.health = (float)health;
-            this.shortFins = shortFins;
-            this.bottomDweller = bottomDweller;
             this.spawnBiomes = biomes;
         }
 

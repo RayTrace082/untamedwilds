@@ -1,0 +1,70 @@
+{
+  "name": "arowana",
+  "breeding": "MID_SUMMER",
+  "growing": 6,
+  "offspring": 4,
+  "favourite_food": "untamedwilds:chum",
+  "sounds": {},
+
+  "species": [{
+    "name": "bigeye",
+    "variant": 0,
+    "scale": 0.8,
+    "rarity": 2,
+    "flags": {
+      "schoolSize": 8
+    },
+    "spawnBiomes": [
+        "ocean"
+    ]
+  },
+    {
+      "name": "bluespotted",
+      "variant": 1,
+      "scale": 0.8,
+      "rarity": 2,
+      "flags": {
+        "schoolSize": 8
+      },
+      "spawnBiomes": [
+        "ocean"
+      ]
+    },
+    {
+      "name": "giant",
+      "variant": 2,
+      "scale": 1.5,
+      "rarity": 1,
+      "flags": {
+        "schoolSize": 1
+      },
+      "spawnBiomes": [
+        "ocean"
+      ]
+    },
+    {
+      "name": "bigeye",
+      "variant": 3,
+      "scale": 1,
+      "rarity": 2,
+      "flags": {
+        "schoolSize": 6
+      },
+      "spawnBiomes": [
+        "ocean"
+      ]
+    },
+    {
+      "name": "jack",
+      "variant": 4,
+      "scale": 1,
+      "rarity": 3,
+      "flags": {
+        "schoolSize": 8
+      },
+      "spawnBiomes": [
+        "ocean"
+      ]
+    }
+  ]
+}

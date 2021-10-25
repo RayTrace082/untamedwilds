@@ -99,7 +99,7 @@ public class MobEggItem extends Item {
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (group == ItemGroupUT.untamedwilds_items) {
             int j = this.species;
-            if (this.species < 0) {
+            if (ComplexMob.ENTITY_DATA_HASH.containsKey(entity)) {
                 j = ComplexMob.ENTITY_DATA_HASH.get(entity).getSpeciesData().size();
             }
 

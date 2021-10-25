@@ -25,7 +25,7 @@ public class RendererFootballFish extends MobRenderer<EntityFootballFish, Segmen
         float f = 0.6F;
         f += (entity.getMobSize() * 0.3f);
         f *= entity.getRenderScale();
-        f *= (EntityFootballFish.SpeciesFootballFish.values()[entity.getVariant()].scale);
+        f *= entity.getModelScale(entity.getVariant());
         matrixStackIn.scale(f, f, f);
     }
 

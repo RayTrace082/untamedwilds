@@ -22,7 +22,7 @@ public class RendererSunfish extends MobRenderer<EntitySunfish, EntityModel<Enti
         float f = 0.6F;
         f += (entity.getMobSize() * 0.3f);
         f *= entity.getRenderScale();
-        f *= (EntitySunfish.SpeciesSunfish.values()[entity.getVariant()].scale);
+        f *= entity.getModelScale(entity.getVariant());
         matrixStackIn.scale(f, f, f);
     }
 

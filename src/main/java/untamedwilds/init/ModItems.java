@@ -11,9 +11,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigMobControl;
-import untamedwilds.entity.fish.EntityArowana;
-import untamedwilds.entity.fish.EntityFootballFish;
-import untamedwilds.entity.fish.EntityTrevally;
 import untamedwilds.entity.mollusk.EntityGiantClam;
 import untamedwilds.entity.reptile.EntitySnake;
 import untamedwilds.entity.reptile.EntitySoftshellTurtle;
@@ -124,32 +121,23 @@ public class ModItems {
         // Trevally Items
         if (ConfigMobControl.addTrevally.get()) {
             ModItems.ITEMS.register("egg_trevally", () -> new MobEggItem(ModEntity.TREVALLY, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            for (int i = 0; i < EntityTrevally.SpeciesTrevally.values().length; i++) {
-                int trevallySpecies = i;
-                ModItems.ITEMS.register("bucket_trevally_" + EntityTrevally.SpeciesTrevally.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.TREVALLY, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), trevallySpecies, EntityTrevally.SpeciesTrevally.values()[trevallySpecies].name().toLowerCase()));
-            }
+            ModItems.ITEMS.register("bucket_trevally", () -> new MobBucketedItem(ModEntity.TREVALLY, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+
         }
         // Arowana Items
         if (ConfigMobControl.addArowana.get()) {
             ModItems.ITEMS.register("egg_arowana", () -> new MobEggItem(ModEntity.AROWANA, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            for (int i = 0; i < EntityArowana.SpeciesArowana.values().length; i++) {
-                int arowanaSpecies = i;
-                ModItems.ITEMS.register("bucket_arowana_" + EntityArowana.SpeciesArowana.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.AROWANA, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), arowanaSpecies, EntityArowana.SpeciesArowana.values()[arowanaSpecies].name().toLowerCase()));
-            }
+            ModItems.ITEMS.register("bucket_arowana", () -> new MobBucketedItem(ModEntity.AROWANA, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
         }
         // Football Fish Items
         if (ConfigMobControl.addFootballFish.get()) {
             ModItems.ITEMS.register("egg_football_fish", () -> new MobEggItem(ModEntity.FOOTBALL_FISH, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            for (int i = 0; i < EntityFootballFish.SpeciesFootballFish.values().length; i++) {
-                int footballFishSpecies = i;
-                ModItems.ITEMS.register("bucket_football_fish_" + EntityFootballFish.SpeciesFootballFish.values()[i].name().toLowerCase(), () -> new MobBucketedItem(ModEntity.FOOTBALL_FISH, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items), footballFishSpecies, EntityFootballFish.SpeciesFootballFish.values()[footballFishSpecies].name().toLowerCase()));
-            }
+            ModItems.ITEMS.register("bucket_football_fish", () -> new MobBucketedItem(ModEntity.FOOTBALL_FISH, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
         }
         // Giant Salamander Items
         if (ConfigMobControl.addGiantSalamander.get()) {
             ModItems.ITEMS.register("egg_giant_salamander", () -> new MobEggItem(ModEntity.GIANT_SALAMANDER, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             ModItems.ITEMS.register("bucket_giant_salamander", () -> new MobBucketedItem(ModEntity.GIANT_SALAMANDER, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-
         }
         // Newt Items
         if (ConfigMobControl.addNewt.get()) {

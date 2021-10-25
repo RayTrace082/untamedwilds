@@ -28,7 +28,7 @@ public class RendererTrevally extends MobRenderer<EntityTrevally, EntityModel<En
         float f = 1F;
         f += (entity.getMobSize() * 0.2f);
         f *= entity.getRenderScale();
-        f *= (EntityTrevally.SpeciesTrevally.values()[entity.getVariant()].scale);
+        f *= entity.getModelScale(entity.getVariant());
         matrixStackIn.scale(f, f, f);
     }
 

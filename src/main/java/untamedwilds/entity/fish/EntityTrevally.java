@@ -1,6 +1,5 @@
 package untamedwilds.entity.fish;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -12,7 +11,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.*;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
@@ -24,14 +22,9 @@ import untamedwilds.entity.ai.FishWanderAsSchoolGoal;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPackEntity, INewSkins {
-
-    private static final String BREEDING = "MID_SUMMER";
-    private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
 
     public EntityTrevally(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
@@ -51,12 +44,6 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
         this.goalSelector.addGoal(0, new PanicGoal(this, 1.25D));
         this.goalSelector.addGoal(4, new FishWanderAsSchoolGoal(this));
         this.goalSelector.addGoal(4, new FishReturnToSchoolGoal(this));
-    }
-
-    public static void processSkins() {
-        for (int i = 0; i < SpeciesTrevally.values().length; i++) {
-            EntityUtils.buildSkinArrays("trevally", SpeciesTrevally.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
-        }
     }
 
     public void livingTick() {
@@ -83,7 +70,7 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
         if (hand == Hand.MAIN_HAND) {
             if (itemstack.getItem().equals(Items.WATER_BUCKET) && this.isAlive()) {
-                EntityUtils.mutateEntityIntoItem(this, player, hand, "bucket_trevally_" + getRawSpeciesName(this.getVariant()).toLowerCase(), itemstack);
+                EntityUtils.mutateEntityIntoItem(this, player, hand, "bucket_trevally", itemstack);
                 return ActionResultType.func_233537_a_(this.world.isRemote);
             }
         }
@@ -97,8 +84,8 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
             List<EntityTrevally> list = this.world.getEntitiesWithinAABB(EntityTrevally.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
             list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
             if (list.size() >= 1) {
-                this.setGrowingAge(GROWING);
-                list.get(0).setGrowingAge(GROWING);
+                this.setGrowingAge(this.getGrowingAge());
+                list.get(0).setGrowingAge(this.getGrowingAge());
                 return true;
             }
         }
@@ -108,19 +95,18 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_trevally_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_trevally", this.getOffspring());
         return null;
     }
 
     @Override
     protected SoundEvent getFlopSound() {
-        return SoundEvents.ENTITY_GUARDIAN_FLOP;
+        return SoundEvents.ENTITY_COD_FLOP;
     }
-    public int getAdulthoodTime() { return GROWING; }
-    public String getBreedingSeason() { return BREEDING; }
 
+    // Flags Parameters
     public int getMaxPackSize() {
-        return SpeciesTrevally.values()[this.getVariant()].schoolSize;
+        return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "schoolSize");
     }
 
     public boolean shouldLeavePack() {
@@ -133,59 +119,8 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
             return 99;
         }
         if (isArtificialSpawnReason(reason) || ConfigGamerules.randomSpecies.get()) {
-            return this.rand.nextInt(SpeciesTrevally.values().length);
+            return this.rand.nextInt(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
         }
-        return SpeciesTrevally.getSpeciesByBiome(biome);
-    }
-
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.trevally_" + getRawSpeciesName(i)).getString(); }
-    public String getRawSpeciesName(int i) { return SpeciesTrevally.values()[i].name().toLowerCase(); }
-
-    public enum SpeciesTrevally implements IStringSerializable {
-
-        BIGEYE		(0, 0.8F, 8, 2, Biome.Category.OCEAN),
-        BLUESPOTTED	(1, 0.8F, 8, 2, Biome.Category.OCEAN),
-        GIANT    	(2, 1.5F, 1, 1, Biome.Category.OCEAN),
-        GOLDEN		(3, 1F, 6, 2, Biome.Category.OCEAN),
-        JACK    	(4, 1F, 8, 3, Biome.Category.OCEAN);
-
-        public Float scale;
-        public int species;
-        public int rolls;
-        public int schoolSize;
-        public Biome.Category[] spawnBiomes;
-
-        SpeciesTrevally(int species, Float scale, int schoolSize, int rolls, Biome.Category... biomes) {
-            this.species = species;
-            this.scale = scale;
-            this.schoolSize = schoolSize;
-            this.rolls = rolls;
-            this.spawnBiomes = biomes;
-        }
-
-        public int getSpecies() { return this.species; }
-
-        public String getString() {
-            return I18n.format("entity.trevally." + this.name().toLowerCase());
-        }
-
-        public static int getSpeciesByBiome(Biome biome) {
-            List<EntityTrevally.SpeciesTrevally> types = new ArrayList<>();
-
-            for (EntityTrevally.SpeciesTrevally type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rolls; i++) {
-                            types.add(type);
-                        }
-                    }
-                }
-            }
-            if (types.isEmpty()) {
-                return 99;
-            } else {
-                return types.get(new Random().nextInt(types.size())).getSpecies();
-            }
-        }
+        return ((ISpecies)this).setSpeciesByBiome(biomekey, biome, reason);
     }
 }

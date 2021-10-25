@@ -22,7 +22,7 @@ public class RendererShark extends MobRenderer<EntityShark, EntityModel<EntitySh
         float f = 0.8F;
         f += (entity.getMobSize() * 0.2f);
         f *= entity.getRenderScale();
-        f *= (EntityShark.SpeciesShark.values()[entity.getVariant()].scale);
+        f *= entity.getModelScale(entity.getVariant());
         matrixStackIn.scale(f, f, f);
     }
 

@@ -246,15 +246,15 @@ public class ModEntity {
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNOW_LEOPARD, RendererBigCat::new);
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUNFISH, RendererSunfish::new);
-        EntitySunfish.processSkins();
+        //EntitySunfish.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.TREVALLY, RendererTrevally::new);
-        EntityTrevally.processSkins();
+        //EntityTrevally.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.AROWANA, RendererArowana::new);
-        EntityArowana.processSkins();
+        //EntityArowana.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.SHARK, RendererShark::new);
-        EntityShark.processSkins();
+        //EntityShark.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.FOOTBALL_FISH, RendererFootballFish::new);
-        EntityFootballFish.processSkins();
+        //EntityFootballFish.processSkins();
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
         //EntityGiantSalamander.processSkins();
