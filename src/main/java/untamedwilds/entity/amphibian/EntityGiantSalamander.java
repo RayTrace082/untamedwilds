@@ -15,19 +15,14 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.*;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.util.EntityUtils;
-import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpecies, INeedsPostUpdate, INewSkins {
 
@@ -152,29 +147,6 @@ public class EntityGiantSalamander extends ComplexMobAmphibious implements ISpec
     }
 
     public Animation[] getAnimations() { return new Animation[]{NO_ANIMATION, ATTACK_SWALLOW}; }
-
-    // TODO: Move this to ComplexMob.class
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
-        }
-        List<Integer> validTypes = new ArrayList<>();
-        for (SpeciesDataHolder speciesDatum : ENTITY_DATA_HASH.get(this.getType()).getSpeciesData()) {
-            for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
-                if(biome.getCategory() == biomeTypes){
-                    for (int i=0; i < speciesDatum.getRarity(); i++) {
-                        validTypes.add(speciesDatum.getVariant());
-                    }
-                }
-            }
-        }
-        if (validTypes.isEmpty()) {
-            return 99;
-        } else {
-            return validTypes.get(new Random().nextInt(validTypes.size()));
-        }
-    }
 
     @Override
     public void updateAttributes() {

@@ -1,28 +1,29 @@
 package untamedwilds.entity.amphibian;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.*;
 import untamedwilds.entity.ai.*;
 import untamedwilds.util.EntityUtils;
-import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntityNewt extends ComplexMobAmphibious implements ISpecies, INewSkins {
 
@@ -132,27 +133,4 @@ public class EntityNewt extends ComplexMobAmphibious implements ISpecies, INewSk
     }
 
     public float getModelScale() { return 0.8F; }
-
-    // TODO: Move this to ComplexMob.class
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
-        }
-        List<Integer> validTypes = new ArrayList<>();
-        for (SpeciesDataHolder speciesDatum : ENTITY_DATA_HASH.get(this.getType()).getSpeciesData()) {
-            for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
-                if(biome.getCategory() == biomeTypes){
-                    for (int i=0; i < speciesDatum.getRarity(); i++) {
-                        validTypes.add(speciesDatum.getVariant());
-                    }
-                }
-            }
-        }
-        if (validTypes.isEmpty()) {
-            return 99;
-        } else {
-            return validTypes.get(new Random().nextInt(validTypes.size()));
-        }
-    }
 }

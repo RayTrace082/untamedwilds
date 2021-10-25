@@ -1,9 +1,16 @@
 package untamedwilds.entity;
 
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.biome.Biome;
+import untamedwilds.config.ConfigGamerules;
+import untamedwilds.util.SpeciesDataHolder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Interface reserved for mobs which implement species, defined as an attached Enum
@@ -14,7 +21,26 @@ import net.minecraft.world.biome.Biome;
 
 public interface ISpecies {
 
-    int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason);
+    default int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
+        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
+            return ((MobEntity)this).getRNG().nextInt(ComplexMob.ENTITY_DATA_HASH.get(((MobEntity)this).getType()).getSpeciesData().size());
+        }
+        List<Integer> validTypes = new ArrayList<>();
+        for (SpeciesDataHolder speciesDatum : ComplexMob.ENTITY_DATA_HASH.get(((MobEntity)this).getType()).getSpeciesData()) {
+            for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
+                if(biome.getCategory() == biomeTypes){
+                    for (int i=0; i < speciesDatum.getRarity(); i++) {
+                        validTypes.add(speciesDatum.getVariant());
+                    }
+                }
+            }
+        }
+        if (validTypes.isEmpty()) {
+            return 99;
+        } else {
+            return validTypes.get(new Random().nextInt(validTypes.size()));
+        }
+    }
 
     default String getRawSpeciesName(int i) {
         return ComplexMob.ENTITY_DATA_HASH.get(((ComplexMob)this).getType()).getSpeciesData().get(i).getName().toLowerCase();

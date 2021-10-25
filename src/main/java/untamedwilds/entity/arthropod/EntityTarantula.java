@@ -14,9 +14,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
-import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
@@ -28,12 +26,9 @@ import untamedwilds.entity.ai.SmartSwimGoal;
 import untamedwilds.entity.ai.target.DontThreadOnMeTarget;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.util.EntityUtils;
-import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
 
@@ -138,28 +133,5 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
 
     public boolean isPotionApplicable(EffectInstance potionEffectIn) {
         return potionEffectIn.getPotion() != Effects.POISON && super.isPotionApplicable(potionEffectIn);
-    }
-
-    // TODO: Move this to ComplexMob.class
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
-        }
-        List<Integer> validTypes = new ArrayList<>();
-        for (SpeciesDataHolder speciesDatum : ENTITY_DATA_HASH.get(this.getType()).getSpeciesData()) {
-            for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
-                if(biome.getCategory() == biomeTypes){
-                    for (int i=0; i < speciesDatum.getRarity(); i++) {
-                        validTypes.add(speciesDatum.getVariant());
-                    }
-                }
-            }
-        }
-        if (validTypes.isEmpty()) {
-            return 99;
-        } else {
-            return validTypes.get(new Random().nextInt(validTypes.size()));
-        }
     }
 }
