@@ -1,6 +1,5 @@
 package untamedwilds.entity.mammal.bear;
 
-import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -10,20 +9,18 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.unique.BearRaidChestsGoal;
-import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
+@Deprecated
 public class EntityPolarBear extends AbstractBear {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/bear/polar.png");
@@ -80,16 +77,10 @@ public class EntityPolarBear extends AbstractBear {
         return false;
     }
 
-    @Nullable
-    public EntityPolarBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityPolarBear(ModEntity.POLAR_BEAR, this.world));
-    }
-
-
     public boolean hasLongBody() { return true; }
 
-    protected activityType getActivityType() {
-        return activityType.DIURNAL;
+    protected ActivityType getActivityType() {
+        return ActivityType.DIURNAL;
     }
     @Override
     protected ResourceLocation getLootTable() {

@@ -98,8 +98,8 @@ public class EntityPuma extends AbstractBigCat {
         return SoundEvents.ENTITY_OCELOT_DEATH;
     }
 
-    protected activityType getActivityType() {
-        return activityType.CREPUSCULAR;
+    protected ActivityType getActivityType() {
+        return ActivityType.CREPUSCULAR;
     }
     protected ResourceLocation getLootTable() {
         return ModLootTables.BIGCAT_LOOT_PUMA;

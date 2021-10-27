@@ -215,8 +215,8 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
     public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.boar_" + getRawSpeciesName(i)).getString(); }
     public String getRawSpeciesName(int i) { return SpeciesBoar.values()[i].name().toLowerCase(); }
 
-    protected activityType getActivityType() {
-        return activityType.NOCTURNAL;
+    protected ActivityType getActivityType() {
+        return ActivityType.NOCTURNAL;
     }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEETROOT; }
     public String getBreedingSeason() { return BREEDING; }

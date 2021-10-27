@@ -8,9 +8,9 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
 import untamedwilds.client.model.ModelBear;
 import untamedwilds.client.model.ModelBearCub;
-import untamedwilds.entity.mammal.bear.AbstractBear;
+import untamedwilds.entity.mammal.EntityBear;
 
-public class RendererBear extends MobRenderer<AbstractBear, EntityModel<AbstractBear>> {
+public class RendererBear extends MobRenderer<EntityBear, EntityModel<EntityBear>> {
 
     private static final ModelBear BEAR_MODEL = new ModelBear();
     private static final ModelBearCub BEAR_MODEL_CUB = new ModelBearCub();
@@ -20,7 +20,7 @@ public class RendererBear extends MobRenderer<AbstractBear, EntityModel<Abstract
     }
 
     @Override
-    public void render(AbstractBear entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+    public void render(EntityBear entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         if (entityIn.isChild()) {
             entityModel = BEAR_MODEL_CUB;
         } else {
@@ -30,14 +30,15 @@ public class RendererBear extends MobRenderer<AbstractBear, EntityModel<Abstract
     }
 
     @Override
-    protected void preRenderCallback(AbstractBear entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = entity.getModelScale();
-        f += (entity.getMobSize() * 0.25f);
+    protected void preRenderCallback(EntityBear entity, MatrixStack matrixStackIn, float partialTickTime) {
+        float f = 0.8F;
+        f += (entity.getMobSize() * 0.2f);
+        f *= entity.getRenderScale();
+        f *= entity.getModelScale(entity.getVariant());
         matrixStackIn.scale(f, f, f);
-        this.shadowSize = entity.getModelScale() * 0.8f;
     }
 
-    public ResourceLocation getEntityTexture(AbstractBear entity) {
+    public ResourceLocation getEntityTexture(EntityBear entity) {
         return entity.getTexture();
     }
 }

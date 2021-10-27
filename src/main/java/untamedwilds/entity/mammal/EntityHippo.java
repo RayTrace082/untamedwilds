@@ -205,8 +205,8 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
 
     public Animation getAnimationEat() { return EAT; }
 
-    protected activityType getActivityType() {
-        return activityType.CATHEMERAL;
+    protected ActivityType getActivityType() {
+        return ActivityType.CATHEMERAL;
     }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.MELON_SLICE; }
     public String getBreedingSeason() { return BREEDING; }

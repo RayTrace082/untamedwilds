@@ -92,7 +92,7 @@ public class EntityLeopard extends AbstractBigCat implements ISkins {
         return create_offspring(new EntityLeopard(ModEntity.LEOPARD, this.world));
     }
 
-    protected activityType getActivityType() { return activityType.DIURNAL; }
+    protected ActivityType getActivityType() { return ActivityType.DIURNAL; }
     protected ResourceLocation getLootTable() {
         return ModLootTables.BIGCAT_LOOT_LEOPARD;
     }

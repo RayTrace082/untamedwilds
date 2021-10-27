@@ -82,8 +82,8 @@ public class EntitySabertooth extends AbstractBigCat {
         return create_offspring(new EntitySabertooth(ModEntity.SABERTOOTH, this.world));
     }
 
-    protected activityType getActivityType() {
-        return activityType.DIURNAL;
+    protected ActivityType getActivityType() {
+        return ActivityType.DIURNAL;
     }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEEF; }
     public String getBreedingSeason() { return BREEDING; }

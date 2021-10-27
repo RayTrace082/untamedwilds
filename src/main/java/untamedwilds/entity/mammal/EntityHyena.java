@@ -231,7 +231,7 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
 
     public Animation getAnimationEat() { return NO_ANIMATION; }
 
-    protected activityType getActivityType() { return activityType.NOCTURNAL; }
+    protected ActivityType getActivityType() { return ActivityType.NOCTURNAL; }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.ROTTEN_FLESH; }
     public String getBreedingSeason() { return BREEDING; }
     public int getAdulthoodTime() { return GROWING; }

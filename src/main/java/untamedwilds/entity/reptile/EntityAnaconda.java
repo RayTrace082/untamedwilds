@@ -277,8 +277,8 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
         return EntityAnaconda.SpeciesAnaconda.getSpeciesByBiome(biome);
     }
 
-    protected activityType getActivityType() {
-        return activityType.CATHEMERAL;
+    protected ActivityType getActivityType() {
+        return ActivityType.CATHEMERAL;
     }
     public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.large_snake_" + getRawSpeciesName(i)).getString(); }
     public String getRawSpeciesName(int i) { return SpeciesAnaconda.values()[i].name().toLowerCase(); }

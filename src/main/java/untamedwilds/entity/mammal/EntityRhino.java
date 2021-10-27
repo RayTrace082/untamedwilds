@@ -210,7 +210,7 @@ public class EntityRhino extends ComplexMobTerrestrial implements INewSkins, ISp
 
     public Animation getAnimationEat() { return NO_ANIMATION; }
 
-    protected activityType getActivityType() { return activityType.CATHEMERAL; }
+    protected ActivityType getActivityType() { return ActivityType.CATHEMERAL; }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.MELON_SLICE; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }

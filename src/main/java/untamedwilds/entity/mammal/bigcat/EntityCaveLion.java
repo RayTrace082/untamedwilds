@@ -83,7 +83,7 @@ public class EntityCaveLion extends AbstractBigCat {
         return create_offspring(new EntityCaveLion(ModEntity.CAVE_LION, this.world));
     }
 
-    protected activityType getActivityType() { return activityType.DIURNAL; }
+    protected ActivityType getActivityType() { return ActivityType.DIURNAL; }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEEF; }
     public String getBreedingSeason() { return BREEDING; }
     public static int getRarity() { return RARITY; }

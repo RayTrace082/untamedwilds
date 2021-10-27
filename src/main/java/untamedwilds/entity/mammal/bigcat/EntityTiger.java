@@ -83,8 +83,8 @@ public class EntityTiger extends AbstractBigCat {
         return create_offspring(new EntityTiger(ModEntity.TIGER, this.world));
     }
 
-    protected activityType getActivityType() {
-        return activityType.DIURNAL;
+    protected ActivityType getActivityType() {
+        return ActivityType.DIURNAL;
     }
     protected ResourceLocation getLootTable() {
         return ModLootTables.BIGCAT_LOOT_TIGER;

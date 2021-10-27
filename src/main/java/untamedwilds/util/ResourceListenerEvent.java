@@ -7,10 +7,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.amphibian.EntityGiantSalamander;
-import untamedwilds.entity.amphibian.EntityNewt;
-import untamedwilds.entity.arthropod.EntityTarantula;
-import untamedwilds.entity.mollusk.EntityGiantClam;
 import untamedwilds.init.ModEntity;
 
 import java.util.Objects;
@@ -29,30 +25,25 @@ public class ResourceListenerEvent {
     public static EntityDataHolder SUNFISH;
     public static EntityDataHolder TREVALLY;
 
+    public static EntityDataHolder BEAR;
+
     @SubscribeEvent
     public static void onAddReloadListeners(AddReloadListenerEvent event) {
         event.addListener(ENTITY_DATA_HOLDERS);
-        if (ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, "tarantula")) != null) {
-            TARANTULA = ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, "tarantula"));
-            EntityTarantula.processData(TARANTULA, ModEntity.TARANTULA);
-        }
-        if (ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, "giant_clam")) != null) {
-            GIANT_CLAM = ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, "giant_clam"));
-            EntityGiantClam.processData(GIANT_CLAM, ModEntity.GIANT_CLAM);
-        }
-        if (ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, "giant_salamander")) != null) {
-            GIANT_SALAMANDER = ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, "giant_salamander"));
-            EntityGiantSalamander.processData(GIANT_SALAMANDER, ModEntity.GIANT_SALAMANDER);
-        }
-        if (ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, "newt")) != null) {
-            NEWT = ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, "newt"));
-            EntityNewt.processData(NEWT, ModEntity.NEWT);
-        }
+        TARANTULA = registerEntityData(ModEntity.TARANTULA);
+
+        GIANT_CLAM = registerEntityData(ModEntity.GIANT_CLAM);
+
+        GIANT_SALAMANDER = registerEntityData(ModEntity.GIANT_SALAMANDER);
+        NEWT = registerEntityData(ModEntity.NEWT);
+
         AROWANA = registerEntityData(ModEntity.AROWANA);
         FOOTBALL_FISH = registerEntityData(ModEntity.FOOTBALL_FISH);
         SHARK = registerEntityData(ModEntity.SHARK);
         SUNFISH = registerEntityData(ModEntity.SUNFISH);
         TREVALLY = registerEntityData(ModEntity.TREVALLY);
+
+        BEAR = registerEntityData(ModEntity.BEAR);
     }
 
     public static EntityDataHolder registerEntityData(EntityType<?> typeIn) {

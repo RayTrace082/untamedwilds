@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
+import untamedwilds.entity.ComplexMobTerrestrial;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class SpeciesDataHolder {
             Codec.INT.fieldOf("rarity").orElse(-1).forGetter((p_237054_0_) -> p_237054_0_.rarity),
             Codec.FLOAT.fieldOf("attack").orElse(-1F).forGetter((p_237055_0_) -> p_237055_0_.attack),
             Codec.FLOAT.fieldOf("health").orElse(-1F).forGetter((p_237055_0_) -> p_237055_0_.health),
+            ComplexMobTerrestrial.ActivityType.CODEC.fieldOf("activityType").orElse(ComplexMobTerrestrial.ActivityType.INSOMNIAC).forGetter((p_237052_0_) -> p_237052_0_.activityType),
             Codec.STRING.fieldOf("favourite_food").orElse("").forGetter((p_237052_0_) -> p_237052_0_.favouriteFood),
             Codec.INT.fieldOf("growing_time").orElse(-1).forGetter((p_237054_0_) -> p_237054_0_.growing_time),
             Codec.INT.fieldOf("offspring").orElse(-1).forGetter((p_237054_0_) -> p_237054_0_.offspring),
@@ -37,6 +39,7 @@ public class SpeciesDataHolder {
     private final int rarity;
     private final float attack;
     private final float health;
+    private final ComplexMobTerrestrial.ActivityType activityType;
     private final String favouriteFood;
     private final int growing_time;
     private final int offspring;
@@ -45,13 +48,14 @@ public class SpeciesDataHolder {
     private final Map<String, Integer> flags;
     private final List<String> spawnBiomes;
 
-    public SpeciesDataHolder(String p_i232114_1_, int variant, float p_i232114_2_, int p_i232114_3_, float attack, float health, String favourite_food, int growing_time, int offspring, String breeding_season, Map<String, SoundEvent> sounds, Map<String, Integer> flags, List<String> p_i232114_4_) {
+    public SpeciesDataHolder(String p_i232114_1_, int variant, float p_i232114_2_, int p_i232114_3_, float attack, float health, ComplexMobTerrestrial.ActivityType activityType, String favourite_food, int growing_time, int offspring, String breeding_season, Map<String, SoundEvent> sounds, Map<String, Integer> flags, List<String> p_i232114_4_) {
         this.name = p_i232114_1_;
         this.variant = variant;
         this.modelScale = p_i232114_2_;
         this.rarity = p_i232114_3_;
         this.attack = attack;
         this.health = health;
+        this.activityType = activityType;
         this.favouriteFood = favourite_food;
         this.growing_time = growing_time;
         this.offspring = offspring;
@@ -87,6 +91,10 @@ public class SpeciesDataHolder {
 
     public Float getHealth() {
         return this.health;
+    }
+
+    public ComplexMobTerrestrial.ActivityType getActivityType() {
+        return this.activityType;
     }
 
     @Nullable

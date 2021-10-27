@@ -95,8 +95,8 @@ public class EntityMarsupialLion extends AbstractBigCat {
 
     protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_PANDA_DEATH; }
 
-    protected activityType getActivityType() {
-        return activityType.NOCTURNAL;
+    protected ActivityType getActivityType() {
+        return ActivityType.NOCTURNAL;
     }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.CHICKEN; }
     public String getBreedingSeason() { return BREEDING; }

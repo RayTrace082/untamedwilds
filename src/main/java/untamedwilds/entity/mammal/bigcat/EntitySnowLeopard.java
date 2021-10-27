@@ -83,8 +83,8 @@ public class EntitySnowLeopard extends AbstractBigCat {
         return create_offspring(new EntitySnowLeopard(ModEntity.SNOW_LEOPARD, this.world));
     }
 
-    protected activityType getActivityType() {
-        return activityType.NOCTURNAL;
+    protected ActivityType getActivityType() {
+        return ActivityType.NOCTURNAL;
     }
     protected ResourceLocation getLootTable() {
         return ModLootTables.BIGCAT_LOOT_SNOW_LEOPARD;

@@ -1,6 +1,5 @@
 package untamedwilds.entity.mammal.bear;
 
-import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -11,19 +10,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.unique.BearRaidChestsGoal;
-import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
+@Deprecated
 public class EntityCaveBear extends AbstractBear {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/bear/cave.png");
@@ -79,13 +76,8 @@ public class EntityCaveBear extends AbstractBear {
         return false;
     }
 
-    @Nullable
-    public EntityCaveBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityCaveBear(ModEntity.CAVE_BEAR, this.world));
-    }
-
-    protected activityType getActivityType() {
-        return activityType.CREPUSCULAR;
+    protected ActivityType getActivityType() {
+        return ActivityType.CREPUSCULAR;
     }
     @Override
     protected ResourceLocation getLootTable() {

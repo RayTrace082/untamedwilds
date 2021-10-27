@@ -1,6 +1,5 @@
 package untamedwilds.entity.mammal.bear;
 
-import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -11,18 +10,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.unique.PandaBreakBamboo;
 import untamedwilds.entity.ai.unique.PandaEatBamboo;
-import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
+@Deprecated
 public class EntityGiantPanda extends AbstractBear {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/bear/panda.png");
@@ -76,13 +73,8 @@ public class EntityGiantPanda extends AbstractBear {
         return false;
     }
 
-    @Nullable
-    public EntityGiantPanda func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityGiantPanda(ModEntity.PANDA_BEAR, this.world));
-    }
-
-    protected activityType getActivityType() {
-        return activityType.CREPUSCULAR;
+    protected ActivityType getActivityType() {
+        return ActivityType.CREPUSCULAR;
     }
     @Override
     protected ResourceLocation getLootTable() {

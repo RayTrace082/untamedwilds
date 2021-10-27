@@ -1,6 +1,5 @@
 package untamedwilds.entity.mammal.bear;
 
-import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -11,17 +10,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
-import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
+@Deprecated
 // TODO: May be worth moving Sun Bears to the Badger body plan?
 public class EntitySunBear extends AbstractBear {
 
@@ -76,13 +73,8 @@ public class EntitySunBear extends AbstractBear {
         return false;
     }
 
-    @Nullable
-    public EntitySunBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntitySunBear(ModEntity.SUN_BEAR, this.world));
-    }
-
-    protected activityType getActivityType() {
-        return activityType.DIURNAL;
+    protected ActivityType getActivityType() {
+        return ActivityType.DIURNAL;
     }
     @Override
     protected ResourceLocation getLootTable() {

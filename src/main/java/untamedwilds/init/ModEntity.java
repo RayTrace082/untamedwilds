@@ -27,7 +27,6 @@ import untamedwilds.entity.amphibian.EntityNewt;
 import untamedwilds.entity.arthropod.EntityTarantula;
 import untamedwilds.entity.fish.*;
 import untamedwilds.entity.mammal.*;
-import untamedwilds.entity.mammal.bear.*;
 import untamedwilds.entity.mammal.bigcat.*;
 import untamedwilds.entity.mollusk.EntityGiantClam;
 import untamedwilds.entity.reptile.EntityAnaconda;
@@ -64,20 +63,22 @@ public class ModEntity {
     public static EntityType<EntityGiantClam> GIANT_CLAM = createEntity(ConfigMobControl.addGiantClam.get(), EntityGiantClam::new, EntityClassification.WATER_CREATURE, "giant_clam", 32, 10, true, 1.0F, 1.0F, 0x346B70, 0xAD713C, animalType.SESSILE, 1);
 
     // Mammals
+    public static EntityType<EntityBear> BEAR = createEntity(ConfigMobControl.addBear.get(), EntityBear::new,  "bear",  1.3F, 1.3F, 0x0B0A08, 0x20130B, animalType.APEX_PRED, 10, 1);
+
     public static EntityType<EntityHippo> HIPPO = createEntity(ConfigMobControl.addHippo.get(), EntityHippo::new,  "hippo",  1.8F, 1.8F, 0x463A31, 0x956761, animalType.APEX_PRED, 10, 5);
     public static EntityType<EntityAardvark> AARDVARK = createEntity(ConfigMobControl.addAardvark.get(), EntityAardvark::new,  "aardvark",  0.9F, 0.9F, 0x463A31, 0x956761, animalType.CRITTER, 2);
     public static EntityType<EntityRhino> RHINO = createEntity(ConfigMobControl.addRhino.get(), EntityRhino::new,  "rhino",  2.0F, 1.8F, 0x787676, 0x665956, animalType.APEX_PRED, 6);
     public static EntityType<EntityHyena> HYENA = createEntity(ConfigMobControl.addHyena.get(), EntityHyena::new,  "hyena",  0.9F, 1.1F, 0x6C6857, 0x978966, animalType.APEX_PRED, 10, 6);
     public static EntityType<EntityBoar> BOAR = createEntity(ConfigMobControl.addBoar.get(), EntityBoar::new,  "boar",  1.2F, 1.2F, 0x503C2A, 0x605449, animalType.APEX_PRED, 6, 3);
     // Bears
-    public static EntityType<EntityBlackBear> BLACK_BEAR = createEntity(ConfigMobControl.addBear.get(), EntityBlackBear::new,  "bear_black",  1.3F, 1.3F, 0x0B0A08, 0x3D3226, animalType.APEX_PRED, 1, 0);
+    /*public static EntityType<EntityBlackBear> BLACK_BEAR = createEntity(ConfigMobControl.addBear.get(), EntityBlackBear::new,  "bear_black",  1.3F, 1.3F, 0x0B0A08, 0x3D3226, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntityBlindBear> BLIND_BEAR = createEntity(ConfigMobControl.addBear.get() && ConfigGamerules.fantasyMobs.get(), EntityBlindBear::new,  "bear_blind",  1.6F, 1.6F, 0x241D1B, 0x4B3B35, animalType.LARGE_UNDERGROUND, 1, 0);
     public static EntityType<EntityBrownBear> BROWN_BEAR = createEntity(ConfigMobControl.addBear.get(), EntityBrownBear::new,  "bear_brown",  1.5F, 1.5F, 0x624125, 0x20130B, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntityCaveBear> CAVE_BEAR = createEntity(ConfigMobControl.addBear.get() && ConfigGamerules.extinctMobs.get(), EntityCaveBear::new,  "bear_cave",  1.6F, 1.6F, 0x564C45, 0x27190F, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntityGiantPanda> PANDA_BEAR = createEntity(ConfigMobControl.addBear.get(), EntityGiantPanda::new, "bear_panda",  1.2F, 1.2F, 15198183, 1776418, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntityPolarBear> POLAR_BEAR = createEntity(ConfigMobControl.addBear.get(), EntityPolarBear::new,  "bear_polar",  1.6F, 1.6F, 15921906, 9803152, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntitySpectacledBear> SPECTACLED_BEAR = createEntity(ConfigMobControl.addBear.get(), EntitySpectacledBear::new,  "bear_spectacled",  1.2F, 1.2F, 0x624125, 0x8E6E51, animalType.APEX_PRED, 1, 0);
-    public static EntityType<EntitySunBear> SUN_BEAR = createEntity(ConfigMobControl.addBear.get(), EntitySunBear::new,  "bear_sun",  0.9F, 0.9F, 0x0B0A08, 0xA27345, animalType.APEX_PRED, 1, 0);
+    public static EntityType<EntitySunBear> SUN_BEAR = createEntity(ConfigMobControl.addBear.get(), EntitySunBear::new,  "bear_sun",  0.9F, 0.9F, 0x0B0A08, 0xA27345, animalType.APEX_PRED, 1, 0);*/
     // Big Cats
     public static EntityType<EntityJaguar> JAGUAR = createEntity(ConfigMobControl.addBigCat.get(), EntityJaguar::new,  "bigcat_jaguar",  1.2F, 1.0F, 0xC59F45,0x383121, animalType.APEX_PRED, 1, 0);
     public static EntityType<EntityLeopard> LEOPARD = createEntity(ConfigMobControl.addBigCat.get(), EntityLeopard::new,  "bigcat_leopard",  1.2F, 1.0F, 0xC59F45, 0x383121, animalType.APEX_PRED, 1, 0);
@@ -155,19 +156,20 @@ public class ModEntity {
 
         event.put(GIANT_CLAM, EntityGiantClam.registerAttributes().create());
 
+        event.put(BEAR, EntityBear.registerAttributes().create());
         event.put(HIPPO, EntityHippo.registerAttributes().create());
         event.put(AARDVARK, EntityAardvark.registerAttributes().create());
         event.put(RHINO, EntityRhino.registerAttributes().create());
         event.put(HYENA, EntityHyena.registerAttributes().create());
         event.put(BOAR, EntityBoar.registerAttributes().create());
-        event.put(BLACK_BEAR, EntityBlackBear.registerAttributes().create());
+        /*event.put(BLACK_BEAR, EntityBlackBear.registerAttributes().create());
         event.put(BROWN_BEAR, EntityBrownBear.registerAttributes().create());
         event.put(CAVE_BEAR, EntityCaveBear.registerAttributes().create());
         event.put(BLIND_BEAR, EntityBlindBear.registerAttributes().create());
         event.put(PANDA_BEAR, EntityGiantPanda.registerAttributes().create());
         event.put(POLAR_BEAR, EntityPolarBear.registerAttributes().create());
         event.put(SPECTACLED_BEAR, EntitySpectacledBear.registerAttributes().create());
-        event.put(SUN_BEAR, EntitySunBear.registerAttributes().create());
+        event.put(SUN_BEAR, EntitySunBear.registerAttributes().create());*/
 
         event.put(JAGUAR, EntityJaguar.registerAttributes().create());
         event.put(LEOPARD, EntityLeopard.registerAttributes().create());
@@ -213,6 +215,7 @@ public class ModEntity {
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, RendererGiantClam::new);
         //EntityGiantClam.processSkins();
 
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BEAR, RendererBear::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.HIPPO, RendererHippo::new);
         EntityHippo.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.AARDVARK, RendererAardvark::new);
@@ -223,7 +226,7 @@ public class ModEntity {
         EntityHyena.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.BOAR, RendererBoar::new);
         EntityBoar.processSkins();
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, RendererBear::new);
+        /*RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, RendererBear::new);
         EntityBlackBear.registerTextures(EntityBlackBear.SKIN_NUMBER);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLIND_BEAR, RendererBear::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.BROWN_BEAR, RendererBear::new);
@@ -232,7 +235,7 @@ public class ModEntity {
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANDA_BEAR, RendererBear::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.POLAR_BEAR, RendererBear::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.SPECTACLED_BEAR, RendererBear::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUN_BEAR, RendererBear::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUN_BEAR, RendererBear::new);*/
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.JAGUAR, RendererBigCat::new);
         EntityJaguar.registerTextures(EntityJaguar.SKIN_NUMBER);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.PUMA, RendererBigCat::new);

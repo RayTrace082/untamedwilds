@@ -192,8 +192,8 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
     public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.aardvark_" + getRawSpeciesName(i)).getString(); }
     public String getRawSpeciesName(int i) { return SpeciesAardvark.values()[i].name().toLowerCase(); }
 
-    protected activityType getActivityType() {
-        return activityType.NOCTURNAL;
+    protected ActivityType getActivityType() {
+        return ActivityType.NOCTURNAL;
     }
     public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == ModItems.VEGETABLE_AARDVARK_CUCUMBER.get(); }
     public String getBreedingSeason() { return BREEDING; }

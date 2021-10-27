@@ -4,6 +4,8 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -131,17 +133,17 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
         return super.func_230254_b_(player, hand);
     }
 
-    protected activityType getActivityType() {
-        return activityType.INSOMNIAC;
+    protected ActivityType getActivityType() {
+        return ENTITY_DATA_HASH.get(this.getType()).getActivityType(this.getVariant());
     }
 
     public boolean isActive() {
-        activityType type = this.getActivityType();
+        ActivityType type = this.getActivityType();
         Pair<Integer, Integer> times = type.getTimes();
         if ((this.isTamed() && this.getCommandInt() != 0) || !ConfigGamerules.sleepBehaviour.get()) {
             return true;
         }
-        if (type == activityType.CATHEMERAL) {
+        if (type == ActivityType.CATHEMERAL) {
             return this.ticksExisted % 17000 < 3000;
         }
         long time = this.world.getDayTime();
@@ -156,19 +158,40 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
         return this.forceSleep >= 0;
     }
 
-    protected enum activityType implements IStringSerializable {
-        DIURNAL         (1000, 16000), // From 7 AM to 10 PM
-        NOCTURNAL       (13000, 4000), // From 7 PM to 10 AM
-        CREPUSCULAR     (8000, 23000), // From 14 PM to 5 AM ; 4000 - 19000 ???
-        CATHEMERAL      (-1, -1),      // Random naps throughout the day
-        INSOMNIAC       (-1, -1);      // No sleep, redundant, should just not add the GoToSleepGoal
+    public enum ActivityType implements IStringSerializable {
+        DIURNAL         ("diurnal", 1000, 16000), // From 7 AM to 10 PM
+        NOCTURNAL       ("nocturnal", 13000, 4000), // From 7 PM to 10 AM
+        CREPUSCULAR     ("crepuscular", 8000, 23000), // From 14 PM to 5 AM ; 4000 - 19000 ???
+        CATHEMERAL      ("cathemeral", -1, -1),      // Random naps throughout the day
+        INSOMNIAC       ("insomniac", -1, -1);      // No sleep, redundant, should just not add the GoToSleepGoal
 
         public int wakeUp;
         public int sleep;
+        public String name;
+        public static final Codec<ActivityType> CODEC = Codec.STRING.comapFlatMap(ActivityType::getByName, ActivityType::toString).stable();
 
-        activityType(int wakeUp, int sleep) {
+        ActivityType(String name, int wakeUp, int sleep) {
             this.wakeUp = wakeUp;
             this.sleep = sleep;
+            this.name = name;
+        }
+
+        private static DataResult<ActivityType> getByName(String path) {
+            switch (path) {
+                case "diurnal":
+                    return DataResult.success(DIURNAL);
+                case "nocturnal":
+                    return DataResult.success(NOCTURNAL);
+                case "crepuscular":
+                    return DataResult.success(CREPUSCULAR);
+                case "cathemeral":
+                    return DataResult.success(CATHEMERAL);
+            }
+            return DataResult.success(INSOMNIAC);
+        }
+
+        public String toString() {
+            return this.name;
         }
 
         public Pair<Integer, Integer> getTimes() {

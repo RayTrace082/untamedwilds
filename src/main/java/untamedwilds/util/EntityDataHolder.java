@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
+import untamedwilds.entity.ComplexMobTerrestrial;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class EntityDataHolder {
             Codec.INT.fieldOf("rarity").orElse(0).forGetter((p_237054_0_) -> p_237054_0_.rarity),
             Codec.FLOAT.fieldOf("attack").orElse(-1F).forGetter((p_237054_0_) -> p_237054_0_.attack),
             Codec.FLOAT.fieldOf("health").orElse(-1F).forGetter((p_237054_0_) -> p_237054_0_.health),
+            ComplexMobTerrestrial.ActivityType.CODEC.fieldOf("activityType").orElse(ComplexMobTerrestrial.ActivityType.INSOMNIAC).forGetter((p_237052_0_) -> p_237052_0_.activityType),
             Codec.STRING.fieldOf("favourite_food").orElse("").forGetter((p_237052_0_) -> p_237052_0_.favouriteFood),
             Codec.INT.fieldOf("growing_time").orElse(1).forGetter((p_237054_0_) -> p_237054_0_.growing_time),
             Codec.INT.fieldOf("offspring").orElse(1).forGetter((p_237054_0_) -> p_237054_0_.offspring),
@@ -35,6 +37,7 @@ public class EntityDataHolder {
     private final int rarity;
     private final float attack;
     private final float health;
+    private final ComplexMobTerrestrial.ActivityType activityType;
     private final String favouriteFood;
     private final int growing_time;
     private final int offspring;
@@ -43,13 +46,14 @@ public class EntityDataHolder {
     private final Map<String, Integer> flags;
     private final List<SpeciesDataHolder> speciesData;
 
-    public EntityDataHolder(String p_i232114_1_, float p_i232114_2_, int p_i232114_3_, float attack, float health, String favouriteFood, int growing_time, int offspring, String breeding, Map<String, SoundEvent> sounds, Map<String, Integer> flags, List<SpeciesDataHolder> speciesData) {
+    public EntityDataHolder(String p_i232114_1_, float p_i232114_2_, int p_i232114_3_, float attack, float health, ComplexMobTerrestrial.ActivityType activityType, String favouriteFood, int growing_time, int offspring, String breeding, Map<String, SoundEvent> sounds, Map<String, Integer> flags, List<SpeciesDataHolder> speciesData) {
         this.name = p_i232114_1_;
         this.modelScale = p_i232114_2_;
         this.rarity = p_i232114_3_;
 
         this.attack = attack;
         this.health = health;
+        this.activityType = activityType;
 
         this.favouriteFood = favouriteFood;
         this.growing_time = growing_time;
@@ -101,6 +105,13 @@ public class EntityDataHolder {
             return this.modelScale;
         }
         return this.speciesData.get(i).getHealth();
+    }
+
+    public ComplexMobTerrestrial.ActivityType getActivityType(int i) {
+        if (this.speciesData.get(i).getActivityType() == ComplexMobTerrestrial.ActivityType.INSOMNIAC) {
+            return this.activityType;
+        }
+        return this.speciesData.get(i).getActivityType();
     }
 
     // TODO: May be possible to define ItemStack during resource reload, rather than calculate it every time

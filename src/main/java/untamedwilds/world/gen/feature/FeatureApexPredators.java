@@ -11,8 +11,6 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import untamedwilds.entity.mammal.bear.AbstractBear;
-import untamedwilds.entity.mammal.bear.EntitySunBear;
 import untamedwilds.entity.mammal.bigcat.AbstractBigCat;
 import untamedwilds.entity.mammal.bigcat.EntityCaveLion;
 import untamedwilds.entity.mammal.bigcat.EntityLion;
@@ -33,16 +31,8 @@ public class FeatureApexPredators extends Feature<NoFeatureConfig> {
             // TODO: Hardcoded Bear and Big Cats until they get integrated into the Species system
             int groupCount = entry.groupCount;
             EntityType<?> type = entry.entityType;
-            if (type.create(world.getWorld()) instanceof AbstractBear) {
-                type = AbstractBear.SpeciesBear.getSpeciesByBiome(world, pos);
-                if (type != null) {
-                    Entity entity = type.create(world.getWorld());
-                    if (entity instanceof EntitySunBear) {
-                        groupCount = 3;
-                    }
-                }
-            }
-            else if (type.create(world.getWorld()) instanceof AbstractBigCat) {
+
+            if (type.create(world.getWorld()) instanceof AbstractBigCat) {
                 type = AbstractBigCat.SpeciesBigCat.getSpeciesByBiome(world.getBiome(pos));
                 if (type != null) {
                     Entity entity = type.create(world.getWorld());

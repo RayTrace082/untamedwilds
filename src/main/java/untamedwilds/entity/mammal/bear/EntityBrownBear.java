@@ -1,6 +1,5 @@
 package untamedwilds.entity.mammal.bear;
 
-import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -11,22 +10,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ISkins;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.unique.BearRaidChestsGoal;
-import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class EntityBrownBear extends AbstractBear implements ISkins {
 
     public static List<ResourceLocation> TEXTURES = new ArrayList<>();
@@ -83,18 +79,8 @@ public class EntityBrownBear extends AbstractBear implements ISkins {
         return false;
     }
 
-    @Nullable
-    public EntityBrownBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityBrownBear(ModEntity.BROWN_BEAR, this.world));
-    }
-
-    public static void registerTextures(int count) {
-        for(int i = 1; i < count + 1; i++)
-            EntityBrownBear.TEXTURES.add(new ResourceLocation(UntamedWilds.MOD_ID, String.format("textures/entity/bear/brown_%d.png", i)));
-    }
-
-    protected activityType getActivityType() {
-        return activityType.DIURNAL;
+    protected ActivityType getActivityType() {
+        return ActivityType.DIURNAL;
     }
     @Override
     protected ResourceLocation getLootTable() {

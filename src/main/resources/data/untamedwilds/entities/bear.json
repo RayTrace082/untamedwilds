@@ -1,0 +1,172 @@
+{
+  "name": "bear",
+  "breeding": "EARLY_SUMMER",
+  "growing": 8,
+  "offspring": 2,
+  "sounds": {
+    "ambient": "untamedwilds:entity.bear.ambient",
+    "hurt": "untamedwilds:entity.bear.hurt",
+    "death": "untamedwilds:entity.bear.death",
+    "threat": "untamedwilds:entity.bear.warning"
+  },
+  "flags": {
+    "hasHump": 0,
+    "hasShortSnout": 0,
+    "isPanda": 0
+  },
+
+  "species": [
+    {
+    "name": "black",
+    "variant": 0,
+    "scale": 0.8,
+    "rarity": 5,
+    "breeding": "EARLY_SUMMER",
+    "growing": 8,
+    "offspring": 2,
+      "activityType": "crepuscular",
+    "favourite_food": "minecraft:sweet_berries",
+    "attack": 5,
+    "health": 30,
+    "flags": {
+    },
+    "spawnBiomes": [
+        "forest",
+        "taiga"
+    ]
+  },
+    {
+      "name": "blind",
+      "variant": 1,
+      "scale": 1.1,
+      "rarity": 1,
+      "breeding": "MID_SUMMER",
+      "growing": 8,
+      "offspring": 1,
+      "activityType": "cathemeral",
+      "favourite_food": "minecraft:beef",
+      "attack": 7,
+      "health": 45,
+      "flags": {
+        "hasShortSnout": 1
+      },
+      "spawnBiomes": [
+      ]
+    },
+    {
+      "name": "brown",
+      "variant": 2,
+      "scale": 1.1,
+      "rarity": 3,
+      "breeding": "MID_SUMMER",
+      "growing": 8,
+      "offspring": 1,
+      "activityType": "diurnal",
+      "favourite_food": "minecraft:salmon",
+      "attack": 7,
+      "health": 40,
+      "flags": {
+        "hasHump": 1
+      },
+      "spawnBiomes": [
+        "taiga",
+        "extreme_hills"
+      ]
+    },
+    {
+      "name": "cave",
+      "variant": 3,
+      "scale": 1.3,
+      "rarity": 1,
+      "breeding": "MID_SUMMER",
+      "growing": 10,
+      "offspring": 1,
+      "activityType": "crepuscular",
+      "favourite_food": "minecraft:potato",
+      "attack": 9,
+      "health": 50,
+      "flags": {
+        "hasHump": 1
+      },
+      "spawnBiomes": [
+        "taiga",
+        "extreme_hills"
+      ]
+    },
+    {
+      "name": "panda",
+      "variant": 4,
+      "scale": 0.7,
+      "rarity": 0,
+      "breeding": "MID_SPRING",
+      "growing": 6,
+      "offspring": 1,
+      "activityType": "crepuscular",
+      "favourite_food": "minecraft:bamboo",
+      "attack": 4,
+      "health": 25,
+      "flags": {
+        "hasShortSnout": 1,
+        "isPanda": 1
+      },
+      "spawnBiomes": [
+        "jungle"
+      ]
+    },
+    {
+      "name": "polar",
+      "variant": 5,
+      "scale": 1.3,
+      "rarity": 1,
+      "breeding": "LATE_SPRING",
+      "growing": 10,
+      "offspring": 1,
+      "activityType": "diurnal",
+      "favourite_food": "untamedwilds:material_fat",
+      "attack": 8,
+      "health": 45,
+      "flags": {
+      },
+      "spawnBiomes": [
+        "icy"
+      ]
+    },
+    {
+      "name": "spectacled",
+      "variant": 6,
+      "scale": 0.8,
+      "rarity": 1,
+      "breeding": "LATE_WET",
+      "growing": 7,
+      "offspring": 1,
+      "activityType": "crepuscular",
+      "favourite_food": "minecraft:apple",
+      "attack": 5,
+      "health": 30,
+      "flags": {
+        "hasShortSnout": 1
+      },
+      "spawnBiomes": [
+        "extreme_hills"
+      ]
+    },
+    {
+      "name": "sun",
+      "variant": 7,
+      "scale": 0.6,
+      "rarity": 1,
+      "breeding": "MID_WET",
+      "growing": 4,
+      "offspring": 2,
+      "activityType": "diurnal",
+      "favourite_food": "minecraft:honeycomb",
+      "attack": 4,
+      "health": 15,
+      "flags": {
+      },
+      "spawnBiomes": [
+        "jungle"
+      ]
+    }
+  ]
+}

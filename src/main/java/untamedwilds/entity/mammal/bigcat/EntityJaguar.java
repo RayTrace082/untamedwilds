@@ -92,8 +92,8 @@ public class EntityJaguar extends AbstractBigCat implements ISkins {
         return create_offspring(new EntityJaguar(ModEntity.JAGUAR, this.world));
     }
 
-    protected activityType getActivityType() {
-        return activityType.CREPUSCULAR;
+    protected ActivityType getActivityType() {
+        return ActivityType.CREPUSCULAR;
     }
     @Override
     protected ResourceLocation getLootTable() {

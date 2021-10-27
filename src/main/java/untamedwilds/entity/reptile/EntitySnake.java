@@ -192,8 +192,8 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
         return EntitySnake.SpeciesSnake.getSpeciesByBiome(biome);
     }
 
-    protected activityType getActivityType() {
-        return activityType.INSOMNIAC;
+    protected ActivityType getActivityType() {
+        return ActivityType.INSOMNIAC;
     }
     public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.snake_" + getRawSpeciesName(i)).getString(); }
     public String getRawSpeciesName(int i) { return SpeciesSnake.values()[i].name().toLowerCase(); }

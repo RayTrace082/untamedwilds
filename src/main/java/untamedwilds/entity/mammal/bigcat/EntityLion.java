@@ -95,8 +95,8 @@ public class EntityLion extends AbstractBigCat implements IPackEntity {
         return create_offspring(new EntityLion(ModEntity.LION, this.world));
     }
 
-    protected activityType getActivityType() {
-        return activityType.DIURNAL;
+    protected ActivityType getActivityType() {
+        return ActivityType.DIURNAL;
     }
     protected ResourceLocation getLootTable() {
         return ModLootTables.BIGCAT_LOOT_LION;

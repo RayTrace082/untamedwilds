@@ -7,9 +7,10 @@ import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
+import untamedwilds.entity.mammal.EntityBear;
 import untamedwilds.entity.mammal.bear.AbstractBear;
 
-public class ModelBear extends AdvancedEntityModel<AbstractBear> {
+public class ModelBear extends AdvancedEntityModel<EntityBear> {
 
     private final AdvancedModelBox body_main;
     private final AdvancedModelBox body_buttocks;
@@ -171,7 +172,7 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
     }
 
     private void animate(IAnimatedEntity entityIn) {
-        AbstractBear bear = (AbstractBear) entityIn;
+        EntityBear bear = (EntityBear) entityIn;
         animator.update(bear);
 
         animator.setAnimation(AbstractBear.ATTACK_MAUL);
@@ -408,7 +409,7 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
         animator.resetKeyframe(20);
     }
 
-    public void setRotationAngles(AbstractBear bear, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setRotationAngles(EntityBear bear, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(bear);
         float globalSpeed = 2.5f;
@@ -425,10 +426,6 @@ public class ModelBear extends AdvancedEntityModel<AbstractBear> {
         this.head_jaw.scaleY = shortSnout;
         float torsoScale = bear.hasHump() ? 1.2F : 1;
         this.body_torso.scaleY = torsoScale;
-        boolean longBody = bear.hasLongBody();
-        this.body_torso.rotationPointZ = longBody ? -2 : -1;
-        this.body_buttocks.rotationPointZ = longBody ? 4 : 2;
-        this.head_face.rotationPointZ = longBody ? -10 : -9;
 
         // Breathing Animation
         this.body_main.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);

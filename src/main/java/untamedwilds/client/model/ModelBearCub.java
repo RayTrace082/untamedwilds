@@ -5,9 +5,9 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import untamedwilds.entity.mammal.bear.AbstractBear;
+import untamedwilds.entity.mammal.EntityBear;
 
-public class ModelBearCub extends AdvancedEntityModel<AbstractBear> {
+public class ModelBearCub extends AdvancedEntityModel<EntityBear> {
 
     private final AdvancedModelBox body_main;
     private final AdvancedModelBox body_buttocks;
@@ -109,7 +109,7 @@ public class ModelBearCub extends AdvancedEntityModel<AbstractBear> {
         );
     }
 
-    public void setRotationAngles(AbstractBear bear, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setRotationAngles(EntityBear bear, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
 
         // Breathing Animation

@@ -1,8 +1,11 @@
-package untamedwilds.entity.mammal.bear;
+package untamedwilds.entity.mammal;
 
 import com.github.alexthe666.citadel.animation.Animation;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -13,21 +16,28 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
-import untamedwilds.entity.ai.SmartFollowOwnerGoal;
+import untamedwilds.entity.*;
+import untamedwilds.entity.ai.*;
+import untamedwilds.entity.ai.target.HuntMobTarget;
+import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
-import untamedwilds.entity.mammal.EntityBear;
+import untamedwilds.entity.mammal.bear.EntityBlackBear;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
+import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-@Deprecated
-public abstract class AbstractBear extends EntityBear {
+public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewSkins, INeedsPostUpdate {
 
     public static Animation ATTACK_BITE;
     public static Animation ATTACK_MAUL;
@@ -38,7 +48,7 @@ public abstract class AbstractBear extends EntityBear {
     public static Animation IDLE_TALK;
     public static Animation ANIMATION_EAT;
 
-    AbstractBear(EntityType<? extends AbstractBear> type, World worldIn) {
+    public EntityBear(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
         ANIMATION_ROAR = Animation.create(50);
         IDLE_TALK = Animation.create(20);
@@ -51,6 +61,50 @@ public abstract class AbstractBear extends EntityBear {
         this.stepHeight = 1;
         this.turn_speed = 0.3F;
         this.experienceValue = 10;
+    }
+
+    public void registerGoals() {
+        this.goalSelector.addGoal(1, new SmartSwimGoal(this));
+        this.goalSelector.addGoal(2, new FindItemsGoal(this, 12));
+        this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 2.3D, false, 1));
+        this.goalSelector.addGoal(3, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> getEcoLevel(input) > 6));
+        this.goalSelector.addGoal(4, new SmartMateGoal(this, 1D));
+        this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D));
+        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
+        //this.goalSelector.addGoal(5, new BearRaidChestsGoal(this, 120));
+        this.goalSelector.addGoal(6, new SmartWanderGoal(this, 1D, true));
+        this.goalSelector.addGoal(7, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntityBlackBear)));
+        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, input -> getEcoLevel(input) <= 5));
+    }
+
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MobEntity.func_233666_p_()
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15D)
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 24D)
+                .createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
+                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1D)
+                .createMutableAttribute(Attributes.ARMOR, 4D);
+    }
+
+    public boolean wantsToBreed() {
+        if (super.wantsToBreed()) {
+            if (!this.isSleeping() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this) && this.getHunger() >= 80) {
+                if (ConfigGamerules.hardcoreBreeding.get()) {
+                    List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
+                    return list.size() < 3;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Nullable
+    public EntityBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
+        return create_offspring(new EntityBear(ModEntity.BEAR, this.world));
     }
 
     public boolean isPushedByWater() {
@@ -188,11 +242,6 @@ public abstract class AbstractBear extends EntityBear {
         return flag;
     }
 
-    @Nullable
-    public EntityBear func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityBear(ModEntity.BEAR, this.world));
-    }
-
     public boolean isInvulnerableTo(DamageSource source) {
         return super.isInvulnerableTo(source) || source == DamageSource.SWEET_BERRY_BUSH;
     }
@@ -234,105 +283,43 @@ public abstract class AbstractBear extends EntityBear {
         return new Animation[]{NO_ANIMATION, ANIMATION_ROAR, IDLE_STAND, IDLE_TALK, ANIMATION_EAT, ATTACK_MAUL, ATTACK_BITE, ATTACK_SWIPE, ATTACK_POUND};
     }
 
-    // Model Parameters
-    public boolean hasHump() { return false; }
-    public boolean hasShortSnout() { return false; }
-    public boolean hasLongBody() { return false; }
+    // Flags Parameters
+    public boolean hasHump() { return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "hasHump") == 1; }
+    public boolean hasShortSnout() { return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "hasShortSnout") == 1; }
+    public boolean isPanda() { return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "isPanda") == 1; }
 
-    /*public enum SpeciesBear implements IStringSerializable {
+    @Override
+    public void updateAttributes() {
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
+        this.setHealth(this.getMaxHealth());
+    }
 
-        BLACK		(0, 0.8F, 5F, 30F, false, false, false, false, Items.SWEET_BERRIES, "EARLY_SUMMER", 8, 5, Biome.Category.FOREST, Biome.Category.TAIGA),
-        BLIND		(1, 1.1F, 7F, 45F, false, true, false, false, Items.BEEF, "MID_SUMMER", 8, ConfigGamerules.fantasyMobs.get() ? 1 : 0),
-        BROWN		(2, 1.1F, 7F, 40F, true, false, false, false, Items.SALMON, "EARLY_SUMMER", 8, 3, Biome.Category.TAIGA, Biome.Category.EXTREME_HILLS),
-        CAVE		(3, 1.3F, 9F, 50F, true, false, false, false, Items.POTATO, "MID_SUMMER", 10, ConfigGamerules.extinctMobs.get() ? 1 : 0, Biome.Category.TAIGA, Biome.Category.EXTREME_HILLS),
-        PANDA		(4, 0.7F, 4F, 25F,false, true, false, true, Items.BAMBOO, "MID_SPRING", 6, 0, Biome.Category.JUNGLE),
-        POLAR		(5, 1.3F, 8F, 45F, false, false, true, false, ModItems.MATERIAL_FAT.get(), "LATE_SPRING", 10, 1, Biome.Category.ICY),
-        SPECTACLED	(6, 0.8F, 5F, 30F, false, true, false, false, Items.APPLE, "LATE_WET", 7, 1, Biome.Category.EXTREME_HILLS),
-        SUN 		(7, 0.6F, 4F, 15F, false, false, false, false, Items.HONEYCOMB, "MID_WET", 4, 4, Biome.Category.JUNGLE);
-
-        public int species;
-        public Float scale;
-        public float attack;
-        public float health;
-        public boolean hasHump;
-        public boolean hasShortSnout;
-        public boolean hasLongBody;
-        public boolean isPanda;
-        public String breedingSeason;
-        public int gestation;
-        public Item favouriteFood;
-        public int rarity;
-        public Biome.Category[] spawnBiomes;
-
-        SpeciesBear(int species, float scale, float attack, float health, boolean hasHump, boolean hasShortSnout, boolean hasLongBody, boolean isPanda, Item favouriteFood, String breeding, int growingAge, int rolls, Biome.Category... biomes) {
-            this.species = species;
-            this.scale = scale;
-            this.attack = attack;
-            this.health = health;
-            this.hasHump = hasHump;
-            this.hasShortSnout = hasShortSnout;
-            this.hasLongBody = hasLongBody;
-            this.isPanda = isPanda;
-            this.favouriteFood = favouriteFood;
-            this.breedingSeason = breeding;
-            this.gestation = growingAge;
-            this.rarity = rolls;
-            this.spawnBiomes = biomes;
+    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
+        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
+            return this.getRNG().nextInt(ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
         }
-
-        @Override
-        public String getString() {
-            return "why would you do this?";
+        // TODO: Need a better way to lock Polar and Panda bears
+        if (biomekey.equals(Biomes.FROZEN_OCEAN) || biomekey.equals(Biomes.DEEP_FROZEN_OCEAN)) {
+            return 5;
         }
-
-        public static int getSpeciesByBiome(Biome biome) {
-            Optional<RegistryKey<Biome>> optional = biome.func_242406_i(pos);
-            if (Objects.equals(optional, Optional.of(Biomes.FROZEN_OCEAN)) || Objects.equals(optional, Optional.of(Biomes.DEEP_FROZEN_OCEAN))) {
-                return ModEntity.POLAR_BEAR;
-            }
-            if (Objects.equals(optional, Optional.of(Biomes.BAMBOO_JUNGLE)) || Objects.equals(optional, Optional.of(Biomes.BAMBOO_JUNGLE_HILLS))) {
-                return ModEntity.PANDA_BEAR;
-            }
-            List<SpeciesBear> types = new ArrayList<>();
-            for (SpeciesBear type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rarity; i++) {
-                            types.add(type);
-                        }
+        if (biomekey.equals(Biomes.BAMBOO_JUNGLE) || biomekey.equals(Biomes.BAMBOO_JUNGLE_HILLS)) {
+            return 4;
+        }
+        List<Integer> validTypes = new ArrayList<>();
+        for (SpeciesDataHolder speciesDatum : ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData()) {
+            for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
+                if(biome.getCategory() == biomeTypes){
+                    for (int i=0; i < speciesDatum.getRarity(); i++) {
+                        validTypes.add(speciesDatum.getVariant());
                     }
                 }
             }
-            if (types.isEmpty()) {
-                return 99;
-            } else {
-                return types.get(new Random().nextInt(types.size())).getSpecies();
-            }
         }
-
-        public static EntityType<? extends AbstractBear> getSpeciesByBiome(IWorld world, BlockPos pos) {
-            Optional<RegistryKey<Biome>> optional = world.func_242406_i(pos);
-            if (Objects.equals(optional, Optional.of(Biomes.FROZEN_OCEAN)) || Objects.equals(optional, Optional.of(Biomes.DEEP_FROZEN_OCEAN))) {
-                return ModEntity.POLAR_BEAR;
-            }
-            if (Objects.equals(optional, Optional.of(Biomes.BAMBOO_JUNGLE)) || Objects.equals(optional, Optional.of(Biomes.BAMBOO_JUNGLE_HILLS))) {
-                return ModEntity.PANDA_BEAR;
-            }
-            List<SpeciesBear> types = new ArrayList<>();
-            for (SpeciesBear type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rarity; i++) {
-                            types.add(type);
-                        }
-                    }
-                }
-            }
-            if (types.isEmpty()) {
-                return 99;
-            } else {
-                return types.get(new Random().nextInt(types.size())).getSpecies();
-            }
+        if (validTypes.isEmpty()) {
+            return 99;
+        } else {
+            return validTypes.get(new Random().nextInt(validTypes.size()));
         }
-    }*/
+    }
 }
