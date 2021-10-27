@@ -26,20 +26,23 @@ public interface ISpecies {
             return ((MobEntity)this).getRNG().nextInt(ComplexMob.ENTITY_DATA_HASH.get(((MobEntity)this).getType()).getSpeciesData().size());
         }
         List<Integer> validTypes = new ArrayList<>();
-        for (SpeciesDataHolder speciesDatum : ComplexMob.ENTITY_DATA_HASH.get(((MobEntity)this).getType()).getSpeciesData()) {
-            for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
-                if(biome.getCategory() == biomeTypes){
-                    for (int i=0; i < speciesDatum.getRarity(); i++) {
-                        validTypes.add(speciesDatum.getVariant());
+        if (ComplexMob.ENTITY_DATA_HASH.containsKey(((MobEntity)this).getType())) {
+            for (SpeciesDataHolder speciesDatum : ComplexMob.ENTITY_DATA_HASH.get(((MobEntity)this).getType()).getSpeciesData()) {
+                for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
+                    if(biome.getCategory() == biomeTypes){
+                        for (int i=0; i < speciesDatum.getRarity(); i++) {
+                            validTypes.add(speciesDatum.getVariant());
+                        }
                     }
                 }
             }
+            if (validTypes.isEmpty()) {
+                return 99;
+            } else {
+                return validTypes.get(new Random().nextInt(validTypes.size()));
+            }
         }
-        if (validTypes.isEmpty()) {
-            return 99;
-        } else {
-            return validTypes.get(new Random().nextInt(validTypes.size()));
-        }
+        return 0;
     }
 
     default String getRawSpeciesName(int i) {
