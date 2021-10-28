@@ -163,6 +163,7 @@
       "attack": 4,
       "health": 15,
       "flags": {
+        "groupCount": 3
       },
       "spawnBiomes": [
         "jungle"

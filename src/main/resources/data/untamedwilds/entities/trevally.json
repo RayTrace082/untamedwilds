@@ -12,7 +12,7 @@
     "scale": 0.8,
     "rarity": 2,
     "flags": {
-      "schoolSize": 8
+      "groupCount": 8
     },
     "spawnBiomes": [
         "ocean"
@@ -24,7 +24,7 @@
       "scale": 0.8,
       "rarity": 2,
       "flags": {
-        "schoolSize": 8
+        "groupCount": 8
       },
       "spawnBiomes": [
         "ocean"
@@ -36,7 +36,7 @@
       "scale": 1.5,
       "rarity": 1,
       "flags": {
-        "schoolSize": 1
+        "groupCount": 1
       },
       "spawnBiomes": [
         "ocean"
@@ -48,7 +48,7 @@
       "scale": 1,
       "rarity": 2,
       "flags": {
-        "schoolSize": 6
+        "groupCount": 6
       },
       "spawnBiomes": [
         "ocean"
@@ -60,7 +60,7 @@
       "scale": 1,
       "rarity": 3,
       "flags": {
-        "schoolSize": 8
+        "groupCount": 8
       },
       "spawnBiomes": [
         "ocean"

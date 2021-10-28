@@ -73,6 +73,15 @@ public abstract class EntityUtils {
         }
     }
 
+    public static int getPackSize(EntityType<?> type, int variant) {
+        if (ComplexMob.ENTITY_DATA_HASH.containsKey(type)) {
+            if (ComplexMob.ENTITY_DATA_HASH.get(type).getFlags(variant, "groupCount") != null) {
+                return ComplexMob.ENTITY_DATA_HASH.get(type).getFlags(variant, "groupCount");
+            }
+        }
+        return 1;
+    }
+
     // Self explanatory
     public static EntityType<?> getEntityTypeFromTag(CompoundNBT nbt, @Nullable EntityType<?> alt) {
         if (nbt != null && nbt.contains("EntityTag", 10)) {

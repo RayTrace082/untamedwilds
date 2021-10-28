@@ -3,6 +3,8 @@
   "breeding": "EARLY_SUMMER",
   "growing": 6,
   "offspring": 5,
+  "attack": 2,
+  "health": 10,
   "favourite_food": "untamedwilds:food_turtle_raw",
   "sounds": {
     "ambient": "entity.turtle.ambient_land",

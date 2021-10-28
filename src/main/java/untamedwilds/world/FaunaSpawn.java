@@ -14,6 +14,7 @@ import net.minecraft.world.gen.Heightmap;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ISpecies;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -84,9 +85,6 @@ public class FaunaSpawn {
             if (rand.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(Objects.requireNonNull(worldIn.getBiome(pos).getRegistryName()))) {
                 int k = 1;
                 int species = -1;
-                if (groupSize > 1) {
-                    k = 1 + rand.nextInt(groupSize);
-                }
                 for(int packSize = 0; packSize < k; ++packSize) {
                     int x = pos.getX();
                     int y = pos.getY();
@@ -135,6 +133,8 @@ public class FaunaSpawn {
                                         if (mobentity instanceof ISpecies) {
                                             if (species == -1) {
                                                 species = ((ComplexMob)mobentity).getVariant();
+                                                if (species != 99)
+                                                    k = EntityUtils.getPackSize(entityType, species);
                                             } else {
                                                 ((ComplexMob)mobentity).setVariant(species);
                                             } // Wrong spawning messages are most likely due to their inclusion on onMobSpawning, not here
