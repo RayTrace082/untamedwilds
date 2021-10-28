@@ -36,6 +36,7 @@ public class RendererBear extends MobRenderer<EntityBear, EntityModel<EntityBear
         f *= entity.getRenderScale();
         f *= entity.getModelScale(entity.getVariant());
         matrixStackIn.scale(f, f, f);
+        this.shadowSize = f;
     }
 
     public ResourceLocation getEntityTexture(EntityBear entity) {
