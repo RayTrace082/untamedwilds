@@ -20,9 +20,12 @@ import untamedwilds.entity.*;
 import untamedwilds.entity.ai.FishReturnToSchoolGoal;
 import untamedwilds.entity.ai.FishWanderAsSchoolGoal;
 import untamedwilds.util.EntityUtils;
+import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPackEntity, INewSkins {
 
@@ -121,6 +124,23 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
         if (isArtificialSpawnReason(reason) || ConfigGamerules.randomSpecies.get()) {
             return this.rand.nextInt(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
         }
-        return ((ISpecies)this).setSpeciesByBiome(biomekey, biome, reason);
+        List<Integer> validTypes = new ArrayList<>();
+        if (ComplexMob.ENTITY_DATA_HASH.containsKey(this.getType())) {
+            for (SpeciesDataHolder speciesDatum : ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData()) {
+                for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
+                    if(biome.getCategory() == biomeTypes){
+                        for (int i=0; i < speciesDatum.getRarity(); i++) {
+                            validTypes.add(speciesDatum.getVariant());
+                        }
+                    }
+                }
+            }
+            if (validTypes.isEmpty()) {
+                return 99;
+            } else {
+                return validTypes.get(new Random().nextInt(validTypes.size()));
+            }
+        }
+        return 99;
     }
 }
