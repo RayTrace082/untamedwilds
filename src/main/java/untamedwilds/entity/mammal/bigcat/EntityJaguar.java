@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class EntityJaguar extends AbstractBigCat implements ISkins {
 
     public static final int SKIN_NUMBER = 3;

@@ -23,6 +23,7 @@ import untamedwilds.util.EntityUtils;
 import javax.annotation.Nullable;
 import java.util.List;
 
+@Deprecated
 public class EntitySnowLeopard extends AbstractBigCat {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("untamedwilds:textures/entity/big_cat/snow_leopard.png");

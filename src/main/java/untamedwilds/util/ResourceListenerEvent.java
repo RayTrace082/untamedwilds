@@ -26,6 +26,7 @@ public class ResourceListenerEvent {
     public static EntityDataHolder TREVALLY;
 
     public static EntityDataHolder BEAR;
+    public static EntityDataHolder BIG_CAT;
 
     @SubscribeEvent
     public static void onAddReloadListeners(AddReloadListenerEvent event) {
@@ -44,6 +45,7 @@ public class ResourceListenerEvent {
         TREVALLY = registerEntityData(ModEntity.TREVALLY);
 
         BEAR = registerEntityData(ModEntity.BEAR);
+        BIG_CAT = registerEntityData(ModEntity.BIG_CAT);
     }
 
     public static EntityDataHolder registerEntityData(EntityType<?> typeIn) {

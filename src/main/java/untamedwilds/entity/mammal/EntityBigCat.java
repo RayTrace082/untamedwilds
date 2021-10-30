@@ -1,11 +1,11 @@
-package untamedwilds.entity.mammal.bigcat;
+package untamedwilds.entity.mammal;
 
 import com.github.alexthe666.citadel.animation.Animation;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Pose;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -14,18 +14,26 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
-import untamedwilds.entity.ComplexMobTerrestrial;
-import untamedwilds.entity.ai.SmartFollowOwnerGoal;
+import untamedwilds.entity.*;
+import untamedwilds.entity.ai.*;
+import untamedwilds.entity.ai.target.HuntMobTarget;
+import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
-import untamedwilds.init.ModSounds;
+import untamedwilds.entity.mammal.bigcat.EntityCaveLion;
+import untamedwilds.init.ModEntity;
 import untamedwilds.util.EntityUtils;
+import untamedwilds.util.SpeciesDataHolder;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-@Deprecated
-public abstract class AbstractBigCat extends ComplexMobTerrestrial {
+public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INewSkins, INeedsPostUpdate {
 
     public static Animation ATTACK_BITE;
     public static Animation ATTACK_MAUL;
@@ -36,7 +44,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     public static Animation IDLE_STRETCH;
     public int aggroProgress;
 
-    public AbstractBigCat(EntityType<? extends AbstractBigCat> type, World worldIn) {
+    public EntityBigCat(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
         ATTACK_POUNCE = Animation.create(42);
         ATTACK_MAUL = Animation.create(22);
@@ -45,6 +53,52 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
         this.stepHeight = 1;
         this.experienceValue = 10;
         this.turn_speed = 0.1F;
+    }
+
+    public void registerGoals() {
+        this.goalSelector.addGoal(1, new SmartSwimGoal(this));
+        this.goalSelector.addGoal(2, new FindItemsGoal(this, 12, true));
+        this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 2.3D, false, 1, false, true));
+        this.goalSelector.addGoal(3, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> getEcoLevel(input) > 9));
+        this.goalSelector.addGoal(4, new SmartMateGoal(this, 1D));
+        this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D));
+        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
+        this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, true));
+        this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntityCaveLion)));
+        this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, input -> getEcoLevel(input) < 8));
+    }
+
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MobEntity.func_233666_p_()
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.16D)
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 32D)
+                .createMutableAttribute(Attributes.MAX_HEALTH, 40.0D)
+                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.8D)
+                .createMutableAttribute(Attributes.ARMOR, 0D);
+    }
+
+    /* Breeding conditions for the Snow Leopard are:
+     * Cold Biome (T between -1.0 and 0.4)
+     * No other entities nearby */
+    public boolean wantsToBreed() {
+        if (super.wantsToBreed()) {
+            if (!this.isSleeping() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this) && this.getHunger() >= 80) {
+                if (ConfigGamerules.hardcoreBreeding.get()) {
+                    List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
+                    return list.size() < 3;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Nullable
+    public EntityBigCat func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
+        return create_offspring(new EntityBigCat(ModEntity.BIG_CAT, this.world));
     }
 
     public boolean isPushedByWater() {
@@ -129,8 +183,7 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP,1.5F, 0.8F);
         }
         if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-            SoundEvent sound = this instanceof EntityPuma ? SoundEvents.ENTITY_OCELOT_AMBIENT : ModSounds.ENTITY_BIG_CAT_AMBIENT;
-            this.playSound(sound, 1F, 1);
+            this.playSound(this.getAmbientSound(), 1F, 1);
         }
         if (this.world.isRemote && this.isAngry() && this.aggroProgress < 40) {
             this.aggroProgress++;
@@ -159,15 +212,15 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
     }
 
     protected SoundEvent getAmbientSound() {
-        return !this.isChild() ? null : SoundEvents.ENTITY_OCELOT_AMBIENT;
+        return this.isChild() ? SoundEvents.ENTITY_OCELOT_AMBIENT : super.getAmbientSound();
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
-        return this.isChild() ?  SoundEvents.ENTITY_OCELOT_HURT : ModSounds.ENTITY_BIG_CAT_HURT;
+        return this.isChild() ?  SoundEvents.ENTITY_OCELOT_HURT : super.getHurtSound(source);
     }
 
     protected SoundEvent getDeathSound() {
-        return this.isChild() ? SoundEvents.ENTITY_OCELOT_DEATH : ModSounds.ENTITY_BIG_CAT_DEATH;
+        return this.isChild() ? SoundEvents.ENTITY_OCELOT_DEATH : super.getDeathSound();
     }
 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
@@ -215,46 +268,31 @@ public abstract class AbstractBigCat extends ComplexMobTerrestrial {
         return sizeIn.height * 0.9F;
     }
 
-    /*public enum SpeciesBigCat implements IStringSerializable {
+    @Override
+    public void updateAttributes() {
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
+        this.setHealth(this.getMaxHealth());
+    }
 
-        CAVE_LION	(ModEntity.CAVE_LION, EntityCaveLion.getRarity(), Biome.Category.TAIGA, Biome.Category.ICY),
-        JAGUAR		(ModEntity.JAGUAR, EntityJaguar.getRarity(), Biome.Category.JUNGLE),
-        LEOPARD		(ModEntity.LEOPARD, EntityLeopard.getRarity(), Biome.Category.SAVANNA, Biome.Category.TAIGA),
-        LION		(ModEntity.LION, EntityLion.getRarity(), Biome.Category.SAVANNA),
-        MARSUPIAL_LION(ModEntity.MARSUPIAL_LION, EntityMarsupialLion.getRarity(), Biome.Category.JUNGLE),
-        PUMA		(ModEntity.PUMA, EntityPuma.getRarity(), Biome.Category.MESA, Biome.Category.FOREST, Biome.Category.TAIGA),
-        SABERTOOTH  (ModEntity.SABERTOOTH, EntitySabertooth.getRarity(), Biome.Category.TAIGA),
-        SNOW_LEOPARD(ModEntity.SNOW_LEOPARD, EntitySnowLeopard.getRarity(), Biome.Category.ICY, Biome.Category.TAIGA),
-        TIGER		(ModEntity.TIGER, EntityTiger.getRarity(), Biome.Category.JUNGLE, Biome.Category.TAIGA);
-
-        public EntityType<? extends AbstractBigCat> type;
-        public int rarity;
-        public Biome.Category[] spawnBiomes;
-
-        SpeciesBigCat(EntityType<? extends AbstractBigCat> type, int rolls, Biome.Category... biomes) {
-            this.type = type;
-            this.rarity = rolls;
-            this.spawnBiomes = biomes;
+    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
+        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
+            return this.getRNG().nextInt(ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
         }
-
-        @Override
-        public String getString() { return "why would you do this?"; }
-
-        public static EntityType<? extends AbstractBigCat> getSpeciesByBiome(Biome biome) {
-            List<AbstractBigCat.SpeciesBigCat> types = new ArrayList<>();
-            for (AbstractBigCat.SpeciesBigCat type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rarity; i++) {
-                            types.add(type);
-                        }
+        List<Integer> validTypes = new ArrayList<>();
+        for (SpeciesDataHolder speciesDatum : ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData()) {
+            for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
+                if(biome.getCategory() == biomeTypes){
+                    for (int i=0; i < speciesDatum.getRarity(); i++) {
+                        validTypes.add(speciesDatum.getVariant());
                     }
                 }
             }
-            if (types.isEmpty()) {
-                return null;
-            }
-            return types.get(new Random().nextInt(types.size())).type;
         }
-    }*/
+        if (validTypes.isEmpty()) {
+            return 99;
+        } else {
+            return validTypes.get(new Random().nextInt(validTypes.size()));
+        }
+    }
 }

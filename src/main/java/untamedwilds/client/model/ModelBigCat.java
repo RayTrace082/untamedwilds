@@ -7,9 +7,9 @@ import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import untamedwilds.entity.mammal.bigcat.AbstractBigCat;
+import untamedwilds.entity.mammal.EntityBigCat;
 
-public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat> {
+public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
 
     public AdvancedModelBox body_main;
     public AdvancedModelBox body_abdomen;
@@ -248,17 +248,17 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat> {
     }
 
     private void animate(IAnimatedEntity entityIn) {
-        AbstractBigCat big_cat = (AbstractBigCat) entityIn;
+        EntityBigCat big_cat = (EntityBigCat) entityIn;
         animator.update(big_cat);
 
-        animator.setAnimation(AbstractBigCat.IDLE_TALK);
+        animator.setAnimation(EntityBigCat.IDLE_TALK);
         animator.startKeyframe(10);
         this.rotate(animator, head_jaw, 26.09F, 0, 0);
         this.rotate(animator, head_main, -26.09F, 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(10);
 
-        animator.setAnimation(AbstractBigCat.ATTACK_POUNCE);
+        animator.setAnimation(EntityBigCat.ATTACK_POUNCE);
         animator.startKeyframe(12);
         this.rotate(animator, body_main, -18.26F, 0, 0);
         animator.move(body_main, 0, -2, 0);
@@ -341,7 +341,7 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat> {
         animator.endKeyframe();
         animator.resetKeyframe(8);
 
-        animator.setAnimation(AbstractBigCat.ATTACK_MAUL);
+        animator.setAnimation(EntityBigCat.ATTACK_MAUL);
         animator.startKeyframe(8);
         animator.move(body_main, 0, -0.7F, 0);
         this.rotate(animator, body_main, -5.22F, -10.43F, 7.83F);
@@ -378,7 +378,7 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat> {
         animator.endKeyframe();
         animator.resetKeyframe(8);
 
-        animator.setAnimation(AbstractBigCat.IDLE_STRETCH);
+        animator.setAnimation(EntityBigCat.IDLE_STRETCH);
         animator.startKeyframe(20);
         animator.move(body_main, 0, 5, 6);
         this.rotate(animator, body_main, 18.26F, 0, 0);
@@ -418,7 +418,7 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat> {
         animator.resetKeyframe(20);
     }
 
-    public void setRotationAngles(AbstractBigCat big_cat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setRotationAngles(EntityBigCat big_cat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(big_cat);
         float globalSpeed = 2.4f;
@@ -427,7 +427,7 @@ public class ModelBigCat extends AdvancedEntityModel<AbstractBigCat> {
         limbSwing *= 0.5F;
 
         // Breathing Animation
-        boolean isPurring = big_cat.getAnimation() == AbstractBigCat.IDLE_STRETCH && big_cat.getAnimationTick() > 20;
+        boolean isPurring = big_cat.getAnimation() == EntityBigCat.IDLE_STRETCH && big_cat.getAnimationTick() > 20;
         final double scaleX = Math.sin(ageInTicks * (isPurring ? 2 : 1 / 20F));
         final double scaleY = Math.sin(ageInTicks / (isPurring ? 8 : 16));
         this.body_main.setScale((float) (1F + scaleX * 0.08F), (float) (1F + scaleY * 0.06F), 1.0F);
