@@ -16,7 +16,6 @@ import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
-import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
@@ -81,7 +80,8 @@ public class EntitySnowLeopard extends AbstractBigCat {
 
     @Nullable
     public EntitySnowLeopard func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntitySnowLeopard(ModEntity.SNOW_LEOPARD, this.world));
+        return null;
+        //return create_offspring(new EntitySnowLeopard(ModEntity.SNOW_LEOPARD, this.world));
     }
 
     protected ActivityType getActivityType() {

@@ -16,7 +16,6 @@ import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
-import untamedwilds.init.ModEntity;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
@@ -80,7 +79,8 @@ public class EntitySabertooth extends AbstractBigCat {
 
     @Nullable
     public EntitySabertooth func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntitySabertooth(ModEntity.SABERTOOTH, this.world));
+        return null;
+        //return create_offspring(new EntitySabertooth(ModEntity.SABERTOOTH, this.world));
     }
 
     protected ActivityType getActivityType() {

@@ -18,7 +18,6 @@ import untamedwilds.entity.ISkins;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
-import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
@@ -90,7 +89,8 @@ public class EntityLeopard extends AbstractBigCat implements ISkins {
 
     @Nullable
     public EntityLeopard func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityLeopard(ModEntity.LEOPARD, this.world));
+        return null;
+        //return create_offspring(new EntityLeopard(ModEntity.LEOPARD, this.world));
     }
 
     protected ActivityType getActivityType() { return ActivityType.DIURNAL; }

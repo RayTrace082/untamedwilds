@@ -17,7 +17,6 @@ import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntPackMobTarget;
 import untamedwilds.entity.ai.target.HurtPackByTargetGoal;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
-import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
@@ -93,7 +92,8 @@ public class EntityLion extends AbstractBigCat implements IPackEntity {
 
     @Nullable
     public EntityLion func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityLion(ModEntity.LION, this.world));
+        return null;
+        //return create_offspring(new EntityLion(ModEntity.LION, this.world));
     }
 
     protected ActivityType getActivityType() {

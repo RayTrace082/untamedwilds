@@ -19,7 +19,6 @@ import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
-import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.util.EntityUtils;
 
@@ -84,7 +83,8 @@ public class EntityPuma extends AbstractBigCat {
 
     @Nullable
     public EntityPuma func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityPuma(ModEntity.PUMA, this.world));
+        return null;
+        //return create_offspring(new EntityPuma(ModEntity.PUMA, this.world));
     }
 
     protected SoundEvent getAmbientSound() {

@@ -16,7 +16,6 @@ import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
-import untamedwilds.init.ModEntity;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
@@ -81,7 +80,8 @@ public class EntityCaveLion extends AbstractBigCat {
 
     @Nullable
     public EntityCaveLion func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityCaveLion(ModEntity.CAVE_LION, this.world));
+        return null;
+        //return create_offspring(new EntityCaveLion(ModEntity.CAVE_LION, this.world));
     }
 
     protected ActivityType getActivityType() { return ActivityType.DIURNAL; }

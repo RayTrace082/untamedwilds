@@ -19,7 +19,6 @@ import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
-import untamedwilds.init.ModEntity;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
@@ -83,7 +82,8 @@ public class EntityMarsupialLion extends AbstractBigCat {
 
     @Nullable
     public EntityMarsupialLion func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityMarsupialLion(ModEntity.MARSUPIAL_LION, this.world));
+        return null;
+        //return create_offspring(new EntityMarsupialLion(ModEntity.MARSUPIAL_LION, this.world));
     }
 
     protected SoundEvent getAmbientSound() {
