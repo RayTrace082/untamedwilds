@@ -23,6 +23,7 @@ import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.INewSkins;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.util.EntityUtils;
+import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -152,7 +153,26 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (biomekey.equals(Biomes.WARM_OCEAN) || biomekey.equals(Biomes.LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_WARM_OCEAN) || biome.getRegistryName().equals(new ResourceLocation("terraforged:warm_beach"))) {
-            ((ISpecies)this).setSpeciesByBiome(biomekey, biome, reason);
+            if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
+                return this.getRNG().nextInt(ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
+            }
+            List<Integer> validTypes = new ArrayList<>();
+            if (ComplexMob.ENTITY_DATA_HASH.containsKey(this.getType())) {
+                for (SpeciesDataHolder speciesDatum : ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData()) {
+                    for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
+                        if(biome.getCategory() == biomeTypes){
+                            for (int i=0; i < speciesDatum.getRarity(); i++) {
+                                validTypes.add(speciesDatum.getVariant());
+                            }
+                        }
+                    }
+                }
+                if (validTypes.isEmpty()) {
+                    return 99;
+                } else {
+                    return validTypes.get(new Random().nextInt(validTypes.size()));
+                }
+            }
         }
         if (isArtificialSpawnReason(reason)) {
             return this.rand.nextInt(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
