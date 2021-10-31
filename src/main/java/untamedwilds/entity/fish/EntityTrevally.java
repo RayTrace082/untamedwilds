@@ -109,7 +109,7 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
 
     // Flags Parameters
     public int getMaxPackSize() {
-        return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "schoolSize");
+        return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "groupSize");
     }
 
     public boolean shouldLeavePack() {
