@@ -218,15 +218,10 @@ public class ModEntity {
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.BEAR, RendererBear::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.BIG_CAT, RendererBigCat::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.HIPPO, RendererHippo::new);
-        EntityHippo.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.AARDVARK, RendererAardvark::new);
-        EntityAardvark.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.RHINO, RendererRhino::new);
-        EntityRhino.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.HYENA, RendererHyena::new);
-        EntityHyena.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.BOAR, RendererBoar::new);
-        EntityBoar.processSkins();
         /*RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, RendererBear::new);
         EntityBlackBear.registerTextures(EntityBlackBear.SKIN_NUMBER);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLIND_BEAR, RendererBear::new);

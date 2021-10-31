@@ -1,0 +1,93 @@
+{
+  "name": "hyena",
+  "breeding": "MID_WINTER",
+  "growing": 4,
+  "offspring": 2,
+  "activityType": "nocturnal",
+  "favourite_food": "minecraft:rotten_flesh",
+  "sounds": {
+    "ambient": "untamedwilds:entity.hyena.ambient",
+    "hurt": "untamedwilds:entity.hyena.hurt",
+    "death": "untamedwilds:entity.hyena.death",
+    "threat": "untamedwilds:entity.hyena.growl"
+  },
+
+  "species": [
+    {
+    "name": "aardwolf",
+    "variant": 0,
+    "scale": 0.8,
+    "rarity": 3,
+      "attack": 4,
+      "health": 10,
+    "flags": {
+      "groupCount": 1
+    },
+    "spawnBiomes": [
+        "savanna"
+    ]
+  },
+    {
+      "name": "brown",
+      "variant": 1,
+      "scale": 0.8,
+      "rarity": 2,
+      "attack": 4,
+      "health": 14,
+      "flags": {
+        "groupCount": 4
+      },
+      "spawnBiomes": [
+        "savanna"
+      ]
+    },
+    {
+      "name": "spotted",
+      "variant": 2,
+      "scale": 1,
+      "rarity": 5,
+      "attack": 5,
+      "health": 20,
+      "sounds": {
+        "ambient": "untamedwilds:entity.hyena.laugh",
+        "threat": "untamedwilds:entity.hyena.laugh"
+      },
+      "flags": {
+        "groupCount": 8
+      },
+      "spawnBiomes": [
+        "savanna",
+        "mesa"
+      ]
+    },
+    {
+      "name": "spotted",
+      "variant": 3,
+      "scale": 0.9,
+      "rarity": 3,
+      "attack": 4,
+      "health": 16,
+      "flags": {
+        "groupCount": 1
+      },
+      "spawnBiomes": [
+        "savanna",
+        "mesa"
+      ]
+    },
+    {
+      "name": "shortface",
+      "variant": 4,
+      "scale": 1.2,
+      "rarity": 1,
+      "attack": 5,
+      "health": 24,
+      "flags": {
+        "groupCount": 3
+      },
+      "spawnBiomes": [
+        "savanna"
+      ]
+    }
+  ]
+}

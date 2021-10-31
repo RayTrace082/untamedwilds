@@ -8,18 +8,16 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ToolType;
-import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.entity.INewSkins;
@@ -31,16 +29,10 @@ import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewSkins {
 
-    private static final float SIZE = 1.0f;
-    private static final String BREEDING = "MID_WINTER";
-    private static final int GESTATION = 4 * ConfigGamerules.cycleLength.get();
-    private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
     private BlockPos lastDugPos = null;
 
     public static Animation WORK_DIG;
@@ -53,12 +45,6 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
         WORK_DIG = Animation.create(48);
         ATTACK = Animation.create(18);
         TALK = Animation.create(20);
-    }
-
-    public static void processSkins() {
-        for (int i = 0; i < SpeciesBoar.values().length; i++) {
-            EntityUtils.buildSkinArrays("boar", SpeciesBoar.values()[i].name().toLowerCase(), i, ComplexMob.TEXTURES_COMMON, ComplexMob.TEXTURES_RARE);
-        }
     }
 
     public void registerGoals() {
@@ -135,10 +121,10 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
                 }
             }
             if (this.getAnimation() == TALK && this.getAnimationTick() == 1) {
-                this.playSound(ModSounds.ENTITY_BOAR_AMBIENT, 1.5F, 1);
+                this.playSound(this.getAmbientSound(), 1.5F, 1);
             }
             if (this.getAttackTarget() != null && this.ticksExisted % 120 == 0) {
-                this.playSound(ModSounds.ENTITY_BOAR_SQUEAL, 1.5F, 1);
+                this.playSound(this.getThreatSound(), 1.5F, 1);
             }
             if (this.getAnimation() != NO_ANIMATION) {
                 if (this.getAnimation() == ATTACK && this.getAnimationTick() == 8 && this.rand.nextInt(3) == 0) {
@@ -167,21 +153,6 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
-        return ModSounds.ENTITY_BOAR_AMBIENT;
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSounds.ENTITY_BOAR_HURT;
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() {
-        return ModSounds.ENTITY_BOAR_DEATH;
-    }
-
-    @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         boolean flag = super.attackEntityAsMob(entityIn);
         if (flag && this.getAnimation() == NO_ANIMATION && !this.isChild()) {
@@ -203,28 +174,6 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
         return create_offspring(new EntityBoar(ModEntity.BOAR, this.world));
     }
 
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(SpeciesBoar.values().length);
-        }
-        return SpeciesBoar.getSpeciesByBiome(biome);
-    }
-
-
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.boar_" + getRawSpeciesName(i)).getString(); }
-    public String getRawSpeciesName(int i) { return SpeciesBoar.values()[i].name().toLowerCase(); }
-
-    protected ActivityType getActivityType() {
-        return ActivityType.NOCTURNAL;
-    }
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.BEETROOT; }
-    public String getBreedingSeason() { return BREEDING; }
-    public int getAdulthoodTime() { return GROWING; }
-    public int getPregnancyTime() { return GESTATION; }
-    public float getModelScale() { return SIZE; }
-    protected int getOffspring() { return 5; }
-
     public void writeAdditional(CompoundNBT compound){
         super.writeAdditional(compound);
         if (this.lastDugPos != null) {
@@ -237,50 +186,6 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
         super.readAdditional(compound);
         if (compound.contains("LastDugPos")) {
             this.lastDugPos = new BlockPos(compound.getInt("DugPosX"), 0, compound.getInt("DugPosZ"));
-        }
-    }
-
-    // Species available, referenced to properly distribute Aardvarks in the world. if any is ever added
-    public enum SpeciesBoar implements IStringSerializable {
-
-        EURASIAN		(0, 2, Biome.Category.FOREST, Biome.Category.TAIGA),
-        PECCARY 		(1, 2, Biome.Category.JUNGLE),
-        RED_RIVER		(2, 2, Biome.Category.SAVANNA);
-
-        public EntityType<? extends EntityBoar> type;
-        public int rarity;
-        public Biome.Category[] spawnBiomes;
-        public int species;
-
-        SpeciesBoar(int species, int rolls, Biome.Category... biomes) {
-            this.species = species;
-            this.rarity = rolls;
-            this.spawnBiomes = biomes;
-        }
-
-        public int getSpecies() { return this.species; }
-
-        @Override
-        public String getString() {
-            return "why would you do this?";
-        }
-
-        public static int getSpeciesByBiome(Biome biome) {
-            List<SpeciesBoar> types = new ArrayList<>();
-            for (SpeciesBoar type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rarity; i++) {
-                            types.add(type);
-                        }
-                    }
-                }
-            }
-            if (types.isEmpty()) {
-                return 99;
-            } else {
-                return types.get(new Random().nextInt(types.size())).getSpecies();
-            }
         }
     }
 }

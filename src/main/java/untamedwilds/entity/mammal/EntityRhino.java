@@ -2,7 +2,6 @@ package untamedwilds.entity.mammal;
 
 import com.github.alexthe666.citadel.animation.Animation;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -16,11 +15,11 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
@@ -32,17 +31,10 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class EntityRhino extends ComplexMobTerrestrial implements INewSkins, ISpecies, INeedsPostUpdate {
 
-    private static final String BREEDING = "EARLY_SUMMER";
-    private static final int GESTATION = 14 * ConfigGamerules.cycleLength.get();
-    private static final int GROWING = 20 * ConfigGamerules.cycleLength.get();
-    private static final int RARITY = 5;
-    private static final DataParameter<Boolean> CHARGING = EntityDataManager.createKey(EntityRhino.class, DataSerializers.BOOLEAN);
+   private static final DataParameter<Boolean> CHARGING = EntityDataManager.createKey(EntityRhino.class, DataSerializers.BOOLEAN);
 
     public static Animation ATTACK_THREATEN;
     public static Animation ATTACK_GORE;
@@ -59,12 +51,6 @@ public class EntityRhino extends ComplexMobTerrestrial implements INewSkins, ISp
     protected void registerData() {
         super.registerData();
         dataManager.register(CHARGING, false);
-    }
-
-    public static void processSkins() {
-        for (int i = 0; i < SpeciesRhino.values().length; i++) {
-            EntityUtils.buildSkinArrays("rhino", SpeciesRhino.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
-        }
     }
 
     public void registerGoals() {
@@ -155,19 +141,6 @@ public class EntityRhino extends ComplexMobTerrestrial implements INewSkins, ISp
         return ATTACK_GORE;
     }
 
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return null;
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ENTITY_COW_HURT;
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_COW_DEATH; }
-
     @Nullable
     public EntityRhino func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
         return create_offspring(new EntityRhino(ModEntity.RHINO, this.world));
@@ -210,81 +183,10 @@ public class EntityRhino extends ComplexMobTerrestrial implements INewSkins, ISp
 
     public Animation getAnimationEat() { return NO_ANIMATION; }
 
-    protected ActivityType getActivityType() { return ActivityType.CATHEMERAL; }
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.MELON_SLICE; }
-    public String getBreedingSeason() { return BREEDING; }
-    public static int getRarity() { return RARITY; }
-    public int getAdulthoodTime() { return GROWING; }
-    public int getPregnancyTime() { return GESTATION; }
-    public float getModelScale() { return SpeciesRhino.values()[this.getVariant()].size; }
-    protected int getOffspring() { return 1; }
-
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || reason == SpawnReason.SPAWN_EGG) {
-            return this.rand.nextInt(SpeciesRhino.values().length);
-        }
-        return SpeciesRhino.getSpeciesByBiome(biome);
-    }
-
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.rhino_" + getRawSpeciesName(i)).getString(); }
-    public String getRawSpeciesName(int i) { return SpeciesRhino.values()[i].name().toLowerCase(); }
-
     @Override
     public void updateAttributes() {
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(SpeciesRhino.values()[this.getVariant()].attack);
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(SpeciesRhino.values()[this.getVariant()].health);
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
         this.setHealth(this.getMaxHealth());
-    }
-
-    // Species available, referenced to properly distribute Rhinoceroses in the world
-    public enum SpeciesRhino implements IStringSerializable {
-
-        BLACK		(0, 0.9F,5, 8, 50, Biome.Category.SAVANNA),
-        INDIAN		(1, 1.1F, 4, 8, 60, Biome.Category.JUNGLE, Biome.Category.EXTREME_HILLS),
-        JAVAN		(2, 0.8F, 1, 6, 45, Biome.Category.JUNGLE),
-        SUMATRAN	(3, 0.8F, 1, 5, 30, Biome.Category.JUNGLE),
-        WHITE		(4, 1.0F, 2, 10, 60, Biome.Category.SAVANNA),
-        WOOLY		(5, 1.2F, ConfigGamerules.extinctMobs.get() ? 1 : 0, 10, 60, Biome.Category.ICY, Biome.Category.TAIGA);
-
-        public int species;
-        public float size;
-        public int rarity;
-        public float attack;
-        public float health;
-        public Biome.Category[] spawnBiomes;
-
-        SpeciesRhino(int species, float size, int rolls, int attack, int health, Biome.Category... biomes) {
-            this.species = species;
-            this.size = size;
-            this.rarity = rolls;
-            this.attack = (float)attack;
-            this.health = (float)health;
-            this.spawnBiomes = biomes;
-        }
-
-        public int getSpecies() { return this.species; }
-
-        public String getString() {
-            return I18n.format("entity.rhino." + this.name().toLowerCase());
-        }
-
-        public static int getSpeciesByBiome(Biome biome) {
-            List<EntityRhino.SpeciesRhino> types = new ArrayList<>();
-            for (EntityRhino.SpeciesRhino type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rarity; i++) {
-                            types.add(type);
-                        }
-                    }
-                }
-            }
-            if (types.isEmpty()) {
-                return 99;
-            } else {
-                return types.get(new Random().nextInt(types.size())).getSpecies();
-            }
-        }
     }
 }

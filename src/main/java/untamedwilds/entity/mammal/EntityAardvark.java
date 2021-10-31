@@ -10,14 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.*;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ToolType;
-import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.entity.INewSkins;
@@ -26,21 +23,13 @@ import untamedwilds.entity.ai.*;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
 import untamedwilds.init.ModLootTables;
-import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, INewSkins {
 
-    private static final float SIZE = 1.0f;
-    private static final String BREEDING = "LATE_SPRING";
-    private static final int GESTATION = 7 * ConfigGamerules.cycleLength.get();
-    private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
-    private static final int RARITY = 5;
     private BlockPos lastDugPos = null;
 
     public static Animation WORK_DIG;
@@ -51,12 +40,6 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
         this.turn_speed = 0.8F;
         WORK_DIG = Animation.create(76);
         ATTACK = Animation.create(18);
-    }
-
-    public static void processSkins() {
-        for (int i = 0; i < SpeciesAardvark.values().length; i++) {
-            EntityUtils.buildSkinArrays("aardvark", SpeciesAardvark.values()[i].name().toLowerCase(), i, ComplexMob.TEXTURES_COMMON, ComplexMob.TEXTURES_RARE);
-        }
     }
 
     public void registerGoals() {
@@ -149,19 +132,6 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
-        return ModSounds.ENTITY_AARDVARK_AMBIENT;
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSounds.ENTITY_AARDVARK_HURT;
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() { return ModSounds.ENTITY_AARDVARK_DEATH; }
-
-    @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         boolean flag = super.attackEntityAsMob(entityIn);
         if (flag && this.getAnimation() == NO_ANIMATION && !this.isChild()) {
@@ -181,28 +151,6 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
         return create_offspring(new EntityAardvark(ModEntity.AARDVARK, this.world));
     }
 
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(EntityAardvark.SpeciesAardvark.values().length);
-        }
-        return EntityAardvark.SpeciesAardvark.getSpeciesByBiome(biome);
-    }
-
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.aardvark_" + getRawSpeciesName(i)).getString(); }
-    public String getRawSpeciesName(int i) { return SpeciesAardvark.values()[i].name().toLowerCase(); }
-
-    protected ActivityType getActivityType() {
-        return ActivityType.NOCTURNAL;
-    }
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == ModItems.VEGETABLE_AARDVARK_CUCUMBER.get(); }
-    public String getBreedingSeason() { return BREEDING; }
-    public static int getRarity() { return RARITY; }
-    public int getAdulthoodTime() { return GROWING; }
-    public int getPregnancyTime() { return GESTATION; }
-    public float getModelScale() { return SIZE; }
-    protected int getOffspring() { return 1; }
-
     public void writeAdditional(CompoundNBT compound){
         super.writeAdditional(compound);
         if (this.lastDugPos != null) {
@@ -215,48 +163,6 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
         super.readAdditional(compound);
         if (compound.contains("LastDugPos")) {
             this.lastDugPos = new BlockPos(compound.getInt("DugPosX"), 0, compound.getInt("DugPosZ"));
-        }
-    }
-
-    // Species available, referenced to properly distribute Aardvarks in the world. if any is ever added
-    public enum SpeciesAardvark implements IStringSerializable {
-
-        COMMON		(0, 1, Biome.Category.SAVANNA);
-
-        public EntityType<? extends EntityAardvark> type;
-        public int rarity;
-        public Biome.Category[] spawnBiomes;
-        public int species;
-
-        SpeciesAardvark(int species, int rolls, Biome.Category... biomes) {
-            this.species = species;
-            this.rarity = rolls;
-            this.spawnBiomes = biomes;
-        }
-
-        public int getSpecies() { return this.species; }
-
-        @Override
-        public String getString() {
-            return "why would you do this?";
-        }
-
-        public static int getSpeciesByBiome(Biome biome) {
-            List<EntityAardvark.SpeciesAardvark> types = new ArrayList<>();
-            for (EntityAardvark.SpeciesAardvark type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rarity; i++) {
-                            types.add(type);
-                        }
-                    }
-                }
-            }
-            if (types.isEmpty()) {
-                return 99;
-            } else {
-                return types.get(new Random().nextInt(types.size())).getSpecies();
-            }
         }
     }
 }
