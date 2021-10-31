@@ -51,7 +51,7 @@ public interface ISpecies {
     }
 
     default String getSpeciesName(int i) {
-        return new TranslationTextComponent("entity.untamedwilds." + ((ComplexMob)this).getName().getString().toLowerCase() + "_" + getRawSpeciesName(i)).getString();
+        return new TranslationTextComponent("entity.untamedwilds." + ((ComplexMob)this).getType().getRegistryName().getPath() + "_" + getRawSpeciesName(i)).getString();
     }
 
     default String getSpeciesName() {

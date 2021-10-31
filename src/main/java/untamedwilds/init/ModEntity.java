@@ -61,9 +61,8 @@ public class ModEntity {
     public static EntityType<EntityGiantClam> GIANT_CLAM = createEntity(ConfigMobControl.addGiantClam.get(), EntityGiantClam::new, EntityClassification.WATER_CREATURE, "giant_clam", 32, 10, true, 1.0F, 1.0F, 0x346B70, 0xAD713C, animalType.SESSILE, 1);
 
     // Mammals
-    public static EntityType<EntityBear> BEAR = createEntity(ConfigMobControl.addBear.get(), EntityBear::new,  "bear",  1.3F, 1.3F, 0x0B0A08, 0x20130B, animalType.APEX_PRED, 10, 1);
+    public static EntityType<EntityBear> BEAR = createEntity(ConfigMobControl.addBear.get(), EntityBear::new,  "bear",  1.3F, 1.3F, 0x20130B, 0x564C45, animalType.APEX_PRED, 10, 1);
     public static EntityType<EntityBigCat> BIG_CAT = createEntity(ConfigMobControl.addBigCat.get(), EntityBigCat::new,  "big_cat",  1.2F, 1.0F, 0xC59F45,0x383121, animalType.APEX_PRED, 10, 1);
-
     public static EntityType<EntityHippo> HIPPO = createEntity(ConfigMobControl.addHippo.get(), EntityHippo::new,  "hippo",  1.8F, 1.8F, 0x463A31, 0x956761, animalType.APEX_PRED, 10, 5);
     public static EntityType<EntityAardvark> AARDVARK = createEntity(ConfigMobControl.addAardvark.get(), EntityAardvark::new,  "aardvark",  0.9F, 0.9F, 0x463A31, 0x956761, animalType.CRITTER, 2);
     public static EntityType<EntityRhino> RHINO = createEntity(ConfigMobControl.addRhino.get(), EntityRhino::new,  "rhino",  2.0F, 1.8F, 0x787676, 0x665956, animalType.APEX_PRED, 6);
@@ -162,24 +161,6 @@ public class ModEntity {
         event.put(RHINO, EntityRhino.registerAttributes().create());
         event.put(HYENA, EntityHyena.registerAttributes().create());
         event.put(BOAR, EntityBoar.registerAttributes().create());
-        /*event.put(BLACK_BEAR, EntityBlackBear.registerAttributes().create());
-        event.put(BROWN_BEAR, EntityBrownBear.registerAttributes().create());
-        event.put(CAVE_BEAR, EntityCaveBear.registerAttributes().create());
-        event.put(BLIND_BEAR, EntityBlindBear.registerAttributes().create());
-        event.put(PANDA_BEAR, EntityGiantPanda.registerAttributes().create());
-        event.put(POLAR_BEAR, EntityPolarBear.registerAttributes().create());
-        event.put(SPECTACLED_BEAR, EntitySpectacledBear.registerAttributes().create());
-        event.put(SUN_BEAR, EntitySunBear.registerAttributes().create());*/
-
-        /*event.put(JAGUAR, EntityJaguar.registerAttributes().create());
-        event.put(LEOPARD, EntityLeopard.registerAttributes().create());
-        event.put(LION, EntityLion.registerAttributes().create());
-        event.put(PUMA, EntityPuma.registerAttributes().create());
-        event.put(SNOW_LEOPARD, EntitySnowLeopard.registerAttributes().create());
-        event.put(TIGER, EntityTiger.registerAttributes().create());
-        event.put(CAVE_LION, EntityCaveLion.registerAttributes().create());
-        event.put(MARSUPIAL_LION, EntityMarsupialLion.registerAttributes().create());
-        event.put(SABERTOOTH, EntitySabertooth.registerAttributes().create());*/
 
         event.put(SUNFISH, EntitySunfish.registerAttributes().create());
         event.put(TREVALLY, EntityTrevally.registerAttributes().create());
@@ -213,7 +194,6 @@ public class ModEntity {
         EntityAnaconda.processSkins();
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, RendererGiantClam::new);
-        //EntityGiantClam.processSkins();
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.BEAR, RendererBear::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.BIG_CAT, RendererBigCat::new);
@@ -222,43 +202,15 @@ public class ModEntity {
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.RHINO, RendererRhino::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.HYENA, RendererHyena::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.BOAR, RendererBoar::new);
-        /*RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLACK_BEAR, RendererBear::new);
-        EntityBlackBear.registerTextures(EntityBlackBear.SKIN_NUMBER);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BLIND_BEAR, RendererBear::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BROWN_BEAR, RendererBear::new);
-        EntityBrownBear.registerTextures(EntityBrownBear.SKIN_NUMBER);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_BEAR, RendererBear::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.PANDA_BEAR, RendererBear::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.POLAR_BEAR, RendererBear::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SPECTACLED_BEAR, RendererBear::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUN_BEAR, RendererBear::new);*/
-        /*RenderingRegistry.registerEntityRenderingHandler(ModEntity.JAGUAR, RendererBigCat::new);
-        EntityJaguar.registerTextures(EntityJaguar.SKIN_NUMBER);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.PUMA, RendererBigCat::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.CAVE_LION, RendererBigCat::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.TIGER, RendererBigCat::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SABERTOOTH, RendererBigCat::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.MARSUPIAL_LION, RendererBigCat::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.LION, RendererBigCat::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.LEOPARD, RendererBigCat::new);
-        EntityLeopard.registerTextures(EntityLeopard.SKIN_NUMBER);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNOW_LEOPARD, RendererBigCat::new);*/
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUNFISH, RendererSunfish::new);
-        //EntitySunfish.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.TREVALLY, RendererTrevally::new);
-        //EntityTrevally.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.AROWANA, RendererArowana::new);
-        //EntityArowana.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.SHARK, RendererShark::new);
-        //EntityShark.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.FOOTBALL_FISH, RendererFootballFish::new);
-        //EntityFootballFish.processSkins();
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
-        //EntityGiantSalamander.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.NEWT, RendererNewt::new);
-        //EntityNewt.processSkins();
 
         if (UntamedWilds.DEBUG) {
             UntamedWilds.LOGGER.info("---Dump of Common and Rare Texture arrays---");
@@ -284,6 +236,8 @@ public class ModEntity {
             spawns.add(new FaunaHandler.SpawnListEntry(entityClass, weightedProb, groupCount));
     }
 
+    // TODO: Reminder to rework ecoLevels
+    @Deprecated
     private static void readEcoLevels() {
         try (InputStream inputstream = LanguageMap.class.getResourceAsStream("/data/untamedwilds/eco_levels.json")) {
             JsonObject jsonobject = new Gson().fromJson(new InputStreamReader(inputstream, StandardCharsets.UTF_8), JsonObject.class);

@@ -6,9 +6,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
@@ -21,9 +19,6 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpecies {
 
@@ -162,42 +157,4 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
     }
 
     public Animation getAnimationEat() { return EAT; }
-
-    // Species available, referenced to properly distribute Hippos in the world
-    public enum SpeciesHippo implements IStringSerializable {
-
-        COMMON		(0, 1, Biome.Category.SWAMP, Biome.Category.SAVANNA);
-
-        public int species;
-        public int rarity;
-        public Biome.Category[] spawnBiomes;
-
-        SpeciesHippo(int species, int rolls, Biome.Category... biomes) {
-            this.species = species;
-            this.rarity = rolls;
-            this.spawnBiomes = biomes;
-        }
-
-        @Override
-        public String getString() {
-            return "why would you do this?";
-        }
-
-        public static int getSpeciesByBiome(Biome biome) {
-            List<EntityHippo.SpeciesHippo> types = new ArrayList<>();
-            for (EntityHippo.SpeciesHippo type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rarity; i++) {
-                            types.add(type);
-                        }
-                    }
-                }
-            }
-            if (types.isEmpty()) {
-                return 99;
-            }
-            return types.get(new Random().nextInt(types.size())).species;
-        }
-    }
 }
