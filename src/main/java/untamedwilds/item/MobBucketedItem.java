@@ -55,7 +55,7 @@ public class MobBucketedItem extends BucketItem {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (ComplexMob.ENTITY_DATA_HASH.containsKey(this.entity)) {
-            EntityUtils.buildTooltipData(stack, tooltip, this.entity, ComplexMob.ENTITY_DATA_HASH.get(this.entity).getSpeciesData().get(this.getSpecies(stack)).getName());
+            EntityUtils.buildTooltipData(stack, tooltip, this.entity, ComplexMob.getEntityData(this.entity).getSpeciesData().get(this.getSpecies(stack)).getName());
         } else {
             EntityUtils.buildTooltipData(stack, tooltip, this.entity, this.sciname);
         }
@@ -63,7 +63,7 @@ public class MobBucketedItem extends BucketItem {
 
     public String getTranslationKey(ItemStack stack) {
         if (ComplexMob.ENTITY_DATA_HASH.containsKey(this.entity)) {
-            return new TranslationTextComponent("item.untamedwilds.bucket_" + this.entity.getRegistryName().getPath()).getString() + "_" + ComplexMob.ENTITY_DATA_HASH.get(this.entity).getSpeciesData().get(this.getSpecies(stack)).getName();
+            return new TranslationTextComponent("item.untamedwilds.bucket_" + this.entity.getRegistryName().getPath()).getString() + "_" + ComplexMob.getEntityData(this.entity).getSpeciesData().get(this.getSpecies(stack)).getName();
         }
         else {
             return super.getTranslationKey(stack);
@@ -111,7 +111,7 @@ public class MobBucketedItem extends BucketItem {
         }
         if (group == ItemGroupUT.untamedwilds_items) {
             if (this.species < 0) {
-                for(int i = 0; i < ComplexMob.ENTITY_DATA_HASH.get(this.entity).getSpeciesData().size(); i++) {
+                for(int i = 0; i < ComplexMob.getEntityData(this.entity).getSpeciesData().size(); i++) {
                     CompoundNBT baseTag = new CompoundNBT();
                     ItemStack item = new ItemStack(this);
                     baseTag.putInt("variant", i);

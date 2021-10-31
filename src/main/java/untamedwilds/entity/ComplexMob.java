@@ -31,6 +31,7 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
 import untamedwilds.util.EntityDataHolder;
 import untamedwilds.util.EntityUtils;
+import untamedwilds.util.ResourceListenerEvent;
 import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
@@ -80,28 +81,47 @@ public abstract class ComplexMob extends TameableEntity {
         }
     }
 
+    /**
+     * Wrapper method to access EntityDataHolder objects, contains safeguards against accessing data before its initialization
+     * @param typeIn The EntityType to access in ENTITY_DATA_HASH, or initialize it if needed</br>
+     */
+    public static EntityDataHolder getEntityData(EntityType<?> typeIn) {
+        if (!ENTITY_DATA_HASH.containsKey(typeIn)) {
+            ResourceListenerEvent.registerEntityData(typeIn);
+        }
+        return ENTITY_DATA_HASH.get(typeIn);
+    }
+
     protected SoundEvent getAmbientSound() {
-        if (ENTITY_DATA_HASH.containsKey(this.getType()))
-            return ENTITY_DATA_HASH.get(this.getType()).getSounds(this.getVariant(), "ambient");
-        return SoundEvents.ITEM_BOTTLE_EMPTY;
+        try {
+            return getEntityData(this.getType()).getSounds(this.getVariant(), "ambient");
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
-        if (ENTITY_DATA_HASH.containsKey(this.getType()))
-            return ENTITY_DATA_HASH.get(this.getType()).getSounds(this.getVariant(), "hurt");
-        return SoundEvents.ENTITY_GENERIC_HURT;
+        try {
+            return getEntityData(this.getType()).getSounds(this.getVariant(), "hurt");
+        } catch (NullPointerException e) {
+            return SoundEvents.ENTITY_GENERIC_HURT;
+        }
     }
 
     protected SoundEvent getDeathSound() {
-        if (ENTITY_DATA_HASH.containsKey(this.getType()))
-            return ENTITY_DATA_HASH.get(this.getType()).getSounds(this.getVariant(), "death");
-        return SoundEvents.ENTITY_GENERIC_DEATH;
+        try {
+            return getEntityData(this.getType()).getSounds(this.getVariant(), "death");
+        } catch (NullPointerException e) {
+            return SoundEvents.ENTITY_GENERIC_DEATH;
+        }
     }
 
     protected SoundEvent getThreatSound() {
-        if (ENTITY_DATA_HASH.containsKey(this.getType()))
-            return ENTITY_DATA_HASH.get(this.getType()).getSounds(this.getVariant(), "threat");
-        return null;
+        try {
+            return getEntityData(this.getType()).getSounds(this.getVariant(), "threat");
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
@@ -192,7 +212,7 @@ public abstract class ComplexMob extends TameableEntity {
         for (int i = 0; i < bound; i++) {
             T child = (T) this.func_241840_a((ServerWorld) this.world, this);
             if (child != null) {
-                child.setGrowingAge(this.getAdulthoodTime() * -2);
+                child.setGrowingAge(this.getAdulthoodTime() * -1);
                 child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
                 child.setVariant(this.getVariant());
                 if (this.getOwner() != null) {
@@ -212,7 +232,7 @@ public abstract class ComplexMob extends TameableEntity {
     protected <T extends ComplexMob> T create_offspring(T entity) {
         entity.setGender(this.rand.nextInt(2));
         entity.setMobSize(this.rand.nextFloat());
-        entity.setGrowingAge(entity.getAdulthoodTime() * -2);
+        entity.setGrowingAge(entity.getAdulthoodTime() * -1);
         entity.setVariant(this.getVariant());
         if (this instanceof INeedsPostUpdate) {
             ((INeedsPostUpdate) this).updateAttributes();
@@ -221,23 +241,24 @@ public abstract class ComplexMob extends TameableEntity {
     }
 
     public String getBreedingSeason() {
-        return ENTITY_DATA_HASH.get(this.getType()).getBreedingSeason(this.getVariant());
+        return getEntityData(this.getType()).getBreedingSeason(this.getVariant());
     }
 
+    // Adulthood time is twice the Growing time, and only used for mobs that do not lay eggs
     public int getAdulthoodTime() {
-        return ENTITY_DATA_HASH.get(this.getType()).getGrowingTime(this.getVariant()) * ConfigGamerules.cycleLength.get();
+        return getEntityData(this.getType()).getGrowingTime(this.getVariant()) * ConfigGamerules.cycleLength.get() * 2;
     }
 
     public int getPregnancyTime() {
-        return ENTITY_DATA_HASH.get(this.getType()).getGrowingTime(this.getVariant()) * ConfigGamerules.cycleLength.get();
+        return getEntityData(this.getType()).getGrowingTime(this.getVariant()) * ConfigGamerules.cycleLength.get();
     }
 
     public boolean isBreedingItem(ItemStack stack) {
-        return stack.getItem().equals(ENTITY_DATA_HASH.get(this.getType()).getFavouriteFood(this.getVariant()).getItem());
+        return stack.getItem().equals(getEntityData(this.getType()).getFavouriteFood(this.getVariant()).getItem());
     }
 
     protected int getOffspring() {
-        return ENTITY_DATA_HASH.get(this.getType()).getOffspring(this.getVariant());
+        return getEntityData(this.getType()).getOffspring(this.getVariant());
     }
 
     public boolean isFavouriteFood(ItemStack stack) {

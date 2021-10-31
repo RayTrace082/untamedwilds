@@ -139,7 +139,8 @@ public class FaunaSpawn {
                                                 ((ComplexMob)mobentity).setVariant(species);
                                             } // Wrong spawning messages are most likely due to their inclusion on onMobSpawning, not here
                                         }
-                                        if (((ComplexMob)mobentity).getVariant() == 99) {
+                                        // TODO: Jesus christ, I hate the AddReloadListenerEvent event
+                                        if (((ComplexMob)mobentity).getVariant() == 99 || !ComplexMob.ENTITY_DATA_HASH.containsKey(entityType)) {
                                             mobentity.remove();
                                             return false;
                                         }

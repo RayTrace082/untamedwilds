@@ -58,7 +58,7 @@ public class EntityNewt extends ComplexMobAmphibious implements ISpecies, INewSk
     }
 
     private boolean isAquatic() {
-        return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "isAquatic") == 1;
+        return getEntityData(this.getType()).getFlags(this.getVariant(), "isAquatic") == 1;
     }
 
     public boolean wantsToLeaveWater() { return !this.isAquatic(); }

@@ -192,10 +192,10 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
                 }
             }
             if (this.getAnimation() == ANIMATION_ROAR && this.getAnimationTick() == 7) {
-                this.playSound(ModSounds.ENTITY_BEAR_WARNING, 1.5F, 1);
+                this.playSound(this.getThreatSound(), 1.5F, 1);
             }
             if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-                this.playSound(ModSounds.ENTITY_BEAR_AMBIENT, 1.5F, 1);
+                this.playSound(this.getAmbientSound(), 1.5F, 1);
             }
             if (this.getAnimation() == ANIMATION_EAT && (this.getAnimationTick() == 10 || this.getAnimationTick() == 20 || this.getAnimationTick() == 30)) {
                 this.playSound(SoundEvents.ENTITY_HORSE_EAT, 1.5F, 0.8F);
@@ -284,20 +284,20 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
     }
 
     // Flags Parameters
-    public boolean hasHump() { return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "hasHump") == 1; }
-    public boolean hasShortSnout() { return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "hasShortSnout") == 1; }
-    public boolean isPanda() { return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "isPanda") == 1; }
+    public boolean hasHump() { return getEntityData(this.getType()).getFlags(this.getVariant(), "hasHump") == 1; }
+    public boolean hasShortSnout() { return getEntityData(this.getType()).getFlags(this.getVariant(), "hasShortSnout") == 1; }
+    public boolean isPanda() { return getEntityData(this.getType()).getFlags(this.getVariant(), "isPanda") == 1; }
 
     @Override
     public void updateAttributes() {
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
         this.setHealth(this.getMaxHealth());
     }
 
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-            return this.getRNG().nextInt(ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
+            return this.getRNG().nextInt(ComplexMob.getEntityData(this.getType()).getSpeciesData().size());
         }
         // TODO: Need a better way to lock Polar and Panda bears
         if (biomekey.equals(Biomes.FROZEN_OCEAN) || biomekey.equals(Biomes.DEEP_FROZEN_OCEAN)) {
@@ -307,7 +307,7 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
             return 4;
         }
         List<Integer> validTypes = new ArrayList<>();
-        for (SpeciesDataHolder speciesDatum : ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData()) {
+        for (SpeciesDataHolder speciesDatum : getEntityData(this.getType()).getSpeciesData()) {
             for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
                 if(biome.getCategory() == biomeTypes){
                     for (int i=0; i < speciesDatum.getRarity(); i++) {

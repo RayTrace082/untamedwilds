@@ -154,11 +154,11 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (biomekey.equals(Biomes.WARM_OCEAN) || biomekey.equals(Biomes.LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_WARM_OCEAN) || biome.getRegistryName().equals(new ResourceLocation("terraforged:warm_beach"))) {
             if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-                return this.getRNG().nextInt(ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
+                return this.getRNG().nextInt(getEntityData(this.getType()).getSpeciesData().size());
             }
             List<Integer> validTypes = new ArrayList<>();
             if (ComplexMob.ENTITY_DATA_HASH.containsKey(this.getType())) {
-                for (SpeciesDataHolder speciesDatum : ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData()) {
+                for (SpeciesDataHolder speciesDatum : getEntityData(this.getType()).getSpeciesData()) {
                     for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
                         if(biome.getCategory() == biomeTypes){
                             for (int i=0; i < speciesDatum.getRarity(); i++) {
@@ -175,7 +175,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
             }
         }
         if (isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
+            return this.rand.nextInt(getEntityData(this.getType()).getSpeciesData().size());
         }
         return 99;
     }

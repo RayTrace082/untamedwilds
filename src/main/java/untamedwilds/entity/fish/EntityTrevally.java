@@ -122,25 +122,22 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
             return 99;
         }
         if (isArtificialSpawnReason(reason) || ConfigGamerules.randomSpecies.get()) {
-            return this.rand.nextInt(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
+            return this.rand.nextInt(getEntityData(this.getType()).getSpeciesData().size());
         }
         List<Integer> validTypes = new ArrayList<>();
-        if (ComplexMob.ENTITY_DATA_HASH.containsKey(this.getType())) {
-            for (SpeciesDataHolder speciesDatum : ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData()) {
-                for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < speciesDatum.getRarity(); i++) {
-                            validTypes.add(speciesDatum.getVariant());
-                        }
+        for (SpeciesDataHolder speciesDatum : ComplexMob.getEntityData(this.getType()).getSpeciesData()) {
+            for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
+                if(biome.getCategory() == biomeTypes){
+                    for (int i=0; i < speciesDatum.getRarity(); i++) {
+                        validTypes.add(speciesDatum.getVariant());
                     }
                 }
             }
-            if (validTypes.isEmpty()) {
-                return 99;
-            } else {
-                return validTypes.get(new Random().nextInt(validTypes.size()));
-            }
         }
-        return 99;
+        if (validTypes.isEmpty()) {
+            return 99;
+        } else {
+            return validTypes.get(new Random().nextInt(validTypes.size()));
+        }
     }
 }

@@ -74,12 +74,7 @@ public abstract class EntityUtils {
     }
 
     public static int getPackSize(EntityType<?> type, int variant) {
-        if (ComplexMob.ENTITY_DATA_HASH.containsKey(type)) {
-            if (ComplexMob.ENTITY_DATA_HASH.get(type).getFlags(variant, "groupCount") != null) {
-                return ComplexMob.ENTITY_DATA_HASH.get(type).getFlags(variant, "groupCount");
-            }
-        }
-        return 1;
+        return ComplexMob.getEntityData(type).getGroupCount(variant);
     }
 
     // Self explanatory

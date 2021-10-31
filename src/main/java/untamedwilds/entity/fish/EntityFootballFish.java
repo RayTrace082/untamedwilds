@@ -105,10 +105,10 @@ public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, I
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (biomekey.equals(Biomes.DEEP_LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_OCEAN) || biomekey.equals(Biomes.DEEP_COLD_OCEAN)) {
-            return this.rand.nextInt(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
+            return this.rand.nextInt(getEntityData(this.getType()).getSpeciesData().size());
         }
         if (isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
+            return this.rand.nextInt(getEntityData(this.getType()).getSpeciesData().size());
         }
         return 99;
     }

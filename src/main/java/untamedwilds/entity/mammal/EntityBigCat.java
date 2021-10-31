@@ -270,17 +270,17 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
 
     @Override
     public void updateAttributes() {
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
         this.setHealth(this.getMaxHealth());
     }
 
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-            return this.getRNG().nextInt(ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().size());
+            return this.getRNG().nextInt(getEntityData(this.getType()).getSpeciesData().size());
         }
         List<Integer> validTypes = new ArrayList<>();
-        for (SpeciesDataHolder speciesDatum : ComplexMob.ENTITY_DATA_HASH.get(this.getType()).getSpeciesData()) {
+        for (SpeciesDataHolder speciesDatum : getEntityData(this.getType()).getSpeciesData()) {
             for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
                 if(biome.getCategory() == biomeTypes){
                     for (int i=0; i < speciesDatum.getRarity(); i++) {

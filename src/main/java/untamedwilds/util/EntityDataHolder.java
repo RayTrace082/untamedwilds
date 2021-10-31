@@ -151,6 +151,13 @@ public class EntityDataHolder {
         return this.sounds.get(sound_id);
     }
 
+    public Integer getGroupCount(int i) {
+        if (!this.speciesData.get(i).getFlags().isEmpty() && this.speciesData.get(i).getFlags().get("groupCount") != null) {
+            return this.speciesData.get(i).getFlags().get("groupCount");
+        }
+        return 1;
+    }
+
     @Nullable
     public Integer getFlags(int i, String flag) {
         if (!this.speciesData.get(i).getFlags().isEmpty() && this.speciesData.get(i).getFlags().get(flag) != null) {

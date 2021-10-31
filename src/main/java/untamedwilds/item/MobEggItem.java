@@ -99,10 +99,7 @@ public class MobEggItem extends Item {
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (group == ItemGroupUT.untamedwilds_items) {
             int j = this.species;
-            if (ComplexMob.ENTITY_DATA_HASH.containsKey(entity)) {
-                j = ComplexMob.ENTITY_DATA_HASH.get(entity).getSpeciesData().size();
-            }
-
+            j = ComplexMob.getEntityData(entity).getSpeciesData().size();
             for(int i = 0; i < j; i++) {
                 CompoundNBT baseTag = new CompoundNBT();
                 ItemStack item = new ItemStack(this);

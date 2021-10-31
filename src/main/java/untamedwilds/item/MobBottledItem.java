@@ -38,11 +38,11 @@ public class MobBottledItem extends Item {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        EntityUtils.buildTooltipData(stack, tooltip, this.entity, ComplexMob.ENTITY_DATA_HASH.get(this.entity).getSpeciesData().get(this.getSpecies(stack)).getName());
+        EntityUtils.buildTooltipData(stack, tooltip, this.entity, ComplexMob.getEntityData(this.entity).getSpeciesData().get(this.getSpecies(stack)).getName());
     }
 
     public String getTranslationKey(ItemStack stack) {
-        return new TranslationTextComponent("item.untamedwilds.bottle_" + this.entity.getRegistryName().getPath()).getString() + "_" + ComplexMob.ENTITY_DATA_HASH.get(this.entity).getSpeciesData().get(this.getSpecies(stack)).getName();
+        return new TranslationTextComponent("item.untamedwilds.bottle_" + this.entity.getRegistryName().getPath()).getString() + "_" + ComplexMob.getEntityData(this.entity).getSpeciesData().get(this.getSpecies(stack)).getName();
     }
 
     @Override
@@ -96,7 +96,7 @@ public class MobBottledItem extends Item {
 
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (group == ItemGroupUT.untamedwilds_items) {
-            for(int i = 0; i < ComplexMob.ENTITY_DATA_HASH.get(this.entity).getSpeciesData().size(); i++) {
+            for(int i = 0; i < ComplexMob.getEntityData(this.entity).getSpeciesData().size(); i++) {
                 CompoundNBT baseTag = new CompoundNBT();
                 ItemStack item = new ItemStack(this);
                 baseTag.putInt("variant", i);

@@ -92,8 +92,8 @@ public class EntityTarantula extends ComplexMob implements ISpecies, INewSkins {
             List<EntityTarantula> list = this.world.getEntitiesWithinAABB(EntityTarantula.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
             list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
             if (list.size() >= 1) {
-                this.setGrowingAge(this.getAdulthoodTime());
-                list.get(0).setGrowingAge(this.getAdulthoodTime());
+                this.setGrowingAge(this.getGrowingAge());
+                list.get(0).setGrowingAge(this.getGrowingAge());
                 return true;
             }
         }

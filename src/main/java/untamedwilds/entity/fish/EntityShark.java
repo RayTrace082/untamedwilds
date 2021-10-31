@@ -126,14 +126,14 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
 
     // Flags Parameters
     public boolean hasShortFins() {
-        return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "shortFins") == 1;
+        return getEntityData(this.getType()).getFlags(this.getVariant(), "shortFins") == 1;
     }
-    public boolean isBottomDweller() { return ENTITY_DATA_HASH.get(this.getType()).getFlags(this.getVariant(), "bottomDweller") == 1; }
+    public boolean isBottomDweller() { return getEntityData(this.getType()).getFlags(this.getVariant(), "bottomDweller") == 1; }
 
     @Override
     public void updateAttributes() {
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(ENTITY_DATA_HASH.get(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
         this.setHealth(this.getMaxHealth());
     }
 

@@ -134,7 +134,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
     }
 
     protected ActivityType getActivityType() {
-        return ENTITY_DATA_HASH.get(this.getType()).getActivityType(this.getVariant());
+        return getEntityData(this.getType()).getActivityType(this.getVariant());
     }
 
     public boolean isActive() {

@@ -72,7 +72,7 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
    }
 
    public void increaseSpeciesNumber(int intIn) {
-      this.currentSpecies = (intIn % (ComplexMob.ENTITY_DATA_HASH.get(this.entityType).getSpeciesData().size() + 1));
+      this.currentSpecies = (intIn % (ComplexMob.getEntityData(this.entityType).getSpeciesData().size() + 1));
       this.isCached = true;
    }
 
