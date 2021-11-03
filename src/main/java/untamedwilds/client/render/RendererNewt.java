@@ -20,12 +20,10 @@ public class RendererNewt extends MobRenderer<EntityNewt, EntityModel<EntityNewt
 
     @Override
     protected void preRenderCallback(EntityNewt entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = entity.getModelScale();
-        f += entity.getMobSize() * 0.2f;
+        float f = entity.getMobSize();
         f *= entity.getRenderScale();
-        f *= entity.getModelScale(entity.getVariant());
         matrixStackIn.scale(f, f, f);
-        this.shadowSize = entity.getModelScale() * 0.2f;
+        this.shadowSize = f * 0.2F;
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntityNewt entity) {

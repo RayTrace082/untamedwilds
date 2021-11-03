@@ -20,12 +20,10 @@ public class RendererGiantSalamander extends MobRenderer<EntityGiantSalamander, 
 
     @Override
     protected void preRenderCallback(EntityGiantSalamander entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = entity.getModelScale();
-        f += (entity.getMobSize() * 0.2f);
+        float f = entity.getMobSize();
         f *= entity.getRenderScale();
-        f *= entity.getModelScale(entity.getVariant());
         matrixStackIn.scale(f, f, f);
-        this.shadowSize = entity.getModelScale() * 0.4f;
+        this.shadowSize = f * 0.6F;
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntityGiantSalamander entity) {

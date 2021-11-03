@@ -31,10 +31,8 @@ public class RendererBear extends MobRenderer<EntityBear, EntityModel<EntityBear
 
     @Override
     protected void preRenderCallback(EntityBear entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = 0.8F;
-        f += (entity.getMobSize() * 0.2f);
+        float f = entity.getMobSize();
         f *= entity.getRenderScale();
-        f *= entity.getModelScale(entity.getVariant());
         matrixStackIn.scale(f, f, f);
         this.shadowSize = f;
     }

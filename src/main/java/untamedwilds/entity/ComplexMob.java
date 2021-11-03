@@ -22,6 +22,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
+import untamedwilds.UntamedWilds;
 import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
@@ -231,8 +232,7 @@ public abstract class ComplexMob extends TameableEntity {
 
     protected <T extends ComplexMob> T create_offspring(T entity) {
         entity.setGender(this.rand.nextInt(2));
-        entity.setMobSize(this.rand.nextFloat());
-        entity.setGrowingAge(entity.getAdulthoodTime() * -1);
+        entity.setMobSize(entity.getModelScale() + Math.abs((float)this.rand.nextGaussian() * 0.15F));
         entity.setVariant(this.getVariant());
         if (this instanceof INeedsPostUpdate) {
             ((INeedsPostUpdate) this).updateAttributes();
@@ -380,7 +380,6 @@ public abstract class ComplexMob extends TameableEntity {
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         this.setRandomMobSize();
         if (reason != SpawnReason.DISPENSER && reason != SpawnReason.BUCKET) {
-            this.setGender(this.rand.nextInt(2));
             if (this instanceof ISpecies) {
                 Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(this.getPosition());
                 if (optional.isPresent()) {
@@ -392,6 +391,9 @@ public abstract class ComplexMob extends TameableEntity {
                     }
                 }
             }
+            this.setGender(this.rand.nextInt(2));
+            this.setMobSize(this.getModelScale() + Math.abs((float)this.rand.nextGaussian() * 0.15F));
+            UntamedWilds.LOGGER.info(this.getMobSize());
             if (TEXTURES_COMMON.containsKey(this.getType().getRegistryName().getPath())) {
                 chooseSkinForSpecies(this, ConfigGamerules.wildRareSkins.get());
             }
