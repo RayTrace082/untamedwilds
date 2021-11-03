@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.Mod;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.init.ModEntity;
-import untamedwilds.network.SyncEntityData;
 import untamedwilds.network.SyncTextureData;
 import untamedwilds.network.UntamedInstance;
 
@@ -60,7 +59,7 @@ public class ResourceListenerEvent {
             String entityName = types.getRegistryName().getPath();
             int size = 0;
             UntamedWilds.LOGGER.info("Sending entity data for " + entityName);
-            UntamedInstance.sendToClient(new SyncEntityData(types.getRegistryName(), ComplexMob.ENTITY_DATA_HASH.get(types).writeEntityDataToNBT()), (ServerPlayerEntity) event.getPlayer());
+            //UntamedInstance.sendToClient(new SyncEntityData(types.getRegistryName(), ComplexMob.ENTITY_DATA_HASH.get(types).writeEntityDataToNBT()), (ServerPlayerEntity) event.getPlayer());
             for (SpeciesDataHolder speciesData : ComplexMob.ENTITY_DATA_HASH.get(types).getSpeciesData()) {
                 UntamedInstance.sendToClient(new SyncTextureData(entityName, speciesData.getName(), size++), (ServerPlayerEntity) event.getPlayer());
             }
