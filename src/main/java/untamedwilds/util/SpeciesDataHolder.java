@@ -2,15 +2,14 @@ package untamedwilds.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SpeciesDataHolder {
 
@@ -63,6 +62,31 @@ public class SpeciesDataHolder {
         this.sounds = sounds;
         this.flags = flags;
         this.spawnBiomes = p_i232114_4_;
+    }
+
+    public SpeciesDataHolder(CompoundNBT nbtData) {
+        this.name = nbtData.getString("name");
+        this.variant = nbtData.getInt("variant");
+        this.modelScale = nbtData.getFloat("scale");
+        this.rarity = nbtData.getInt("rarity");
+        this.attack = nbtData.getFloat("attack");
+        this.health = nbtData.getFloat("health");
+        this.activityType = ComplexMobTerrestrial.ActivityType.valueOf(nbtData.getString("activityType"));
+        this.favouriteFood = nbtData.getString("favourite_food");
+        this.growing_time = nbtData.getInt("growing_time");
+        this.offspring = nbtData.getInt("offspring");
+        this.breeding_season = nbtData.getString("breeding_season");
+        Map<String, SoundEvent> sounds = new HashMap<>();
+        for (String nbt : nbtData.getCompound("sounds").keySet()) {
+            sounds.put(nbt, new SoundEvent(new ResourceLocation(nbtData.getCompound("sounds").getString(nbt))));
+        }
+        this.sounds = sounds;
+        Map<String, Integer> flags = new HashMap<>();
+        for (String nbt : nbtData.getCompound("flags").keySet()) {
+            flags.put(nbt, nbtData.getCompound("flags").getInt(nbt));
+        }
+        this.flags = flags;
+        this.spawnBiomes = new ArrayList<>(nbtData.getCompound("spawnBiomes").keySet());
     }
 
     public String getString() {
@@ -127,6 +151,37 @@ public class SpeciesDataHolder {
         for (String biomeCategories : this.spawnBiomes) {
             result.add(Biome.Category.byName(biomeCategories));
         }
+        return result;
+    }
+
+    public CompoundNBT writeEntityDataToNBT() {
+        CompoundNBT result = new CompoundNBT();
+        result.putString("name", this.name);
+        result.putInt("variant", this.variant);
+        result.putFloat("scale", this.modelScale);
+        result.putInt("rarity", this.rarity);
+        result.putFloat("attack", this.attack);
+        result.putFloat("health", this.health);
+        result.putString("activityType", this.activityType.toString());
+        result.putString("favourite_food", this.favouriteFood);
+        result.putInt("growing_time", this.growing_time);
+        result.putInt("offspring", this.offspring);
+        result.putString("breeding_season", this.breeding_season);
+        CompoundNBT sounds = new CompoundNBT();
+        for (Map.Entry<String, SoundEvent> sound_data : this.sounds.entrySet()) {
+            sounds.putString(sound_data.getKey(), sound_data.getValue().getRegistryName().toString());
+        }
+        result.put("sounds", sounds);
+        CompoundNBT flags = new CompoundNBT();
+        for (Map.Entry<String, Integer> flags_data : this.flags.entrySet()) {
+            flags.putInt(flags_data.getKey(), flags_data.getValue());
+        }
+        result.put("flags", flags);
+        CompoundNBT spawnBiomes = new CompoundNBT();
+        for (String spawn_biomes : this.spawnBiomes) {
+            spawnBiomes.putString(spawn_biomes, spawn_biomes);
+        }
+        result.put("spawnBiomes", spawnBiomes);
         return result;
     }
 }

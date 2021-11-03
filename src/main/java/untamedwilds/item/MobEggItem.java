@@ -21,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.INeedsPostUpdate;
 import untamedwilds.util.EntityUtils;
@@ -98,8 +99,8 @@ public class MobEggItem extends Item {
 
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (group == ItemGroupUT.untamedwilds_items) {
-            int j = this.species;
-            j = ComplexMob.getEntityData(entity).getSpeciesData().size();
+            UntamedWilds.LOGGER.info(entity.getName());
+            int j = ComplexMob.getEntityData(entity).getSpeciesData().size();
             for(int i = 0; i < j; i++) {
                 CompoundNBT baseTag = new CompoundNBT();
                 ItemStack item = new ItemStack(this);

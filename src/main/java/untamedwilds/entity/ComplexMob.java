@@ -183,7 +183,7 @@ public abstract class ComplexMob extends TameableEntity {
         return 0;
     }
 
-    public float getModelScale() { return 1f; }
+    public float getModelScale() { return getEntityData(this.getType()).getScale(this.getVariant()); }
     public float getMobSize(){ return (this.dataManager.get(SIZE)); }
     public void setMobSize(float size){ this.dataManager.set(SIZE, size); }
     public void setRandomMobSize(){ this.dataManager.set(SIZE, Math.abs((float)this.rand.nextGaussian())/2); }

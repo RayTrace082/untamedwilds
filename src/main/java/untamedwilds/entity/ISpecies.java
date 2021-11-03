@@ -46,10 +46,6 @@ public interface ISpecies {
         return ComplexMob.getEntityData(((ComplexMob)this).getType()).getSpeciesData().get(i).getName().toLowerCase();
     }
 
-    default float getModelScale(int i) {
-        return ComplexMob.getEntityData(((ComplexMob)this).getType()).getScale(i);
-    }
-
     default String getSpeciesName(int i) {
         return new TranslationTextComponent("entity.untamedwilds." + ((ComplexMob)this).getType().getRegistryName().getPath() + "_" + getRawSpeciesName(i)).getString();
     }

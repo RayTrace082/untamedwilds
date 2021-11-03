@@ -283,10 +283,20 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
         return new Animation[]{NO_ANIMATION, ANIMATION_ROAR, IDLE_STAND, IDLE_TALK, ANIMATION_EAT, ATTACK_MAUL, ATTACK_BITE, ATTACK_SWIPE, ATTACK_POUND};
     }
 
+    // TODO: Temporarly disabled
     // Flags Parameters
-    public boolean hasHump() { return getEntityData(this.getType()).getFlags(this.getVariant(), "hasHump") == 1; }
-    public boolean hasShortSnout() { return getEntityData(this.getType()).getFlags(this.getVariant(), "hasShortSnout") == 1; }
-    public boolean isPanda() { return getEntityData(this.getType()).getFlags(this.getVariant(), "isPanda") == 1; }
+    public boolean hasHump() {
+        return false;
+        //return getEntityData(this.getType()).getFlags(this.getVariant(), "hasHump") == 1;
+    }
+    public boolean hasShortSnout() {
+        return false;
+        //return getEntityData(this.getType()).getFlags(this.getVariant(), "hasShortSnout") == 1;
+    }
+    public boolean isPanda() {
+        return false;
+        //return getEntityData(this.getType()).getFlags(this.getVariant(), "isPanda") == 1;
+    }
 
     @Override
     public void updateAttributes() {

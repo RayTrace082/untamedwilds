@@ -19,6 +19,7 @@ import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
 import untamedwilds.init.ModVillagerTrades;
+import untamedwilds.network.UntamedInstance;
 import untamedwilds.util.ModEntityRightClickEvent;
 import untamedwilds.world.UntamedWildsGenerator;
 
@@ -34,14 +35,6 @@ public class UntamedWilds {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";
     public static final boolean DEBUG = false;
-
-    /*private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(MOD_ID, "main"),
-            () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals,
-            PROTOCOL_VERSION::equals
-    );*/
 
     public UntamedWilds() {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -62,6 +55,7 @@ public class UntamedWilds {
     }
 
     private void setupCommon(final FMLCommonSetupEvent event) {
+        UntamedInstance.registerMessages();
         DispenserBlock.registerDispenseBehavior(ModBlock.TRAP_CAGE.get().asItem(), new CageBlock.DispenserBehaviorTrapCage());
     }
 

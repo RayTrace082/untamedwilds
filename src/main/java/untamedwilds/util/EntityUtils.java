@@ -294,6 +294,7 @@ public abstract class EntityUtils {
 
     // Takes the skin from the TEXTURES_COMMON or TEXTURES_RARE array
     public static ResourceLocation getSkinFromEntity(ComplexMob entityIn) {
+        UntamedWilds.LOGGER.info(ComplexMob.TEXTURES_COMMON);
         if (entityIn.getType().getRegistryName() != null) {
             String name = entityIn.getType().getRegistryName().getPath();
             if (entityIn.getSkin() > 99 && ComplexMob.TEXTURES_RARE.get(name).containsKey(entityIn.getVariant())) {
