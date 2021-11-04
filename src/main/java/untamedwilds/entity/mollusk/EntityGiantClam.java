@@ -1,6 +1,5 @@
 package untamedwilds.entity.mollusk;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -48,12 +47,6 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
                 .createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
                 .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1D)
                 .createMutableAttribute(Attributes.ARMOR, 12D);
-    }
-
-    public static void processSkins() {
-        for (int i = 0; i < SpeciesGiantClam.values().length; i++) {
-            EntityUtils.buildSkinArrays("giant_clam", SpeciesGiantClam.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
-        }
     }
 
     @Override
@@ -192,52 +185,5 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
     public void readAdditional(CompoundNBT compound){ // Read NBT Tags
         super.readAdditional(compound);
         this.setOpen(compound.getBoolean("isOpen"));
-    }
-
-    public enum SpeciesGiantClam implements IStringSerializable {
-
-        DERASA			(0, "Tridacna derasa", 		1.0F, 1, Biome.Category.OCEAN),
-        GIGAS			(1, "Tridacna gigas", 		1.2F, 3, Biome.Category.OCEAN), // ??
-        MAXIMA          (2, "Tridacna maxima",       0.7F, 2, Biome.Category.OCEAN),
-        SQUAMOSA	    (3, "Tridacna squamosa", 	0.8F, 2, Biome.Category.OCEAN);
-
-        public String sciname;
-        public Float scale;
-
-        public int species;
-        public int rolls;
-        public Biome.Category[] spawnBiomes;
-
-        SpeciesGiantClam(int species, String sname, Float scale, int rolls, Biome.Category... biomes) {
-            this.species = species;
-            this.sciname = sname;
-            this.scale = scale;
-            this.rolls = rolls;
-            this.spawnBiomes = biomes;
-        }
-
-        public int getSpecies() { return this.species; }
-
-        public String getString() {
-            return I18n.format("entity.giantclam." + this.name().toLowerCase());
-        }
-
-        public static int getSpeciesByBiome(Biome biome) {
-            List<SpeciesGiantClam> types = new ArrayList<>();
-            for (SpeciesGiantClam type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rolls; i++) {
-                            types.add(type);
-                        }
-                    }
-                }
-            }
-            if (types.isEmpty()) {
-                return 99;
-            } else {
-                return types.get(new Random().nextInt(types.size())).getSpecies();
-            }
-        }
     }
 }

@@ -22,7 +22,7 @@ public class RendererFootballFish extends MobRenderer<EntityFootballFish, Segmen
     }
 
     protected void preRenderCallback(EntityFootballFish entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = entity.getMobSize();
+        float f = entity.getMobSize() * 0.8F;
         f *= entity.getRenderScale();
         matrixStackIn.scale(f, f, f);
         this.shadowSize = f;

@@ -1,22 +1,20 @@
 package untamedwilds.entity.reptile;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.*;
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAmphibious;
 import untamedwilds.entity.INewSkins;
@@ -27,14 +25,10 @@ import untamedwilds.init.ModItems;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpecies, INewSkins {
 
-    private static final String BREEDING = "EARLY_SUMMER";
-    private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
     public int baskProgress;
 
     public EntitySoftshellTurtle(EntityType<? extends ComplexMob> type, World worldIn) {
@@ -63,12 +57,6 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 80));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, input -> getEcoLevel(input) < 5));
-    }
-
-    public static void processSkins() {
-        for (int i = 0; i < SpeciesSoftshellTurtle.values().length; i++) {
-            EntityUtils.buildSkinArrays("softshell_turtle", SpeciesSoftshellTurtle.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
-        }
     }
 
     public boolean wantsToLeaveWater() { return this.world.getDayTime() > 5000 && this.world.getDayTime() < 7000; }
@@ -120,8 +108,8 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
                 List<EntitySoftshellTurtle> list = this.world.getEntitiesWithinAABB(EntitySoftshellTurtle.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                 list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
                 if (list.size() >= 1) {
-                    this.setGrowingAge(GROWING);
-                    list.get(0).setGrowingAge(GROWING);
+                    this.setGrowingAge(this.getPregnancyTime());
+                    list.get(0).setGrowingAge(this.getPregnancyTime());
                     return true;
                 }
             }
@@ -132,7 +120,7 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_softshell_turtle_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 5);
+        EntityUtils.dropEggs(this, "egg_softshell_turtle", this.getOffspring());
         return null;
     }
 
@@ -141,7 +129,7 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
 
         if (itemstack.isEmpty() && this.isAlive()) {
-            EntityUtils.turnEntityIntoItem(this, "softshell_turtle_" + getRawSpeciesName(this.getVariant()).toLowerCase());
+            EntityUtils.turnEntityIntoItem(this, "spawn_softshell_turtle");
             return ActionResultType.func_233537_a_(this.world.isRemote);
         }
         return super.func_230254_b_(player, hand);
@@ -150,85 +138,5 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
         SoundEvent soundevent = this.isChild() ? SoundEvents.ENTITY_TURTLE_SHAMBLE_BABY : SoundEvents.ENTITY_TURTLE_SHAMBLE;
         this.playSound(soundevent, 0.15F, 1.0F);
-    }
-
-    protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_TURTLE_AMBIENT_LAND;
-    }
-
-    protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
-        return SoundEvents.ENTITY_TURTLE_HURT;
-    }
-
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_TURTLE_DEATH;
-    }
-
-    public String getBreedingSeason() {
-        return BREEDING;
-    }
-    public int getAdulthoodTime() { return GROWING; }
-
-    public boolean isBreedingItem(ItemStack stack) { return stack.getItem() == Items.COD; }
-
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomeKey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(SpeciesSoftshellTurtle.values().length);
-        }
-        return SpeciesSoftshellTurtle.getSpeciesByBiome(biome);
-    }
-
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.softshell_turtle_" + getRawSpeciesName(i)).getString(); }
-    public String getRawSpeciesName(int i) { return SpeciesSoftshellTurtle.values()[i].name().toLowerCase(); }
-
-    public enum SpeciesSoftshellTurtle implements IStringSerializable {
-
-        BLACK			(0, 1.0F, 2, Biome.Category.SWAMP, Biome.Category.JUNGLE),
-        CHINESE	        (1, 0.8F, 3, Biome.Category.SWAMP, Biome.Category.JUNGLE, Biome.Category.RIVER),
-        FLAPSHELL		(2, 1.0F, 2, Biome.Category.SWAMP, Biome.Category.RIVER),
-        NILE			(3, 1.1F, 2, Biome.Category.RIVER),
-        PEACOCK			(4, 0.9F, 1, Biome.Category.JUNGLE),
-        PIG_NOSE		(5, 0.8F, 2, Biome.Category.JUNGLE, Biome.Category.SWAMP),
-        SPINY		    (6, 0.7F, 3, Biome.Category.SWAMP, Biome.Category.RIVER);
-
-        public Float scale;
-        public int species;
-        public int rolls;
-        public Biome.Category[] spawnBiomes;
-
-        SpeciesSoftshellTurtle(int species, Float scale, int rolls, Biome.Category... biomes) {
-            this.species = species;
-            this.scale = scale;
-            this.rolls = rolls;
-            this.spawnBiomes = biomes;
-        }
-
-        public int getSpecies() { return this.species; }
-
-        public String getString() {
-            return I18n.format("entity.softshell_turtle." + this.name().toLowerCase());
-        }
-
-        public static int getSpeciesByBiome(Biome biome) {
-            List<SpeciesSoftshellTurtle> types = new ArrayList<>();
-            /*if (biome.getDefaultTemperature() < 0.8F) {
-                return 99;
-            }*/
-            for (SpeciesSoftshellTurtle type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rolls; i++) {
-                            types.add(type);
-                        }
-                    }
-                }
-            }
-            if (types.isEmpty()) {
-                return 99;
-            } else {
-                return types.get(new Random().nextInt(types.size())).getSpecies();
-            }
-        }
     }
 }

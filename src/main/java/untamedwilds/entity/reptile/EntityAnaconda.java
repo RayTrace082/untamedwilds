@@ -1,7 +1,6 @@
 package untamedwilds.entity.reptile;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -11,7 +10,6 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.ParticleTypes;
@@ -20,12 +18,9 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.entity.PartEntity;
-import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.*;
 import untamedwilds.entity.ai.AmphibiousRandomSwimGoal;
 import untamedwilds.entity.ai.AmphibiousTransition;
@@ -34,20 +29,14 @@ import untamedwilds.entity.ai.SmartWanderGoal;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
-import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, INeedsPostUpdate, INewSkins {
 
-    private static final int GROWING = 7 * ConfigGamerules.cycleLength.get();
-    private static final String BREEDING = "LATE_SUMMER";
     public final int length;
-
     public final EntityAnacondaPart[] anacondaParts;
     public final float[] buffer = new float[3];
     public int ringBufferIndex = -1;
@@ -59,7 +48,7 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
         this.moveController = new ComplexMobAquatic.MoveHelperController(this, 0.8F);
         this.lookController = new DolphinLookController(this, 10);
         this.ticksToSit = 40;
-        this.length = 5;
+        this.length = getMultiparts();
         this.anacondaParts = new EntityAnacondaPart[this.length];
         for (int i = 0; i < this.length; i++) {
             this.anacondaParts[i] = new EntityAnacondaPart(this, this.getWidth(), this.getHeight());
@@ -104,12 +93,6 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
         });
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, input -> getEcoLevel(input) < 8));
-    }
-
-    public static void processSkins() {
-        for (int i = 0; i < SpeciesAnaconda.values().length; i++) {
-            EntityUtils.buildSkinArrays("large_snake", SpeciesAnaconda.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
-        }
     }
 
     public void livingTick() {
@@ -165,7 +148,7 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
 
                 double[] adouble = this.getMovementOffsets(5, 1.0F);
 
-                for (int k = 0; k < SpeciesAnaconda.values()[this.getVariant()].multiParts; ++k) {
+                for (int k = 0; k < getMultiparts(); ++k) {
                     EntityAnacondaPart anaconda_part = this.anacondaParts[k];
 
                     double[] adouble1 = this.getMovementOffsets(5 + k * 2, 1.0F);
@@ -185,7 +168,7 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
                 }
             }
             else {
-                for (int k = 0; k < SpeciesAnaconda.values()[this.getVariant()].multiParts; ++k) {
+                for (int k = 0; k < getMultiparts(); ++k) {
                     EntityAnacondaPart anaconda_part = this.anacondaParts[k];
                     this.setPartPosition(anaconda_part, 0, 0, 0);
                     this.anacondaParts[k].prevPosX = this.getPosX();
@@ -225,8 +208,8 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
                 List<EntityAnaconda> list = this.world.getEntitiesWithinAABB(EntityAnaconda.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
                 list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
                 if (list.size() >= 1) {
-                    this.setGrowingAge(GROWING);
-                    list.get(0).setGrowingAge(GROWING);
+                    this.setGrowingAge(this.getPregnancyTime());
+                    list.get(0).setGrowingAge(this.getPregnancyTime());
                     return true;
                 }
             }
@@ -239,17 +222,9 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
 
     protected SoundEvent getAmbientSound() {
         if (this.isAngry()) {
-            return ModSounds.ENTITY_SNAKE_HISS;
+            return super.getAmbientSound();
         }
         return null;
-    }
-
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSounds.ENTITY_SNAKE_HISS;
-    }
-
-    protected SoundEvent getDeathSound() {
-        return ModSounds.ENTITY_SNAKE_HISS;
     }
 
     @Nullable
@@ -261,31 +236,6 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
         }
         return create_offspring(new EntityAnaconda(ModEntity.ANACONDA, this.world));
     }
-
-    public String getBreedingSeason() {
-        return BREEDING;
-    }
-    public int getAdulthoodTime() { return GROWING; }
-
-    public boolean isBreedingItem(ItemStack stack) { return stack.getItem() == Items.RABBIT; }
-
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomeKey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(EntityAnaconda.SpeciesAnaconda.values().length);
-        }
-        return EntityAnaconda.SpeciesAnaconda.getSpeciesByBiome(biome);
-    }
-
-    protected ActivityType getActivityType() {
-        return ActivityType.CATHEMERAL;
-    }
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.large_snake_" + getRawSpeciesName(i)).getString(); }
-    public String getRawSpeciesName(int i) { return SpeciesAnaconda.values()[i].name().toLowerCase(); }
-
-    public float getModelScale() { return SpeciesAnaconda.values()[this.getVariant()].scale; }
-
-    public boolean isEggLayer() { return SpeciesAnaconda.values()[this.getVariant()].isEggLayer; }
 
     public boolean attackEntityAsMob(Entity entityIn) {
         float f = (float)this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
@@ -307,69 +257,17 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
         return this.attackEntityFrom(source, amount);
     }
 
+    // Flags Parameters
+    public boolean isEggLayer() {
+        return getEntityData(this.getType()).getFlags(this.getVariant(), "eggLayer") == 1;
+    }
+    public int getMultiparts() { return getEntityData(this.getType()).getFlags(this.getVariant(), "parts"); }
+
     @Override
     public void updateAttributes() {
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(SpeciesAnaconda.values()[this.getVariant()].attack);
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(SpeciesAnaconda.values()[this.getVariant()].health);
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
         this.setHealth(this.getMaxHealth());
-
-    }
-
-    public enum SpeciesAnaconda implements IStringSerializable {
-
-        ANACONDA			(0, 0.9F,	4F, 30F, false, 3, 0, 3, Biome.Category.JUNGLE, Biome.Category.SWAMP),
-        RETICULATED_PYTHON	(1, 1.0F,	4F, 30F, true, 3, 0, 3, Biome.Category.JUNGLE, Biome.Category.SWAMP);
-        //TITANOBOA			(2, 1.6F,	6F, 50F, false, 5, 0, 0, Biome.Category.JUNGLE, Biome.Category.SWAMP);
-
-        public Float scale;
-        public int species;
-        public int rolls;
-        public float attack;
-        public float health;
-        public boolean isEggLayer;
-        public int multiParts;
-        public int venomTier;
-        public Biome.Category[] spawnBiomes;
-
-        SpeciesAnaconda(int species, Float scale, float attack, float health, boolean isEggLayer, int multiParts, int venomTier, int rolls, Biome.Category... biomes) {
-            this.species = species;
-            this.scale = scale;
-            this.rolls = rolls;
-            this.attack = attack;
-            this.health = health;
-            this.isEggLayer = isEggLayer;
-            this.multiParts = multiParts;
-            this.venomTier = venomTier;
-            this.spawnBiomes = biomes;
-        }
-
-        public int getSpecies() { return this.species; }
-
-        public String getString() {
-            return I18n.format("entity.large_snake." + this.name().toLowerCase());
-        }
-
-        public static int getSpeciesByBiome(Biome biome) {
-            List<SpeciesAnaconda> types = new ArrayList<>();
-            for (SpeciesAnaconda type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rolls; i++) {
-                            types.add(type);
-                        }
-                    }
-                }
-            }
-            if (types.isEmpty()) {
-                return 99;
-            } else {
-                return types.get(new Random().nextInt(types.size())).getSpecies();
-            }
-        }
-
-        public int getVenomTier() {
-            return venomTier;
-        }
     }
 
     public static class EntityAnacondaPart extends PartEntity<EntityAnaconda> {

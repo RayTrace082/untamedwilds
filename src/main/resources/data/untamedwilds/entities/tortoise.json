@@ -1,0 +1,74 @@
+{
+  "name": "tortoise",
+  "breeding": "EARLY_SUMMER",
+  "growing": 6,
+  "offspring": 5,
+  "favourite_food": "minecraft:apple",
+  "sounds": {
+    "ambient": "entity.turtle.ambient_land",
+    "hurt": "entity.turtle.hurt",
+    "death": "entity.turtle.death"
+  },
+
+  "species": [{
+    "name": "asian_box",
+    "variant": 0,
+    "scale": 0.8,
+    "rarity": 2,
+    "spawnBiomes": [
+        "forest",
+      "jungle"
+    ]
+  },
+    {
+      "name": "gopher",
+      "variant": 1,
+      "scale": 1,
+      "rarity": 3,
+      "spawnBiomes": [
+        "forest"
+      ]
+    },
+    {
+      "name": "leopard",
+      "variant": 2,
+      "scale": 1,
+      "rarity": 2,
+      "spawnBiomes": [
+        "savanna",
+        "mesa",
+        "plains"
+      ]
+    },
+    {
+      "name": "marginated",
+      "variant": 3,
+      "scale": 0.9,
+      "rarity": 2,
+      "spawnBiomes": [
+        "forest",
+        "plains"
+      ]
+    },
+    {
+      "name": "star",
+      "variant": 4,
+      "scale": 0.8,
+      "rarity": 1,
+      "spawnBiomes": [
+        "plains",
+        "mesa"
+      ]
+    },
+    {
+      "name": "sulcata",
+      "variant": 5,
+      "scale": 1.2,
+      "rarity": 2,
+      "spawnBiomes": [
+        "savanna",
+        "swamp"
+      ]
+    }
+  ]
+}

@@ -22,7 +22,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
-import untamedwilds.UntamedWilds;
 import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
@@ -187,7 +186,7 @@ public abstract class ComplexMob extends TameableEntity {
     public float getModelScale() { return getEntityData(this.getType()).getScale(this.getVariant()); }
     public float getMobSize(){ return (this.dataManager.get(SIZE)); }
     public void setMobSize(float size){ this.dataManager.set(SIZE, size); }
-    public void setRandomMobSize(){ this.dataManager.set(SIZE, Math.abs((float)this.rand.nextGaussian())/2); }
+    public void setRandomMobSize(){ this.dataManager.set(SIZE, this.getModelScale() + ((float)this.rand.nextGaussian() * 0.1F)); }
 
     public void setGender(int gender){ this.dataManager.set(GENDER, gender); }
     public int getGender(){	return (this.dataManager.get(GENDER)); }
@@ -232,7 +231,7 @@ public abstract class ComplexMob extends TameableEntity {
 
     protected <T extends ComplexMob> T create_offspring(T entity) {
         entity.setGender(this.rand.nextInt(2));
-        entity.setMobSize(entity.getModelScale() + Math.abs((float)this.rand.nextGaussian() * 0.15F));
+        entity.setRandomMobSize();
         entity.setVariant(this.getVariant());
         if (this instanceof INeedsPostUpdate) {
             ((INeedsPostUpdate) this).updateAttributes();
@@ -378,7 +377,6 @@ public abstract class ComplexMob extends TameableEntity {
     @Nullable
     @Override
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        this.setRandomMobSize();
         if (reason != SpawnReason.DISPENSER && reason != SpawnReason.BUCKET) {
             if (this instanceof ISpecies) {
                 Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(this.getPosition());
@@ -392,8 +390,7 @@ public abstract class ComplexMob extends TameableEntity {
                 }
             }
             this.setGender(this.rand.nextInt(2));
-            this.setMobSize(this.getModelScale() + Math.abs((float)this.rand.nextGaussian() * 0.15F));
-            UntamedWilds.LOGGER.info(this.getMobSize());
+            this.setRandomMobSize();
             if (TEXTURES_COMMON.containsKey(this.getType().getRegistryName().getPath())) {
                 chooseSkinForSpecies(this, ConfigGamerules.wildRareSkins.get());
             }

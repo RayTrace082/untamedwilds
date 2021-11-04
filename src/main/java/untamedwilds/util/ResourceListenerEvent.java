@@ -28,6 +28,10 @@ public class ResourceListenerEvent {
     public static EntityDataHolder SHARK;
     public static EntityDataHolder SUNFISH;
     public static EntityDataHolder TREVALLY;
+    public static EntityDataHolder SNAKE;
+    public static EntityDataHolder ANACONDA;
+    public static EntityDataHolder SOFTSHELL_TURTLE;
+    public static EntityDataHolder TORTOISE;
 
     public static EntityDataHolder BEAR;
     public static EntityDataHolder BIG_CAT;
@@ -47,6 +51,11 @@ public class ResourceListenerEvent {
         SHARK = registerEntityData(ModEntity.SHARK);
         SUNFISH = registerEntityData(ModEntity.SUNFISH);
         TREVALLY = registerEntityData(ModEntity.TREVALLY);
+
+        SNAKE = registerEntityData(ModEntity.SNAKE);
+        ANACONDA = registerEntityData(ModEntity.ANACONDA);
+        SOFTSHELL_TURTLE = registerEntityData(ModEntity.SOFTSHELL_TURTLE);
+        TORTOISE = registerEntityData(ModEntity.TORTOISE);
 
         BEAR = registerEntityData(ModEntity.BEAR);
         BIG_CAT = registerEntityData(ModEntity.BIG_CAT);

@@ -185,13 +185,9 @@ public class ModEntity {
         //EntityTarantula.processSkins();
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.SOFTSHELL_TURTLE, RendererSoftshellTurtle::new);
-        EntitySoftshellTurtle.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNAKE, RendererSnake::new);
-        EntitySnake.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.TORTOISE, RendererTortoise::new);
-        EntityTortoise.processSkins();
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.ANACONDA, RendererAnaconda::new);
-        EntityAnaconda.processSkins();
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, RendererGiantClam::new);
 

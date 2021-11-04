@@ -11,10 +11,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigMobControl;
-import untamedwilds.entity.mollusk.EntityGiantClam;
-import untamedwilds.entity.reptile.EntitySnake;
-import untamedwilds.entity.reptile.EntitySoftshellTurtle;
-import untamedwilds.entity.reptile.EntityTortoise;
 import untamedwilds.item.*;
 import untamedwilds.item.debug.*;
 import untamedwilds.util.ItemGroupUT;
@@ -91,29 +87,18 @@ public class ModItems {
         // Small Snake Items
         if (ConfigMobControl.addSnake.get()) {
             ModItems.ITEMS.register("egg_snake", () -> new MobEggItem(ModEntity.SNAKE, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            for (int i = 0; i < EntitySnake.SpeciesSnake.values().length; i++) {
-                int snake = i;
-                ModItems.ITEMS.register("snake_" + EntitySnake.SpeciesSnake.values()[i].name().toLowerCase(), () -> new MobSpawnItem(ModEntity.SNAKE, snake, EntitySnake.SpeciesSnake.values()[snake].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            }
+            ModItems.ITEMS.register("spawn_snake", () -> new MobSpawnItem(ModEntity.SNAKE, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
         }
         // Softshell Turtle Items
         if (ConfigMobControl.addSoftshellTurtle.get()) {
             ModItems.ITEMS.register("egg_softshell_turtle", () -> new MobEggItem(ModEntity.SOFTSHELL_TURTLE, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            for (int i = 0; i < EntitySoftshellTurtle.SpeciesSoftshellTurtle.values().length; i++) {
-                int softshell_turtleSpecies = i;
-                ModItems.ITEMS.register("softshell_turtle_" + EntitySoftshellTurtle.SpeciesSoftshellTurtle.values()[i].name().toLowerCase(), () -> new MobSpawnItem(ModEntity.SOFTSHELL_TURTLE, softshell_turtleSpecies, EntitySoftshellTurtle.SpeciesSoftshellTurtle.values()[softshell_turtleSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            }
+            ModItems.ITEMS.register("spawn_softshell_turtle", () -> new MobSpawnItem(ModEntity.SOFTSHELL_TURTLE, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
         }
         // Giant Clam Items
         if (ConfigMobControl.addGiantClam.get()) {
             ModItems.ITEMS.register("egg_giant_clam", () -> new MobEggItem(ModEntity.GIANT_CLAM, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            for (int i = 0; i < EntityGiantClam.SpeciesGiantClam.values().length; i++) {
-                int giant_clamSpecies = i;
-                // TODO: Keep in mind the achievement when streamlining mob spawn items
-                ModItems.ITEMS.register("giant_clam_" + EntityGiantClam.SpeciesGiantClam.values()[i].name().toLowerCase(), () -> new MobSpawnItem(ModEntity.GIANT_CLAM, giant_clamSpecies, EntityGiantClam.SpeciesGiantClam.values()[giant_clamSpecies].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            }
+            ModItems.ITEMS.register("spawn_giant_clam", () -> new MobSpawnItem(ModEntity.GIANT_CLAM, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
         }
-
         // Sunfish Items
         if (ConfigMobControl.addSunfish.get()) {
             ModItems.ITEMS.register("egg_sunfish", () -> new MobEggItem(ModEntity.SUNFISH, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
@@ -122,7 +107,6 @@ public class ModItems {
         if (ConfigMobControl.addTrevally.get()) {
             ModItems.ITEMS.register("egg_trevally", () -> new MobEggItem(ModEntity.TREVALLY, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
             ModItems.ITEMS.register("bucket_trevally", () -> new MobBucketedItem(ModEntity.TREVALLY, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-
         }
         // Arowana Items
         if (ConfigMobControl.addArowana.get()) {
@@ -147,10 +131,7 @@ public class ModItems {
         // Tortoise Items
         if (ConfigMobControl.addTortoise.get()) {
             ModItems.ITEMS.register("egg_tortoise", () -> new MobEggItem(ModEntity.TORTOISE, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            for (int i = 0; i < EntityTortoise.SpeciesTortoise.values().length; i++) {
-                int tortoise = i;
-                ModItems.ITEMS.register("tortoise_" + EntityTortoise.SpeciesTortoise.values()[i].name().toLowerCase(), () -> new MobSpawnItem(ModEntity.TORTOISE, tortoise, EntityTortoise.SpeciesTortoise.values()[tortoise].name().toLowerCase(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
-            }
+            ModItems.ITEMS.register("spawn_tortoise", () -> new MobSpawnItem(ModEntity.TORTOISE, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
         }
         // Large Snake Items
         if (ConfigMobControl.addLargeSnake.get()) {

@@ -111,7 +111,7 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
             }
             if (spawn instanceof ComplexMob) {
                ((ComplexMob) spawn).chooseSkinForSpecies((ComplexMob)spawn, true);
-               ((ComplexMob) spawn).setMobSize(((ComplexMob) spawn).getModelScale() + Math.abs((float)((ComplexMob) spawn).getRNG().nextGaussian() * 0.15F));
+               ((ComplexMob) spawn).setRandomMobSize();
             }
             if (spawn instanceof INeedsPostUpdate) {
                ((INeedsPostUpdate) spawn).updateAttributes();

@@ -19,10 +19,8 @@ public class RendererSnake extends MobRenderer<EntitySnake, EntityModel<EntitySn
     }
 
     protected void preRenderCallback(EntitySnake entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = 0.8F;
-        f += (entity.getMobSize() * 0.3f);
+        float f = entity.getMobSize();
         f *= entity.getRenderScale();
-        f *= (EntitySnake.SpeciesSnake.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
     }
 

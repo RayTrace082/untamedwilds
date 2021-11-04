@@ -20,11 +20,10 @@ public class RendererSoftshellTurtle extends MobRenderer<EntitySoftshellTurtle, 
 
     @Override
     protected void preRenderCallback(EntitySoftshellTurtle entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = 1F;
-        f += (entity.getMobSize() * 0.2f);
+        float f = entity.getMobSize() * 0.8F;
         f *= entity.getRenderScale();
-        f *= (EntitySoftshellTurtle.SpeciesSoftshellTurtle.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
+        this.shadowSize = f * 0.4F;
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntitySoftshellTurtle entity) {

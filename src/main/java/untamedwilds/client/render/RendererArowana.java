@@ -20,7 +20,7 @@ public class RendererArowana extends MobRenderer<EntityArowana, EntityModel<Enti
 
     @Override
     protected void preRenderCallback(EntityArowana entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = entity.getMobSize();
+        float f = entity.getMobSize() * 0.8F;
         f *= entity.getRenderScale();
         matrixStackIn.scale(f, f, f);
         this.shadowSize = f;
