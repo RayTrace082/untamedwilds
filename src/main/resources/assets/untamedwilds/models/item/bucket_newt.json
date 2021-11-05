@@ -5,11 +5,11 @@
     },
 
     "overrides":[
-        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/bucket_newt_coastal"},
-        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/bucket_newt_crested"},
-        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/bucket_newt_eastern"},
-        {"predicate": {"custom_model_data":3}, "model":"untamedwilds:item/bucket_newt_fire_salamander"},
-        {"predicate": {"custom_model_data":4}, "model":"untamedwilds:item/bucket_newt_ribbed"},
-        {"predicate": {"custom_model_data":5}, "model":"untamedwilds:item/bucket_newt_tiger"}
+        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/entity/bucket_newt_coastal"},
+        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/entity/bucket_newt_crested"},
+        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/entity/bucket_newt_eastern"},
+        {"predicate": {"custom_model_data":3}, "model":"untamedwilds:item/entity/bucket_newt_fire_salamander"},
+        {"predicate": {"custom_model_data":4}, "model":"untamedwilds:item/entity/bucket_newt_ribbed"},
+        {"predicate": {"custom_model_data":5}, "model":"untamedwilds:item/entity/bucket_newt_tiger"}
     ]
 }

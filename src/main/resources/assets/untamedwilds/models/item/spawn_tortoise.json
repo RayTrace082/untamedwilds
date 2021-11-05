@@ -1,15 +1,15 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "untamedwilds:item/spawn/softshell_turtle_black"
+        "layer0": "untamedwilds:item/spawn/tortoise_leopard"
     },
 
     "overrides":[
-        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/tortoise_asian_box"},
-        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/tortoise_gopher"},
-        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/tortoise_leopard"},
-        {"predicate": {"custom_model_data":3}, "model":"untamedwilds:item/tortoise_marginated"},
-        {"predicate": {"custom_model_data":4}, "model":"untamedwilds:item/tortoise_star"},
-        {"predicate": {"custom_model_data":5}, "model":"untamedwilds:item/tortoise_sulcata"}
+        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/entity/tortoise_asian_box"},
+        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/entity/tortoise_gopher"},
+        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/entity/tortoise_leopard"},
+        {"predicate": {"custom_model_data":3}, "model":"untamedwilds:item/entity/tortoise_marginated"},
+        {"predicate": {"custom_model_data":4}, "model":"untamedwilds:item/entity/tortoise_star"},
+        {"predicate": {"custom_model_data":5}, "model":"untamedwilds:item/entity/tortoise_sulcata"}
     ]
 }

@@ -5,9 +5,9 @@
     },
 
     "overrides":[
-        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/bucket_arowana_black"},
-        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/bucket_arowana_green"},
-        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/bucket_arowana_jardini"},
-        {"predicate": {"custom_model_data":3}, "model":"untamedwilds:item/bucket_arowana_silver"}
+        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/entity/bucket_arowana_black"},
+        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/entity/bucket_arowana_green"},
+        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/entity/bucket_arowana_jardini"},
+        {"predicate": {"custom_model_data":3}, "model":"untamedwilds:item/entity/bucket_arowana_silver"}
     ]
 }

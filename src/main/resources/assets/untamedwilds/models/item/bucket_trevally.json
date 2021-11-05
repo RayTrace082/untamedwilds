@@ -5,10 +5,10 @@
     },
 
     "overrides":[
-        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/bucket_trevally_bigeye"},
-        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/bucket_trevally_bluespotted"},
-        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/bucket_trevally_giant"},
-        {"predicate": {"custom_model_data":3}, "model":"untamedwilds:item/bucket_trevally_golden"},
-        {"predicate": {"custom_model_data":4}, "model":"untamedwilds:item/bucket_trevally_jack"}
+        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/entity/bucket_trevally_bigeye"},
+        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/entity/bucket_trevally_bluespotted"},
+        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/entity/bucket_trevally_giant"},
+        {"predicate": {"custom_model_data":3}, "model":"untamedwilds:item/entity/bucket_trevally_golden"},
+        {"predicate": {"custom_model_data":4}, "model":"untamedwilds:item/entity/bucket_trevally_jack"}
     ]
 }
