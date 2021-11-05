@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INewSkins, INeedsPostUpdate {
+public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INewSkins, INeedsPostUpdate, IPackEntity {
 
     public static Animation ATTACK_BITE;
     public static Animation ATTACK_MAUL;
@@ -111,6 +111,12 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
 
     public void livingTick() {
         if (!this.world.isRemote) {
+            if (this.herd == null && EntityUtils.getPackSize(this.getType(), this.getVariant()) > 1) {
+                IPackEntity.initPack(this);
+            }
+            else {
+                this.herd.tick();
+            }
             if (this.ticksExisted % 600 == 0) {
                 if (this.wantsToBreed()) {
                     this.setInLove(null);

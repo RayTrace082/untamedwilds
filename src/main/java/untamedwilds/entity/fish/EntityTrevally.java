@@ -50,13 +50,13 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
     }
 
     public void livingTick() {
-        if (this.herd == null) {
-            IPackEntity.initPack(this);
-        }
-        else {
-            this.herd.tick();
-        }
         if (!this.world.isRemote) {
+            if (this.herd == null) {
+                IPackEntity.initPack(this);
+            }
+            else {
+                this.herd.tick();
+            }
             if (this.ticksExisted % 1000 == 0) {
                 if (this.wantsToBreed() && !this.isMale()) {
                     this.breed();
@@ -105,11 +105,6 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
     @Override
     protected SoundEvent getFlopSound() {
         return SoundEvents.ENTITY_COD_FLOP;
-    }
-
-    // Flags Parameters
-    public int getMaxPackSize() {
-        return EntityUtils.getPackSize(this.getType(), this.getVariant());
     }
 
     public boolean shouldLeavePack() {

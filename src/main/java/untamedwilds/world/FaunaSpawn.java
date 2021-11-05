@@ -72,7 +72,7 @@ public class FaunaSpawn {
 
     public static boolean performWorldGenSpawning(EntityType<?> entityType, EntitySpawnPlacementRegistry.PlacementType spawnType, @Nullable Heightmap.Type heightMap, ISeedReader worldIn, BlockPos pos, Random rand, int groupSize) {
         //UntamedWilds.LOGGER.info(entityType);
-        if (entityType != null) {
+        if (entityType != null && !worldIn.isRemote()) {
             int i = pos.getX() + rand.nextInt(16);
             int j = pos.getZ() + rand.nextInt(16);
 

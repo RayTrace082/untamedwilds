@@ -72,7 +72,7 @@ public class ResourceListenerEvent {
             for (SpeciesDataHolder speciesData : ComplexMob.ENTITY_DATA_HASH.get(types).getSpeciesData()) {
                 UntamedInstance.sendToClient(new SyncTextureData(entityName, speciesData.getName(), size++), (ServerPlayerEntity) event.getPlayer());
             }
-            // TODO: Textures work, include scale parameter in the ComplexMob array?
+            // TODO: Send a single array with the species data (species name + number of species) to do all calcs
         }
     }
 

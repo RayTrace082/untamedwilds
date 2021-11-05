@@ -90,13 +90,13 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
 
     @Override
     public void livingTick() {
-        if (this.herd == null) {
-            IPackEntity.initPack(this);
-        }
-        else {
-            this.herd.tick();
-        }
         if (!this.world.isRemote) {
+            if (this.herd == null) {
+                IPackEntity.initPack(this);
+            }
+            else {
+                this.herd.tick();
+            }
             if (this.world.getGameTime() % 1000 == 0) {
                 this.addHunger(-10);
                 if (!this.isStarving()) {
@@ -195,10 +195,5 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
         this.setHealth(this.getMaxHealth());
-    }
-
-    @Override
-    public int getMaxPackSize() {
-        return getEntityData(this.getType()).getGroupCount(this.getVariant());
     }
 }

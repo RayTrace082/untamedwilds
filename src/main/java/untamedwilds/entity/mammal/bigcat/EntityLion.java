@@ -112,5 +112,4 @@ public class EntityLion extends AbstractBigCat implements IPackEntity {
         return this.isMale() ? TEXTURE : TEXTURE_FEMALE;
     }
     protected int getOffspring() { return 2; }
-    public int getMaxPackSize() { return 8; }
 }
