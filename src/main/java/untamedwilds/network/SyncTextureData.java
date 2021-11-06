@@ -36,6 +36,7 @@ public class SyncTextureData {
         ctx.get().enqueueWork(() -> {
             UntamedWilds.LOGGER.info("Handling texture data for entity: " + entityName + " with species: " + speciesName);
             EntityUtils.buildSkinArrays(entityName, speciesName, id, ComplexMob.TEXTURES_COMMON, ComplexMob.TEXTURES_RARE);
+            // TODO: Store entityName and speciesName into a CLIENT-accessible array
         });
         return true;
     }

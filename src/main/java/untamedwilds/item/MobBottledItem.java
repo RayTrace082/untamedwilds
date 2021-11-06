@@ -69,7 +69,8 @@ public class MobBottledItem extends Item {
                     ComplexMob entitySpawn = (ComplexMob) spawn;
                     entitySpawn.setVariant(this.getSpecies(itemStack));
                     entitySpawn.chooseSkinForSpecies(entitySpawn, true);
-                    entitySpawn.setGrowingAge(entitySpawn.getAdulthoodTime() * -1);
+                    entitySpawn.setRandomMobSize();
+                    entitySpawn.setGender(entitySpawn.getRNG().nextInt(2));
                     if (spawn instanceof INeedsPostUpdate) {
                         ((INeedsPostUpdate) spawn).updateAttributes();
                     }

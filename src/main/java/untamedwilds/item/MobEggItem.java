@@ -32,19 +32,10 @@ import java.util.Objects;
 
 public class MobEggItem extends Item {
     private final EntityType<? extends ComplexMob> entity;
-    public int species;
 
-    // TODO: Patchwork to allow multiple loading types in fillItemGroup
     public MobEggItem(EntityType<? extends ComplexMob> typeIn, Properties properties) {
         super(properties);
         this.entity = typeIn;
-        this.species = -1;
-    }
-
-    public MobEggItem(EntityType<? extends ComplexMob> typeIn, int species, Properties properties) {
-        super(properties);
-        this.entity = typeIn;
-        this.species = species;
     }
 
     @Override
@@ -106,7 +97,7 @@ public class MobEggItem extends Item {
                 CompoundNBT baseTag = new CompoundNBT();
                 ItemStack item = new ItemStack(this);
                 baseTag.putInt("variant", i);
-                baseTag.putInt("custom_model_data", i);
+                baseTag.putInt("CustomModelData", i);
                 item.setTag(baseTag);
                 items.add(item);
             }

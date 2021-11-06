@@ -66,7 +66,8 @@ public class MobBucketedItem extends BucketItem {
                     ComplexMob entitySpawn = (ComplexMob) spawn;
                     entitySpawn.setVariant(this.getSpecies(itemStack));
                     entitySpawn.chooseSkinForSpecies(entitySpawn, true);
-                    entitySpawn.setGrowingAge(entitySpawn.getAdulthoodTime() * -1);
+                    entitySpawn.setRandomMobSize();
+                    entitySpawn.setGender(entitySpawn.getRNG().nextInt(2));
                     if (spawn instanceof INeedsPostUpdate) {
                         ((INeedsPostUpdate) spawn).updateAttributes();
                     }
@@ -96,7 +97,7 @@ public class MobBucketedItem extends BucketItem {
                 CompoundNBT baseTag = new CompoundNBT();
                 ItemStack item = new ItemStack(this);
                 baseTag.putInt("variant", i);
-                baseTag.putInt("custom_model_data", i);
+                baseTag.putInt("CustomModelData", i);
                 item.setTag(baseTag);
                 items.add(item);
             }

@@ -70,7 +70,6 @@ public class MobSpawnItem extends Item {
                     entitySpawn.chooseSkinForSpecies(entitySpawn, true);
                     entitySpawn.setRandomMobSize();
                     entitySpawn.setGender(entitySpawn.getRNG().nextInt(2));
-                    entitySpawn.setGrowingAge(entitySpawn.getAdulthoodTime() * -1);
                     if (spawn instanceof INeedsPostUpdate) {
                         ((INeedsPostUpdate) spawn).updateAttributes();
                     }
