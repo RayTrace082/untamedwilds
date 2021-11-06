@@ -33,12 +33,21 @@ public class ResourceListenerEvent {
     public static EntityDataHolder SOFTSHELL_TURTLE;
     public static EntityDataHolder TORTOISE;
 
+    public static EntityDataHolder AARDVARK;
+    public static EntityDataHolder HIPPO;
+    public static EntityDataHolder RHINO;
+    public static EntityDataHolder HYENA;
+    public static EntityDataHolder BOAR;
     public static EntityDataHolder BEAR;
     public static EntityDataHolder BIG_CAT;
 
     @SubscribeEvent
     public static void onAddReloadListeners(AddReloadListenerEvent event) {
         event.addListener(ENTITY_DATA_HOLDERS);
+        registerData();
+    }
+
+    private static void registerData() {
         TARANTULA = registerEntityData(ModEntity.TARANTULA);
 
         GIANT_CLAM = registerEntityData(ModEntity.GIANT_CLAM);
@@ -59,11 +68,17 @@ public class ResourceListenerEvent {
 
         BEAR = registerEntityData(ModEntity.BEAR);
         BIG_CAT = registerEntityData(ModEntity.BIG_CAT);
+        AARDVARK = registerEntityData(ModEntity.AARDVARK);
+        BOAR = registerEntityData(ModEntity.BOAR);
+        RHINO = registerEntityData(ModEntity.RHINO);
+        HYENA = registerEntityData(ModEntity.HYENA);
+        HIPPO = registerEntityData(ModEntity.HIPPO);
     }
 
     @SubscribeEvent
     public static void onPlayerLogIn(PlayerEvent.PlayerLoggedInEvent event) {
         UntamedWilds.LOGGER.info("Firing player login event");
+        registerData();
         for (EntityType<?> types : ComplexMob.ENTITY_DATA_HASH.keySet()) {
             String entityName = types.getRegistryName().getPath();
             int size = 0;

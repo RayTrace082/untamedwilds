@@ -261,7 +261,10 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
     public boolean isEggLayer() {
         return getEntityData(this.getType()).getFlags(this.getVariant(), "eggLayer") == 1;
     }
-    public int getMultiparts() { return getEntityData(this.getType()).getFlags(this.getVariant(), "parts"); }
+    public int getMultiparts() {
+        return 3; // TODO: Unused parameter, as all Large Snakes have the same length. Need to consider how to handle multiparts
+        //return getEntityData(this.getType()).getFlags(this.getVariant(), "parts");
+    }
 
     @Override
     public void updateAttributes() {

@@ -8,6 +8,10 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
@@ -31,6 +35,8 @@ import java.util.List;
 import java.util.Random;
 
 public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimatedEntity, INeedsPostUpdate, INewSkins {
+
+    private static final DataParameter<Boolean> SHORT_FINS = EntityDataManager.createKey(EntityShark.class, DataSerializers.BOOLEAN);
 
     public static Animation ATTACK_THRASH;
     private int animationTick;
@@ -125,9 +131,6 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
     public Animation[] getAnimations() { return new Animation[]{NO_ANIMATION, ATTACK_THRASH}; }
 
     // Flags Parameters
-    public boolean hasShortFins() {
-        return getEntityData(this.getType()).getFlags(this.getVariant(), "shortFins") == 1;
-    }
     public boolean isBottomDweller() { return getEntityData(this.getType()).getFlags(this.getVariant(), "bottomDweller") == 1; }
 
     @Override
@@ -135,6 +138,20 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
         this.setHealth(this.getMaxHealth());
+        this.setShortFins(getEntityData(this.getType()).getFlags(this.getVariant(), "shortFins") == 1);
+    }
+
+    public boolean hasShortFins(){ return (this.dataManager.get(SHORT_FINS)); }
+    private void setShortFins(boolean short_fins){ this.dataManager.set(SHORT_FINS, short_fins); }
+
+    public void writeAdditional(CompoundNBT compound){
+        super.writeAdditional(compound);
+        compound.putBoolean("hasShortFins", this.hasShortFins());
+    }
+
+    public void readAdditional(CompoundNBT compound){
+        super.readAdditional(compound);
+        this.setShortFins(compound.getBoolean("hasShortFins"));
     }
 
     public enum SpeciesShark implements IStringSerializable {
