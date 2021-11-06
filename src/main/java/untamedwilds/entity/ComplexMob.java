@@ -394,9 +394,6 @@ public abstract class ComplexMob extends TameableEntity {
             if (TEXTURES_COMMON.containsKey(this.getType().getRegistryName().getPath())) {
                 chooseSkinForSpecies(this, ConfigGamerules.wildRareSkins.get());
             }
-            if (this instanceof ISkins) {
-                this.setVariant(this.rand.nextInt(((ISkins)this).getSkinNumber()));
-            }
             if (this instanceof INeedsPostUpdate) {
                 ((INeedsPostUpdate) this).updateAttributes();
             }

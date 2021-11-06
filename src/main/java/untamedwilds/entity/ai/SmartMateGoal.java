@@ -6,7 +6,6 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ISkins;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -101,7 +100,7 @@ public class SmartMateGoal extends Goal {
         if (ConfigGamerules.genderedBreeding.get() && father.getGender() == mother.getGender()) {
             return false;
         }
-        else if (!(father instanceof ISkins) && father.getVariant() != mother.getVariant()) {
+        else if (father.getVariant() != mother.getVariant()) {
             return false;
         }
         else {

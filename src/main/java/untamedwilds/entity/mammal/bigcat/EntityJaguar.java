@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
-import untamedwilds.entity.ISkins;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Deprecated
-public class EntityJaguar extends AbstractBigCat implements ISkins {
+public class EntityJaguar extends AbstractBigCat/* implements ISkins*/ {
 
     public static final int SKIN_NUMBER = 3;
     private static final List<ResourceLocation> TEXTURES = new ArrayList<>();

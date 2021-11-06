@@ -11,7 +11,6 @@ import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import untamedwilds.config.ConfigGamerules;
-import untamedwilds.entity.ISkins;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Deprecated
-public class EntityBrownBear extends AbstractBear implements ISkins {
+public class EntityBrownBear extends AbstractBear/* implements ISkins*/ {
 
     public static List<ResourceLocation> TEXTURES = new ArrayList<>();
     public static final int SKIN_NUMBER = 4;
