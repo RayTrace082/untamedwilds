@@ -33,22 +33,10 @@ import java.util.List;
 
 public class MobBucketedItem extends BucketItem {
     private final EntityType<? extends ComplexMob> entity;
-    private final int species;
-    private final String sciname;
 
-    // TODO: Temporary method to keep compatibility while I clean this mess
     public MobBucketedItem(EntityType<? extends ComplexMob> typeIn, Fluid fluid, Item.Properties builder) {
-        super(fluid, builder);
+        super(() -> fluid, builder);
         this.entity = typeIn;
-        this.species = -1;
-        this.sciname = "";
-    }
-
-    public MobBucketedItem(EntityType<? extends ComplexMob> typeIn, Fluid fluid, Item.Properties builder, int species, String sciname) {
-        super(fluid, builder);
-        this.entity = typeIn;
-        this.species = species;
-        this.sciname = sciname;
     }
 
     @Override
@@ -56,8 +44,6 @@ public class MobBucketedItem extends BucketItem {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (ComplexMob.ENTITY_DATA_HASH.containsKey(this.entity)) {
             EntityUtils.buildTooltipData(stack, tooltip, this.entity, ComplexMob.getEntityData(this.entity).getSpeciesData().get(this.getSpecies(stack)).getName());
-        } else {
-            EntityUtils.buildTooltipData(stack, tooltip, this.entity, this.sciname);
         }
     }
 
@@ -65,9 +51,7 @@ public class MobBucketedItem extends BucketItem {
         if (ComplexMob.ENTITY_DATA_HASH.containsKey(this.entity)) {
             return new TranslationTextComponent("item.untamedwilds.bucket_" + this.entity.getRegistryName().getPath()).getString() + "_" + ComplexMob.getEntityData(this.entity).getSpeciesData().get(this.getSpecies(stack)).getName();
         }
-        else {
-            return super.getTranslationKey(stack);
-        }
+        return super.getTranslationKey(stack);
     }
 
     public void onLiquidPlaced(World worldIn, ItemStack itemStack, BlockPos pos) {
@@ -106,19 +90,15 @@ public class MobBucketedItem extends BucketItem {
     }
 
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        if (this.isInGroup(group) && this.species >= 0) {
-            items.add(new ItemStack(this));
-        }
         if (group == ItemGroupUT.untamedwilds_items) {
-            if (this.species < 0) {
-                for(int i = 0; i < ComplexMob.getEntityData(this.entity).getSpeciesData().size(); i++) {
-                    CompoundNBT baseTag = new CompoundNBT();
-                    ItemStack item = new ItemStack(this);
-                    baseTag.putInt("variant", i);
-                    baseTag.putInt("CustomModelData", i);
-                    item.setTag(baseTag);
-                    items.add(item);
-                }
+            int j = ComplexMob.getEntityData(entity).getSpeciesData().size();
+            for(int i = 0; i < j; i++) {
+                CompoundNBT baseTag = new CompoundNBT();
+                ItemStack item = new ItemStack(this);
+                baseTag.putInt("variant", i);
+                baseTag.putInt("custom_model_data", i);
+                item.setTag(baseTag);
+                items.add(item);
             }
         }
     }
