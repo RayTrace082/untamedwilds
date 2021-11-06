@@ -92,7 +92,6 @@ public class ResourceListenerEvent {
     }
 
     public static EntityDataHolder registerEntityData(EntityType<?> typeIn) {
-        UntamedWilds.LOGGER.info(typeIn.getRegistryName().getPath());
         String nameIn = Objects.requireNonNull(typeIn.getRegistryName()).getPath();
         if (ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, nameIn)) != null) {
             //ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, nameIn)).printSpeciesData();

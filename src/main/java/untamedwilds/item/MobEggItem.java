@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.INeedsPostUpdate;
 import untamedwilds.util.EntityUtils;
@@ -74,7 +73,6 @@ public class MobEggItem extends Item {
                 entitySpawn.setVariant(this.getSpecies(itemStack, entitySpawn));
                 entitySpawn.chooseSkinForSpecies(entitySpawn, true);
                 entitySpawn.setRandomMobSize();
-                UntamedWilds.LOGGER.info(entitySpawn.getMobSize());
                 entitySpawn.setGender(entitySpawn.getRNG().nextInt(2));
                 entitySpawn.setGrowingAge(entitySpawn.getAdulthoodTime() * -1);
 
@@ -103,7 +101,6 @@ public class MobEggItem extends Item {
 
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (group == ItemGroupUT.untamedwilds_items) {
-            UntamedWilds.LOGGER.info(entity.getName());
             int j = ComplexMob.getEntityData(entity).getSpeciesData().size();
             for(int i = 0; i < j; i++) {
                 CompoundNBT baseTag = new CompoundNBT();
