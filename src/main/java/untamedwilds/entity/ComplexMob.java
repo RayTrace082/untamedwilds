@@ -437,7 +437,8 @@ public abstract class ComplexMob extends TameableEntity {
                     EntityUtils.consumeItemStack(this, itemstack);
                 }
             }
+            return super.func_230254_b_(player, hand);
         }
-        return super.func_230254_b_(player, hand);
+        return ActionResultType.PASS;
     }
 }
