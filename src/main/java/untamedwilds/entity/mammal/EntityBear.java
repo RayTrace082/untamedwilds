@@ -179,7 +179,7 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
             }
             if (this.getAnimation() == ATTACK_MAUL) {
                 if (this.getAnimationTick() == 10) {
-                    this.playSound(ModSounds.ENTITY_BEAR_WARNING, 1.5F, 1);
+                    this.playSound(this.getThreatSound(), 1.5F, 1);
                 }
                 if (this.getAnimationTick() == 20) {
                     this.playSound(SoundEvents.ENTITY_PLAYER_SMALL_FALL, 1.5F, 0.8F);
@@ -263,7 +263,7 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
         ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
         if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
 
-            if (!this.isTamed() && this.isChild() && EntityUtils.hasFullHealth(this) && this.isFavouriteFood(itemstack)) {
+            if (!this.isTamed() && this.isChild() && EntityUtils.hasFullHealth(this) && this.isBreedingItem(itemstack)) {
                 this.playSound(SoundEvents.ENTITY_HORSE_EAT, 1.5F, 0.8F);
                 if (this.getRNG().nextInt(3) == 0) {
                     this.setTamedBy(player);

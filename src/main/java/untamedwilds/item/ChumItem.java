@@ -1,6 +1,5 @@
 package untamedwilds.item;
 
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.passive.WaterMobEntity;
@@ -24,6 +23,7 @@ import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMobAmphibious;
 import untamedwilds.entity.ComplexMobAquatic;
+import untamedwilds.init.ModAdvancementTriggers;
 import untamedwilds.init.ModParticles;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class ChumItem extends Item {
                     double d4 = random.nextGaussian() * 0.03D;
                     ((ServerWorld)worldIn).spawnParticle(ModParticles.CHUM_DISPERSE, pos.getX(), pos.getY() - 0.1F, pos.getZ(), 1, d2, d3, d4, 0.02D);
                 }
-                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity) playerIn, itemstack);
+                ModAdvancementTriggers.BAIT_BASIC.trigger((ServerPlayerEntity) playerIn);
                 playerIn.addStat(Stats.ITEM_USED.get(this));
                 if (!playerIn.abilities.isCreativeMode) {
                     itemstack.shrink(1);
@@ -69,7 +69,9 @@ public class ChumItem extends Item {
                     if ((entity instanceof WaterMobEntity || entity instanceof ComplexMobAquatic || entity instanceof ComplexMobAmphibious) && entity.isInWater())
                         waterMobs.add((MobEntity) entity);
                 }
-
+                if (waterMobs.size() >= 100) {
+                    ModAdvancementTriggers.MASTER_BAIT.trigger((ServerPlayerEntity) playerIn);
+                }
                 for (MobEntity waterMob : waterMobs) {
                     if (UntamedWilds.DEBUG)
                         waterMob.addPotionEffect(new EffectInstance(Effects.GLOWING, 60, 0, true, false));

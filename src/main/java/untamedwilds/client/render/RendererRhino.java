@@ -33,7 +33,7 @@ public class RendererRhino extends MobRenderer<EntityRhino, EntityModel<EntityRh
 
     protected void preRenderCallback(EntityRhino entity, MatrixStack matrixStackIn, float partialTickTime) {
         float f = entity.getMobSize();
-        f *= entity.getRenderScale();
+        //f *= entity.getRenderScale();
         matrixStackIn.scale(f, f, f);
         this.shadowSize = f;
     }

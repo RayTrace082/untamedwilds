@@ -31,7 +31,7 @@ public class RendererBigCat extends MobRenderer<EntityBigCat, EntityModel<Entity
 
     protected void preRenderCallback(EntityBigCat entity, MatrixStack matrixStackIn, float partialTickTime) {
         float f = entity.getMobSize();
-        f *= entity.getRenderScale();
+        //f *= entity.getRenderScale();
         matrixStackIn.scale(f, f, f);
         this.shadowSize = f;
     }

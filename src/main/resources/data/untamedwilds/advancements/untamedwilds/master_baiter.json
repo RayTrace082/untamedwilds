@@ -1,5 +1,5 @@
 {
-  "parent": "untamedwilds:untamedwilds/root",
+  "parent": "untamedwilds:untamedwilds/basic_baiter",
   "display": {
     "icon": {
       "item": "untamedwilds:chum"
@@ -10,26 +10,19 @@
     "description": {
       "translate": "advancements.untamedwilds.master_baiter.description"
     },
-    "frame": "task",
+    "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
   },
   "criteria": {
-    "using_chum": {
-      "trigger": "minecraft:consume_item",
-      "conditions": {
-        "item": {
-          "items": [
-            "untamedwilds:chum"
-          ]
-        }
-      }
+    "lure_100": {
+      "trigger": "untamedwilds:master_bait"
     }
   },
   "requirements": [
     [
-      "using_chum"
+      "lure_100"
     ]
   ]
 }

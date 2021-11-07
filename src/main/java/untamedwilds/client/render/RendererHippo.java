@@ -33,7 +33,7 @@ public class RendererHippo extends MobRenderer<EntityHippo, EntityModel<EntityHi
 
     protected void preRenderCallback(EntityHippo entity, MatrixStack matrixStackIn, float partialTickTime) {
         float f = entity.getMobSize();
-        f *= entity.getRenderScale();
+        //f *= entity.getRenderScale();
         matrixStackIn.scale(f, f, f);
         this.shadowSize = f;
     }

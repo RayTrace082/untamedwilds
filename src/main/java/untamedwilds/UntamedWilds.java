@@ -15,10 +15,7 @@ import org.apache.logging.log4j.Logger;
 import untamedwilds.block.CageBlock;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.config.ConfigBase;
-import untamedwilds.init.ModBlock;
-import untamedwilds.init.ModEntity;
-import untamedwilds.init.ModItems;
-import untamedwilds.init.ModVillagerTrades;
+import untamedwilds.init.*;
 import untamedwilds.network.UntamedInstance;
 import untamedwilds.util.ModEntityRightClickEvent;
 import untamedwilds.world.UntamedWildsGenerator;
@@ -46,6 +43,7 @@ public class UntamedWilds {
         ModBlock.TILE_ENTITIES.register(eventBus);
         ModItems.ITEMS.register(eventBus);
         ModItems.registerSpawnItems();
+        ModAdvancementTriggers.register();
         UntamedWildsGenerator.FEATURES.register(eventBus);
         CompatBridge.RegisterCompat();
         MinecraftForge.EVENT_BUS.register(ModVillagerTrades.class); // Custom Villager Trades

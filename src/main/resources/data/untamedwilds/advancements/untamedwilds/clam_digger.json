@@ -16,42 +16,12 @@
     "hidden": false
   },
   "criteria": {
-    "giant_clam_derasa": {
+    "spawn_giant_clam": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "untamedwilds:giant_clam_derasa"
-          }
-        ]
-      }
-    },
-    "giant_clam_gigas": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "untamedwilds:giant_clam_gigas"
-          }
-        ]
-      }
-    },
-    "giant_clam_maxima": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "untamedwilds:giant_clam_maxima"
-          }
-        ]
-      }
-    },
-    "giant_clam_squamosa": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "untamedwilds:giant_clam_squamosa"
+            "item": "untamedwilds:spawn_giant_clam"
           }
         ]
       }
@@ -59,10 +29,7 @@
   },
   "requirements": [
     [
-      "giant_clam_derasa",
-      "giant_clam_gigas",
-      "giant_clam_maxima",
-      "giant_clam_squamosa"
+      "spawn_giant_clam"
     ]
   ]
 }

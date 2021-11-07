@@ -213,6 +213,8 @@ public abstract class ComplexMob extends TameableEntity {
             T child = (T) this.func_241840_a((ServerWorld) this.world, this);
             if (child != null) {
                 child.setGrowingAge(this.getAdulthoodTime() * -1);
+                child.setGender(this.rand.nextInt(2));
+                child.setRandomMobSize();
                 child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
                 child.setVariant(this.getVariant());
                 if (this.getOwner() != null) {

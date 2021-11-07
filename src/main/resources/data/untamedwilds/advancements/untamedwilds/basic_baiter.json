@@ -1,0 +1,28 @@
+{
+  "parent": "untamedwilds:untamedwilds/root",
+  "display": {
+    "icon": {
+      "item": "untamedwilds:chum"
+    },
+    "title": {
+      "translate": "advancements.untamedwilds.basic_baiter.title"
+    },
+    "description": {
+      "translate": "advancements.untamedwilds.basic_baiter.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "using_chum": {
+      "trigger": "untamedwilds:used_bait"
+    }
+  },
+  "requirements": [
+    [
+      "using_chum"
+    ]
+  ]
+}
