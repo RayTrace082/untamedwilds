@@ -292,6 +292,28 @@ public abstract class EntityUtils {
         return 0;
     }
 
+    public static String getVariantName(EntityType<?> typeIn, int variantIn) {
+        if (ComplexMob.ENTITY_DATA_HASH.containsKey(typeIn)) {
+            return ComplexMob.ENTITY_DATA_HASH.get(typeIn).getName(variantIn);
+        }
+        else if (ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
+            return ComplexMob.CLIENT_DATA_HASH.get(typeIn).get(variantIn);
+        }
+        UntamedWilds.LOGGER.warn("There's no name provided for the species");
+        return "";
+    }
+
+    public static int getNumberOfSpecies(EntityType<?> typeIn) {
+        if (ComplexMob.ENTITY_DATA_HASH.containsKey(typeIn)) {
+            return ComplexMob.ENTITY_DATA_HASH.get(typeIn).getSpeciesData().size();
+        }
+        else if (ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
+            return ComplexMob.CLIENT_DATA_HASH.get(typeIn).size();
+        }
+        UntamedWilds.LOGGER.warn("There's no species provided for the EntityType");
+        return 0;
+    }
+
     // Takes the skin from the TEXTURES_COMMON or TEXTURES_RARE array
     public static ResourceLocation getSkinFromEntity(ComplexMob entityIn) {
         //UntamedWilds.LOGGER.info(ComplexMob.TEXTURES_COMMON);

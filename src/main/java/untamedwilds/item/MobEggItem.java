@@ -92,8 +92,8 @@ public class MobEggItem extends Item {
 
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (group == ItemGroupUT.untamedwilds_items) {
-            int j = ComplexMob.getEntityData(entity).getSpeciesData().size();
-            for(int i = 0; i < j; i++) {
+            int j = EntityUtils.getNumberOfSpecies(this.entity);
+            for(int i = 0; i < EntityUtils.getNumberOfSpecies(this.entity); i++) {
                 CompoundNBT baseTag = new CompoundNBT();
                 ItemStack item = new ItemStack(this);
                 baseTag.putInt("variant", i);

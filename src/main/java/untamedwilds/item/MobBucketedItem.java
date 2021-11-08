@@ -43,13 +43,13 @@ public class MobBucketedItem extends BucketItem {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (ComplexMob.ENTITY_DATA_HASH.containsKey(this.entity)) {
-            EntityUtils.buildTooltipData(stack, tooltip, this.entity, ComplexMob.getEntityData(this.entity).getSpeciesData().get(this.getSpecies(stack)).getName());
+            EntityUtils.buildTooltipData(stack, tooltip, this.entity, EntityUtils.getVariantName(this.entity, this.getSpecies(stack)));
         }
     }
 
     public String getTranslationKey(ItemStack stack) {
         if (ComplexMob.ENTITY_DATA_HASH.containsKey(this.entity)) {
-            return new TranslationTextComponent("item.untamedwilds.bucket_" + this.entity.getRegistryName().getPath()).getString() + "_" + ComplexMob.getEntityData(this.entity).getSpeciesData().get(this.getSpecies(stack)).getName();
+            return new TranslationTextComponent("item.untamedwilds.bucket_" + this.entity.getRegistryName().getPath()).getString() + "_" + EntityUtils.getVariantName(this.entity, this.getSpecies(stack));
         }
         return super.getTranslationKey(stack);
     }
@@ -92,8 +92,7 @@ public class MobBucketedItem extends BucketItem {
 
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (group == ItemGroupUT.untamedwilds_items) {
-            int j = ComplexMob.getEntityData(entity).getSpeciesData().size();
-            for(int i = 0; i < j; i++) {
+            for(int i = 0; i < EntityUtils.getNumberOfSpecies(this.entity); i++) {
                 CompoundNBT baseTag = new CompoundNBT();
                 ItemStack item = new ItemStack(this);
                 baseTag.putInt("variant", i);

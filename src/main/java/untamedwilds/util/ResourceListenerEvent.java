@@ -80,7 +80,7 @@ public class ResourceListenerEvent {
         UntamedWilds.LOGGER.info("Firing player login event");
         registerData();
         for (EntityType<?> types : ComplexMob.ENTITY_DATA_HASH.keySet()) {
-            String entityName = types.getRegistryName().getPath();
+            ResourceLocation entityName = types.getRegistryName();
             int size = 0;
             UntamedWilds.LOGGER.info("Sending entity data for " + entityName);
             //UntamedInstance.sendToClient(new SyncEntityData(types.getRegistryName(), ComplexMob.ENTITY_DATA_HASH.get(types).writeEntityDataToNBT()), (ServerPlayerEntity) event.getPlayer());
