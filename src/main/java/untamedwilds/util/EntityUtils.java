@@ -282,6 +282,7 @@ public abstract class EntityUtils {
     }
 
     // Populates the provided array with the data located in the specified path
+    @Deprecated
     public static int populateSkinArray(String path, String suffix, int variant, HashMap<Integer, ArrayList<ResourceLocation>> list, boolean addDefault) {
         list.put(variant, new ArrayList<>());
         for (int i = 0; i < 99; i++) {
