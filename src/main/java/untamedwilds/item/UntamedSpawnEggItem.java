@@ -105,16 +105,19 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
          } else if (worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, raytraceresult.getFace(), itemstack)) {
             // TODO: Entities spawned from eggs with predefined species do not trigger onInitialSpawn
             EntityType<?> entitytype = this.getType(itemstack.getTag());
-            Entity spawn = entitytype.spawn((ServerWorld)worldIn, itemstack, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
+            Entity spawn = entitytype.create((ServerWorld) worldIn, itemstack.getTag(), null, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
             if (spawn == null) {
                return ActionResult.resultPass(itemstack);
             }
             if (spawn instanceof ComplexMob) {
-               ((ComplexMob) spawn).chooseSkinForSpecies((ComplexMob)spawn, true);
-               ((ComplexMob) spawn).setRandomMobSize();
-            }
-            if (spawn instanceof INeedsPostUpdate) {
-               ((INeedsPostUpdate) spawn).updateAttributes();
+               ComplexMob entitySpawn = (ComplexMob) spawn;
+               entitySpawn.chooseSkinForSpecies(entitySpawn, true);
+               entitySpawn.setRandomMobSize();
+               entitySpawn.setGender(entitySpawn.getRNG().nextInt(2));
+               if (spawn instanceof INeedsPostUpdate) {
+                  ((INeedsPostUpdate) spawn).updateAttributes();
+               }
+               worldIn.addEntity(spawn);
             }
             if (!playerIn.abilities.isCreativeMode) {
                itemstack.shrink(1);
@@ -174,9 +177,19 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
          }
 
          EntityType<?> entitytype = this.getType(itemstack.getTag());
-         Entity spawn = entitytype.spawn((ServerWorld)world, itemstack, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, true, !Objects.equals(blockpos, blockpos1) && direction == Direction.UP);
+         Entity spawn = entitytype.create((ServerWorld) world, itemstack.getTag(), null, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, true, !Objects.equals(blockpos, blockpos1) && direction == Direction.UP);
+         if (spawn == null) {
+            return ActionResultType.PASS;
+         }
          if (spawn instanceof ComplexMob) {
-            ((ComplexMob) spawn).chooseSkinForSpecies((ComplexMob)spawn, true);
+            ComplexMob entitySpawn = (ComplexMob) spawn;
+            entitySpawn.chooseSkinForSpecies(entitySpawn, true);
+            entitySpawn.setRandomMobSize();
+            entitySpawn.setGender(entitySpawn.getRNG().nextInt(2));
+            if (spawn instanceof INeedsPostUpdate) {
+               ((INeedsPostUpdate) spawn).updateAttributes();
+            }
+            world.addEntity(spawn);
          }
          itemstack.shrink(1);
 
