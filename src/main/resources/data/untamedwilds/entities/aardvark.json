@@ -20,6 +20,7 @@
     "breeding": "LATE_SPRING",
     "growing": 6,
     "offspring": 1,
+      "skins": 30,
     "flags": {
     },
     "spawnBiomes": [

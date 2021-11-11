@@ -105,6 +105,14 @@ public class EntityDataHolder {
         }
     }
 
+    public String getName(int i) {
+        if (Objects.equals(this.speciesData.get(i).getName(), "")) {
+            return this.name;
+        }
+        return this.speciesData.get(i).getName();
+    }
+
+
     public float getScale(int i) {
         if (this.speciesData.get(i).getModelScale() < 0) {
             return this.modelScale;
@@ -160,6 +168,10 @@ public class EntityDataHolder {
             return this.offspring;
         }
         return this.speciesData.get(i).getOffspring();
+    }
+
+    public Integer getSkins(int i) {
+        return this.speciesData.get(i).getSkins();
     }
 
     public String getBreedingSeason(int i) {

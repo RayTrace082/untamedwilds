@@ -10,6 +10,7 @@
     "threat": "untamedwilds:entity.big_cat.warning"
   },
   "flags": {
+    "dimorphism": 0
   },
 
   "species": [
@@ -26,6 +27,7 @@
     "attack": 9,
     "health": 45,
     "flags": {
+      "dimorphism": 1,
       "groupCount": 3
     },
     "spawnBiomes": [
@@ -45,6 +47,7 @@
       "favourite_food": "minecraft:porkchop",
       "attack": 8,
       "health": 40,
+      "skins": 30,
       "flags": {
       },
       "spawnBiomes": [
@@ -63,6 +66,7 @@
       "favourite_food": "minecraft:porkchop",
       "attack": 7,
       "health": 40,
+      "skins": 30,
       "flags": {
       },
       "spawnBiomes": [
@@ -83,6 +87,7 @@
       "attack": 8,
       "health": 40,
       "flags": {
+        "dimorphism": 1,
         "groupCount": 4
       },
       "spawnBiomes": [

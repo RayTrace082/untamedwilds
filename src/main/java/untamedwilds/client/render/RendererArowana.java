@@ -23,7 +23,7 @@ public class RendererArowana extends MobRenderer<EntityArowana, EntityModel<Enti
         float f = entity.getMobSize() * 0.8F;
         f *= entity.getRenderScale();
         matrixStackIn.scale(f, f, f);
-        this.shadowSize = f;
+        this.shadowSize = f * 0.5F;
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntityArowana entity) {

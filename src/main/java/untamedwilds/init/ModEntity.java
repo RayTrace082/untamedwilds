@@ -20,7 +20,6 @@ import net.minecraftforge.fml.common.Mod;
 import untamedwilds.UntamedWilds;
 import untamedwilds.client.render.*;
 import untamedwilds.config.ConfigMobControl;
-import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
 import untamedwilds.entity.amphibian.EntityNewt;
 import untamedwilds.entity.arthropod.EntityTarantula;
@@ -188,12 +187,6 @@ public class ModEntity {
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.NEWT, RendererNewt::new);
-
-        if (UntamedWilds.DEBUG) {
-            UntamedWilds.LOGGER.info("---Dump of Common and Rare Texture arrays---");
-            UntamedWilds.LOGGER.info(ComplexMob.TEXTURES_COMMON);
-            UntamedWilds.LOGGER.info(ComplexMob.TEXTURES_RARE);
-        }
     }
 
     public static void addWorldSpawn(EntityType<?> entityClass, int weightedProb, FaunaHandler.animalType type, int groupCount) {

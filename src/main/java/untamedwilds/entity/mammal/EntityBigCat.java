@@ -9,6 +9,10 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -35,6 +39,8 @@ import java.util.Random;
 
 public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INewSkins, INeedsPostUpdate, IPackEntity {
 
+    private static final DataParameter<Boolean> DIMORPHISM = EntityDataManager.createKey(EntityBigCat.class, DataSerializers.BOOLEAN);
+
     public static Animation ATTACK_BITE;
     public static Animation ATTACK_MAUL;
     public static Animation ATTACK_POUNCE;
@@ -46,6 +52,7 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
 
     public EntityBigCat(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
+        this.dataManager.register(DIMORPHISM, false);
         ATTACK_POUNCE = Animation.create(42);
         ATTACK_MAUL = Animation.create(22);
         IDLE_TALK = Animation.create(20);
@@ -279,6 +286,20 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
         this.setHealth(this.getMaxHealth());
+        this.setDimorphism(getEntityData(this.getType()).getFlags(this.getVariant(), "dimorphism") == 1);
+    }
+
+    public boolean hasDimorphism(){ return (this.dataManager.get(DIMORPHISM)); }
+    private void setDimorphism(boolean dimorphism){ this.dataManager.set(DIMORPHISM, dimorphism); }
+
+    public void writeAdditional(CompoundNBT compound){
+        super.writeAdditional(compound);
+        compound.putBoolean("hasDimorphism", this.hasDimorphism());
+    }
+
+    public void readAdditional(CompoundNBT compound){
+        super.readAdditional(compound);
+        this.setDimorphism(compound.getBoolean("hasDimorphism"));
     }
 
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
@@ -300,5 +321,14 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
         } else {
             return validTypes.get(new Random().nextInt(validTypes.size()));
         }
+    }
+
+    public ResourceLocation getTexture() {
+        ResourceLocation texture_path = EntityUtils.getSkinFromEntity(this);
+        if (this.hasDimorphism()) {
+            String trimmed_path = texture_path.getPath().substring(0, texture_path.getPath().lastIndexOf('.'));
+            return new ResourceLocation(UntamedWilds.MOD_ID, trimmed_path + "_" + this.getGenderString() + ".png");
+        }
+        return texture_path;
     }
 }

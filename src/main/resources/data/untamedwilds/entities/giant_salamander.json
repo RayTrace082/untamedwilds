@@ -43,6 +43,7 @@
       "rarity": 2,
       "attack": 2,
       "health": 10,
+      "skins": 30,
       "spawnBiomes": [
         "river",
         "extreme_hills"

@@ -28,6 +28,7 @@
     "favourite_food": "minecraft:sweet_berries",
     "attack": 5,
     "health": 30,
+      "skins": 41,
     "flags": {
     },
     "spawnBiomes": [
@@ -65,6 +66,7 @@
       "favourite_food": "minecraft:salmon",
       "attack": 7,
       "health": 40,
+      "skins": 40,
       "flags": {
         "hasHump": 1
       },

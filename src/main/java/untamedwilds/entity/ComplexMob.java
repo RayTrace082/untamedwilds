@@ -55,6 +55,7 @@ public abstract class ComplexMob extends TameableEntity {
     public HerdEntity herd = null;
     public int peacefulTicks;
     public static HashMap<EntityType<?>, EntityDataHolder> ENTITY_DATA_HASH = new HashMap<>();
+    public static HashMap<EntityType<?>, HashMap<Integer, String>> CLIENT_DATA_HASH = new HashMap<>();
 
     public ComplexMob(EntityType<? extends ComplexMob> type, World worldIn){
         super(type, worldIn);
@@ -158,11 +159,18 @@ public abstract class ComplexMob extends TameableEntity {
     public static void processData(EntityDataHolder dataIn, EntityType<?> typeIn) {
         ENTITY_DATA_HASH.put(typeIn, dataIn);
         processSkins(dataIn, typeIn.getRegistryName().getPath());
+        // TODO: Wuh?
+        for (SpeciesDataHolder speciesData : ENTITY_DATA_HASH.get(typeIn).getSpeciesData()) {
+            if (!ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
+                ComplexMob.CLIENT_DATA_HASH.put(typeIn, new HashMap<>());
+            }
+            ComplexMob.CLIENT_DATA_HASH.get(typeIn).put(speciesData.getVariant(), speciesData.getName());
+        }
     }
 
     public static void processSkins(EntityDataHolder dataIn, String nameIn) {
         for (SpeciesDataHolder speciesDatum : dataIn.getSpeciesData()) {
-            EntityUtils.buildSkinArrays(nameIn, speciesDatum.getName().toLowerCase(), speciesDatum.getVariant(), TEXTURES_COMMON, TEXTURES_RARE);
+            EntityUtils.buildSkinArrays(nameIn, speciesDatum.getName().toLowerCase(), dataIn, speciesDatum.getVariant(), TEXTURES_COMMON, TEXTURES_RARE);
         }
     }
 
@@ -212,11 +220,11 @@ public abstract class ComplexMob extends TameableEntity {
         for (int i = 0; i < bound; i++) {
             T child = (T) this.func_241840_a((ServerWorld) this.world, this);
             if (child != null) {
+                child.setVariant(this.getVariant());
                 child.setGrowingAge(this.getAdulthoodTime() * -1);
                 child.setGender(this.rand.nextInt(2));
                 child.setRandomMobSize();
                 child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
-                child.setVariant(this.getVariant());
                 if (this.getOwner() != null) {
                     child.setTamedBy((PlayerEntity) this.getOwner());
                 }

@@ -25,6 +25,8 @@ public class SpeciesDataHolder {
             Codec.STRING.fieldOf("favourite_food").orElse("").forGetter((p_237052_0_) -> p_237052_0_.favouriteFood),
             Codec.INT.fieldOf("growing_time").orElse(-1).forGetter((p_237054_0_) -> p_237054_0_.growing_time),
             Codec.INT.fieldOf("offspring").orElse(-1).forGetter((p_237054_0_) -> p_237054_0_.offspring),
+                    Codec.INT.fieldOf("skins").orElse(10).forGetter((p_237054_0_) -> p_237054_0_.skins),
+                    //Codec.pair(Codec.INT, Codec.INT).fieldOf("skins").orElse(new Pair<>(1, 0)).forGetter((p_237054_0_) -> p_237054_0_.skins),
             Codec.STRING.fieldOf("breeding_season").orElse("NONE").forGetter((p_237054_0_) -> p_237054_0_.breeding_season),
             Codec.unboundedMap(Codec.STRING, SoundEvent.CODEC).fieldOf("sounds").orElse(Collections.emptyMap()).forGetter((p_237052_0_) -> p_237052_0_.sounds),
             Codec.unboundedMap(Codec.STRING, Codec.INT).fieldOf("flags").orElse(Collections.emptyMap()).forGetter((p_237054_0_) -> p_237054_0_.flags),
@@ -42,12 +44,13 @@ public class SpeciesDataHolder {
     private final String favouriteFood;
     private final int growing_time;
     private final int offspring;
+    private final int skins;
     private final String breeding_season;
     private final Map<String, SoundEvent> sounds;
     private final Map<String, Integer> flags;
     private final List<String> spawnBiomes;
 
-    public SpeciesDataHolder(String p_i232114_1_, int variant, float p_i232114_2_, int p_i232114_3_, float attack, float health, ComplexMobTerrestrial.ActivityType activityType, String favourite_food, int growing_time, int offspring, String breeding_season, Map<String, SoundEvent> sounds, Map<String, Integer> flags, List<String> p_i232114_4_) {
+    public SpeciesDataHolder(String p_i232114_1_, int variant, float p_i232114_2_, int p_i232114_3_, float attack, float health, ComplexMobTerrestrial.ActivityType activityType, String favourite_food, int growing_time, int offspring, int skins, String breeding_season, Map<String, SoundEvent> sounds, Map<String, Integer> flags, List<String> p_i232114_4_) {
         this.name = p_i232114_1_;
         this.variant = variant;
         this.modelScale = p_i232114_2_;
@@ -58,6 +61,7 @@ public class SpeciesDataHolder {
         this.favouriteFood = favourite_food;
         this.growing_time = growing_time;
         this.offspring = offspring;
+        this.skins = skins;
         this.breeding_season = breeding_season;
         this.sounds = sounds;
         this.flags = flags;
@@ -75,6 +79,7 @@ public class SpeciesDataHolder {
         this.favouriteFood = nbtData.getString("favourite_food");
         this.growing_time = nbtData.getInt("growing_time");
         this.offspring = nbtData.getInt("offspring");
+        this.skins = nbtData.getInt("skins");
         this.breeding_season = nbtData.getString("breeding_season");
         Map<String, SoundEvent> sounds = new HashMap<>();
         for (String nbt : nbtData.getCompound("sounds").keySet()) {
@@ -132,6 +137,10 @@ public class SpeciesDataHolder {
 
     public Integer getOffspring() {
         return this.offspring;
+    }
+
+    public Integer getSkins() {
+        return this.skins;
     }
 
     public String getBreedingSeason() {

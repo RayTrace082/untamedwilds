@@ -11,6 +11,7 @@
     "variant": 0,
     "scale": 1,
     "rarity": 1,
+    "skins": 40,
     "spawnBiomes": [
         "ocean"
     ]

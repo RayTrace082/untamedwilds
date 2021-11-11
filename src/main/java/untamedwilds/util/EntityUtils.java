@@ -245,7 +245,7 @@ public abstract class EntityUtils {
     }
 
     // Pulls all resources with the given name from the provided ResourceLocation
-    public static Pair<Integer, Integer> buildSkinArrays(String name, String species, int variant, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> common_list, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> rare_list) {
+    public static Pair<Integer, Integer> buildSkinArrays(String name, String species, EntityDataHolder dataIn, int variant, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> common_list, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> rare_list) {
         String path = "textures/entity/" + name + "/" + species;
 
         if (!common_list.containsKey(name)) {
@@ -254,11 +254,31 @@ public abstract class EntityUtils {
         if (!rare_list.containsKey(name)) {
             rare_list.put(name, new HashMap<>());
         }
-        Pair<Integer, Integer> result = new Pair<>(populateSkinArray(path, "_%d.png", variant, common_list.get(name), true), populateSkinArray(path, "_%dr.png", variant, rare_list.get(name), false));
-        if (UntamedWilds.DEBUG) {
-            UntamedWilds.LOGGER.info("Number of textures for " + species + " " + name + ": " + result);
+        int value = dataIn.getSkins(variant);
+        Pair<Integer, Integer> values = new Pair<>((value / 10) - 1, (value % 10) - 1);
+        common_list.get(name).put(variant, new ArrayList<>());
+        if (values.getFirst() >= 1) {
+            for (int i = 0; i <= values.getFirst(); i++) {
+                final String full_path = String.format(path + "_%d.png", i + 1);
+                common_list.get(name).get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
+            }
         }
-        return result;
+        else {
+            common_list.get(name).get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, path + ".png"));
+        }
+
+        if (values.getSecond() >= 0) {
+            rare_list.get(name).put(variant, new ArrayList<>());
+            for (int i = 0; i <= values.getSecond(); i++) {
+                final String full_path = String.format(path + "_%dr.png", i + 1);
+                rare_list.get(name).get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
+            }
+        }
+        //Pair<Integer, Integer> result = new Pair<>(populateSkinArray(path, "_%d.png", variant, common_list.get(name), true), populateSkinArray(path, "_%dr.png", variant, rare_list.get(name), false));
+        if (UntamedWilds.DEBUG) {
+            UntamedWilds.LOGGER.info("Number of textures for " + species + " " + name + ": " + values);
+        }
+        return values;
     }
 
     // Populates the provided array with the data located in the specified path

@@ -7,7 +7,6 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
-import untamedwilds.util.EntityUtils;
 
 import java.util.HashMap;
 import java.util.function.Supplier;
@@ -39,7 +38,7 @@ public class SyncTextureData {
     public boolean handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             UntamedWilds.LOGGER.info("Handling texture data for entity: " + entityName + " with species: " + speciesName);
-            EntityUtils.buildSkinArrays(entityName.getPath(), speciesName, id, ComplexMob.TEXTURES_COMMON, ComplexMob.TEXTURES_RARE);
+            //EntityUtils.buildSkinArrays(entityName.getPath(), speciesName, id, ComplexMob.TEXTURES_COMMON, ComplexMob.TEXTURES_RARE);
             EntityType<?> type = ForgeRegistries.ENTITIES.getValue(entityName);
             if (!ComplexMob.CLIENT_DATA_HASH.containsKey(type)) {
                 ComplexMob.CLIENT_DATA_HASH.put(type, new HashMap<>());

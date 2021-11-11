@@ -9,6 +9,9 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
@@ -38,6 +41,9 @@ import java.util.List;
 import java.util.Random;
 
 public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewSkins, INeedsPostUpdate {
+
+    private static final DataParameter<Boolean> SHORT_SNOUT = EntityDataManager.createKey(EntityBear.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> BACK_HUMP = EntityDataManager.createKey(EntityBear.class, DataSerializers.BOOLEAN);
 
     public static Animation ATTACK_BITE;
     public static Animation ATTACK_MAUL;
@@ -294,8 +300,7 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
         //return getEntityData(this.getType()).getFlags(this.getVariant(), "hasShortSnout") == 1;
     }
     public boolean isPanda() {
-        return false;
-        //return getEntityData(this.getType()).getFlags(this.getVariant(), "isPanda") == 1;
+        return getEntityData(this.getType()).getFlags(this.getVariant(), "isPanda") == 1;
     }
 
     @Override
