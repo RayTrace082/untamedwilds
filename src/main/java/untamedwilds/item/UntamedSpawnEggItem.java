@@ -103,7 +103,6 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
          if (!(worldIn.getBlockState(blockpos).getBlock() instanceof FlowingFluidBlock)) {
             return ActionResult.resultPass(itemstack);
          } else if (worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, raytraceresult.getFace(), itemstack)) {
-            // TODO: Entities spawned from eggs with predefined species do not trigger onInitialSpawn
             EntityType<?> entitytype = this.getType(itemstack.getTag());
             Entity spawn = entitytype.create((ServerWorld) worldIn, itemstack.getTag(), null, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
             if (spawn == null) {
