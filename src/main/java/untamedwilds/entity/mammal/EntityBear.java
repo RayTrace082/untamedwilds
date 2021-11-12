@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -56,6 +57,8 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
 
     public EntityBear(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
+        this.dataManager.register(SHORT_SNOUT, false);
+        this.dataManager.register(BACK_HUMP, false);
         ANIMATION_ROAR = Animation.create(50);
         IDLE_TALK = Animation.create(20);
         IDLE_STAND = Animation.create(148);
@@ -289,16 +292,7 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
         return new Animation[]{NO_ANIMATION, ANIMATION_ROAR, IDLE_STAND, IDLE_TALK, ANIMATION_EAT, ATTACK_MAUL, ATTACK_BITE, ATTACK_SWIPE, ATTACK_POUND};
     }
 
-    // TODO: Temporarly disabled
     // Flags Parameters
-    public boolean hasHump() {
-        return false;
-        //return getEntityData(this.getType()).getFlags(this.getVariant(), "hasHump") == 1;
-    }
-    public boolean hasShortSnout() {
-        return false;
-        //return getEntityData(this.getType()).getFlags(this.getVariant(), "hasShortSnout") == 1;
-    }
     public boolean isPanda() {
         return getEntityData(this.getType()).getFlags(this.getVariant(), "isPanda") == 1;
     }
@@ -308,6 +302,25 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
         this.setHealth(this.getMaxHealth());
+        this.setShortSnout(getEntityData(this.getType()).getFlags(this.getVariant(), "hasShortSnout") == 1);
+        this.setHump(getEntityData(this.getType()).getFlags(this.getVariant(), "hasHump") == 1);
+    }
+
+    public boolean hasShortSnout(){ return (this.dataManager.get(SHORT_SNOUT)); }
+    private void setShortSnout(boolean short_snout){ this.dataManager.set(SHORT_SNOUT, short_snout); }
+    public boolean hasHump(){ return (this.dataManager.get(BACK_HUMP)); }
+    private void setHump(boolean hump){ this.dataManager.set(BACK_HUMP, hump); }
+
+    public void writeAdditional(CompoundNBT compound){
+        super.writeAdditional(compound);
+        compound.putBoolean("hasShortSnout", this.hasShortSnout());
+        compound.putBoolean("hasHump", this.hasHump());
+    }
+
+    public void readAdditional(CompoundNBT compound){
+        super.readAdditional(compound);
+        this.setShortSnout(compound.getBoolean("hasShortSnout"));
+        this.setHump(compound.getBoolean("hasHump"));
     }
 
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {

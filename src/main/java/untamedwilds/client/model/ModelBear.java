@@ -422,8 +422,8 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
 
         // Model Parameters
         float shortSnout = bear.hasShortSnout() ? 0.7F : 1;
-        this.head_snout.scaleY = shortSnout;
-        this.head_jaw.scaleY = shortSnout;
+        this.head_snout.scaleZ = shortSnout;
+        this.head_jaw.scaleZ = shortSnout;
         float torsoScale = bear.hasHump() ? 1.2F : 1;
         this.body_torso.scaleY = torsoScale;
 
