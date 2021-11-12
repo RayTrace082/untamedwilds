@@ -1,15 +1,24 @@
 package untamedwilds.world.gen.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
+import untamedwilds.entity.ISpecies;
+import untamedwilds.init.ModBlock;
 import untamedwilds.world.FaunaHandler;
 
+import java.util.Optional;
 import java.util.Random;
 
 public class FeatureCritterBurrow extends Feature<NoFeatureConfig> {
@@ -23,7 +32,7 @@ public class FeatureCritterBurrow extends Feature<NoFeatureConfig> {
         FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.CRITTER));
         boolean offsetY = Math.abs(pos.getY() - world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos).getY()) >= 10;
 
-        /*Entity entity = entry.entityType.create(world.getWorld());
+        Entity entity = entry.entityType.create(world.getWorld());
         if (entity != null && world.getBlockState(pos).canBeReplacedByLeaves(world, pos) && world.getBlockState(pos.down()).canSpawnMobs(world, pos, entity)) {
             ((MobEntity)entity).onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.CHUNK_GENERATION, null, null);
             if (entity instanceof ISpecies) {
@@ -46,7 +55,7 @@ public class FeatureCritterBurrow extends Feature<NoFeatureConfig> {
                 entity.remove();
             }
             return true;
-        }*/
+        }
         return false;
     }
 }
