@@ -97,10 +97,14 @@ public class CritterBurrowBlock extends Block implements IWaterLoggable {
         }
         else {
             CritterBurrowBlockEntity te = (CritterBurrowBlockEntity) worldIn.getTileEntity(pos);
-            if (playerIn.isCreative()) {
-                playerIn.sendMessage(new TranslationTextComponent("This burrow contains " + te.getEntityType().getTranslationKey()).mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
-                playerIn.sendMessage(new TranslationTextComponent("The variant is " + te.getVariant()).mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
-                playerIn.sendMessage(new TranslationTextComponent("There are " + (te.getInhabitants().size() + te.getCount()) + " mobs inside the burrow (" + te.getInhabitants().size() + " stored, and " + te.getCount() + " to be spawned)").mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
+            if (playerIn.isCreative() && te != null) {
+                if (playerIn.isSneaking())
+                    te.cooldown = 1;
+                else {
+                    playerIn.sendMessage(new TranslationTextComponent("This burrow contains " + te.getEntityType().getTranslationKey()).mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
+                    playerIn.sendMessage(new TranslationTextComponent("The variant is " + te.getVariant()).mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
+                    playerIn.sendMessage(new TranslationTextComponent("There are " + (te.getInhabitants().size() + te.getCount()) + " mobs inside the burrow (" + te.getInhabitants().size() + " stored, and " + te.getCount() + " to be spawned)").mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
+                }
             }
             else {
                 playerIn.sendStatusMessage(new TranslationTextComponent("block.burrow.state", te.getEntityType().getName().getString()), true);

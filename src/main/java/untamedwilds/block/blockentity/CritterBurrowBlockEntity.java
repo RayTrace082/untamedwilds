@@ -25,7 +25,7 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
     private EntityType<?> entityType;
     private int variant;
     private int count;
-    private int cooldown = 0;
+    public int cooldown = 0;
 
     public CritterBurrowBlockEntity() {
         super(ModBlock.TILE_ENTITY_BURROW.get());

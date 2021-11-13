@@ -2,7 +2,6 @@ package untamedwilds.world.gen.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.WeightedRandom;
@@ -34,7 +33,7 @@ public class FeatureCritterBurrow extends Feature<NoFeatureConfig> {
 
         Entity entity = entry.entityType.create(world.getWorld());
         if (entity != null && world.getBlockState(pos).canBeReplacedByLeaves(world, pos) && world.getBlockState(pos.down()).canSpawnMobs(world, pos, entity)) {
-            ((MobEntity)entity).onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.CHUNK_GENERATION, null, null);
+            //((MobEntity)entity).onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.CHUNK_GENERATION, null, null);
             if (entity instanceof ISpecies) {
                 Optional<RegistryKey<Biome>> optional = world.func_242406_i(pos);
                 int variant = ((ISpecies)entity).setSpeciesByBiome(optional.get(), world.getBiome(pos), SpawnReason.CHUNK_GENERATION);
