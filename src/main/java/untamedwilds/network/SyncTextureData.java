@@ -42,8 +42,9 @@ public class SyncTextureData {
 
     public boolean handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            UntamedWilds.LOGGER.info("Handling texture data for entity: " + entityName + " with species: " + speciesName);
-            //EntityUtils.buildSkinArrays(entityName.getPath(), speciesName, id, ComplexMob.TEXTURES_COMMON, ComplexMob.TEXTURES_RARE);
+            if (UntamedWilds.DEBUG) {
+                UntamedWilds.LOGGER.info("Handling texture data for entity: " + entityName + " with species: " + speciesName);
+            }
             EntityType<?> type = ForgeRegistries.ENTITIES.getValue(entityName);
             if (!ComplexMob.CLIENT_DATA_HASH.containsKey(type)) {
                 ComplexMob.CLIENT_DATA_HASH.put(type, new HashMap<>());
@@ -54,5 +55,4 @@ public class SyncTextureData {
         });
         return true;
     }
-
 }

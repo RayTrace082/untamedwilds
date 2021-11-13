@@ -20,16 +20,6 @@ public class UntamedInstance {
 
     public static void registerMessages() {
         UntamedWilds.LOGGER.info("Registering Packets!");
-        INSTANCE.messageBuilder(SpawnPacket.class, ID++)
-                .encoder(SpawnPacket::toBytes)
-                .decoder(SpawnPacket::new)
-                .consumer(SpawnPacket::handle)
-                .add();
-        INSTANCE.messageBuilder(SyncEntityData.class, ID++)
-                .encoder(SyncEntityData::toBytes)
-                .decoder(SyncEntityData::new)
-                .consumer(SyncEntityData::handle)
-                .add();
         INSTANCE.messageBuilder(SyncTextureData.class, ID++)
                 .encoder(SyncTextureData::toBytes)
                 .decoder(SyncTextureData::new)

@@ -83,7 +83,6 @@ public class ResourceListenerEvent {
             ResourceLocation entityName = types.getRegistryName();
             int size = 0;
             UntamedWilds.LOGGER.info("Sending entity data for " + entityName);
-            //UntamedInstance.sendToClient(new SyncEntityData(types.getRegistryName(), ComplexMob.ENTITY_DATA_HASH.get(types).writeEntityDataToNBT()), (ServerPlayerEntity) event.getPlayer());
             for (SpeciesDataHolder speciesData : ComplexMob.ENTITY_DATA_HASH.get(types).getSpeciesData()) {
                 UntamedInstance.sendToClient(new SyncTextureData(entityName, speciesData.getName(), speciesData.getSkins(), size++), (ServerPlayerEntity) event.getPlayer());
             }
@@ -93,7 +92,6 @@ public class ResourceListenerEvent {
     public static EntityDataHolder registerEntityData(EntityType<?> typeIn) {
         String nameIn = Objects.requireNonNull(typeIn.getRegistryName()).getPath();
         if (ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, nameIn)) != null) {
-            //ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, nameIn)).printSpeciesData();
             EntityDataHolder data = ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, nameIn));
             ComplexMob.processData(data, typeIn);
             return data;
