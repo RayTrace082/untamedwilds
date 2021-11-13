@@ -8,7 +8,6 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import untamedwilds.entity.mammal.EntityHippo;
-import untamedwilds.entity.mammal.bear.AbstractBear;
 
 public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
 
@@ -240,7 +239,7 @@ public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
         animator.endKeyframe();
         animator.resetKeyframe(6);
 
-        animator.setAnimation(AbstractBear.IDLE_TALK);
+        animator.setAnimation(EntityHippo.IDLE_TALK);
         animator.startKeyframe(10);
         this.rotate(animator, head_jaw, 26.09F, 0, 0);
         this.rotate(animator, head_face, -26.09F, 0, 0);

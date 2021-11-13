@@ -8,7 +8,6 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import untamedwilds.entity.mammal.EntityBear;
-import untamedwilds.entity.mammal.bear.AbstractBear;
 
 public class ModelBear extends AdvancedEntityModel<EntityBear> {
 
@@ -175,7 +174,7 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
         EntityBear bear = (EntityBear) entityIn;
         animator.update(bear);
 
-        animator.setAnimation(AbstractBear.ATTACK_MAUL);
+        animator.setAnimation(EntityBear.ATTACK_MAUL);
         animator.startKeyframe(20);
         animator.move(body_main, 0, -6F, 0);
         this.rotate(animator, body_main, -36.52F, 0, 0);
@@ -212,7 +211,7 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
         animator.endKeyframe();
         animator.resetKeyframe(12);
 
-        animator.setAnimation(AbstractBear.ATTACK_BITE);
+        animator.setAnimation(EntityBear.ATTACK_BITE);
         animator.startKeyframe(8);
         this.rotate(animator, head_face, 0, 0, 30);
         this.rotate(animator, head_snout, -16, 0, 0);
@@ -223,7 +222,7 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
         animator.endKeyframe();
         animator.resetKeyframe(2);
 
-        animator.setAnimation(AbstractBear.ATTACK_SWIPE);
+        animator.setAnimation(EntityBear.ATTACK_SWIPE);
         animator.startKeyframe(10);
         this.rotate(animator, body_torso, 7.83F, -10.43F, 0);
         this.rotate(animator, head_face, 7.83F, 10.43F, 0);
@@ -242,7 +241,7 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
         animator.endKeyframe();
         animator.resetKeyframe(8);
 
-        animator.setAnimation(AbstractBear.ATTACK_POUND);
+        animator.setAnimation(EntityBear.ATTACK_POUND);
         animator.startKeyframe(12);
         this.rotate(animator, body_main, -18.26F, 0, 0);
         animator.move(body_main, 0, -2, 0);
@@ -287,7 +286,7 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
         animator.endKeyframe();
         animator.resetKeyframe(8);
 
-        animator.setAnimation(AbstractBear.ANIMATION_ROAR);
+        animator.setAnimation(EntityBear.ANIMATION_ROAR);
         animator.startKeyframe(15);
         this.rotate(animator, head_face, 0, 0, 30);
         this.rotate(animator, head_snout, -16, 0, 0);
@@ -305,7 +304,7 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
         animator.endKeyframe();
         animator.resetKeyframe(5);
 
-        animator.setAnimation(AbstractBear.IDLE_STAND);
+        animator.setAnimation(EntityBear.IDLE_STAND);
         animator.startKeyframe(24);
         animator.move(body_main, 0, -6F, 0);
         this.rotate(animator, body_main, -36.52F, 0, 0);
@@ -353,14 +352,14 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
         animator.endKeyframe();
         animator.resetKeyframe(20);
 
-        animator.setAnimation(AbstractBear.IDLE_TALK);
+        animator.setAnimation(EntityBear.IDLE_TALK);
         animator.startKeyframe(10);
         this.rotate(animator, head_jaw, 26.09F, 0, 0);
         this.rotate(animator, head_face, -26.09F, 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(10);
 
-        animator.setAnimation(AbstractBear.ANIMATION_EAT);
+        animator.setAnimation(EntityBear.ANIMATION_EAT);
         animator.startKeyframe(20);
         animator.move(body_main, 0, 3.2F, 0);
         this.rotate(animator, body_main, 13.04F, 0, 0);
@@ -416,7 +415,7 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
         float globalDegree = 1f;
         limbSwingAmount = Math.min(0.3F, limbSwingAmount * 2);
         limbSwing *= 0.5F;
-        if (bear.getAnimation() == AbstractBear.ATTACK_MAUL || bear.getAnimation() == AbstractBear.IDLE_STAND) {
+        if (bear.getAnimation() == EntityBear.ATTACK_MAUL || bear.getAnimation() == EntityBear.IDLE_STAND) {
             limbSwingAmount *= 0.5F;
         }
 

@@ -15,19 +15,19 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import untamedwilds.entity.mammal.bear.AbstractBear;
+import untamedwilds.entity.mammal.EntityBear;
 
 import java.util.EnumSet;
 
 public class BearRaidChestsGoal extends Goal {
     private IInventory targetInventory;
     private BlockPos targetPos;
-    private final AbstractBear taskOwner;
+    private final EntityBear taskOwner;
     private final int executionChance;
     private int searchCooldown;
     private boolean continueTask;
 
-    public BearRaidChestsGoal(AbstractBear entityIn, int chance) {
+    public BearRaidChestsGoal(EntityBear entityIn, int chance) {
         this.taskOwner = entityIn;
         this.executionChance = chance;
         this.searchCooldown = 100;
@@ -139,7 +139,7 @@ public class BearRaidChestsGoal extends Goal {
                     {
                         ItemStack itemstack1 = itemstack.copy();
                         this.targetInventory.setInventorySlotContents(k, ItemStack.EMPTY);
-                        this.taskOwner.setAnimation(AbstractBear.ATTACK_SWIPE);
+                        this.taskOwner.setAnimation(EntityBear.ATTACK_SWIPE);
                         if (itemstack1.getItem().isFood()) {
                             this.taskOwner.playSound(SoundEvents.ENTITY_PLAYER_BURP, 1, 1);
                             this.taskOwner.addHunger((itemstack1.getItem().getFood().getHealing() * 10 * itemstack1.getCount()));
