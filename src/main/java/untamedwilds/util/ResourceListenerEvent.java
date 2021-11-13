@@ -85,9 +85,8 @@ public class ResourceListenerEvent {
             UntamedWilds.LOGGER.info("Sending entity data for " + entityName);
             //UntamedInstance.sendToClient(new SyncEntityData(types.getRegistryName(), ComplexMob.ENTITY_DATA_HASH.get(types).writeEntityDataToNBT()), (ServerPlayerEntity) event.getPlayer());
             for (SpeciesDataHolder speciesData : ComplexMob.ENTITY_DATA_HASH.get(types).getSpeciesData()) {
-                UntamedInstance.sendToClient(new SyncTextureData(entityName, speciesData.getName(), size++), (ServerPlayerEntity) event.getPlayer());
+                UntamedInstance.sendToClient(new SyncTextureData(entityName, speciesData.getName(), speciesData.getSkins(), size++), (ServerPlayerEntity) event.getPlayer());
             }
-            // TODO: Send a single array with the species data (species name + number of species) to do all calcs
         }
     }
 

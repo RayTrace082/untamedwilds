@@ -246,6 +246,11 @@ public abstract class EntityUtils {
 
     // Pulls all resources with the given name from the provided ResourceLocation
     public static Pair<Integer, Integer> buildSkinArrays(String name, String species, EntityDataHolder dataIn, int variant, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> common_list, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> rare_list) {
+        return buildSkinArrays(name, species, dataIn.getSkins(variant), variant, common_list, rare_list);
+    }
+
+    // Pulls all resources with the given name from the provided ResourceLocation
+    public static Pair<Integer, Integer> buildSkinArrays(String name, String species, int skins, int variant, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> common_list, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> rare_list) {
         String path = "textures/entity/" + name + "/" + species;
 
         if (!common_list.containsKey(name)) {
@@ -254,7 +259,7 @@ public abstract class EntityUtils {
         if (!rare_list.containsKey(name)) {
             rare_list.put(name, new HashMap<>());
         }
-        int value = dataIn.getSkins(variant);
+        int value = skins;
         Pair<Integer, Integer> values = new Pair<>((value / 10) - 1, (value % 10) - 1);
         common_list.get(name).put(variant, new ArrayList<>());
         if (values.getFirst() >= 1) {
@@ -337,7 +342,6 @@ public abstract class EntityUtils {
 
     // Takes the skin from the TEXTURES_COMMON or TEXTURES_RARE array
     public static ResourceLocation getSkinFromEntity(ComplexMob entityIn) {
-        //UntamedWilds.LOGGER.info(ComplexMob.TEXTURES_COMMON);
         if (entityIn.getType().getRegistryName() != null) {
             String name = entityIn.getType().getRegistryName().getPath();
             if (entityIn.getSkin() > 99 && ComplexMob.TEXTURES_RARE.get(name).containsKey(entityIn.getVariant())) {

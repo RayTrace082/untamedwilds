@@ -24,11 +24,10 @@ public class FeatureApexPredators extends Feature<NoFeatureConfig> {
     public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         for (int i = 0; i < 3; i++) {
             FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.APEX_PRED));
-            int groupCount = entry.groupCount;
             EntityType<?> type = entry.entityType;
             if (type != null) {
                 boolean offsetY = Math.abs(pos.getY() - world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos).getY()) >= 10;
-                if (FaunaSpawn.performWorldGenSpawning(type, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.WORLD_SURFACE, world, offsetY ? world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos).up(4) : pos, rand, groupCount)) { // TODO: change last parameter for entry.groupCount
+                if (FaunaSpawn.performWorldGenSpawning(type, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.WORLD_SURFACE, world, offsetY ? world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos).up(4) : pos, rand, entry.groupCount)) {
                     return true;
                 }
             }
