@@ -67,6 +67,7 @@ public class ModEntity {
     public static EntityType<EntityRhino> RHINO = createEntity(ConfigMobControl.addRhino.get(), EntityRhino::new,  "rhino",  2.0F, 1.8F, 0x787676, 0x665956, animalType.APEX_PRED, 6);
     public static EntityType<EntityHyena> HYENA = createEntity(ConfigMobControl.addHyena.get(), EntityHyena::new,  "hyena",  0.9F, 1.1F, 0x6C6857, 0x978966, animalType.APEX_PRED, 10, 6);
     public static EntityType<EntityBoar> BOAR = createEntity(ConfigMobControl.addBoar.get(), EntityBoar::new,  "boar",  1.2F, 1.2F, 0x503C2A, 0x605449, animalType.APEX_PRED, 6, 3);
+    public static EntityType<EntityBison> BISON = createEntity(ConfigMobControl.addBison.get(), EntityBison::new,  "bison",  1.7F, 1.6F, 0x845B2B, 0x49342A, animalType.APEX_PRED, 6, 6);
 
     // Fish
     public static EntityType<EntitySunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), EntitySunfish::new,  "sunfish",  1.6F, 1.6F, 0x2C545B, 0xB6D0D3, animalType.LARGE_OCEAN, 3);
@@ -141,6 +142,7 @@ public class ModEntity {
         event.put(RHINO, EntityRhino.registerAttributes().create());
         event.put(HYENA, EntityHyena.registerAttributes().create());
         event.put(BOAR, EntityBoar.registerAttributes().create());
+        event.put(BISON, EntityBison.registerAttributes().create());
 
         event.put(SUNFISH, EntitySunfish.registerAttributes().create());
         event.put(TREVALLY, EntityTrevally.registerAttributes().create());
@@ -178,6 +180,7 @@ public class ModEntity {
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.RHINO, RendererRhino::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.HYENA, RendererHyena::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.BOAR, RendererBoar::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BISON, RendererBison::new);
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUNFISH, RendererSunfish::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.TREVALLY, RendererTrevally::new);

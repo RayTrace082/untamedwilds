@@ -63,7 +63,6 @@ public class EntityDataHolder {
 
         // Additional data I can't be arsed to properly define, due to it being specific for each class
         this.flags = flags;
-        UntamedWilds.LOGGER.info(speciesData.toString());
         this.speciesData = speciesData;
     }
 

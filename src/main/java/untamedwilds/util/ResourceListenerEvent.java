@@ -40,6 +40,7 @@ public class ResourceListenerEvent {
     public static EntityDataHolder BOAR;
     public static EntityDataHolder BEAR;
     public static EntityDataHolder BIG_CAT;
+    public static EntityDataHolder BISON;
 
     @SubscribeEvent
     public static void onAddReloadListeners(AddReloadListenerEvent event) {
@@ -73,6 +74,7 @@ public class ResourceListenerEvent {
         RHINO = registerEntityData(ModEntity.RHINO);
         HYENA = registerEntityData(ModEntity.HYENA);
         HIPPO = registerEntityData(ModEntity.HIPPO);
+        BISON = registerEntityData(ModEntity.BISON);
     }
 
     @SubscribeEvent

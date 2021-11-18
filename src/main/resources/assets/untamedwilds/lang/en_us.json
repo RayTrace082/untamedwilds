@@ -9,10 +9,17 @@
   "item.untamedwilds.food_pachyderm_raw": "Raw Pachyderm Meat",
   "item.untamedwilds.food_pachyderm_cooked": "Cooked Pachyderm Meat",
   "entity.untamedwilds.hippo": "Hippo",
-  "entity.untamedwilds.hippo.sciname": "Hippopotamus amphibius",
   "entity.untamedwilds.hippo_common": "Common Hippo",
   "entity.untamedwilds.hippo_common.sciname": "Hippopotamus amphibius",
   "untamedwilds.subtitles.hippo.ambient": "Hippopotamus wheezes",
+
+  "item.untamedwilds.bison_spawn_egg": "Bison Spawn Egg",
+  "entity.untamedwilds.bison": "Bison",
+  "entity.untamedwilds.bison_plains": "Plains Bison",
+  "entity.untamedwilds.bison_plains.sciname": "Bison bison",
+  "entity.untamedwilds.bison_wisent": "Wisent",
+  "entity.untamedwilds.bison_wisent.sciname": "Bison bonasus",
+  "untamedwilds.subtitles.bison.ambient": "Bison ruts",
 
   "item.untamedwilds.aardvark_spawn_egg": "Aardvark Spawn Egg",
   "item.untamedwilds.food_aardvark_cucumber": "Aardvark Cucumber",

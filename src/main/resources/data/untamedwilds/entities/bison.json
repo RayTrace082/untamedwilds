@@ -1,0 +1,45 @@
+{
+  "name": "bison",
+  "breeding": "MID_SUMMER",
+  "growing": 10,
+  "offspring": 1,
+  "sounds": {
+    "ambient": "untamedwilds:entity.bison.ambient",
+    "hurt": "minecraft:entity.cow.hurt",
+    "death": "minecraft:entity.cow.death"
+  },
+  "flags": {
+    "groupCount": 6
+  },
+
+  "species": [
+    {
+    "name": "plains",
+    "variant": 0,
+    "scale": 1.3,
+    "rarity": 5,
+      "activityType": "diurnal",
+    "favourite_food": "minecraft:wheat",
+    "flags": {
+      "groupCount": 6
+    },
+    "spawnBiomes": [
+        "plains"
+    ]
+  },
+    {
+      "name": "wisent",
+      "variant": 1,
+      "scale": 1.3,
+      "rarity": 5,
+      "activityType": "diurnal",
+      "favourite_food": "minecraft:wheat",
+      "flags": {
+        "groupCount": 6
+      },
+      "spawnBiomes": [
+        "forest"
+      ]
+    }
+  ]
+}
