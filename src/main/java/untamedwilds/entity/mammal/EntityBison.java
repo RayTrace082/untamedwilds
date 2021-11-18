@@ -34,7 +34,6 @@ import javax.annotation.Nullable;
 
 public class EntityBison extends ComplexMobTerrestrial implements INewSkins, ISpecies, IPackEntity {
 
-    // TODO: Generify Charger AI because Bison are not Rhinos
    private static final DataParameter<Boolean> CHARGING = EntityDataManager.createKey(EntityBison.class, DataSerializers.BOOLEAN);
 
     public static Animation ATTACK_THREATEN;
@@ -150,7 +149,7 @@ public class EntityBison extends ComplexMobTerrestrial implements INewSkins, ISp
 
     @Nullable
     public EntityBison func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityBison(ModEntity.RHINO, this.world));
+        return create_offspring(new EntityBison(ModEntity.BISON, this.world));
     }
 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {

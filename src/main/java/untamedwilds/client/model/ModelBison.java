@@ -283,33 +283,33 @@ public class ModelBison extends AdvancedEntityModel<EntityBison> {
         // Sitting Animation
         if (bison.sitProgress > 0) {
             this.progressPosition(body_main, bison.sitProgress, 0.0F, 17.5F, 0.0F, 40);
-            this.progressRotation(body_main, bison.sitProgress, 0.0F, 0.0F, (float) Math.toRadians(7.83F), 40);
-            this.progressPosition(arm_right_1, bison.sitProgress, -6.0F, 6.0F, -9.0F, 40);
-            this.progressRotation(arm_right_1, bison.sitProgress, (float) Math.toRadians(-104.3F), (float) Math.toRadians(23.48F), (float) Math.toRadians(-96.52F), 40);
-            this.progressRotation(arm_right_2, bison.sitProgress, (float) Math.toRadians(80.87F), 0.0F, (float) Math.toRadians(5.22F), 40);
-            this.progressPosition(arm_left_1, bison.sitProgress, 6.0F, 6.0F, -9.0F, 40);
-            this.progressRotation(arm_left_1, bison.sitProgress, (float) Math.toRadians(-96.52F), 0.0F, (float) Math.toRadians(5.22F), 40);
-            this.progressRotation(arm_left_2, bison.sitProgress, (float) Math.toRadians(86.09F), 0.0F, (float) Math.toRadians(-5.22F), 40);
-            this.progressPosition(leg_right_thigh, bison.sitProgress, -6.0F, 6.0F, 15.0F, 40);
-            this.progressRotation(leg_right_thigh, bison.sitProgress, (float) Math.toRadians(-106.9F), (float) Math.toRadians(13.04F), (float) Math.toRadians(-2.61F), 40);
-            this.progressRotation(leg_right_calf, bison.sitProgress, (float) Math.toRadians(15.65F), 0.0F, (float) Math.toRadians(5.22F), 40);
-            this.progressRotation(leg_left_thigh, bison.sitProgress, (float) Math.toRadians(-13.04F), (float) Math.toRadians(5.22F), (float) Math.toRadians(88.70F), 40);
+            this.progressRotation(head_neck, bison.sitProgress, (float) Math.toRadians(-33.91F), 0, 0, 40);
+            this.progressRotation(head_main, bison.sitProgress, (float) Math.toRadians(-2.61F), 0, 0, 40);
+            this.progressPosition(arm_right_1, bison.sitProgress, -4.5F, 0.2F, -2.0F, 40);
+            this.progressRotation(arm_right_1, bison.sitProgress, (float) Math.toRadians(-65.22F), 0, 0, 40);
+            this.progressRotation(arm_right_2, bison.sitProgress, (float) Math.toRadians(135.65F), 0.0F, (float) Math.toRadians(15.65F), 40);
+            this.progressPosition(arm_left_1, bison.sitProgress, 4.5F, 0.2F, -2.0F, 40);
+            this.progressRotation(arm_left_1, bison.sitProgress, (float) Math.toRadians(-65.22F), 0, 0, 40);this.progressRotation(arm_left_2, bison.sitProgress, (float) Math.toRadians(86.09F), 0.0F, (float) Math.toRadians(-5.22F), 40);
+            this.progressRotation(arm_left_2, bison.sitProgress, (float) Math.toRadians(135.65F), 0.0F, (float) Math.toRadians(15.65F), 40);
+            this.progressRotation(leg_right_thigh, bison.sitProgress, (float) Math.toRadians(-73.04F), (float) Math.toRadians(15.65F), 0, 40);
+            this.progressRotation(leg_right_calf, bison.sitProgress, (float) Math.toRadians(-10.43F), 0.0F, (float) Math.toRadians(-10.43F), 40);
+            this.progressRotation(leg_left_thigh, bison.sitProgress, (float) Math.toRadians(-73.04F), (float) Math.toRadians(-15.65F), 0, 40);
+            this.progressRotation(leg_left_calf, bison.sitProgress, (float) Math.toRadians(-10.43F), 0.0F, (float) Math.toRadians(10.43F), 40);
         }
 
         // Sleeping Animation
         if (bison.sleepProgress > 0) {
-            this.progressPosition(body_main, bison.sleepProgress, 0.0F, 17.5F, 0.0F, 40);
-            this.progressRotation(body_main, bison.sleepProgress, 0.0F, 0.0F, (float)Math.toRadians(7.83F), 40);
-            this.progressPosition(arm_right_1, bison.sleepProgress, -6.0F, 6.0F, -9.0F, 40);
-            this.progressRotation(arm_right_1, bison.sleepProgress, (float)Math.toRadians(-104.3F), (float)Math.toRadians(23.48F), (float)Math.toRadians(-96.52F), 40);
-            this.progressRotation(arm_right_2, bison.sleepProgress, (float)Math.toRadians(80.87F), 0.0F, (float)Math.toRadians(5.22F), 40);
-            this.progressPosition(arm_left_1, bison.sleepProgress, 6.0F, 6.0F, -9.0F, 40);
-            this.progressRotation(arm_left_1, bison.sleepProgress, (float)Math.toRadians(-96.52F), 0.0F, (float)Math.toRadians(5.22F), 40);
-            this.progressRotation(arm_left_2, bison.sleepProgress, (float)Math.toRadians(86.09F), 0.0F, (float)Math.toRadians(-5.22F), 40);
-            this.progressPosition(leg_right_thigh, bison.sleepProgress, -6.0F, 6.0F, 15.0F, 40);
-            this.progressRotation(leg_right_thigh, bison.sleepProgress, (float)Math.toRadians(-106.9F), (float)Math.toRadians(13.04F), (float)Math.toRadians(-2.61F), 40);
-            this.progressRotation(leg_right_calf, bison.sleepProgress, (float)Math.toRadians(15.65F), 0.0F, (float)Math.toRadians(5.22F), 40);
-            this.progressRotation(leg_left_thigh, bison.sleepProgress, (float)Math.toRadians(-13.04F), (float)Math.toRadians(5.22F), (float)Math.toRadians(88.70F), 40);
+            this.progressPosition(body_main, bison.sitProgress, 0.0F, 17.5F, 0.0F, 40);
+            this.progressPosition(arm_right_1, bison.sitProgress, -4.5F, 0.2F, -2.0F, 40);
+            this.progressRotation(arm_right_1, bison.sitProgress, (float) Math.toRadians(-65.22F), 0, 0, 40);
+            this.progressRotation(arm_right_2, bison.sitProgress, (float) Math.toRadians(135.65F), 0.0F, (float) Math.toRadians(15.65F), 40);
+            this.progressPosition(arm_left_1, bison.sitProgress, 4.5F, 0.2F, -2.0F, 40);
+            this.progressRotation(arm_left_1, bison.sitProgress, (float) Math.toRadians(-65.22F), 0, 0, 40);this.progressRotation(arm_left_2, bison.sitProgress, (float) Math.toRadians(86.09F), 0.0F, (float) Math.toRadians(-5.22F), 40);
+            this.progressRotation(arm_left_2, bison.sitProgress, (float) Math.toRadians(135.65F), 0.0F, (float) Math.toRadians(15.65F), 40);
+            this.progressRotation(leg_right_thigh, bison.sitProgress, (float) Math.toRadians(-73.04F), (float) Math.toRadians(15.65F), 0, 40);
+            this.progressRotation(leg_right_calf, bison.sitProgress, (float) Math.toRadians(-10.43F), 0.0F, (float) Math.toRadians(-10.43F), 40);
+            this.progressRotation(leg_left_thigh, bison.sitProgress, (float) Math.toRadians(-73.04F), (float) Math.toRadians(-15.65F), 0, 40);
+            this.progressRotation(leg_left_calf, bison.sitProgress, (float) Math.toRadians(-10.43F), 0.0F, (float) Math.toRadians(10.43F), 40);
         }
     }
 }
