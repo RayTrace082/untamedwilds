@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import untamedwilds.entity.mammal.EntityBison;
 
-// TODO: Missing sleep/sit animations
 public class ModelBisonCalf extends AdvancedEntityModel<EntityBison> {
     
     public AdvancedModelBox body_main;
