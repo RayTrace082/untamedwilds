@@ -48,6 +48,7 @@
       "rarity": 5,
       "attack": 5,
       "health": 20,
+      "skins": 30,
       "sounds": {
         "ambient": "untamedwilds:entity.hyena.laugh",
         "threat": "untamedwilds:entity.hyena.laugh"
