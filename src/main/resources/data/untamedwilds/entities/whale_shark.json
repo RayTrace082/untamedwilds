@@ -1,0 +1,21 @@
+{
+  "name": "whale_shark",
+  "breeding": "MID_SUMMER",
+  "growing": 14,
+  "offspring": 8,
+  "favourite_food": "untamedwilds:chum",
+  "sounds": {},
+
+  "species": [{
+    "name": "whale_shark",
+    "variant": 0,
+    "scale": 1.8,
+    "rarity": 1,
+    "flags": {
+    },
+    "spawnBiomes": [
+        "ocean"
+    ]
+  }
+  ]
+}

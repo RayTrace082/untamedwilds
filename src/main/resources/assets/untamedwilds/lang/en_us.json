@@ -180,6 +180,11 @@
   "entity.untamedwilds.sunfish_southern": "Southern Sunfish",
   "entity.untamedwilds.sunfish_southern.sciname": "Mola alexandrini",
 
+  "item.untamedwilds.whale_shark_spawn_egg": "Whale Shark Spawn Egg",
+  "entity.untamedwilds.whale_shark": "Whale Shark",
+  "entity.untamedwilds.whale_shark_whale_shark": "Whale Shark",
+  "entity.untamedwilds.whale_shark_whale_shark.sciname": "Rhincodon typus",
+
   "item.untamedwilds.trevally_spawn_egg": "Trevally Spawn Egg",
   "item.untamedwilds.egg_trevally": "Trevally Roe",
   "entity.untamedwilds.trevally": "Trevally",

@@ -53,6 +53,7 @@ public abstract class ComplexMob extends TameableEntity {
     private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     public HerdEntity herd = null;
+    public float turn_speed = 1F;
     public int peacefulTicks;
     public static HashMap<EntityType<?>, EntityDataHolder> ENTITY_DATA_HASH = new HashMap<>();
     public static HashMap<EntityType<?>, HashMap<Integer, String>> CLIENT_DATA_HASH = new HashMap<>();

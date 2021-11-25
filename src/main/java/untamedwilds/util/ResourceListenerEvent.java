@@ -27,6 +27,7 @@ public class ResourceListenerEvent {
     public static EntityDataHolder FOOTBALL_FISH;
     public static EntityDataHolder SHARK;
     public static EntityDataHolder SUNFISH;
+    public static EntityDataHolder WHALE_SHARK;
     public static EntityDataHolder TREVALLY;
     public static EntityDataHolder SNAKE;
     public static EntityDataHolder ANACONDA;
@@ -61,6 +62,7 @@ public class ResourceListenerEvent {
         SHARK = registerEntityData(ModEntity.SHARK);
         SUNFISH = registerEntityData(ModEntity.SUNFISH);
         TREVALLY = registerEntityData(ModEntity.TREVALLY);
+        WHALE_SHARK = registerEntityData(ModEntity.WHALE_SHARK);
 
         SNAKE = registerEntityData(ModEntity.SNAKE);
         ANACONDA = registerEntityData(ModEntity.ANACONDA);
