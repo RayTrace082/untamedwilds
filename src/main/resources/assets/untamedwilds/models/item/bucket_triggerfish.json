@@ -1,0 +1,16 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "untamedwilds:item/spawn/bucket_triggerfish_clown"
+    },
+
+    "overrides":[
+        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/entity/bucket_triggerfish_clown"},
+        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/entity/bucket_triggerfish_grey"},
+        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/entity/bucket_triggerfish_orangelined"},
+        {"predicate": {"custom_model_data":3}, "model":"untamedwilds:item/entity/bucket_triggerfish_picasso"},
+        {"predicate": {"custom_model_data":4}, "model":"untamedwilds:item/entity/bucket_triggerfish_redtooth"},
+        {"predicate": {"custom_model_data":5}, "model":"untamedwilds:item/entity/bucket_triggerfish_reef"},
+        {"predicate": {"custom_model_data":6}, "model":"untamedwilds:item/entity/bucket_triggerfish_titan"}
+    ]
+}

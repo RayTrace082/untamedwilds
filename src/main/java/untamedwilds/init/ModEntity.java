@@ -70,12 +70,13 @@ public class ModEntity {
     public static EntityType<EntityBison> BISON = createEntity(ConfigMobControl.addBison.get(), EntityBison::new,  "bison",  1.7F, 1.6F, 0x845B2B, 0x49342A, animalType.APEX_PRED, 6, 6);
 
     // Fish
-    public static EntityType<EntitySunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), EntitySunfish::new,  "sunfish",  1.6F, 1.6F, 0x2C545B, 0xB6D0D3, animalType.LARGE_OCEAN, 3);
-    public static EntityType<EntityTrevally> TREVALLY = createEntity(ConfigMobControl.addTrevally.get(), EntityTrevally::new,  "trevally",  0.8F, 0.8F, 0xA5B4AF, 0xC89D17, animalType.LARGE_OCEAN, 6, 8);
+    public static EntityType<EntitySunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), EntitySunfish::new,  "sunfish",  1.6F, 1.6F, 0x2C545B, 0xB6D0D3, animalType.LARGE_OCEAN, 2);
+    public static EntityType<EntityTrevally> TREVALLY = createEntity(ConfigMobControl.addTrevally.get(), EntityTrevally::new,  "trevally",  0.8F, 0.8F, 0xA5B4AF, 0xC89D17, animalType.LARGE_OCEAN, 4, 8);
     public static EntityType<EntityArowana> AROWANA = createEntity(ConfigMobControl.addArowana.get(), EntityArowana::new,  "arowana",  0.6F, 0.6F, 0x645C45, 0xB29F52, animalType.DENSE_WATER, 1);
     public static EntityType<EntityShark> SHARK = createEntity(ConfigMobControl.addShark.get(), EntityShark::new,  "shark",  1.8F, 1.3F, 0x6B5142, 0xB0B0A3, animalType.LARGE_OCEAN, 2);
     public static EntityType<EntityFootballFish> FOOTBALL_FISH = createEntity(ConfigMobControl.addFootballFish.get(), EntityFootballFish::new,  "football_fish",  0.8F, 0.8F, 0x53556C, 0x2F3037, animalType.LARGE_OCEAN, 1);
-    public static EntityType<EntityWhaleShark> WHALE_SHARK = createEntity(ConfigMobControl.addShark.get(), EntityWhaleShark::new,  "whale_shark",  2.6F, 1.6F, 0x222426, 0x7E7D84, animalType.LARGE_OCEAN, 1);
+    public static EntityType<EntityWhaleShark> WHALE_SHARK = createEntity(ConfigMobControl.addWhaleShark.get(), EntityWhaleShark::new,  "whale_shark",  2.6F, 1.6F, 0x222426, 0x7E7D84, animalType.LARGE_OCEAN, 1);
+    public static EntityType<EntityTriggerfish> TRIGGERFISH = createEntity(ConfigMobControl.addTriggerfish.get(), EntityTriggerfish::new,  "triggerfish",  0.8F, 0.8F, 0x1F0A19, 0xFCBD00, animalType.LARGE_OCEAN, 4);
 
     // Amphibians
     public static EntityType<EntityGiantSalamander> GIANT_SALAMANDER = createEntity(ConfigMobControl.addGiantSalamander.get(), EntityGiantSalamander::new,  "giant_salamander",  1F, 0.6f, 0x3A2C23, 0x6B5142, animalType.DENSE_WATER, 1);
@@ -151,6 +152,7 @@ public class ModEntity {
         event.put(SHARK, EntityShark.registerAttributes().create());
         event.put(FOOTBALL_FISH, EntityFootballFish.registerAttributes().create());
         event.put(WHALE_SHARK, EntityWhaleShark.registerAttributes().create());
+        event.put(TRIGGERFISH, EntityTriggerfish.registerAttributes().create());
 
         event.put(GIANT_SALAMANDER, EntityGiantSalamander.registerAttributes().create());
         event.put(NEWT, EntityNewt.registerAttributes().create());
@@ -190,6 +192,7 @@ public class ModEntity {
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.SHARK, RendererShark::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.FOOTBALL_FISH, RendererFootballFish::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.WHALE_SHARK, RendererWhaleShark::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntity.TRIGGERFISH, RendererTriggerfish::new);
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntity.NEWT, RendererNewt::new);

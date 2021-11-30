@@ -137,5 +137,10 @@ public class ModItems {
         if (ConfigMobControl.addLargeSnake.get()) {
             ModItems.ITEMS.register("egg_large_snake", () -> new MobEggItem(ModEntity.ANACONDA, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
         }
+        // Triggerfish Items
+        if (ConfigMobControl.addTriggerfish.get()) {
+            ModItems.ITEMS.register("egg_triggerfish", () -> new MobEggItem(ModEntity.TRIGGERFISH, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+            ModItems.ITEMS.register("bucket_triggerfish", () -> new MobBucketedItem(ModEntity.TRIGGERFISH, Fluids.WATER, new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
+        }
     }
 }
