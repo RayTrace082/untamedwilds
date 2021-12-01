@@ -59,9 +59,9 @@ public class FeatureVegetation extends Feature<FeatureSpreadConfig> {
     public enum FloraTypes implements IStringSerializable {
 
         TEMPERATE_BUSH	(ModBlock.BUSH_TEMPERATE.get(), 8, ConfigFeatureControl.addFlora.get(), false, 32, Biome.Category.FOREST, Biome.Category.SWAMP, Biome.Category.EXTREME_HILLS, Biome.Category.TAIGA, Biome.Category.PLAINS),
-        ELEPHANT_EAR	(ModBlock.ELEPHANT_EAR.get(), 4, ConfigFeatureControl.addFlora.get(), false, 32, Biome.Category.JUNGLE),
+        ELEPHANT_EAR	(ModBlock.ELEPHANT_EAR.get(), 6, ConfigFeatureControl.addFlora.get(), false, 32, Biome.Category.JUNGLE),
         HEMLOCK     	(ModBlock.HEMLOCK.get(), 1, ConfigFeatureControl.addFlora.get(), false, 16, Biome.Category.FOREST, Biome.Category.PLAINS),
-        TITAN_ARUM     	(ModBlock.TITAN_ARUM.get(), 12, ConfigFeatureControl.addFlora.get(), false, 1, Biome.Category.JUNGLE),
+        TITAN_ARUM     	(ModBlock.TITAN_ARUM.get(), 6, ConfigFeatureControl.addFlora.get(), false, 1, Biome.Category.JUNGLE),
         ZIMBABWE_ALOE   (ModBlock.ZIMBABWE_ALOE.get(), 4, ConfigFeatureControl.addFlora.get(), false, 1, Biome.Category.MESA);
 
         public Block type;
