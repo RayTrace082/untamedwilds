@@ -71,6 +71,7 @@ public class ModItems {
 
     // Item Blocks
     public static RegistryObject<Item> SEED_TITAN_ARUM = createItem("flora_titan_arum_corm", () -> new BlockNamedItem(ModBlock.TITAN_ARUM.get(), new Item.Properties().group(ItemGroup.DECORATIONS)));
+    public static RegistryObject<Item> SEED_ZIMBABWE_ALOE = createItem("flora_zimbabwe_aloe_sapling", () -> new BlockNamedItem(ModBlock.ZIMBABWE_ALOE.get(), new Item.Properties().group(ItemGroup.DECORATIONS)));
     public static RegistryObject<Item> WATER_HYACINTH_BLOCK = createItem("flora_water_hyacinth_item", () -> new LilyPadItem(ModBlock.WATER_HYACINTH.get(), new Item.Properties().group(ItemGroupUT.untamedwilds_items)));
 
     public static <I extends Item> RegistryObject<I> createItem(String name, Supplier<? extends I> supplier) {

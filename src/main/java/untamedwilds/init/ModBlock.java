@@ -70,6 +70,8 @@ public class ModBlock {
     public static RegistryObject<Block> BUSH_TEMPERATE = createBlock("flora_bush_temperate", () -> new UndergrowthBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement()), "cutout", ItemGroup.DECORATIONS);
     public static RegistryObject<Block> ELEPHANT_EAR = createBlock("flora_elephant_ear", () -> new UndergrowthBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement(), AbstractBlock.OffsetType.XYZ), "cutout", ItemGroup.DECORATIONS);
     public static RegistryObject<Block> HEMLOCK = createBlock("flora_hemlock", () -> new UndergrowthPoisonousBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WET_GRASS).doesNotBlockMovement(), AbstractBlock.OffsetType.XYZ), "cutout", ItemGroup.DECORATIONS);
+    // Flora - Multistage
+    public static RegistryObject<Block> ZIMBABWE_ALOE = createItemlessBlock("flora_zimbabwe_aloe", () -> new TallPlantBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(1.0F).sound(SoundType.WOOD)), "cutout");
     // Flora - Floating
     public static RegistryObject<Block> WATER_HYACINTH = createItemlessBlock("flora_water_hyacinth", () -> new FloatingPlantBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GREEN).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement()), "cutout");
     // Flora - Algae

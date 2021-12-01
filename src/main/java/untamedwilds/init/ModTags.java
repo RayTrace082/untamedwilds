@@ -13,6 +13,7 @@ public class ModTags {
 
     public static class BlockTags {
         public static final ITag.INamedTag<Block> REEDS_PLANTABLE_ON = net.minecraft.tags.BlockTags.makeWrapperTag(UntamedWilds.MOD_ID + ":reeds_plantable_on");
+        public static final ITag.INamedTag<Block> ALOE_PLANTABLE_ON = net.minecraft.tags.BlockTags.makeWrapperTag(UntamedWilds.MOD_ID + ":aloe_plantable_on");
         public static final ITag.INamedTag<Block> GRAZEABLE_BLOCKS = net.minecraft.tags.BlockTags.makeWrapperTag(UntamedWilds.MOD_ID + ":grazeable_blocks");
 
     }
