@@ -115,7 +115,7 @@
     {
       "name": "puma",
       "variant": 5,
-      "scale": 0.7,
+      "scale": 0.8,
       "rarity": 8,
       "breeding": "ALL",
       "growing": 4,

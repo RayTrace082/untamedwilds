@@ -71,11 +71,11 @@
 		"sounds": [
 			{
 				"name": "untamedwilds:big_cat/idle_1",
-				"volume": 0.8
+				"volume": 0.6
 			},
 			{
 				"name": "untamedwilds:big_cat/idle_2",
-				"volume": 0.8
+				"volume": 0.6
 			}
 		],
 		"subtitle": "untamedwilds.subtitles.big_cat.ambient"

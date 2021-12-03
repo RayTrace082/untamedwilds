@@ -157,6 +157,11 @@ public abstract class ComplexMob extends TameableEntity {
     public boolean canBeTargeted() { return true; }
     public double getCurrentSpeed() { return Math.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z); }
 
+    public int getTalkInterval() {
+        //return Integer.MAX_VALUE;
+        return 300;
+    }
+
     public static void processData(EntityDataHolder dataIn, EntityType<?> typeIn) {
         ENTITY_DATA_HASH.put(typeIn, dataIn);
         processSkins(dataIn, typeIn.getRegistryName().getPath());

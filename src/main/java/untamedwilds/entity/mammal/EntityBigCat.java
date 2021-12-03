@@ -205,6 +205,10 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
         super.livingTick();
     }
 
+    public int getTalkInterval() {
+        return Integer.MAX_VALUE;
+    }
+
     public double getMountedYOffset() { return this.getModelScale() + 0.5f * this.getMobSize(); }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
