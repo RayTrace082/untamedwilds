@@ -6,6 +6,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.math.MathHelper;
 import untamedwilds.entity.mammal.EntityBison;
 
 public class ModelBison extends AdvancedEntityModel<EntityBison> {
@@ -263,6 +264,17 @@ public class ModelBison extends AdvancedEntityModel<EntityBison> {
         if (!bison.isSleeping()) {
             this.faceTarget(netHeadYaw, headPitch, 3, head_neck);
             this.faceTarget(netHeadYaw, headPitch, 3, head_main);
+        }
+
+        // Pitch/Yaw handler
+        if (bison.isInWater()) {
+            this.setRotateAngle(head_main, -0.18203784098300857F, 0.0F, 0.0F);
+            if (!bison.isOnGround()) {
+                f = ageInTicks / 6;
+                limbSwingAmount = 0.5f;
+                float pitch = MathHelper.clamp(bison.rotationPitch - 10, -25F, 25.0F);
+                this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
+            }
         }
 
         // Movement Animation

@@ -16,6 +16,7 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
@@ -60,11 +61,11 @@ public class TallPlantBlock extends Block implements IGrowable, IPostGenUpdate {
    }
 
    public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-      return false;
+      return state.get(PROPERTY_STAGE) == 1;
    }
 
    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-      return this.getShape(state, worldIn, pos, context);
+      return state.get(PROPERTY_STAGE) == 1 ? VoxelShapes.empty() : this.getShape(state, worldIn, pos, context);
    }
 
    @Nullable

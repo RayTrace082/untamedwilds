@@ -54,6 +54,7 @@ public class EntityBison extends ComplexMobTerrestrial implements INewSkins, ISp
     }
 
     public void registerGoals() {
+        this.goalSelector.addGoal(1, new SmartSwimGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackCharger(this, 1.4F, 3));
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1.6D, false));
         this.goalSelector.addGoal(3, new SmartMateGoal(this, 0.8D));

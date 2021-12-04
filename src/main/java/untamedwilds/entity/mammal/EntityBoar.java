@@ -53,7 +53,6 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.6D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> getEcoLevel(input) > 7));
-        this.goalSelector.addGoal(3, new GrazeGoal(this, 10));
         this.goalSelector.addGoal(3, new GotoSleepGoal(this, 1));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, 120, 20, true));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
@@ -107,6 +106,7 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
                 if (i > 2980 && !this.isInWater() && this.getHunger() < 60 && this.canMove() && this.getAnimation() == NO_ANIMATION) {
                     if ((this.lastDugPos == null || this.getDistanceSq(this.lastDugPos.getX(), this.getPosY(), this.lastDugPos.getZ()) > 50) && this.world.getBlockState(this.getPosition().down()).getHarvestTool() == ToolType.SHOVEL) {
                         this.setAnimation(WORK_DIG);
+                        this.addHunger(20);
                         this.lastDugPos = this.getPosition();
                     }
                 }
