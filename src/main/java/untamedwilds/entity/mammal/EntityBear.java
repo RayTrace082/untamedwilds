@@ -19,6 +19,8 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
@@ -309,6 +311,15 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
     private void setShortSnout(boolean short_snout){ this.dataManager.set(SHORT_SNOUT, short_snout); }
     public boolean hasHump(){ return (this.dataManager.get(BACK_HUMP)); }
     private void setHump(boolean hump){ this.dataManager.set(BACK_HUMP, hump); }
+
+    // TODO: Very shitty hardcoded solution for Blind Cave Bears to keep spawning
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        ILivingEntityData data = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        if (this.getPosY() < 53) {
+            this.setVariant(1);
+        }
+        return data;
+    }
 
     public void writeAdditional(CompoundNBT compound){
         super.writeAdditional(compound);

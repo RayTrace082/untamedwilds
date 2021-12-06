@@ -81,7 +81,7 @@ public class UntamedWildsGenerator {
         }
 
         if ((event.getCategory() == Biome.Category.JUNGLE))
-            registerFeatureWithFreq(event, GenerationStage.Decoration.VEGETAL_DECORATION, FLOATING_VEGETATION.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.KELP_PLACEMENT), ConfigFeatureControl.freqAlgae.get() / 2, ConfigFeatureControl.addAlgae.get());
+            registerFeatureWithFreq(event, GenerationStage.Decoration.VEGETAL_DECORATION, FLOATING_VEGETATION.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.KELP_PLACEMENT), 1, ConfigFeatureControl.addAlgae.get());
         if ((event.getCategory() == Biome.Category.RIVER || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) && !ConfigFeatureControl.reedBlacklist.get().contains(event.getName().toString()))
             registerFeatureWithFreq(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.KELP_PLACEMENT), ConfigFeatureControl.freqReeds.get(), ConfigFeatureControl.addReeds.get());
         if (!ConfigFeatureControl.algaeBlacklist.get().contains(event.getName().toString()))
@@ -104,7 +104,7 @@ public class UntamedWildsGenerator {
         if (!FaunaHandler.getSpawnableList(FaunaHandler.animalType.APEX_PRED).isEmpty())
             registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqApex.get());
 
-        if (ConfigFeatureControl.probUnderground.get() != 0 && !FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND).isEmpty() && ConfigMobControl.masterSpawner.get()) {
+        if (ConfigFeatureControl.probUnderground.get() != 0 && /*!FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND).isEmpty() &&*/ ConfigMobControl.masterSpawner.get()) {
             float prob = ConfigFeatureControl.probUnderground.get().floatValue() / (CompatBridge.betterCaves || CompatBridge.cavesAndCliffs ? 3 : 1);
             event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, prob)).chance(2)));
         }
