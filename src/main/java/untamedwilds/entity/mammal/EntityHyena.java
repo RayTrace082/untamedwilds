@@ -2,20 +2,18 @@ package untamedwilds.entity.mammal;
 
 import com.github.alexthe666.citadel.animation.Animation;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
@@ -30,19 +28,12 @@ import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISpecies, IPackEntity, INeedsPostUpdate {
 
     public static Animation ATTACK_POUNCE;
     public static Animation IDLE_TALK;
     public static Animation ATTACK_BITE;
-
-    private static final String BREEDING = "MID_WET";
-    private static final int GESTATION = 4 * ConfigGamerules.cycleLength.get();
-    private static final int GROWING = 6 * ConfigGamerules.cycleLength.get();
 
     public EntityHyena(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
@@ -52,16 +43,6 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
         this.stepHeight = 1F;
         this.experienceValue = 10;
         this.turn_speed = 0.1F;
-    }
-
-    protected void registerData() {
-        super.registerData();
-    }
-
-    public static void processSkins() {
-        for (int i = 0; i < SpeciesHyena.values().length; i++) {
-            EntityUtils.buildSkinArrays("hyena", SpeciesHyena.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
-        }
     }
 
     public void registerGoals() {
@@ -109,13 +90,13 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
 
     @Override
     public void livingTick() {
-        if (this.herd == null) {
-            IPackEntity.initPack(this);
-        }
-        else {
-            this.herd.tick();
-        }
         if (!this.world.isRemote) {
+            if (this.herd == null) {
+                IPackEntity.initPack(this);
+            }
+            else {
+                this.herd.tick();
+            }
             if (this.world.getGameTime() % 1000 == 0) {
                 this.addHunger(-10);
                 if (!this.isStarving()) {
@@ -144,15 +125,10 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
                 this.getJumpController().setJumping();
             }
             if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-                this.playSound(ModSounds.ENTITY_HYENA_AMBIENT, 1, 1);
+                this.playSound(this.getAmbientSound(), 1, 1);
             }
             if (this.getAttackTarget() != null && this.ticksExisted % 120 == 0) {
-                if (this.getVariant() == 2) {
-                    this.playSound(ModSounds.ENTITY_HYENA_LAUGHING, 1.5F, 1);
-                }
-                else {
-                    this.playSound(ModSounds.ENTITY_HYENA_GROWL, 1F, 1);
-                }
+                this.playSound(this.getThreatSound(), 1.5F, 1);
             }
         }
         if (this.getAnimation() != NO_ANIMATION) {
@@ -184,19 +160,6 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
         }
     }
 
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return null;
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSounds.ENTITY_HYENA_HURT;
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() { return ModSounds.ENTITY_HYENA_DEATH; }
-
     @Nullable
     public EntityHyena func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
         return create_offspring(new EntityHyena(ModEntity.HYENA, this.world));
@@ -220,10 +183,6 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
         return super.func_230254_b_(player, hand);
     }
 
-    public boolean isBreedingItem(ItemStack stack) {
-        return (stack.getItem() == Items.ROTTEN_FLESH);
-    }
-
     @Override
     public Animation[] getAnimations() {
         return new Animation[]{NO_ANIMATION, ATTACK_POUNCE, ATTACK_BITE, IDLE_TALK};
@@ -231,82 +190,10 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
 
     public Animation getAnimationEat() { return NO_ANIMATION; }
 
-    protected activityType getActivityType() { return activityType.NOCTURNAL; }
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.ROTTEN_FLESH; }
-    public String getBreedingSeason() { return BREEDING; }
-    public int getAdulthoodTime() { return GROWING; }
-    public int getPregnancyTime() { return GESTATION; }
-    public float getModelScale() { return SpeciesHyena.values()[this.getVariant()].size; }
-    protected int getOffspring() { return 2; }
-    public int getMaxPackSize() { return SpeciesHyena.values()[this.getVariant()].packSize; }
-
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || reason == SpawnReason.SPAWN_EGG) {
-            return this.rand.nextInt(SpeciesHyena.values().length);
-        }
-        return SpeciesHyena.getSpeciesByBiome(biome);
-    }
-
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.hyena_" + getRawSpeciesName(i)).getString(); }
-    public String getRawSpeciesName(int i) { return SpeciesHyena.values()[i].name().toLowerCase(); }
-
     @Override
     public void updateAttributes() {
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(SpeciesHyena.values()[this.getVariant()].attack);
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(SpeciesHyena.values()[this.getVariant()].health);
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getAttack());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getEntityData(this.getType()).getSpeciesData().get(this.getVariant()).getHealth());
         this.setHealth(this.getMaxHealth());
-    }
-
-    // Species available, referenced to properly distribute Hyenas in the world
-    public enum SpeciesHyena implements IStringSerializable {
-
-        AARDWOlF	(0, 0.8F,3, 1, 4, 10, Biome.Category.SAVANNA),
-        BROWN		(1, 0.8F, 2, 6, 4, 14, Biome.Category.SAVANNA),
-        SPOTTED		(2, 1.0F, 5, 20, 5, 20, Biome.Category.SAVANNA, Biome.Category.MESA),
-        STRIPED 	(3, 0.9F, 3, 1, 4, 16, Biome.Category.SAVANNA, Biome.Category.MESA),
-        SHORTFACE   (4, 1.2F, 1, 4, 5, 24, Biome.Category.SAVANNA);
-
-        public int species;
-        public float size;
-        public int rarity;
-        public float attack;
-        public float health;
-        public int packSize;
-        public Biome.Category[] spawnBiomes;
-
-        SpeciesHyena(int species, float size, int rolls, int packSize, int attack, int health, Biome.Category... biomes) {
-            this.species = species;
-            this.size = size;
-            this.rarity = rolls;
-            this.packSize = packSize;
-            this.attack = (float)attack;
-            this.health = (float)health;
-            this.spawnBiomes = biomes;
-        }
-
-        public int getSpecies() { return this.species; }
-
-        public String getString() {
-            return I18n.format("entity.hyena." + this.name().toLowerCase());
-        }
-
-        public static int getSpeciesByBiome(Biome biome) {
-            List<SpeciesHyena> types = new ArrayList<>();
-            for (SpeciesHyena type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rarity; i++) {
-                            types.add(type);
-                        }
-                    }
-                }
-            }
-            if (types.isEmpty()) {
-                return 99;
-            } else {
-                return types.get(new Random().nextInt(types.size())).getSpecies();
-            }
-        }
     }
 }

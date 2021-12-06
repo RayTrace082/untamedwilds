@@ -5,12 +5,8 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.*;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
@@ -20,21 +16,11 @@ import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.unique.HippoTerritoryTargetGoal;
 import untamedwilds.init.ModEntity;
-import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpecies {
-
-    private static final float SIZE = 1.2f;
-    private static final String BREEDING = "EARLY_SUMMER";
-    private static final int GESTATION = 8 * ConfigGamerules.cycleLength.get();
-    private static final int GROWING = 12 * ConfigGamerules.cycleLength.get();
-    private static final int RARITY = 5;
 
     public static Animation EAT;
     public static Animation IDLE_YAWN;
@@ -55,12 +41,6 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
         this.isAmphibious = true;
         this.buoyancy = 0.998F;
         this.turn_speed = 0.3F;
-    }
-
-    public static void processSkins() {
-        for (int i = 0; i < SpeciesHippo.values().length; i++) {
-            EntityUtils.buildSkinArrays("hippo", SpeciesHippo.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
-        }
     }
 
     public void registerGoals() {
@@ -132,7 +112,7 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
         }
         if (this.getAnimation() != NO_ANIMATION) {
             if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-                this.playSound(ModSounds.ENTITY_HIPPO_AMBIENT, 1.5F, 0.8F);
+                this.playSound(this.getAmbientSound(), 1.5F, 0.8F);
             }
         }
         if (this.world.isRemote && this.isAngry() && this.angryProgress < 40) {
@@ -166,37 +146,10 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
         return ATTACK;
     }
 
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return null;
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ENTITY_COW_HURT;
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_COW_DEATH; }
-
     @Nullable
     public EntityHippo func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
         return create_offspring(new EntityHippo(ModEntity.HIPPO, this.world));
     }
-
-    public boolean isBreedingItem(ItemStack stack) {
-        return (stack.getItem() == Items.MELON);
-    }
-
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || reason == SpawnReason.SPAWN_EGG) {
-            return this.rand.nextInt(SpeciesHippo.values().length);
-        }
-        return SpeciesHippo.getSpeciesByBiome(biome);
-    }
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.hippo_" + getRawSpeciesName(i)).getString(); }
-    public String getRawSpeciesName(int i) { return SpeciesHippo.values()[i].name().toLowerCase(); }
 
     @Override
     public Animation[] getAnimations() {
@@ -204,53 +157,4 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
     }
 
     public Animation getAnimationEat() { return EAT; }
-
-    protected activityType getActivityType() {
-        return activityType.CATHEMERAL;
-    }
-    public boolean isFavouriteFood(ItemStack stack) { return stack.getItem() == Items.MELON_SLICE; }
-    public String getBreedingSeason() { return BREEDING; }
-    public static int getRarity() { return RARITY; }
-    public int getAdulthoodTime() { return GROWING; }
-    public int getPregnancyTime() { return GESTATION; }
-    public float getModelScale() { return SIZE; }
-    protected int getOffspring() { return 1; }
-
-    // Species available, referenced to properly distribute Hippos in the world
-    public enum SpeciesHippo implements IStringSerializable {
-
-        COMMON		(0, 1, Biome.Category.SWAMP, Biome.Category.SAVANNA);
-
-        public int species;
-        public int rarity;
-        public Biome.Category[] spawnBiomes;
-
-        SpeciesHippo(int species, int rolls, Biome.Category... biomes) {
-            this.species = species;
-            this.rarity = rolls;
-            this.spawnBiomes = biomes;
-        }
-
-        @Override
-        public String getString() {
-            return "why would you do this?";
-        }
-
-        public static int getSpeciesByBiome(Biome biome) {
-            List<EntityHippo.SpeciesHippo> types = new ArrayList<>();
-            for (EntityHippo.SpeciesHippo type : values()) {
-                for(Biome.Category biomeTypes : type.spawnBiomes) {
-                    if(biome.getCategory() == biomeTypes){
-                        for (int i=0; i < type.rarity; i++) {
-                            types.add(type);
-                        }
-                    }
-                }
-            }
-            if (types.isEmpty()) {
-                return 99;
-            }
-            return types.get(new Random().nextInt(types.size())).species;
-        }
-    }
 }

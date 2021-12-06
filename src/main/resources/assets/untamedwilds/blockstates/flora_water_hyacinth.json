@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"": [
+			{ "model": "untamedwilds:block/flora_water_hyacinth" },
+			{ "model": "untamedwilds:block/flora_water_hyacinth", "y": 90 },
+			{ "model": "untamedwilds:block/flora_water_hyacinth", "y": 180 },
+			{ "model": "untamedwilds:block/flora_water_hyacinth", "y": 270 }
+		]
+	}
+}

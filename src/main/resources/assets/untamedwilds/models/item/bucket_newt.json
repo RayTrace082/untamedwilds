@@ -1,0 +1,15 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "untamedwilds:item/spawn/bucket_newt_coastal"
+    },
+
+    "overrides":[
+        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/entity/bucket_newt_coastal"},
+        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/entity/bucket_newt_crested"},
+        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/entity/bucket_newt_eastern"},
+        {"predicate": {"custom_model_data":3}, "model":"untamedwilds:item/entity/bucket_newt_fire_salamander"},
+        {"predicate": {"custom_model_data":4}, "model":"untamedwilds:item/entity/bucket_newt_ribbed"},
+        {"predicate": {"custom_model_data":5}, "model":"untamedwilds:item/entity/bucket_newt_tiger"}
+    ]
+}

@@ -29,7 +29,10 @@ import untamedwilds.config.ConfigGamerules;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
+import untamedwilds.util.EntityDataHolder;
 import untamedwilds.util.EntityUtils;
+import untamedwilds.util.ResourceListenerEvent;
+import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -50,7 +53,10 @@ public abstract class ComplexMob extends TameableEntity {
     private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
     public HerdEntity herd = null;
+    public float turn_speed = 1F;
     public int peacefulTicks;
+    public static HashMap<EntityType<?>, EntityDataHolder> ENTITY_DATA_HASH = new HashMap<>();
+    public static HashMap<EntityType<?>, HashMap<Integer, String>> CLIENT_DATA_HASH = new HashMap<>();
 
     public ComplexMob(EntityType<? extends ComplexMob> type, World worldIn){
         super(type, worldIn);
@@ -74,6 +80,49 @@ public abstract class ComplexMob extends TameableEntity {
         super.livingTick();
         if (!this.world.isRemote && this.peacefulTicks > 0) {
             this.peacefulTicks--;
+        }
+    }
+
+    /**
+     * Wrapper method to access EntityDataHolder objects, contains safeguards against accessing data before its initialization
+     * @param typeIn The EntityType to access in ENTITY_DATA_HASH, or initialize it if needed</br>
+     */
+    public static EntityDataHolder getEntityData(EntityType<?> typeIn) {
+        if (!ENTITY_DATA_HASH.containsKey(typeIn)) {
+            ResourceListenerEvent.registerEntityData(typeIn);
+        }
+        return ENTITY_DATA_HASH.get(typeIn);
+    }
+
+    protected SoundEvent getAmbientSound() {
+        try {
+            return getEntityData(this.getType()).getSounds(this.getVariant(), "ambient");
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
+        try {
+            return getEntityData(this.getType()).getSounds(this.getVariant(), "hurt");
+        } catch (NullPointerException e) {
+            return SoundEvents.ENTITY_GENERIC_HURT;
+        }
+    }
+
+    protected SoundEvent getDeathSound() {
+        try {
+            return getEntityData(this.getType()).getSounds(this.getVariant(), "death");
+        } catch (NullPointerException e) {
+            return SoundEvents.ENTITY_GENERIC_DEATH;
+        }
+    }
+
+    protected SoundEvent getThreatSound() {
+        try {
+            return getEntityData(this.getType()).getSounds(this.getVariant(), "threat");
+        } catch (NullPointerException e) {
+            return null;
         }
     }
 
@@ -106,14 +155,37 @@ public abstract class ComplexMob extends TameableEntity {
         return this.getMotion().x == 0 && this.getMotion().z == 0;
     }
     public boolean canBeTargeted() { return true; }
-    public double getSpeed() { return Math.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z); }
+    public double getCurrentSpeed() { return Math.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z); }
+
+    public int getTalkInterval() {
+        //return Integer.MAX_VALUE;
+        return 300;
+    }
+
+    public static void processData(EntityDataHolder dataIn, EntityType<?> typeIn) {
+        ENTITY_DATA_HASH.put(typeIn, dataIn);
+        processSkins(dataIn, typeIn.getRegistryName().getPath());
+        // TODO: Wuh?
+        for (SpeciesDataHolder speciesData : ENTITY_DATA_HASH.get(typeIn).getSpeciesData()) {
+            if (!ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
+                ComplexMob.CLIENT_DATA_HASH.put(typeIn, new HashMap<>());
+            }
+            ComplexMob.CLIENT_DATA_HASH.get(typeIn).put(speciesData.getVariant(), speciesData.getName());
+        }
+    }
+
+    public static void processSkins(EntityDataHolder dataIn, String nameIn) {
+        for (SpeciesDataHolder speciesDatum : dataIn.getSpeciesData()) {
+            EntityUtils.buildSkinArrays(nameIn, speciesDatum.getName().toLowerCase(), dataIn, speciesDatum.getVariant(), TEXTURES_COMMON, TEXTURES_RARE);
+        }
+    }
 
     public int getVariant(){ return (this.dataManager.get(VARIANT)); }
     public void setVariant(int variant){ this.dataManager.set(VARIANT, variant); }
     public int getSkin(){ return (this.dataManager.get(SKIN)); }
     public void setSkin(int skin){ this.dataManager.set(SKIN, skin); }
     public <T extends ComplexMob> int chooseSkinForSpecies(T entityIn, boolean allowRares) {
-        if (entityIn.getType().getRegistryName() != null && this instanceof INewSkins) {
+        if (entityIn.getType().getRegistryName() != null && this instanceof INewSkins && !this.world.isRemote) {
             String name = entityIn.getType().getRegistryName().getPath();
             if (!TEXTURES_COMMON.get(name).isEmpty()) {
                 boolean isRare = allowRares && TEXTURES_RARE.get(name).containsKey(this.getVariant()) && this.rand.nextFloat() < ConfigGamerules.rareSkinChance.get();
@@ -125,10 +197,10 @@ public abstract class ComplexMob extends TameableEntity {
         return 0;
     }
 
-    public float getModelScale() { return 1f; }
+    public float getModelScale() { return getEntityData(this.getType()).getScale(this.getVariant()); }
     public float getMobSize(){ return (this.dataManager.get(SIZE)); }
     public void setMobSize(float size){ this.dataManager.set(SIZE, size); }
-    public void setRandomMobSize(){ this.dataManager.set(SIZE, Math.abs((float)this.rand.nextGaussian())/2); }
+    public void setRandomMobSize(){ this.dataManager.set(SIZE, this.getModelScale() + ((float)this.rand.nextGaussian() * 0.1F)); }
 
     public void setGender(int gender){ this.dataManager.set(GENDER, gender); }
     public int getGender(){	return (this.dataManager.get(GENDER)); }
@@ -137,8 +209,6 @@ public abstract class ComplexMob extends TameableEntity {
         return this.isMale() ? "male" : "female";
     }
 
-    public int getPregnancyTime() { return 24000; }
-    public int getAdulthoodTime() { return 24000; }
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get()) {
             if (CompatBridge.SereneSeasons) {
@@ -156,9 +226,11 @@ public abstract class ComplexMob extends TameableEntity {
         for (int i = 0; i < bound; i++) {
             T child = (T) this.func_241840_a((ServerWorld) this.world, this);
             if (child != null) {
-                child.setGrowingAge(this.getAdulthoodTime() * -2);
-                child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
                 child.setVariant(this.getVariant());
+                child.setGrowingAge(this.getAdulthoodTime() * -1);
+                child.setGender(this.rand.nextInt(2));
+                child.setRandomMobSize();
+                child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
                 if (this.getOwner() != null) {
                     child.setTamedBy((PlayerEntity) this.getOwner());
                 }
@@ -175,8 +247,7 @@ public abstract class ComplexMob extends TameableEntity {
 
     protected <T extends ComplexMob> T create_offspring(T entity) {
         entity.setGender(this.rand.nextInt(2));
-        entity.setMobSize(this.rand.nextFloat());
-        entity.setGrowingAge(entity.getAdulthoodTime() * -2);
+        entity.setRandomMobSize();
         entity.setVariant(this.getVariant());
         if (this instanceof INeedsPostUpdate) {
             ((INeedsPostUpdate) this).updateAttributes();
@@ -184,12 +255,27 @@ public abstract class ComplexMob extends TameableEntity {
         return entity;
     }
 
+    public String getBreedingSeason() {
+        return getEntityData(this.getType()).getBreedingSeason(this.getVariant());
+    }
+
+    // Adulthood time is twice the Growing time, and only used for mobs that do not lay eggs
+    public int getAdulthoodTime() {
+        return getEntityData(this.getType()).getGrowingTime(this.getVariant()) * ConfigGamerules.cycleLength.get() * 2;
+    }
+
+    public int getPregnancyTime() {
+        return getEntityData(this.getType()).getGrowingTime(this.getVariant()) * ConfigGamerules.cycleLength.get();
+    }
+
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.getItem().equals(getEntityData(this.getType()).getFavouriteFood(this.getVariant()).getItem());
+    }
+
     protected int getOffspring() {
-        return 0;
+        return getEntityData(this.getType()).getOffspring(this.getVariant());
     }
-    protected String getBreedingSeason() {
-        return "ALL";
-    }
+
     public boolean isFavouriteFood(ItemStack stack) {
         return stack.getItem() == ModItems.DEBUG_LOVE_POTION.get();
     }
@@ -307,9 +393,7 @@ public abstract class ComplexMob extends TameableEntity {
     @Nullable
     @Override
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        this.setRandomMobSize();
         if (reason != SpawnReason.DISPENSER && reason != SpawnReason.BUCKET) {
-            this.setGender(this.rand.nextInt(2));
             if (this instanceof ISpecies) {
                 Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(this.getPosition());
                 if (optional.isPresent()) {
@@ -321,11 +405,10 @@ public abstract class ComplexMob extends TameableEntity {
                     }
                 }
             }
+            this.setGender(this.rand.nextInt(2));
+            this.setRandomMobSize();
             if (TEXTURES_COMMON.containsKey(this.getType().getRegistryName().getPath())) {
                 chooseSkinForSpecies(this, ConfigGamerules.wildRareSkins.get());
-            }
-            if (this instanceof ISkins) {
-                this.setVariant(this.rand.nextInt(((ISkins)this).getSkinNumber()));
             }
             if (this instanceof INeedsPostUpdate) {
                 ((INeedsPostUpdate) this).updateAttributes();
@@ -363,9 +446,12 @@ public abstract class ComplexMob extends TameableEntity {
                         this.setSitting(false);
                     }
                 }
-                EntityUtils.consumeItemStack(this, itemstack);
+                else {
+                    EntityUtils.consumeItemStack(this, itemstack);
+                }
             }
+            return super.func_230254_b_(player, hand);
         }
-        return super.func_230254_b_(player, hand);
+        return ActionResultType.PASS;
     }
 }

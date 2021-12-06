@@ -14,22 +14,15 @@ public class RendererTrevally extends MobRenderer<EntityTrevally, EntityModel<En
 
     private static final ModelTrevally TREVALLY_MODEL = new ModelTrevally();
 
-    private final ResourceLocation BIGEYE         = new ResourceLocation("untamedwilds:textures/entity/trevally/bigeye.png");
-    private final ResourceLocation BLUESPOTTED    = new ResourceLocation("untamedwilds:textures/entity/trevally/bluespotted.png");
-    private final ResourceLocation GIANT         = new ResourceLocation("untamedwilds:textures/entity/trevally/giant.png");
-    private final ResourceLocation GOLDEN = new ResourceLocation("untamedwilds:textures/entity/trevally/golden.png");
-    private final ResourceLocation JACK        = new ResourceLocation("untamedwilds:textures/entity/trevally/jack.png");
-
     public RendererTrevally(EntityRendererManager rendermanager) {
         super(rendermanager, TREVALLY_MODEL, 0.2F);
     }
     @Override
     protected void preRenderCallback(EntityTrevally entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = 1F;
-        f += (entity.getMobSize() * 0.2f);
+        float f = entity.getMobSize() * 0.8F;
         f *= entity.getRenderScale();
-        f *= (EntityTrevally.SpeciesTrevally.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
+        this.shadowSize = f;
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntityTrevally entity) {

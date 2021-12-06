@@ -1,0 +1,52 @@
+{
+  "name": "boar",
+  "breeding": "MID_WINTER",
+  "growing": 4,
+  "offspring": 4,
+  "activityType": "nocturnal",
+  "favourite_food": "minecraft:beetroot",
+  "sounds": {
+    "ambient": "untamedwilds:entity.boar.ambient",
+    "hurt": "untamedwilds:entity.boar.hurt",
+    "death": "untamedwilds:entity.boar.death",
+    "threat": "untamedwilds:entity.boar.squeal"
+  },
+
+  "species": [
+    {
+    "name": "eurasian",
+    "variant": 0,
+    "scale": 1,
+    "rarity": 1,
+      "skins": 30,
+    "flags": {
+    },
+    "spawnBiomes": [
+        "forest",
+        "taiga"
+    ]
+  },
+    {
+      "name": "peccary",
+      "variant": 1,
+      "scale": 1,
+      "rarity": 1,
+      "flags": {
+      },
+      "spawnBiomes": [
+        "jungle"
+      ]
+    },
+    {
+      "name": "red_river",
+      "variant": 2,
+      "scale": 1,
+      "rarity": 1,
+      "flags": {
+      },
+      "spawnBiomes": [
+        "savanna"
+      ]
+    }
+  ]
+}

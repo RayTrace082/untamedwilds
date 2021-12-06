@@ -1,0 +1,19 @@
+{
+  "name": "football_fish",
+  "breeding": "EARLY_AUTUMN",
+  "growing": 12,
+  "offspring": 3,
+  "favourite_food": "untamedwilds:chum",
+  "sounds": {},
+
+  "species": [{
+    "name": "atlantic",
+    "variant": 0,
+    "scale": 1,
+    "rarity": 1,
+    "skins": 40,
+    "spawnBiomes": [
+        "ocean"
+    ]
+  }]
+}

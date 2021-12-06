@@ -42,14 +42,14 @@ import java.util.Objects;
 public class UntamedSpawnEggItem extends SpawnEggItem {
 
    private int currentSpecies;
-   private final int speciesNumber;
    private boolean isCached;
+   private final EntityType<?> entityType;
 
    // TODO: Egg-Spawner interaction is screwed
-   public UntamedSpawnEggItem(EntityType<?> typeIn, int species, int primaryColorIn, int secondaryColorIn, Properties builder) {
+   public UntamedSpawnEggItem(EntityType<?> typeIn, int primaryColorIn, int secondaryColorIn, Properties builder) {
       super(typeIn, primaryColorIn, secondaryColorIn, builder);
-      this.speciesNumber = species + 1;
       this.currentSpecies = 0;
+      this.entityType = typeIn;
       this.isCached = false;
    }
 
@@ -72,8 +72,7 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
    }
 
    public void increaseSpeciesNumber(int intIn) {
-      //UntamedWilds.LOGGER.info(intIn % this.speciesNumber);
-      this.currentSpecies = (intIn % this.speciesNumber);
+      this.currentSpecies = (intIn % (ComplexMob.getEntityData(this.entityType).getSpeciesData().size() + 1));
       this.isCached = true;
    }
 
@@ -105,15 +104,19 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
             return ActionResult.resultPass(itemstack);
          } else if (worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, raytraceresult.getFace(), itemstack)) {
             EntityType<?> entitytype = this.getType(itemstack.getTag());
-            Entity spawn = entitytype.spawn((ServerWorld)worldIn, itemstack, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
+            Entity spawn = entitytype.create((ServerWorld) worldIn, itemstack.getTag(), null, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
             if (spawn == null) {
                return ActionResult.resultPass(itemstack);
             }
             if (spawn instanceof ComplexMob) {
-               ((ComplexMob) spawn).chooseSkinForSpecies((ComplexMob)spawn, true);
-            }
-            if (spawn instanceof INeedsPostUpdate) {
-               ((INeedsPostUpdate) spawn).updateAttributes();
+               ComplexMob entitySpawn = (ComplexMob) spawn;
+               entitySpawn.chooseSkinForSpecies(entitySpawn, true);
+               entitySpawn.setRandomMobSize();
+               entitySpawn.setGender(entitySpawn.getRNG().nextInt(2));
+               if (spawn instanceof INeedsPostUpdate) {
+                  ((INeedsPostUpdate) spawn).updateAttributes();
+               }
+               worldIn.addEntity(spawn);
             }
             if (!playerIn.abilities.isCreativeMode) {
                itemstack.shrink(1);
@@ -173,9 +176,19 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
          }
 
          EntityType<?> entitytype = this.getType(itemstack.getTag());
-         Entity spawn = entitytype.spawn((ServerWorld)world, itemstack, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, true, !Objects.equals(blockpos, blockpos1) && direction == Direction.UP);
+         Entity spawn = entitytype.create((ServerWorld) world, itemstack.getTag(), null, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, true, !Objects.equals(blockpos, blockpos1) && direction == Direction.UP);
+         if (spawn == null) {
+            return ActionResultType.PASS;
+         }
          if (spawn instanceof ComplexMob) {
-            ((ComplexMob) spawn).chooseSkinForSpecies((ComplexMob)spawn, true);
+            ComplexMob entitySpawn = (ComplexMob) spawn;
+            entitySpawn.chooseSkinForSpecies(entitySpawn, true);
+            entitySpawn.setRandomMobSize();
+            entitySpawn.setGender(entitySpawn.getRNG().nextInt(2));
+            if (spawn instanceof INeedsPostUpdate) {
+               ((INeedsPostUpdate) spawn).updateAttributes();
+            }
+            world.addEntity(spawn);
          }
          itemstack.shrink(1);
 

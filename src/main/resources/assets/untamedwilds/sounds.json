@@ -57,16 +57,25 @@
 		"subtitle": "untamedwilds.subtitles.bear.baby.cry"
 	},
 
+	"entity.bison.ambient": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:bison/idle_1",
+			"untamedwilds:bison/idle_2"
+		],
+		"subtitle": "untamedwilds.subtitles.bison.ambient"
+	},
+
 	"entity.big_cat.ambient": {
 		"category": "neutral",
 		"sounds": [
 			{
 				"name": "untamedwilds:big_cat/idle_1",
-				"volume": 0.8
+				"volume": 0.6
 			},
 			{
 				"name": "untamedwilds:big_cat/idle_2",
-				"volume": 0.8
+				"volume": 0.6
 			}
 		],
 		"subtitle": "untamedwilds.subtitles.big_cat.ambient"

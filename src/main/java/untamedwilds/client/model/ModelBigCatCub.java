@@ -5,9 +5,9 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import untamedwilds.entity.mammal.bigcat.AbstractBigCat;
+import untamedwilds.entity.mammal.EntityBigCat;
 
-public class ModelBigCatCub extends AdvancedEntityModel<AbstractBigCat> {
+public class ModelBigCatCub extends AdvancedEntityModel<EntityBigCat> {
 
     private final AdvancedModelBox main_body;
     private final AdvancedModelBox main_buttocks;
@@ -117,7 +117,7 @@ public class ModelBigCatCub extends AdvancedEntityModel<AbstractBigCat> {
         );
     }
 
-    public void setRotationAngles(AbstractBigCat big_cat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setRotationAngles(EntityBigCat big_cat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
 
         // Breathing Animation

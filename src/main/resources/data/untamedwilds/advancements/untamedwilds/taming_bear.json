@@ -1,0 +1,33 @@
+{
+  "parent": "untamedwilds:untamedwilds/root",
+  "display": {
+    "icon": {
+      "item": "untamedwilds:hide_bear_black"
+    },
+    "title": {
+      "translate": "advancements.untamedwilds.taming_bear.title"
+    },
+    "description": {
+      "translate": "advancements.untamedwilds.taming_bear.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "taming_bear": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "untamedwilds:bear"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "taming_bear"
+    ]
+  ]
+}

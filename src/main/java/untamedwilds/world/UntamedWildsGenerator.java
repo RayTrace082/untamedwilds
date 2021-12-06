@@ -43,6 +43,7 @@ public class UntamedWildsGenerator {
     private static final RegistryObject<Feature<NoFeatureConfig>> REEDS = regFeature("reeds", () -> new FeatureReedClusters(NoFeatureConfig.field_236558_a_));
     private static final RegistryObject<Feature<NoFeatureConfig>> ALGAE = regFeature("algae", () -> new FeatureUnderwaterAlgae(NoFeatureConfig.field_236558_a_));
     private static final RegistryObject<Feature<FeatureSpreadConfig>> VEGETATION = regFeature("vegetation", () -> new FeatureVegetation(FeatureSpreadConfig.CODEC));
+    private static final RegistryObject<Feature<NoFeatureConfig>> FLOATING_VEGETATION = regFeature("floating_vegetation", () -> new FeatureFloatingPlants(NoFeatureConfig.field_236558_a_));
 
     // TODO: Unused because can't attach decorators to vanilla features. If I ever implement trees, this will go there
     public static final RegistryObject<TreeDecoratorType<?>> TREE_ORCHID = TREE_DECORATION.register("orchid", () -> new TreeDecoratorType<>(TreeOrchidDecorator.CODEC));
@@ -65,6 +66,7 @@ public class UntamedWildsGenerator {
     public static void onBiomesLoad(BiomeLoadingEvent event) {
         // Thanks Mojang, very cool 😎
         // event.getSpawns().withSpawner()
+        //Features.JUNGLE_TREE.getConfig().decorators.add(new TreeOrchidDecorator());
         if (event.getCategory() == Biome.Category.OCEAN) {
             if (!FaunaHandler.getSpawnableList(FaunaHandler.animalType.SESSILE).isEmpty())
                 registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, SESSILE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqSessile.get());
@@ -78,6 +80,8 @@ public class UntamedWildsGenerator {
             }
         }
 
+        if ((event.getCategory() == Biome.Category.JUNGLE))
+            registerFeatureWithFreq(event, GenerationStage.Decoration.VEGETAL_DECORATION, FLOATING_VEGETATION.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.KELP_PLACEMENT), 1, ConfigFeatureControl.addAlgae.get());
         if ((event.getCategory() == Biome.Category.RIVER || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.SWAMP) && !ConfigFeatureControl.reedBlacklist.get().contains(event.getName().toString()))
             registerFeatureWithFreq(event, GenerationStage.Decoration.VEGETAL_DECORATION, REEDS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.KELP_PLACEMENT), ConfigFeatureControl.freqReeds.get(), ConfigFeatureControl.addReeds.get());
         if (!ConfigFeatureControl.algaeBlacklist.get().contains(event.getName().toString()))
@@ -100,7 +104,7 @@ public class UntamedWildsGenerator {
         if (!FaunaHandler.getSpawnableList(FaunaHandler.animalType.APEX_PRED).isEmpty())
             registerFeatureWithFreq(event, GenerationStage.Decoration.TOP_LAYER_MODIFICATION, APEX.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), ConfigFeatureControl.freqApex.get());
 
-        if (ConfigFeatureControl.probUnderground.get() != 0 && !FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND).isEmpty() && ConfigMobControl.masterSpawner.get()) {
+        if (ConfigFeatureControl.probUnderground.get() != 0 && /*!FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND).isEmpty() &&*/ ConfigMobControl.masterSpawner.get()) {
             float prob = ConfigFeatureControl.probUnderground.get().floatValue() / (CompatBridge.betterCaves || CompatBridge.cavesAndCliffs ? 3 : 1);
             event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, UNDERGROUND.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, prob)).chance(2)));
         }

@@ -73,6 +73,10 @@ public abstract class EntityUtils {
         }
     }
 
+    public static int getPackSize(EntityType<?> type, int variant) {
+        return ComplexMob.getEntityData(type).getGroupCount(variant);
+    }
+
     // Self explanatory
     public static EntityType<?> getEntityTypeFromTag(CompoundNBT nbt, @Nullable EntityType<?> alt) {
         if (nbt != null && nbt.contains("EntityTag", 10)) {
@@ -146,8 +150,13 @@ public abstract class EntityUtils {
     }
 
     // This function makes the entity drop some Eggs of the given item_name, and with random stacksize between 1 and number
-    public static void dropEggs(LivingEntity entity, String item_name, int number) {
-        ItemEntity entityitem = entity.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase()))), 0.2F);
+    public static void dropEggs(ComplexMob entity, String item_name, int number) {
+        CompoundNBT baseTag = new CompoundNBT();
+        ItemStack item = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase())));
+        baseTag.putInt("variant", entity.getVariant());
+        baseTag.putInt("custom_model_data", entity.getVariant());
+        item.setTag(baseTag);
+        ItemEntity entityitem = entity.entityDropItem(item, 0.2F);
         if (entityitem != null) {
             entityitem.getItem().setCount(1 + entity.getRNG().nextInt(number - 1));
         }
@@ -160,7 +169,7 @@ public abstract class EntityUtils {
             Random rand = entity.getRNG();
             if (entityitem != null) {
                 entityitem.setMotion((rand.nextFloat() - rand.nextFloat()) * 0.1F, rand.nextFloat() * 0.05F, (rand.nextFloat() - rand.nextFloat()) * 0.1F);
-                entityitem.getItem().setTag(writeEntityToNBT(entity));
+                entityitem.getItem().setTag(writeEntityToNBT(entity, false, true));
                 if (entity.hasCustomName()) {
                     entityitem.getItem().setDisplayName(entity.getCustomName());
                 }
@@ -175,7 +184,7 @@ public abstract class EntityUtils {
             entity.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
             itemstack.shrink(1);
             ItemStack newitem = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase())));
-            newitem.setTag(writeEntityToNBT(entity));
+            newitem.setTag(writeEntityToNBT(entity, false, true));
             if (entity.hasCustomName()) {
                 newitem.setDisplayName(entity.getCustomName());
             }
@@ -204,8 +213,12 @@ public abstract class EntityUtils {
         return writeEntityToNBT(entity, false);
     }
 
-    // This method writes this entity into a CompoundNBT Tag
     public static CompoundNBT writeEntityToNBT(LivingEntity entity, boolean keepHomeData) {
+        return writeEntityToNBT(entity, keepHomeData, false);
+    }
+
+    // This method writes this entity into a CompoundNBT Tag
+    public static CompoundNBT writeEntityToNBT(LivingEntity entity, boolean keepHomeData, boolean attachModelData) {
         CompoundNBT baseTag = new CompoundNBT();
         CompoundNBT entityTag = new CompoundNBT();
         entity.writeUnlessRemoved(entityTag);
@@ -219,6 +232,9 @@ public abstract class EntityUtils {
             entityTag.remove("HomePosY");
             entityTag.remove("HomePosZ");
         }
+        if (attachModelData && entity instanceof ComplexMob) {
+            baseTag.putInt("CustomModelData", ((ComplexMob) entity).getVariant());
+        }
         baseTag.put("EntityTag", entityTag); // Put the entity in the Tag
         return baseTag;
     }
@@ -229,7 +245,12 @@ public abstract class EntityUtils {
     }
 
     // Pulls all resources with the given name from the provided ResourceLocation
-    public static Pair<Integer, Integer> buildSkinArrays(String name, String species, int variant, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> common_list, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> rare_list) {
+    public static Pair<Integer, Integer> buildSkinArrays(String name, String species, EntityDataHolder dataIn, int variant, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> common_list, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> rare_list) {
+        return buildSkinArrays(name, species, dataIn.getSkins(variant), variant, common_list, rare_list);
+    }
+
+    // Pulls all resources with the given name from the provided ResourceLocation
+    public static Pair<Integer, Integer> buildSkinArrays(String name, String species, int skins, int variant, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> common_list, HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> rare_list) {
         String path = "textures/entity/" + name + "/" + species;
 
         if (!common_list.containsKey(name)) {
@@ -238,14 +259,35 @@ public abstract class EntityUtils {
         if (!rare_list.containsKey(name)) {
             rare_list.put(name, new HashMap<>());
         }
-        Pair<Integer, Integer> result = new Pair<>(populateSkinArray(path, "_%d.png", variant, common_list.get(name), true), populateSkinArray(path, "_%dr.png", variant, rare_list.get(name), false));
-        if (UntamedWilds.DEBUG) {
-            UntamedWilds.LOGGER.info("Number of textures for " + species + " " + name + ": " + result);
+        int value = skins;
+        Pair<Integer, Integer> values = new Pair<>((value / 10) - 1, (value % 10) - 1);
+        common_list.get(name).put(variant, new ArrayList<>());
+        if (values.getFirst() >= 1) {
+            for (int i = 0; i <= values.getFirst(); i++) {
+                final String full_path = String.format(path + "_%d.png", i + 1);
+                common_list.get(name).get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
+            }
         }
-        return result;
+        else {
+            common_list.get(name).get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, path + ".png"));
+        }
+
+        if (values.getSecond() >= 0) {
+            rare_list.get(name).put(variant, new ArrayList<>());
+            for (int i = 0; i <= values.getSecond(); i++) {
+                final String full_path = String.format(path + "_%dr.png", i + 1);
+                rare_list.get(name).get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
+            }
+        }
+        //Pair<Integer, Integer> result = new Pair<>(populateSkinArray(path, "_%d.png", variant, common_list.get(name), true), populateSkinArray(path, "_%dr.png", variant, rare_list.get(name), false));
+        if (UntamedWilds.DEBUG) {
+            UntamedWilds.LOGGER.info("Number of textures for " + species + " " + name + ": " + values);
+        }
+        return values;
     }
 
     // Populates the provided array with the data located in the specified path
+    @Deprecated
     public static int populateSkinArray(String path, String suffix, int variant, HashMap<Integer, ArrayList<ResourceLocation>> list, boolean addDefault) {
         list.put(variant, new ArrayList<>());
         for (int i = 0; i < 99; i++) {
@@ -273,6 +315,28 @@ public abstract class EntityUtils {
                 return k;
             }
         }
+        return 0;
+    }
+
+    public static String getVariantName(EntityType<?> typeIn, int variantIn) {
+        if (ComplexMob.ENTITY_DATA_HASH.containsKey(typeIn)) {
+            return ComplexMob.ENTITY_DATA_HASH.get(typeIn).getName(variantIn);
+        }
+        else if (ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
+            return ComplexMob.CLIENT_DATA_HASH.get(typeIn).get(variantIn);
+        }
+        UntamedWilds.LOGGER.warn("There's no name provided for the species");
+        return "";
+    }
+
+    public static int getNumberOfSpecies(EntityType<?> typeIn) {
+        if (ComplexMob.ENTITY_DATA_HASH.containsKey(typeIn)) {
+            return ComplexMob.ENTITY_DATA_HASH.get(typeIn).getSpeciesData().size();
+        }
+        else if (ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
+            return ComplexMob.CLIENT_DATA_HASH.get(typeIn).size();
+        }
+        UntamedWilds.LOGGER.warn("There's no species provided for the EntityType");
         return 0;
     }
 

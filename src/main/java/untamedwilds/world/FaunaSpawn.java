@@ -14,6 +14,7 @@ import net.minecraft.world.gen.Heightmap;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ISpecies;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -71,25 +72,23 @@ public class FaunaSpawn {
 
     public static boolean performWorldGenSpawning(EntityType<?> entityType, EntitySpawnPlacementRegistry.PlacementType spawnType, @Nullable Heightmap.Type heightMap, ISeedReader worldIn, BlockPos pos, Random rand, int groupSize) {
         //UntamedWilds.LOGGER.info(entityType);
-        if (entityType != null) {
+        if (entityType != null && !worldIn.isRemote()) {
             int i = pos.getX() + rand.nextInt(16);
             int j = pos.getZ() + rand.nextInt(16);
 
             if (heightMap != null) {
                 pos.add(i, 0, j);
-                pos = worldIn.getHeight(heightMap, pos).up();
+                pos = worldIn.getHeight(heightMap, pos);
+                //worldIn.setBlockState(pos, Blocks.TORCH.getDefaultState(), 2);
             }
 
             if (rand.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(Objects.requireNonNull(worldIn.getBiome(pos).getRegistryName()))) {
                 int k = 1;
                 int species = -1;
-                if (groupSize != 1) {
-                    k = 1 + rand.nextInt(groupSize);
-                }
                 for(int packSize = 0; packSize < k; ++packSize) {
-                    int x = i;
+                    int x = pos.getX();
                     int y = pos.getY();
-                    int z = j;
+                    int z = pos.getZ();
                     if (packSize != 0) {
                         // Do not offset the first entity of the pack
                         x += rand.nextInt(6);
@@ -110,8 +109,8 @@ public class FaunaSpawn {
 
                         if (entityType.isSummonable() && canCreatureTypeSpawnAtLocation(spawnType, worldIn, blockpos, entityType)) {
                             float f = entityType.getWidth();
-                            double d0 = MathHelper.clamp(x, (double)x + (double)f, (double)x + 16.0D - (double)f);
-                            double d1 = MathHelper.clamp(z, (double)z + (double)f, (double)z + 16.0D - (double)f);
+                            double d0 = MathHelper.clamp(x, (double)blockpos.getX() + (double)f, (double)blockpos.getX() + 16.0D - (double)f);
+                            double d1 = MathHelper.clamp(z, (double)blockpos.getZ() + (double)f, (double)blockpos.getZ() + 16.0D - (double)f);
                             if (!worldIn.hasNoCollisions(entityType.getBoundingBoxWithSizeApplied(d0, y, d1)) || !EntitySpawnPlacementRegistry.canSpawnEntity(entityType, worldIn, SpawnReason.CHUNK_GENERATION, blockpos, worldIn.getRandom())) {
                                 continue;
                             }
@@ -134,11 +133,14 @@ public class FaunaSpawn {
                                         if (mobentity instanceof ISpecies) {
                                             if (species == -1) {
                                                 species = ((ComplexMob)mobentity).getVariant();
+                                                if (species != 99)
+                                                    k = EntityUtils.getPackSize(entityType, species);
                                             } else {
                                                 ((ComplexMob)mobentity).setVariant(species);
                                             } // Wrong spawning messages are most likely due to their inclusion on onMobSpawning, not here
                                         }
-                                        if (((ComplexMob)mobentity).getVariant() == 99) {
+                                        // TODO: Jesus christ, I hate the AddReloadListenerEvent event
+                                        if (((ComplexMob)mobentity).getVariant() == 99 || !ComplexMob.ENTITY_DATA_HASH.containsKey(entityType)) {
                                             mobentity.remove();
                                             return false;
                                         }

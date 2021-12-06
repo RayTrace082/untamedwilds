@@ -1,0 +1,13 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "untamedwilds:item/spawn/giant_clam_gigas"
+    },
+
+    "overrides":[
+        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/entity/giant_clam_derasa"},
+        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/entity/giant_clam_gigas"},
+        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/entity/giant_clam_maxima"},
+        {"predicate": {"custom_model_data":3}, "model":"untamedwilds:item/entity/giant_clam_squamosa"}
+    ]
+}

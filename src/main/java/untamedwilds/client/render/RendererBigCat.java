@@ -8,9 +8,9 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
 import untamedwilds.client.model.ModelBigCat;
 import untamedwilds.client.model.ModelBigCatCub;
-import untamedwilds.entity.mammal.bigcat.AbstractBigCat;
+import untamedwilds.entity.mammal.EntityBigCat;
 
-public class RendererBigCat extends MobRenderer<AbstractBigCat, EntityModel<AbstractBigCat>> {
+public class RendererBigCat extends MobRenderer<EntityBigCat, EntityModel<EntityBigCat>> {
 
     private static final ModelBigCat BIG_CAT_MODEL = new ModelBigCat();
     private static final ModelBigCatCub BIG_CAT_MODEL_CUB = new ModelBigCatCub();
@@ -20,7 +20,7 @@ public class RendererBigCat extends MobRenderer<AbstractBigCat, EntityModel<Abst
     }
 
     @Override
-    public void render(AbstractBigCat entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+    public void render(EntityBigCat entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         if (entityIn.isChild()) {
             entityModel = BIG_CAT_MODEL_CUB;
         } else {
@@ -29,18 +29,15 @@ public class RendererBigCat extends MobRenderer<AbstractBigCat, EntityModel<Abst
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
-    protected void preRenderCallback(AbstractBigCat entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = entity.getModelScale();
-        f += (entity.getMobSize() * 0.25f);
-        if (entity.isChild()) {
-            f *= 0.8;
-        }
+    protected void preRenderCallback(EntityBigCat entity, MatrixStack matrixStackIn, float partialTickTime) {
+        float f = entity.getMobSize();
+        //f *= entity.getRenderScale();
         matrixStackIn.scale(f, f, f);
-        this.shadowSize = entity.getModelScale() * 0.8f;
+        this.shadowSize = f;
     }
 
     @Override
-    public ResourceLocation getEntityTexture(AbstractBigCat entity) {
+    public ResourceLocation getEntityTexture(EntityBigCat entity) {
         return entity.getTexture();
     }
 }

@@ -15,10 +15,8 @@ import org.apache.logging.log4j.Logger;
 import untamedwilds.block.CageBlock;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.config.ConfigBase;
-import untamedwilds.init.ModBlock;
-import untamedwilds.init.ModEntity;
-import untamedwilds.init.ModItems;
-import untamedwilds.init.ModVillagerTrades;
+import untamedwilds.init.*;
+import untamedwilds.network.UntamedInstance;
 import untamedwilds.util.ModEntityRightClickEvent;
 import untamedwilds.world.UntamedWildsGenerator;
 
@@ -27,21 +25,13 @@ public class UntamedWilds {
 
     // TODO: Abstract Herd logic to be functional with any LivingEntity (instead of being limited to IPackEntity ComplexMob)
     // TODO: Store the children's UUID in their mother's NBT, to allow checking for Children without constant AABB checking
-    // TODO: Cut down on model .json files by replacing entries in "ItemModelMesher.register"
     // TODO: Have carnivorous mobs gain hunger when attacking
     // TODO: Make "ProtectChildren" only apply to mobs of similar ecoLevel, make HurtByTargetGoal call in adult mobs in Range if the target is children
+    // TODO: Rework ecoLevels to be dynamically calculated based on HP and damage sqrt(HP * Attack) / 2.5
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";
     public static final boolean DEBUG = false;
-
-    /*private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(MOD_ID, "main"),
-            () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals,
-            PROTOCOL_VERSION::equals
-    );*/
 
     public UntamedWilds() {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -50,9 +40,10 @@ public class UntamedWilds {
         eventBus.addListener(this::setupCommon);
         eventBus.addListener(this::setupClient);
         ModBlock.BLOCKS.register(eventBus);
-        ModBlock.TILE_ENTITY_TYPES.register(eventBus);
+        ModBlock.TILE_ENTITIES.register(eventBus);
         ModItems.ITEMS.register(eventBus);
         ModItems.registerSpawnItems();
+        ModAdvancementTriggers.register();
         UntamedWildsGenerator.FEATURES.register(eventBus);
         CompatBridge.RegisterCompat();
         MinecraftForge.EVENT_BUS.register(ModVillagerTrades.class); // Custom Villager Trades
@@ -62,11 +53,13 @@ public class UntamedWilds {
     }
 
     private void setupCommon(final FMLCommonSetupEvent event) {
+        UntamedInstance.registerMessages();
         DispenserBlock.registerDispenseBehavior(ModBlock.TRAP_CAGE.get().asItem(), new CageBlock.DispenserBehaviorTrapCage());
     }
 
     private void setupClient(final FMLClientSetupEvent event) {
         ModEntity.registerRendering();
         ModBlock.registerRendering();
+        //ModParticles.registerParticles(); Handled through events
     }
 }

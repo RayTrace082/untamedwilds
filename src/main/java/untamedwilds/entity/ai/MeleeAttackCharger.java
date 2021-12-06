@@ -6,6 +6,7 @@ import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
 import untamedwilds.entity.ComplexMobTerrestrial;
+import untamedwilds.entity.mammal.EntityBison;
 import untamedwilds.entity.mammal.EntityRhino;
 import untamedwilds.util.EntityUtils;
 
@@ -56,7 +57,10 @@ public class MeleeAttackCharger extends Goal {
 
     public void startExecuting() {
         this.charge = 50;
-        this.taskOwner.setAnimation(EntityRhino.ATTACK_THREATEN);
+        if (this.taskOwner instanceof EntityBison)
+            this.taskOwner.setAnimation(EntityBison.ATTACK_THREATEN);
+        if (this.taskOwner instanceof EntityRhino)
+            this.taskOwner.setAnimation(EntityRhino.ATTACK_THREATEN);
     }
 
     public boolean shouldContinueExecuting() {
@@ -80,7 +84,7 @@ public class MeleeAttackCharger extends Goal {
             }*/
             List<LivingEntity> entitiesHit = this.taskOwner.getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, offset_box, EntityPredicates.CAN_AI_TARGET);
             for (LivingEntity entityHit : entitiesHit) {
-                if (!(entityHit instanceof EntityRhino) && this.taskOwner.canEntityBeSeen(entityHit)) {
+                if (!(entityHit instanceof EntityRhino) && !entityHit.equals(this.taskOwner) && this.taskOwner.canEntityBeSeen(entityHit)) {
                     this.taskOwner.attackEntityAsMob(entityHit);
                 }
             }

@@ -1,0 +1,53 @@
+{
+  "name": "giant_salamander",
+  "breeding": "EARLY_SUMMER",
+  "growing": 6,
+  "offspring": 5,
+  "attack": 2,
+  "health": 10,
+  "favourite_food": "untamedwilds:food_turtle_raw",
+  "sounds": {
+    "ambient": "entity.turtle.ambient_land",
+    "hurt": "entity.turtle.hurt",
+    "death": "entity.turtle.death"
+  },
+
+  "species": [{
+    "name": "chinese",
+    "variant": 0,
+    "scale": 1.2,
+    "rarity": 3,
+    "attack": 3,
+    "health": 14,
+    "spawnBiomes": [
+        "river",
+        "extreme_hills"
+    ]
+  },
+    {
+      "name": "hellbender",
+      "variant": 1,
+      "scale": 0.8,
+      "rarity": 1,
+      "attack": 1,
+      "health": 6,
+      "spawnBiomes": [
+        "river",
+        "extreme_hills"
+      ]
+    },
+    {
+      "name": "japanese",
+      "variant": 2,
+      "scale": 1,
+      "rarity": 2,
+      "attack": 2,
+      "health": 10,
+      "skins": 30,
+      "spawnBiomes": [
+        "river",
+        "extreme_hills"
+      ]
+    }
+  ]
+}

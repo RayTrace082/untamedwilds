@@ -263,7 +263,7 @@ public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
 
         // Movement Animation
         if (aardvark.canMove()) {
-            if (aardvark.getSpeed() > 0.1f || aardvark.isAngry()) { // Running animation
+            if (aardvark.getCurrentSpeed() > 0.1f || aardvark.isAngry()) { // Running animation
                 bob(main_body, 0.5F * globalSpeed, 0.5F, false, limbSwing, limbSwingAmount);
                 walk(main_body, 0.5f * globalSpeed, 0.5f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
                 walk(head_main, 0.5f * globalSpeed, -0.5f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);

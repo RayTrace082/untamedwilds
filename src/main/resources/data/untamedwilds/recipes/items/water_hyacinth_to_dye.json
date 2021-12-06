@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+      {
+          "item": "untamedwilds:flora_water_hyacinth_item"
+      }
+  ],
+  "result": {
+    "item": "minecraft:purple_dye"
+  }
+}

@@ -1,0 +1,70 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "untamedwilds:block/flora/water_hyacinth",
+		"particle": "untamedwilds:block/flora/water_hyacinth"
+	},
+	"elements": [
+		{
+			"name": "flower_1",
+			"from": [8, -16, 0],
+			"to": [8, 16, 16],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"east": {"uv": [8, 0, 16, 16], "texture": "#0"},
+				"west": {"uv": [8, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "flower_2",
+			"from": [0, -16, 8],
+			"to": [16, 16, 8],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [8, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [8, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "leaf_1",
+			"from": [0, -2, -2],
+			"to": [16, -2, 8],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 0, 8]},
+			"faces": {
+				"up": {"uv": [0, 3, 8, 8], "texture": "#0"},
+				"down": {"uv": [0, 3, 8, 8], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"name": "leaf_2",
+			"from": [-2, -2, 0],
+			"to": [8, -2, 16],
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [8, 0, 8]},
+			"faces": {
+				"up": {"uv": [0, 3, 8, 8], "rotation": 270, "texture": "#0"},
+				"down": {"uv": [0, 3, 8, 8], "rotation": 270, "texture": "#0"}
+			}
+		},
+		{
+			"name": "leaf_3",
+			"from": [0, -2, 8],
+			"to": [16, -2, 18],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 0, 8]},
+			"faces": {
+				"up": {"uv": [0, 3, 8, 8], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [0, 3, 8, 8], "texture": "#0"}
+			}
+		},
+		{
+			"name": "leaf_4",
+			"from": [8, -2, 0],
+			"to": [18, -2, 16],
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [8, 0, 8]},
+			"faces": {
+				"up": {"uv": [0, 3, 8, 8], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [0, 3, 8, 8], "rotation": 90, "texture": "#0"}
+			}
+		}
+	]
+}

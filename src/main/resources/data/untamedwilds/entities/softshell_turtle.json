@@ -1,0 +1,84 @@
+{
+  "name": "softshell_turtle",
+  "breeding": "EARLY_SUMMER",
+  "growing": 6,
+  "offspring": 5,
+  "favourite_food": "minecraft:cod",
+  "sounds": {
+    "ambient": "entity.turtle.ambient_land",
+    "hurt": "entity.turtle.hurt",
+    "death": "entity.turtle.death"
+  },
+
+  "species": [{
+    "name": "black",
+    "variant": 0,
+    "scale": 1,
+    "rarity": 2,
+    "spawnBiomes": [
+        "swamp",
+      "jungle"
+    ]
+  },
+    {
+      "name": "chinese",
+      "variant": 1,
+      "scale": 0.8,
+      "rarity": 3,
+      "skins": 20,
+      "spawnBiomes": [
+        "swamp",
+        "jungle",
+        "river"
+      ]
+    },
+    {
+      "name": "flapshell",
+      "variant": 2,
+      "scale": 1,
+      "rarity": 2,
+      "spawnBiomes": [
+        "swamp",
+        "river"
+      ]
+    },
+    {
+      "name": "nile",
+      "variant": 3,
+      "scale": 1.1,
+      "rarity": 2,
+      "spawnBiomes": [
+        "river"
+      ]
+    },
+    {
+      "name": "peacock",
+      "variant": 4,
+      "scale": 0.9,
+      "rarity": 1,
+      "spawnBiomes": [
+        "jungle"
+      ]
+    },
+    {
+      "name": "pig_nose",
+      "variant": 5,
+      "scale": 0.8,
+      "rarity": 2,
+      "spawnBiomes": [
+        "jungle",
+        "swamp"
+      ]
+    },
+    {
+      "name": "spiny",
+      "variant": 6,
+      "scale": 0.7,
+      "rarity": 3,
+      "spawnBiomes": [
+        "swamp",
+        "river"
+      ]
+    }
+  ]
+}

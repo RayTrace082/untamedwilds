@@ -4,19 +4,19 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.BlockPos;
-import untamedwilds.entity.mammal.bear.AbstractBear;
+import untamedwilds.entity.mammal.EntityBear;
 
 import java.util.EnumSet;
 
 public class PandaBreakBamboo extends Goal {
     private BlockPos targetPos;
-    private final AbstractBear taskOwner;
+    private final EntityBear taskOwner;
     private final int executionChance;
     private Path path;
     private int searchCooldown;
     private boolean continueTask;
 
-    public PandaBreakBamboo(AbstractBear entityIn, int chance) {
+    public PandaBreakBamboo(EntityBear entityIn, int chance) {
         this.taskOwner = entityIn;
         this.executionChance = chance;
         this.searchCooldown = 100;
@@ -67,7 +67,7 @@ public class PandaBreakBamboo extends Goal {
             if (this.searchCooldown == 0) {
                 this.searchCooldown = 100;
                 this.taskOwner.world.destroyBlock(this.targetPos.up(), false);
-                this.taskOwner.setAnimation(AbstractBear.ATTACK_SWIPE);
+                this.taskOwner.setAnimation(EntityBear.ATTACK_SWIPE);
                 // TODO: Make the Panda hold the Bamboo and chew it
                 this.taskOwner.addHunger(8);
                 this.continueTask = false;

@@ -19,11 +19,10 @@ public class RendererSunfish extends MobRenderer<EntitySunfish, EntityModel<Enti
     }
 
     protected void preRenderCallback(EntitySunfish entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = 0.6F;
-        f += (entity.getMobSize() * 0.3f);
+        float f = entity.getMobSize();
         f *= entity.getRenderScale();
-        f *= (EntitySunfish.SpeciesSunfish.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
+        this.shadowSize = f;
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntitySunfish entity) {

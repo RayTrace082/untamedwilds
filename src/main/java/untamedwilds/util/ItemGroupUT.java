@@ -14,6 +14,6 @@ public class ItemGroupUT extends ItemGroup {
 
     @Override
     public ItemStack createIcon() {
-        return new ItemStack(ModItems.MATERIAL_FAT.get());
+        return new ItemStack(ModItems.LOGO.get());
     }
 }

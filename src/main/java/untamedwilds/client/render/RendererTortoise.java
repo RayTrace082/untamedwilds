@@ -20,11 +20,10 @@ public class RendererTortoise extends MobRenderer<EntityTortoise, EntityModel<En
 
     @Override
     protected void preRenderCallback(EntityTortoise entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = 0.8F;
-        f += (entity.getMobSize() * 0.2f);
+        float f = entity.getMobSize() * 0.8F;
         f *= entity.getRenderScale();
-        f *= (EntityTortoise.SpeciesTortoise.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
+        this.shadowSize = f * 0.4F;
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntityTortoise entity) {

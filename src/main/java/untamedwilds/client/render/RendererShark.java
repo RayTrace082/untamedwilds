@@ -19,11 +19,10 @@ public class RendererShark extends MobRenderer<EntityShark, EntityModel<EntitySh
     }
     @Override
     protected void preRenderCallback(EntityShark entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = 0.8F;
-        f += (entity.getMobSize() * 0.2f);
+        float f = entity.getMobSize();
         f *= entity.getRenderScale();
-        f *= (EntityShark.SpeciesShark.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
+        this.shadowSize = f;
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntityShark entity) {

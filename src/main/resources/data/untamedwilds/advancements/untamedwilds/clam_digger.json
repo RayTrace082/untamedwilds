@@ -1,0 +1,35 @@
+{
+  "parent": "untamedwilds:untamedwilds/root",
+  "display": {
+    "icon": {
+      "item": "untamedwilds:material_pearl"
+    },
+    "title": {
+      "translate": "advancements.untamedwilds.clam_digger.title"
+    },
+    "description": {
+      "translate": "advancements.untamedwilds.clam_digger.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "spawn_giant_clam": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "untamedwilds:spawn_giant_clam"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "spawn_giant_clam"
+    ]
+  ]
+}

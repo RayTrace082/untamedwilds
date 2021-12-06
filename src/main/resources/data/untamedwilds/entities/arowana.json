@@ -1,0 +1,48 @@
+{
+  "name": "arowana",
+  "breeding": "MID_SUMMER",
+  "growing": 6,
+  "offspring": 4,
+  "favourite_food": "untamedwilds:chum",
+  "sounds": {},
+
+  "species": [{
+    "name": "black",
+    "variant": 0,
+    "scale": 0.8,
+    "rarity": 2,
+    "spawnBiomes": [
+        "jungle"
+    ]
+  },
+    {
+      "name": "green",
+      "variant": 1,
+      "scale": 1.1,
+      "rarity": 2,
+      "skins": 12,
+      "spawnBiomes": [
+        "swamp",
+        "jungle"
+      ]
+    },
+    {
+      "name": "jardini",
+      "variant": 2,
+      "scale": 1,
+      "rarity": 1,
+      "spawnBiomes": [
+        "swamp"
+      ]
+    },
+    {
+      "name": "silver",
+      "variant": 3,
+      "scale": 1,
+      "rarity": 2,
+      "spawnBiomes": [
+        "jungle"
+      ]
+    }
+  ]
+}

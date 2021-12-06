@@ -1,0 +1,94 @@
+{
+  "name": "newt",
+  "breeding": "EARLY_SUMMER",
+  "growing": 3,
+  "offspring": 5,
+  "favourite_food": "untamedwilds:food_turtle_raw",
+  "sounds": {
+    "ambient": "entity.turtle.ambient_land",
+    "hurt": "entity.turtle.hurt",
+    "death": "entity.turtle.death"
+  },
+  "flags": {
+    "isAquatic": 0
+  },
+
+  "species": [{
+    "name": "coastal",
+    "variant": 0,
+    "scale": 1.3,
+    "rarity": 5,
+    "skins": 30,
+    "spawnBiomes": [
+        "forest",
+        "taiga"
+    ]
+  },
+    {
+      "name": "crested",
+      "variant": 1,
+      "scale": 1,
+      "rarity": 2,
+      "skins": 20,
+      "flags": {
+        "isAquatic": 1
+      },
+      "spawnBiomes": [
+        "river",
+        "extreme_hills"
+      ]
+    },
+    {
+      "name": "eastern",
+      "variant": 2,
+      "scale": 1,
+      "rarity": 3,
+      "skins": 20,
+      "flags": {
+        "isAquatic": 1
+      },
+      "spawnBiomes": [
+        "swamp",
+        "river",
+        "extreme_hills"
+      ]
+    },
+    {
+      "name": "fire_salamander",
+      "variant": 3,
+      "scale": 1.2,
+      "rarity": 5,
+      "skins": 30,
+      "spawnBiomes": [
+        "forest",
+        "taiga",
+        "river"
+      ]
+    },
+    {
+      "name": "ribbed",
+      "variant": 4,
+      "scale": 0.9,
+      "rarity": 3,
+      "flags": {
+        "isAquatic": 1
+      },
+      "spawnBiomes": [
+        "swamp",
+        "river",
+        "extreme_hills"
+      ]
+    },
+    {
+      "name": "tiger",
+      "variant": 5,
+      "scale": 1.2,
+      "rarity": 5,
+      "skins": 20,
+      "spawnBiomes": [
+        "forest",
+        "river"
+      ]
+    }
+  ]
+}

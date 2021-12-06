@@ -7,7 +7,6 @@ import net.minecraft.entity.ai.controller.DolphinLookController;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.ai.goal.RandomSwimmingGoal;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathType;
@@ -97,10 +96,6 @@ public abstract class ComplexMobAquatic extends ComplexMob {
         return false;
     }
 
-    public boolean canBeLeashedTo(PlayerEntity p_184652_1_) {
-        return false;
-    }
-
     protected abstract SoundEvent getFlopSound();
 
     protected SoundEvent getSwimSound() {
@@ -150,7 +145,7 @@ public abstract class ComplexMobAquatic extends ComplexMob {
                     this.mob.setMoveForward(0.0F);
                 } else {
                     float f = (float)(MathHelper.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                    this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, f, 10.0F);
+                    this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, f, this.entity.turn_speed * 10);
                     this.entity.renderYawOffset = this.entity.rotationYaw;
                     this.entity.rotationYawHead = this.entity.rotationYaw;
                     float f1 = (float)(this.speed * this.entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue());

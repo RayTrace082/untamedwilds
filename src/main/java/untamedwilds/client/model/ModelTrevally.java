@@ -106,7 +106,7 @@ public class ModelTrevally extends AdvancedEntityModel<EntityTrevally> {
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{head_main, body_main, body_tail, fin_tail};
         chainSwing(bodyParts, globalSpeed, globalDegree * 1.1f, -5, limbSwing, limbSwingAmount);
 
-        float speed = Math.min((float)trevally.getSpeed(), 0.08F);
+        float speed = Math.min((float)trevally.getCurrentSpeed(), 0.08F);
         this.fin_dorsal.rotateAngleX = this.fin_dorsal.defaultRotationX + speed * -8;
         this.fin_top.rotateAngleX = this.fin_top.defaultRotationX + speed * -3;
         this.fin_bottom.rotateAngleX = this.fin_bottom.defaultRotationX + speed * 3;

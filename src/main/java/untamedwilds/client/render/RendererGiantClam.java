@@ -20,11 +20,10 @@ public class RendererGiantClam extends MobRenderer<EntityGiantClam, EntityModel<
 
     @Override
     protected void preRenderCallback(EntityGiantClam entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = EntityGiantClam.SpeciesGiantClam.values()[entity.getVariant()].scale;
-        f += (entity.getMobSize() * 0.25f);
+        float f = entity.getMobSize();
         f *= entity.getRenderScale();
         matrixStackIn.scale(f, f, f);
-        this.shadowSize = EntityGiantClam.SpeciesGiantClam.values()[entity.getVariant()].scale * 0.8f;
+        this.shadowSize = f;
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntityGiantClam entity) {

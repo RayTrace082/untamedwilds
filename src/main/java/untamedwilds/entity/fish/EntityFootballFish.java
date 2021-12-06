@@ -13,7 +13,6 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
@@ -31,9 +30,6 @@ import java.util.Random;
 
 // TODO: Make all Football fish female, make some of them spawn with attached males
 public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, INewSkins, INeedsPostUpdate {
-
-    private static final String BREEDING = "EARLY_AUTUMN";
-    private static final int GROWING = 12 * ConfigGamerules.cycleLength.get();
 
     public EntityFootballFish(EntityType<? extends ComplexMob> type, World worldIn) {
         super(type, worldIn);
@@ -63,12 +59,6 @@ public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, I
         this.targetSelector.addGoal(2, new HuntMobTarget<>(this, LivingEntity.class, true, false, input -> getEcoLevel(input) < 5));
     }
 
-    public static void processSkins() {
-        for (int i = 0; i < SpeciesFootballFish.values().length; i++) {
-            EntityUtils.buildSkinArrays("football_fish", SpeciesFootballFish.values()[i].name().toLowerCase(), i, TEXTURES_COMMON, TEXTURES_RARE);
-        }
-    }
-
     public void livingTick() {
         super.livingTick();
         if (!this.world.isRemote) {
@@ -94,7 +84,7 @@ public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, I
                     return false;
                 }
             }
-            this.setGrowingAge(GROWING);
+            this.setGrowingAge(this.getGrowingAge());
             return true;
         }
         return false;
@@ -103,7 +93,7 @@ public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, I
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntityUtils.dropEggs(this, "egg_football_fish_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 4);
+        EntityUtils.dropEggs(this, "egg_football_fish", this.getOffspring());
         return null;
     }
 
@@ -111,22 +101,17 @@ public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, I
     protected SoundEvent getFlopSound() {
         return SoundEvents.ENTITY_GUARDIAN_FLOP;
     }
-    public int getAdulthoodTime() { return GROWING; }
-    public String getBreedingSeason() { return BREEDING; }
 
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (biomekey.equals(Biomes.DEEP_LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_OCEAN) || biomekey.equals(Biomes.DEEP_COLD_OCEAN)) {
-            return this.rand.nextInt(SpeciesFootballFish.values().length);
+            return this.rand.nextInt(getEntityData(this.getType()).getSpeciesData().size());
         }
         if (isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(SpeciesFootballFish.values().length);
+            return this.rand.nextInt(getEntityData(this.getType()).getSpeciesData().size());
         }
         return 99;
     }
-
-    public String getSpeciesName(int i) { return new TranslationTextComponent("entity.untamedwilds.football_fish_" + getRawSpeciesName(i)).getString(); }
-    public String getRawSpeciesName(int i) { return SpeciesFootballFish.values()[i].name().toLowerCase(); }
 
     @Override
     public void updateAttributes() {

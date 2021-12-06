@@ -1,0 +1,87 @@
+{
+  "name": "tarantula",
+  "breeding": "EARLY_SUMMER",
+  "growing": 6,
+  "offspring": 4,
+  "favourite_food": "minecraft:chicken",
+  "sounds": {
+    "ambient": "untamedwilds:entity.tarantula.ambient",
+    "hurt": "entity.spider.hurt",
+    "death": "entity.spider.death"
+  },
+
+  "species": [{
+    "name": "black",
+    "variant": 0,
+    "scale": 0.8,
+    "rarity": 3,
+    "spawnBiomes": [
+        "savanna",
+        "jungle"
+    ]
+  },
+    {
+      "name": "black_and_white",
+      "variant": 1,
+      "scale": 0.8,
+      "rarity": 2,
+      "spawnBiomes": [
+        "mesa"
+      ]
+    },
+    {
+      "name": "cobalt",
+      "variant": 2,
+      "scale": 0.8,
+      "rarity": 1,
+      "spawnBiomes": [
+        "jungle"
+      ]
+    },
+    {
+      "name": "king",
+      "variant": 3,
+      "scale": 1,
+      "rarity": 3,
+      "spawnBiomes": [
+        "savanna"
+      ]
+    },
+    {
+      "name": "red_knee",
+      "variant": 4,
+      "scale": 0.8,
+      "rarity": 2,
+      "spawnBiomes": [
+        "mesa"
+      ]
+    },
+    {
+      "name": "regalis",
+      "variant": 5,
+      "scale": 0.8,
+      "rarity": 1,
+      "spawnBiomes": [
+        "jungle"
+      ]
+    },
+    {
+      "name": "rose",
+      "variant": 6,
+      "scale": 0.8,
+      "rarity": 3,
+      "spawnBiomes": [
+        "mesa"
+      ]
+    },
+    {
+      "name": "tiger",
+      "variant": 7,
+      "scale": 0.8,
+      "rarity": 2,
+      "spawnBiomes": [
+        "jungle"
+      ]
+    }
+  ]
+}

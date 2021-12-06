@@ -19,10 +19,8 @@ public class RendererAnaconda extends MobRenderer<EntityAnaconda, EntityModel<En
     }
 
     protected void preRenderCallback(EntityAnaconda entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = 0.8F;
-        f += (entity.getMobSize() * 0.3f);
+        float f = entity.getMobSize();
         f *= entity.getRenderScale();
-        f *= (EntityAnaconda.SpeciesAnaconda.values()[entity.getVariant()].scale);
         matrixStackIn.scale(f, f, f);
     }
 

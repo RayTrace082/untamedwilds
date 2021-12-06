@@ -26,11 +26,10 @@ public class RendererAardvark extends MobRenderer<EntityAardvark, EntityModel<En
     }
 
     protected void preRenderCallback(EntityAardvark entity, MatrixStack matrixStackIn, float partialTickTime) {
-        float f = entity.getModelScale();
-        f += (entity.getMobSize() * 0.25f);
+        float f = entity.getMobSize();
         f *= entity.getRenderScale();
         matrixStackIn.scale(f, f, f);
-        this.shadowSize = entity.getModelScale() * 0.6f;
+        this.shadowSize = f * 0.6F;
     }
 
     public ResourceLocation getEntityTexture(@Nonnull EntityAardvark entity) {

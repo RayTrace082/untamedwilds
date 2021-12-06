@@ -1,0 +1,28 @@
+{
+  "parent": "untamedwilds:untamedwilds/basic_baiter",
+  "display": {
+    "icon": {
+      "item": "untamedwilds:chum"
+    },
+    "title": {
+      "translate": "advancements.untamedwilds.master_baiter.title"
+    },
+    "description": {
+      "translate": "advancements.untamedwilds.master_baiter.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "lure_100": {
+      "trigger": "untamedwilds:master_bait"
+    }
+  },
+  "requirements": [
+    [
+      "lure_100"
+    ]
+  ]
+}

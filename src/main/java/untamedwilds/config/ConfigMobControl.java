@@ -12,6 +12,7 @@ public class ConfigMobControl {
     public static ForgeConfigSpec.BooleanValue addHyena;
     public static ForgeConfigSpec.BooleanValue addAardvark;
     public static ForgeConfigSpec.BooleanValue addBoar;
+    public static ForgeConfigSpec.BooleanValue addBison;
     public static ForgeConfigSpec.BooleanValue addSnake;
     public static ForgeConfigSpec.BooleanValue addSoftshellTurtle;
     public static ForgeConfigSpec.BooleanValue addTortoise;
@@ -21,6 +22,8 @@ public class ConfigMobControl {
     public static ForgeConfigSpec.BooleanValue addArowana;
     public static ForgeConfigSpec.BooleanValue addShark;
     public static ForgeConfigSpec.BooleanValue addFootballFish;
+    public static ForgeConfigSpec.BooleanValue addWhaleShark;
+    public static ForgeConfigSpec.BooleanValue addTriggerfish;
     public static ForgeConfigSpec.BooleanValue addTarantula;
     public static ForgeConfigSpec.BooleanValue addGiantClam;
     public static ForgeConfigSpec.BooleanValue addGiantSalamander;
@@ -37,6 +40,7 @@ public class ConfigMobControl {
         addRhino = builder.comment("Controls whether to add Rhinoceros and their associated items.").define("mobcontrol.rhino", true);
         addHyena = builder.comment("Controls whether to add Hyenas and their associated items.").define("mobcontrol.hyena", true);
         addBoar = builder.comment("Controls whether to add Boars and their associated items.").define("mobcontrol.boar", true);
+        addBison = builder.comment("Controls whether to add Bison and their associated items.").define("mobcontrol.bison", true);
 
         addSnake = builder.comment("Controls whether to add Snakes and their associated items.").define("mobcontrol.snake", true);
         addSoftshellTurtle = builder.comment("Controls whether to add Softshell Turtles and their associated items.").define("mobcontrol.softshell_turtle", true);
@@ -46,6 +50,8 @@ public class ConfigMobControl {
         addTrevally = builder.comment("Controls whether to add Trevally and their associated items.").define("mobcontrol.trevally", true);
         addArowana = builder.comment("Controls whether to add Arowana and their associated items.").define("mobcontrol.arowana", true);
         addShark = builder.comment("Controls whether to add Sharks and their associated items.").define("mobcontrol.shark", true);
+        addWhaleShark = builder.comment("Controls whether to add Whale Sharks and their associated items.").define("mobcontrol.whale_shark", true);
+        addTriggerfish = builder.comment("Controls whether to add Triggerfish and their associated items.").define("mobcontrol.triggerfish", true);
         addFootballFish = builder.comment("Controls whether to add Football Fish and their associated items.").define("mobcontrol.football_fish", true);
         addTarantula = builder.comment("Controls whether to add Tarantulas and their associated items.").define("mobcontrol.tarantula", true);
         addGiantClam = builder.comment("Controls whether to add Giant Clams and their associated items.").define("mobcontrol.giant_clam", true);

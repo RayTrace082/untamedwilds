@@ -2,21 +2,26 @@ package untamedwilds.item;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Items;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.item.*;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
+import untamedwilds.entity.INeedsPostUpdate;
 import untamedwilds.util.EntityUtils;
+import untamedwilds.util.ItemGroupUT;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -24,20 +29,20 @@ import java.util.Objects;
 
 public class MobBottledItem extends Item {
     private final EntityType<? extends ComplexMob> entity;
-    private final int species;
-    private final String sciname;
 
-    public MobBottledItem(EntityType<? extends ComplexMob> typeIn, int species, String sciname, Properties properties) {
+    public MobBottledItem(EntityType<? extends ComplexMob> typeIn, Properties properties) {
         super(properties);
         this.entity = typeIn;
-        this.species = species;
-        this.sciname = sciname;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        EntityUtils.buildTooltipData(stack, tooltip, this.entity, this.sciname);
+        EntityUtils.buildTooltipData(stack, tooltip, this.entity, EntityUtils.getVariantName(this.entity, this.getSpecies(stack)));
+    }
+
+    public String getTranslationKey(ItemStack stack) {
+        return new TranslationTextComponent("item.untamedwilds.bottle_" + this.entity.getRegistryName().getPath()).getString() + "_" + EntityUtils.getVariantName(this.entity, this.getSpecies(stack));
     }
 
     @Override
@@ -55,16 +60,51 @@ public class MobBottledItem extends Item {
 
             EntityType<?> entity = EntityUtils.getEntityTypeFromTag(itemStack.getTag(), this.entity);
             boolean doVerticalOffset = !Objects.equals(pos, spawnPos) && facing == Direction.UP;
-
-            EntityUtils.createMobFromItem((ServerWorld) worldIn, itemStack, entity, this.species, spawnPos, useContext.getPlayer(), doVerticalOffset);
-
+            if (useContext.getItem().getTag() != null && useContext.getItem().getTag().contains("EntityTag")) {
+                EntityUtils.createMobFromItem((ServerWorld) worldIn, itemStack, entity, 0, spawnPos, useContext.getPlayer(), doVerticalOffset);
+            }
+            else {
+                Entity spawn = entity.create((ServerWorld) worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, doVerticalOffset);
+                if (spawn instanceof ComplexMob) {
+                    ComplexMob entitySpawn = (ComplexMob) spawn;
+                    entitySpawn.setVariant(this.getSpecies(itemStack));
+                    entitySpawn.chooseSkinForSpecies(entitySpawn, true);
+                    entitySpawn.setRandomMobSize();
+                    entitySpawn.setGender(entitySpawn.getRNG().nextInt(2));
+                    if (spawn instanceof INeedsPostUpdate) {
+                        ((INeedsPostUpdate) spawn).updateAttributes();
+                    }
+                    worldIn.addEntity(spawn);
+                }
+            }
             if (useContext.getPlayer() != null) {
                 if (!useContext.getPlayer().isCreative()) {
                     itemStack.shrink(1);
+                    useContext.getPlayer().inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
                 }
-                useContext.getPlayer().inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
             }
         }
         return ActionResultType.CONSUME;
+    }
+
+    private int getSpecies(ItemStack itemIn) {
+        if (itemIn.getTag() != null && itemIn.getTag().contains("CustomModelData")) {
+            return itemIn.getTag().getInt("CustomModelData");
+        }
+        UntamedWilds.LOGGER.error("No variant found in this itemstack NBT data");
+        return 0;
+    }
+
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+        if (group == ItemGroupUT.untamedwilds_items) {
+            for(int i = 0; i < EntityUtils.getNumberOfSpecies(this.entity); i++) {
+                CompoundNBT baseTag = new CompoundNBT();
+                ItemStack item = new ItemStack(this);
+                baseTag.putInt("variant", i);
+                baseTag.putInt("CustomModelData", i);
+                item.setTag(baseTag);
+                items.add(item);
+            }
+        }
     }
 }

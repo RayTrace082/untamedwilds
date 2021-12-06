@@ -24,6 +24,22 @@
           }]
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "untamedwilds:chum",
+          "functions": [{
+            "function": "set_count",
+            "count": {
+              "min": 0,
+              "max": 4
+            }
+          }]
+        }
+      ]
     }
   ]
 }

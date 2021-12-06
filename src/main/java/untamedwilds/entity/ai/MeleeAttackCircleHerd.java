@@ -1,6 +1,5 @@
 package untamedwilds.entity.ai;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -168,7 +167,7 @@ public class MeleeAttackCircleHerd extends Goal {
         if (this.isJumper && this.attacker.isOnGround() && this.attacker.getEntityWorld().getBlockState(testpos.down()).isAir() && this.attacker.getEntityWorld().getBlockState(testpos.down(2)).isAir() && this.attacker.getEntitySenses().canSee(livingentity)) { // TODO: "isJumper" param
             BlockPos targetpos = this.attacker.getPosition().add(Math.cos(Math.toRadians(this.attacker.rotationYaw + 90)) * 5, 0, Math.sin(Math.toRadians(this.attacker.rotationYaw + 90)) * 5);
             if (new Vector3d(targetpos.getX(), targetpos.getY(), targetpos.getZ()).distanceTo(livingentity.getPositionVec()) < this.attacker.getPositionVec().distanceTo(livingentity.getPositionVec())) {
-                this.attacker.getEntityWorld().setBlockState(targetpos, Blocks.TORCH.getDefaultState());
+                //this.attacker.getEntityWorld().setBlockState(targetpos, Blocks.TORCH.getDefaultState());
                 Random rand = this.attacker.getRNG();
                 for (int i = 0; i < 4; i++) {
                     targetpos.add(rand.nextInt(2) - 1, rand.nextInt(2) - 1, rand.nextInt(2) - 1);

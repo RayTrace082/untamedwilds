@@ -1,0 +1,16 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "untamedwilds:item/spawn/tortoise_leopard"
+    },
+
+    "overrides":[
+        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/entity/softshell_turtle_black"},
+        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/entity/softshell_turtle_chinese"},
+        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/entity/softshell_turtle_flapshell"},
+        {"predicate": {"custom_model_data":3}, "model":"untamedwilds:item/entity/softshell_turtle_nile"},
+        {"predicate": {"custom_model_data":4}, "model":"untamedwilds:item/entity/softshell_turtle_peacock"},
+        {"predicate": {"custom_model_data":5}, "model":"untamedwilds:item/entity/softshell_turtle_pig_nose"},
+        {"predicate": {"custom_model_data":6}, "model":"untamedwilds:item/entity/softshell_turtle_spiny"}
+    ]
+}
