@@ -51,7 +51,6 @@ public class SyncTextureData {
             }
             EntityUtils.buildSkinArrays(entityName.getPath(), speciesName, skinsData, id, ComplexMob.TEXTURES_COMMON, ComplexMob.TEXTURES_RARE);
             ComplexMob.CLIENT_DATA_HASH.get(type).put(id, speciesName);
-            UntamedWilds.LOGGER.info(ComplexMob.CLIENT_DATA_HASH);
         });
         return true;
     }
