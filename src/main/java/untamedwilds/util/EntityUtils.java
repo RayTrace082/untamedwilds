@@ -96,7 +96,11 @@ public abstract class EntityUtils {
                 //String component = "mobspawn.tooltip." + (compound.contains("Gender") ? (compound.getInt("Gender") == 0 ? "male" : "female") : "unknown");
                 //tooltip.add(new TranslationTextComponent(component).mergeStyle(TextFormatting.GRAY));
                 String gender = compound.contains("Gender") ? new TranslationTextComponent("mobspawn.tooltip." + (compound.getInt("Gender") == 0 ? "male" : "female")).getString() + " " : "";
-                String type = new TranslationTextComponent(entity.getTranslationKey()).getString();
+                String type;
+                if (path.isEmpty())
+                    type = new TranslationTextComponent(entity.getTranslationKey()).getString();
+                else
+                    type = new TranslationTextComponent(entity.getTranslationKey() + "_" + path).getString();
                 if (stack.getTag().getCompound("EntityTag").contains("CustomName")) {
                     String customName = stack.getTag().getCompound("EntityTag").getString("CustomName");
                     // Entity uses ITextComponent.Serializer.getComponentFromJson(s) instead of substrings
@@ -325,7 +329,7 @@ public abstract class EntityUtils {
         else if (ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
             return ComplexMob.CLIENT_DATA_HASH.get(typeIn).get(variantIn);
         }
-        UntamedWilds.LOGGER.warn("There's no name provided for the species");
+        //UntamedWilds.LOGGER.warn("There's no name provided for the species");
         return "";
     }
 

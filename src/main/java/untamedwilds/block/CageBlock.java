@@ -195,7 +195,7 @@ public class CageBlock extends Block implements IWaterLoggable {
         if (stack.getTag() != null) {
             EntityType<?> type = EntityUtils.getEntityTypeFromTag(stack.getTag(), null);
             if (type != null) {
-                EntityUtils.buildTooltipData(stack, tooltip, type, "");
+                EntityUtils.buildTooltipData(stack, tooltip, type, EntityUtils.getVariantName(type, stack.getTag().getInt("Variant")));
             }
         }
         else {
