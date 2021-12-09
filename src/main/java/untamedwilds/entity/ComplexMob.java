@@ -68,7 +68,7 @@ public abstract class ComplexMob extends TameableEntity {
         this.dataManager.register(HOME_POS, BlockPos.ZERO);
         this.dataManager.register(VARIANT, 0);
         this.dataManager.register(SKIN, 0);
-        this.dataManager.register(SIZE, 0F);
+        this.dataManager.register(SIZE, 1F);
         this.dataManager.register(GENDER, 0);
         this.dataManager.register(IS_ANGRY, false);
         this.dataManager.register(COMMAND, 0);
