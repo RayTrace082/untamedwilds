@@ -383,7 +383,7 @@ public abstract class ComplexMob extends TameableEntity {
             this.setCommandInt(compound.getInt("Command"));
         }
         this.setVariant(compound.getInt("Variant"));
-        this.setSkin(compound.contains("Skin") ? compound.getInt("Skin") : this.chooseSkinForSpecies(this, false)); // TODO: Retrocompatibility for mobs created before the Skin system
+        this.setSkin(compound.getInt("Skin"));
         this.setMobSize(compound.getFloat("Size"));
         this.setGender(compound.getInt("Gender"));
         this.setAngry(compound.getBoolean("isAngry"));
