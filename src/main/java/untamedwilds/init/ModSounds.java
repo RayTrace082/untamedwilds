@@ -3,15 +3,20 @@ package untamedwilds.init;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 
 @Mod.EventBusSubscriber(modid = UntamedWilds.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModSounds {
 
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, UntamedWilds.MOD_ID);
+
     public static final SoundEvent ENTITY_ATTACK_BITE = registerSound("entity.generic.bite");
 
     public static final SoundEvent ENTITY_HIPPO_AMBIENT = registerSound("entity.hippo.ambient");
+
+    public static final SoundEvent ENTITY_BISON_AMBIENT = registerSound("entity.bison.ambient");
 
     public static final SoundEvent ENTITY_BEAR_AMBIENT = registerSound("entity.bear.ambient");
     public static final SoundEvent ENTITY_BEAR_WARNING = registerSound("entity.bear.warning");
@@ -47,8 +52,7 @@ public class ModSounds {
     private static SoundEvent registerSound(String soundName) {
         ResourceLocation location = new ResourceLocation(UntamedWilds.MOD_ID, soundName);
         SoundEvent event = new SoundEvent(location);
-        event.setRegistryName(location);
-        ForgeRegistries.SOUND_EVENTS.register(event);
+        ModSounds.SOUNDS.register(soundName, () -> event);
         return event;
     }
 }

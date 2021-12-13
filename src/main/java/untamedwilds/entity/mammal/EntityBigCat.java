@@ -195,7 +195,7 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP,1.5F, 0.8F);
         }
         if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-            this.playSound(this.getAmbientSound(), 1F, 1);
+            this.playSound(this.getAmbientSound(), this.getSoundVolume(), this.getSoundPitch());
         }
         if (this.world.isRemote && this.isAngry() && this.aggroProgress < 40) {
             this.aggroProgress++;

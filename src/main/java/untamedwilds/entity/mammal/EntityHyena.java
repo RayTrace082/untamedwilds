@@ -125,10 +125,10 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
                 this.getJumpController().setJumping();
             }
             if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-                this.playSound(this.getAmbientSound(), 1, 1);
+                this.playSound(this.getAmbientSound(), this.getSoundVolume(), this.getSoundPitch());
             }
             if (this.getAttackTarget() != null && this.ticksExisted % 120 == 0) {
-                this.playSound(this.getThreatSound(), 1.5F, 1);
+                this.playSound(this.getThreatSound(), this.getSoundVolume(), this.getSoundPitch());
             }
         }
         if (this.getAnimation() != NO_ANIMATION) {

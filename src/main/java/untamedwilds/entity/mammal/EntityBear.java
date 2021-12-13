@@ -189,7 +189,7 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
             }
             if (this.getAnimation() == ATTACK_MAUL) {
                 if (this.getAnimationTick() == 10) {
-                    this.playSound(this.getThreatSound(), 1.5F, 1);
+                    this.playSound(this.getThreatSound(), this.getSoundVolume(), this.getSoundPitch());
                 }
                 if (this.getAnimationTick() == 20) {
                     this.playSound(SoundEvents.ENTITY_PLAYER_SMALL_FALL, 1.5F, 0.8F);
@@ -202,10 +202,10 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
                 }
             }
             if (this.getAnimation() == ANIMATION_ROAR && this.getAnimationTick() == 7) {
-                this.playSound(this.getThreatSound(), 1.5F, 1);
+                this.playSound(this.getThreatSound(), this.getSoundVolume(), this.getSoundPitch());
             }
             if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-                this.playSound(this.getAmbientSound(), 1.5F, 1);
+                this.playSound(ModSounds.ENTITY_BEAR_AMBIENT, this.getSoundVolume(), this.getSoundPitch());
             }
             if (this.getAnimation() == ANIMATION_EAT && (this.getAnimationTick() == 10 || this.getAnimationTick() == 20 || this.getAnimationTick() == 30)) {
                 this.playSound(SoundEvents.ENTITY_HORSE_EAT, 1.5F, 0.8F);
@@ -229,14 +229,14 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
     public double getMountedYOffset() { return getModelScale() + 0.5f * this.getMobSize(); }
 
     protected SoundEvent getAmbientSound() {
-        return !this.isChild() ? null : ModSounds.ENTITY_BEAR_BABY_AMBIENT;
+        return !this.isChild() ? super.getAmbientSound() : ModSounds.ENTITY_BEAR_BABY_AMBIENT;
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
-        return !this.isChild() ? ModSounds.ENTITY_BEAR_HURT : ModSounds.ENTITY_BEAR_BABY_CRY;
+        return !this.isChild() ? super.getHurtSound(source) : ModSounds.ENTITY_BEAR_BABY_CRY;
     }
 
-    protected SoundEvent getDeathSound() { return ModSounds.ENTITY_BEAR_DEATH; }
+    protected SoundEvent getDeathSound() { return super.getDeathSound(); }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
         this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F);

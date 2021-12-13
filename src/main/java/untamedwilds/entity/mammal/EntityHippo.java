@@ -112,7 +112,7 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
         }
         if (this.getAnimation() != NO_ANIMATION) {
             if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-                this.playSound(this.getAmbientSound(), 1.5F, 0.8F);
+                this.playSound(this.getAmbientSound(), this.getSoundVolume(), this.getSoundPitch());
             }
         }
         if (this.world.isRemote && this.isAngry() && this.angryProgress < 40) {

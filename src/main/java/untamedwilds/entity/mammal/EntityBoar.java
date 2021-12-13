@@ -121,14 +121,14 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
                 }
             }
             if (this.getAnimation() == TALK && this.getAnimationTick() == 1) {
-                this.playSound(this.getAmbientSound(), 1.5F, 1);
+                this.playSound(this.getAmbientSound(), this.getSoundVolume(), this.getSoundPitch());
             }
             if (this.getAttackTarget() != null && this.ticksExisted % 120 == 0) {
-                this.playSound(this.getThreatSound(), 1.5F, 1);
+                this.playSound(this.getThreatSound(), this.getSoundVolume(), this.getSoundPitch());
             }
             if (this.getAnimation() != NO_ANIMATION) {
                 if (this.getAnimation() == ATTACK && this.getAnimationTick() == 8 && this.rand.nextInt(3) == 0) {
-                    this.playSound(ModSounds.ENTITY_BOAR_SQUEAL, 1.5F, 1F);
+                    this.playSound(ModSounds.ENTITY_BOAR_SQUEAL, this.getSoundVolume(), this.getSoundPitch());
                 }
             }
         }
