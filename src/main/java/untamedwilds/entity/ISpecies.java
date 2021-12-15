@@ -6,6 +6,7 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.biome.Biome;
 import untamedwilds.config.ConfigGamerules;
+import untamedwilds.util.BiomeDataHolder;
 import untamedwilds.util.SpeciesDataHolder;
 
 import java.util.ArrayList;
@@ -27,10 +28,13 @@ public interface ISpecies {
         }
         List<Integer> validTypes = new ArrayList<>();
         for (SpeciesDataHolder speciesDatum : ComplexMob.getEntityData(((MobEntity)this).getType()).getSpeciesData()) {
-            for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
-                if(biome.getCategory() == biomeTypes){
-                    for (int i=0; i < speciesDatum.getRarity(); i++) {
-                        validTypes.add(speciesDatum.getVariant());
+            for (List<BiomeDataHolder.BiomeTestHolder> testList : speciesDatum.getBiomeCategories()) {
+                for (BiomeDataHolder.BiomeTestHolder test : testList) {
+                    if (test.isValidBiome(biomekey, biome)) {
+                        for (int i=0; i < speciesDatum.getRarity(); i++) {
+                            validTypes.add(speciesDatum.getVariant());
+                        }
+                        break;
                     }
                 }
             }

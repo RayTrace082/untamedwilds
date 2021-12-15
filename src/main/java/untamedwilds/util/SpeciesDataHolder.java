@@ -2,14 +2,16 @@ package untamedwilds.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class SpeciesDataHolder {
 
@@ -31,7 +33,7 @@ public class SpeciesDataHolder {
             Codec.unboundedMap(Codec.STRING, SoundEvent.CODEC).fieldOf("sounds").orElse(Collections.emptyMap()).forGetter((p_237052_0_) -> p_237052_0_.sounds),
             Codec.unboundedMap(Codec.STRING, Codec.INT).fieldOf("flags").orElse(Collections.emptyMap()).forGetter((p_237054_0_) -> p_237054_0_.flags),
             // TODO: Should be possible to replace this with a custom Object, with custom Codec and deeper functionality
-            Codec.STRING.listOf().fieldOf("spawnBiomes").orElse(new ArrayList<>()).forGetter((p_237052_0_) -> p_237052_0_.spawnBiomes))
+            Codec.STRING.listOf().listOf().fieldOf("spawnBiomes").orElse(new ArrayList<>()).forGetter((p_237052_0_) -> p_237052_0_.spawnBiomes))
             .apply(p_237051_0_, SpeciesDataHolder::new));
 
     private final String name;
@@ -48,9 +50,10 @@ public class SpeciesDataHolder {
     private final String breeding_season;
     private final Map<String, SoundEvent> sounds;
     private final Map<String, Integer> flags;
-    private final List<String> spawnBiomes;
+    private final List<List<String>> spawnBiomes;
+    private final List<List<BiomeDataHolder.BiomeTestHolder>> spawnBiomeData;
 
-    public SpeciesDataHolder(String p_i232114_1_, int variant, float p_i232114_2_, int p_i232114_3_, float attack, float health, ComplexMobTerrestrial.ActivityType activityType, String favourite_food, int growing_time, int offspring, int skins, String breeding_season, Map<String, SoundEvent> sounds, Map<String, Integer> flags, List<String> p_i232114_4_) {
+    public SpeciesDataHolder(String p_i232114_1_, int variant, float p_i232114_2_, int p_i232114_3_, float attack, float health, ComplexMobTerrestrial.ActivityType activityType, String favourite_food, int growing_time, int offspring, int skins, String breeding_season, Map<String, SoundEvent> sounds, Map<String, Integer> flags, List<List<String>> p_i232114_4_) {
         this.name = p_i232114_1_;
         this.variant = variant;
         this.modelScale = p_i232114_2_;
@@ -66,9 +69,23 @@ public class SpeciesDataHolder {
         this.sounds = sounds;
         this.flags = flags;
         this.spawnBiomes = p_i232114_4_;
+        this.spawnBiomeData = new ArrayList<>();
+        for (List<String> sublist : this.spawnBiomes) {
+            List<BiomeDataHolder.BiomeTestHolder> subsublist = new ArrayList<>();
+            for (String condition : sublist) {
+                String key = condition;
+                if (condition.contains("|"))
+                    key = condition.split("\\|")[1];
+                BiomeDataHolder.ConditionTypes type = BiomeDataHolder.getTypeOfCondition(condition);
+                BiomeDataHolder.ConditionModifiers modifier = BiomeDataHolder.getModifierFromString(condition);
+                BiomeDataHolder.BiomeTestHolder testHolder = new BiomeDataHolder.BiomeTestHolder(key, type, modifier);
+                subsublist.add(testHolder);
+            }
+            this.spawnBiomeData.add(subsublist);
+        }
     }
 
-    public SpeciesDataHolder(CompoundNBT nbtData) {
+    /*public SpeciesDataHolder(CompoundNBT nbtData) {
         this.name = nbtData.getString("name");
         this.variant = nbtData.getInt("variant");
         this.modelScale = nbtData.getFloat("scale");
@@ -92,7 +109,7 @@ public class SpeciesDataHolder {
         }
         this.flags = flags;
         this.spawnBiomes = new ArrayList<>(nbtData.getCompound("spawnBiomes").keySet());
-    }
+    }*/
 
     public String getString() {
         return this.name + ": Scale: " + this.modelScale + " Rarity: " + this.rarity + " Spawn Biomes: " + this.spawnBiomes;
@@ -155,15 +172,23 @@ public class SpeciesDataHolder {
         return this.flags;
     }
 
-    public List<Biome.Category> getBiomeCategories() {
-        List<Biome.Category> result = new ArrayList<>();
-        for (String biomeCategories : this.spawnBiomes) {
-            result.add(Biome.Category.byName(biomeCategories));
-        }
-        return result;
+    public List<List<BiomeDataHolder.BiomeTestHolder>> getBiomeCategories() {
+        return this.spawnBiomeData;
     }
 
-    public CompoundNBT writeEntityDataToNBT() {
+    public boolean canSpawnInBiome(RegistryKey<Biome> biomekey, Biome biome) {
+        for (List<BiomeDataHolder.BiomeTestHolder> testList : this.spawnBiomeData) {
+            for (BiomeDataHolder.BiomeTestHolder test : testList) {
+                if (!test.isValidBiome(biomekey, biome)) {
+                    break;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /*public CompoundNBT writeEntityDataToNBT() {
         CompoundNBT result = new CompoundNBT();
         result.putString("name", this.name);
         result.putInt("variant", this.variant);
@@ -192,5 +217,5 @@ public class SpeciesDataHolder {
         }
         result.put("spawnBiomes", spawnBiomes);
         return result;
-    }
+    }*/
 }

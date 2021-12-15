@@ -1,6 +1,9 @@
 package untamedwilds.entity.mollusk;
 
-import net.minecraft.entity.*;
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,20 +17,15 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.INewSkins;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.util.EntityUtils;
-import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
 
@@ -142,7 +140,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
         return super.func_230254_b_(player, hand);
     }
 
-    // TODO: Again, move to ComplexMob
+    /*// TODO: Again, move to ComplexMob
     @Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (biomekey.equals(Biomes.WARM_OCEAN) || biomekey.equals(Biomes.LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_WARM_OCEAN) || biome.getRegistryName().equals(new ResourceLocation("terraforged:warm_beach"))) {
@@ -171,7 +169,7 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
             return this.rand.nextInt(getEntityData(this.getType()).getSpeciesData().size());
         }
         return 99;
-    }
+    }*/
 
     public boolean canBeTargeted() { return false; }
     private boolean isOpen(){ return (this.dataManager.get(CLAM_OPEN)); }

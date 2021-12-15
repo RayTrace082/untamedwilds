@@ -85,7 +85,7 @@ public abstract class ComplexMob extends TameableEntity {
 
     /**
      * Wrapper method to access EntityDataHolder objects, contains safeguards against accessing data before its initialization
-     * @param typeIn The EntityType to access in ENTITY_DATA_HASH, or initialize it if needed</br>
+     * @param typeIn The EntityType to access in ENTITY_DATA_HASH, or initialize it if needed
      */
     public static EntityDataHolder getEntityData(EntityType<?> typeIn) {
         if (!ENTITY_DATA_HASH.containsKey(typeIn)) {
@@ -162,10 +162,15 @@ public abstract class ComplexMob extends TameableEntity {
         return 300;
     }
 
+    /**
+     * Method that links an EntityType with an EntityDataHolder object, and uses the EntityDataHolder to build a
+     * hash with only Variant data to be synced and accessed by the client
+     * @param dataIn The EntityDataHolder to introduce in ENTITY_DATA_HASH
+     * @param typeIn The EntityType to be associated with the dataIn object
+     */
     public static void processData(EntityDataHolder dataIn, EntityType<?> typeIn) {
         ENTITY_DATA_HASH.put(typeIn, dataIn);
         processSkins(dataIn, typeIn.getRegistryName().getPath());
-        // TODO: Wuh?
         for (SpeciesDataHolder speciesData : ENTITY_DATA_HASH.get(typeIn).getSpeciesData()) {
             if (!ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
                 ComplexMob.CLIENT_DATA_HASH.put(typeIn, new HashMap<>());
@@ -184,17 +189,15 @@ public abstract class ComplexMob extends TameableEntity {
     public void setVariant(int variant){ this.dataManager.set(VARIANT, variant); }
     public int getSkin(){ return (this.dataManager.get(SKIN)); }
     public void setSkin(int skin){ this.dataManager.set(SKIN, skin); }
-    public <T extends ComplexMob> int chooseSkinForSpecies(T entityIn, boolean allowRares) {
+    public <T extends ComplexMob> void chooseSkinForSpecies(T entityIn, boolean allowRares) {
         if (entityIn.getType().getRegistryName() != null && this instanceof INewSkins && !this.world.isRemote) {
             String name = entityIn.getType().getRegistryName().getPath();
             if (!TEXTURES_COMMON.get(name).isEmpty()) {
                 boolean isRare = allowRares && TEXTURES_RARE.get(name).containsKey(this.getVariant()) && this.rand.nextFloat() < ConfigGamerules.rareSkinChance.get();
                 int skin = this.rand.nextInt(isRare ? TEXTURES_RARE.get(name).get(this.getVariant()).size() : TEXTURES_COMMON.get(name).get(this.getVariant()).size()) + (isRare ? 100 : 0);
                 this.setSkin(skin);
-                return skin;
             }
         }
-        return 0;
     }
 
     public float getModelScale() { return getEntityData(this.getType()).getScale(this.getVariant()); }

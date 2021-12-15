@@ -12,11 +12,8 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.entity.PartEntity;
-import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
 import untamedwilds.entity.INewSkins;
@@ -24,12 +21,9 @@ import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.SmartMateGoal;
 import untamedwilds.init.ModEntity;
 import untamedwilds.util.EntityUtils;
-import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntityWhaleShark extends ComplexMobAquatic implements ISpecies, INewSkins {
 
@@ -193,7 +187,7 @@ public class EntityWhaleShark extends ComplexMobAquatic implements ISpecies, INe
         return 2;
     }
 
-    @Override
+    /*@Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (biomekey.equals(Biomes.WARM_OCEAN) || biomekey.equals(Biomes.LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_WARM_OCEAN) || biomekey.equals(Biomes.DEEP_LUKEWARM_OCEAN)) {
             if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
@@ -221,7 +215,7 @@ public class EntityWhaleShark extends ComplexMobAquatic implements ISpecies, INe
             return this.rand.nextInt(getEntityData(this.getType()).getSpeciesData().size());
         }
         return 99;
-    }
+    }*/
 
     public boolean canBeTargeted() { return false; }
 

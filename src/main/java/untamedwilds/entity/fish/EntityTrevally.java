@@ -3,29 +3,26 @@ package untamedwilds.entity.fish;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.*;
 import untamedwilds.entity.ai.FishReturnToSchoolGoal;
 import untamedwilds.entity.ai.FishWanderAsSchoolGoal;
 import untamedwilds.util.EntityUtils;
-import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPackEntity, INewSkins {
 
@@ -111,7 +108,7 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
         return this.rand.nextInt(120) == 0;
     }
 
-    @Override
+    /*@Override
     public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (biomekey.equals(Biomes.COLD_OCEAN) || biomekey.equals(Biomes.DEEP_COLD_OCEAN) || biomekey.equals(Biomes.FROZEN_OCEAN) || biomekey.equals(Biomes.DEEP_FROZEN_OCEAN)) {
             return 99;
@@ -134,5 +131,5 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
         } else {
             return validTypes.get(new Random().nextInt(validTypes.size()));
         }
-    }
+    }*/
 }

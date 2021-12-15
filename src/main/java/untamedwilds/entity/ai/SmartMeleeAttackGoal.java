@@ -211,12 +211,12 @@ public class SmartMeleeAttackGoal extends Goal {
     }
 
     // Start of the code gore
-    private Optional<Vector3d> calculateOptimalJumpVector(CreatureEntity p_147657_, Vector3d p_147658_) {
+    private Optional<Vector3d> calculateOptimalJumpVector(CreatureEntity entityIn, Vector3d targetVector) {
         Optional<Vector3d> optional = Optional.empty();
 
         for(int i = 20; i < 55; i += 5) {
             //for(int i = 65; i < 85; i += 5) {
-            Optional<Vector3d> optional1 = this.calculateJumpVectorForAngle(p_147657_, p_147658_, i);
+            Optional<Vector3d> optional1 = this.calculateJumpVectorForAngle(entityIn, targetVector, i);
             if (!optional.isPresent() || optional1.isPresent() && optional1.get().lengthSquared() < optional.get().lengthSquared()) {
                 optional = optional1;
             }
@@ -225,23 +225,22 @@ public class SmartMeleeAttackGoal extends Goal {
         return optional;
     }
 
-    private Optional<Vector3d> calculateJumpVectorForAngle(CreatureEntity p_147660_, Vector3d p_147661_, int p_147662_) {
-        Vector3d Vector3d = p_147660_.getPositionVec();
-        Vector3d Vector3d1 = (new Vector3d(p_147661_.x - Vector3d.x, 0.0D, p_147661_.z - Vector3d.z)).normalize().scale(0.5D);
-        p_147661_ = p_147661_.subtract(Vector3d1);
-        Vector3d Vector3d2 = p_147661_.subtract(Vector3d);
-        float f = (float)p_147662_ * (float)Math.PI / 180.0F;
+    private Optional<Vector3d> calculateJumpVectorForAngle(CreatureEntity entityIn, Vector3d targetVector, int upwardsAngle) {
+        Vector3d Vector3d = entityIn.getPositionVec();
+        Vector3d Vector3d1 = (new Vector3d(targetVector.x - Vector3d.x, 0.0D, targetVector.z - Vector3d.z)).normalize().scale(0.5D);
+        targetVector = targetVector.subtract(Vector3d1);
+        Vector3d Vector3d2 = targetVector.subtract(Vector3d);
+        float angleRad = (float)upwardsAngle * (float)Math.PI / 180.0F;
         double d0 = Math.atan2(Vector3d2.z, Vector3d2.x);
         double d1 = Vector3d2.subtract(0.0D, Vector3d2.y, 0.0D).lengthSquared();
         double d2 = Math.sqrt(d1);
         double d3 = Vector3d2.y;
-        double d4 = Math.sin((double)(2.0F * f));
-        double d5 = 0.08D;
-        double d6 = Math.pow(Math.cos((double)f), 2.0D);
-        double d7 = Math.sin((double)f);
-        double d8 = Math.cos((double)f);
-        double d9 = Math.sin(d0);
-        double d10 = Math.cos(d0);
+        double d4 = Math.sin(2.0F * angleRad);
+        double d6 = Math.pow(Math.cos(angleRad), 2.0D);
+        double up_sin = Math.sin(angleRad);
+        double up_cos = Math.cos(angleRad);
+        double horizontal_sin = Math.sin(d0);
+        double horizontal_cos = Math.cos(d0);
         double d11 = d1 * 0.08D / (d2 * d4 - 2.0D * d3 * d6);
         if (d11 < 0.0D) {
             return Optional.empty();
@@ -250,18 +249,18 @@ public class SmartMeleeAttackGoal extends Goal {
             if (d12 > 4) {
                 return Optional.empty();
             } else {
-                double d13 = d12 * d8;
-                double d14 = d12 * d7;
+                double d13 = d12 * up_cos;
+                double d14 = d12 * up_sin;
                 int i = (int) (Math.ceil(d2 / d13) * 2);
                 double d15 = 0.0D;
                 Vector3d Vector3d3 = null;
 
                 for(int j = 0; j < i - 1; ++j) {
                     d15 += d2 / (double)i;
-                    double d16 = d7 / d8 * d15 - Math.pow(d15, 2.0D) * 0.08D / (2.0D * d11 * Math.pow(d8, 2.0D));
-                    double d17 = d15 * d10;
-                    double d18 = d15 * d9;
-                    Vector3d Vector3d4 = new Vector3d(Vector3d.x + d17, Vector3d.y + d16, Vector3d.z + d18);
+                    double offsetY = up_sin / up_cos * d15 - Math.pow(d15, 2.0D) * 0.08D / (2.0D * d11 * Math.pow(up_cos, 2.0D));
+                    double offsetX = d15 * horizontal_cos;
+                    double offsetZ = d15 * horizontal_sin;
+                    Vector3d Vector3d4 = new Vector3d(Vector3d.x + offsetX, Vector3d.y + offsetY, Vector3d.z + offsetZ);
                     if (Vector3d3 != null && !this.isClearTransition(Vector3d3, Vector3d4)) {
                         return Optional.empty();
                     }
@@ -269,7 +268,7 @@ public class SmartMeleeAttackGoal extends Goal {
                     Vector3d3 = Vector3d4;
                 }
 
-                return Optional.of((new Vector3d(d13 * d10, d14, d13 * d9)).scale((double)0.95F));
+                return Optional.of((new Vector3d(d13 * horizontal_cos, d14, d13 * horizontal_sin)).scale(0.95F));
             }
         }
     }

@@ -3,7 +3,6 @@ package untamedwilds.util;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -66,7 +65,7 @@ public class EntityDataHolder {
         this.speciesData = speciesData;
     }
 
-    public EntityDataHolder(CompoundNBT nbtData) {
+    /*public EntityDataHolder(CompoundNBT nbtData) {
         this.name = nbtData.getString("name");
         this.modelScale = nbtData.getFloat("scale");
         this.rarity = nbtData.getInt("rarity");
@@ -92,7 +91,7 @@ public class EntityDataHolder {
             species.add(new SpeciesDataHolder(nbtData.getCompound("species").getCompound(nbt)));
         };
         this.speciesData = species;
-    }
+    }*/
 
     public String getString() {
         return this.name + ": Scale: " + this.modelScale + " Rarity: " + this.rarity + " Attack: " + this.attack + " Health: " + this.health +  " Ambient Sound: " + this.sounds;
@@ -211,7 +210,7 @@ public class EntityDataHolder {
         return this.speciesData;
     }
 
-    public CompoundNBT writeEntityDataToNBT() {
+    /*public CompoundNBT writeEntityDataToNBT() {
         CompoundNBT result = new CompoundNBT();
         result.putString("name", this.name);
         result.putFloat("scale", this.modelScale);
@@ -242,5 +241,5 @@ public class EntityDataHolder {
         result.put("species", species);
         UntamedWilds.LOGGER.info(result);
         return result;
-    }
+    }*/
 }

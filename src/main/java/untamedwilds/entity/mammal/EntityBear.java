@@ -22,8 +22,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
@@ -35,12 +33,9 @@ import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
-import untamedwilds.util.SpeciesDataHolder;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewSkins, INeedsPostUpdate {
 
@@ -333,7 +328,7 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
         this.setHump(compound.getBoolean("hasHump"));
     }
 
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
+    /*public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
         if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
             return this.getRNG().nextInt(ComplexMob.getEntityData(this.getType()).getSpeciesData().size());
         }
@@ -359,5 +354,5 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
         } else {
             return validTypes.get(new Random().nextInt(validTypes.size()));
         }
-    }
+    }*/
 }

@@ -32,8 +32,15 @@
     "flags": {
     },
     "spawnBiomes": [
-        "forest",
-        "taiga"
+        [
+          "category|forest"
+        ],
+        [
+          "category|taiga"
+        ],
+      [
+        "resource|desert"
+      ]
     ]
   },
     {
