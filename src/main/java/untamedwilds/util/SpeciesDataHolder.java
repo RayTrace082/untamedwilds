@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
+import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
 import javax.annotation.Nullable;
@@ -79,6 +80,7 @@ public class SpeciesDataHolder {
                 BiomeDataHolder.ConditionTypes type = BiomeDataHolder.getTypeOfCondition(condition);
                 BiomeDataHolder.ConditionModifiers modifier = BiomeDataHolder.getModifierFromString(condition);
                 BiomeDataHolder.BiomeTestHolder testHolder = new BiomeDataHolder.BiomeTestHolder(key, type, modifier);
+                UntamedWilds.LOGGER.info("Registering new BiomeTestHolder from " + key + " with type " + type.getString());
                 subsublist.add(testHolder);
             }
             this.spawnBiomeData.add(subsublist);

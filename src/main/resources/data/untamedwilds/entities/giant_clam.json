@@ -12,7 +12,10 @@
     "scale": 1,
     "rarity": 1,
     "spawnBiomes": [
-        "ocean"
+        ["resource|minecraft:warm_ocean"],
+        ["resource|minecraft:lukewarm_ocean"],
+        ["resource|minecraft:deep_warm_ocean"],
+        ["resource|terraforged:warm_beach"]
     ]
   },
     {
@@ -21,7 +24,10 @@
       "scale": 1.2,
       "rarity": 3,
       "spawnBiomes": [
-        "ocean"
+        ["resource|minecraft:warm_ocean"],
+        ["resource|minecraft:lukewarm_ocean"],
+        ["resource|minecraft:deep_warm_ocean"],
+        ["resource|terraforged:warm_beach"]
       ]
     },
     {
@@ -30,7 +36,10 @@
       "scale": 0.7,
       "rarity": 2,
       "spawnBiomes": [
-        "ocean"
+        ["resource|minecraft:warm_ocean"],
+        ["resource|minecraft:lukewarm_ocean"],
+        ["resource|minecraft:deep_warm_ocean"],
+        ["resource|terraforged:warm_beach"]
       ]
     },
     {
@@ -39,7 +48,10 @@
       "scale": 0.8,
       "rarity": 2,
       "spawnBiomes": [
-        "ocean"
+        ["resource|minecraft:warm_ocean"],
+        ["resource|minecraft:lukewarm_ocean"],
+        ["resource|minecraft:deep_warm_ocean"],
+        ["resource|terraforged:warm_beach"]
       ]
     }
   ]

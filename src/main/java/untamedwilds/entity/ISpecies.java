@@ -5,6 +5,7 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.biome.Biome;
+import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.util.BiomeDataHolder;
 import untamedwilds.util.SpeciesDataHolder;
@@ -30,6 +31,7 @@ public interface ISpecies {
         for (SpeciesDataHolder speciesDatum : ComplexMob.getEntityData(((MobEntity)this).getType()).getSpeciesData()) {
             for (List<BiomeDataHolder.BiomeTestHolder> testList : speciesDatum.getBiomeCategories()) {
                 for (BiomeDataHolder.BiomeTestHolder test : testList) {
+                    UntamedWilds.LOGGER.info("Trying to spawn " + ((MobEntity)this).getType().getRegistryName().getPath() + " in " + biome.getRegistryName() + " returns " + test.isValidBiome(biomekey, biome));
                     if (test.isValidBiome(biomekey, biome)) {
                         for (int i=0; i < speciesDatum.getRarity(); i++) {
                             validTypes.add(speciesDatum.getVariant());

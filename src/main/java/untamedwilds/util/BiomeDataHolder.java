@@ -1,5 +1,6 @@
 package untamedwilds.util;
 
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
@@ -49,7 +50,7 @@ public class BiomeDataHolder {
         if (strIn.contains("|")) {
             String str = strIn.split("\\|")[0];
             UntamedWilds.LOGGER.info(str);
-            switch (strIn) {
+            switch (str) {
                 case "category":
                     return ConditionTypes.BIOME_CATEGORY;
                 case "dictionary":
@@ -61,10 +62,21 @@ public class BiomeDataHolder {
         return ConditionTypes.BIOME_CATEGORY;
     }
 
-    public enum ConditionTypes {
-        BIOME_CATEGORY,
-        FORGE_DICTIONARY,
-        REGISTRY_NAME
+    public enum ConditionTypes implements IStringSerializable {
+        BIOME_CATEGORY ("Category"),
+        FORGE_DICTIONARY ("Dictionary"),
+        REGISTRY_NAME ("Resource Location");
+
+        public String type;
+
+        ConditionTypes(String type) {
+            this.type = type;
+        }
+
+        @Override
+        public String getString() {
+            return this.type;
+        }
     }
 
     public enum ConditionModifiers {
@@ -95,6 +107,7 @@ public class BiomeDataHolder {
                     result = BiomeDictionary.hasType(biomekey, BiomeDictionary.Type.getType(this.key));
                     break;
                 case REGISTRY_NAME:
+                    UntamedWilds.LOGGER.info(biome.getRegistryName() + " " + new ResourceLocation(this.key));
                     result = biome.getRegistryName().equals(new ResourceLocation(this.key));
                     break;
             }

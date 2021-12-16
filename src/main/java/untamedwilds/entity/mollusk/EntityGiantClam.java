@@ -140,37 +140,6 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
         return super.func_230254_b_(player, hand);
     }
 
-    /*// TODO: Again, move to ComplexMob
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (biomekey.equals(Biomes.WARM_OCEAN) || biomekey.equals(Biomes.LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_WARM_OCEAN) || biome.getRegistryName().equals(new ResourceLocation("terraforged:warm_beach"))) {
-            if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-                return this.getRNG().nextInt(getEntityData(this.getType()).getSpeciesData().size());
-            }
-            List<Integer> validTypes = new ArrayList<>();
-            if (ComplexMob.ENTITY_DATA_HASH.containsKey(this.getType())) {
-                for (SpeciesDataHolder speciesDatum : getEntityData(this.getType()).getSpeciesData()) {
-                    for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
-                        if(biome.getCategory() == biomeTypes){
-                            for (int i=0; i < speciesDatum.getRarity(); i++) {
-                                validTypes.add(speciesDatum.getVariant());
-                            }
-                        }
-                    }
-                }
-                if (validTypes.isEmpty()) {
-                    return 99;
-                } else {
-                    return validTypes.get(new Random().nextInt(validTypes.size()));
-                }
-            }
-        }
-        if (isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(getEntityData(this.getType()).getSpeciesData().size());
-        }
-        return 99;
-    }*/
-
     public boolean canBeTargeted() { return false; }
     private boolean isOpen(){ return (this.dataManager.get(CLAM_OPEN)); }
     private void setOpen(boolean open){ this.dataManager.set(CLAM_OPEN, open); }
