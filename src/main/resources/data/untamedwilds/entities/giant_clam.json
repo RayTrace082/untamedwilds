@@ -1,57 +1,91 @@
 {
-  "name": "giant_clam",
-  "breeding": "LATE_SUMMER",
-  "growing": 6,
-  "offspring": 4,
-  "favourite_food": "untamedwilds:chum",
-  "sounds": {},
+  "name":"giant_clam",
+  "breeding":"LATE_SUMMER",
+  "growing":6,
+  "offspring":4,
+  "favourite_food":"untamedwilds:chum",
+  "sounds":{
 
-  "species": [{
-    "name": "derasa",
-    "variant": 0,
-    "scale": 1,
-    "rarity": 1,
-    "spawnBiomes": [
-        ["resource|minecraft:warm_ocean"],
-        ["resource|minecraft:lukewarm_ocean"],
-        ["resource|minecraft:deep_warm_ocean"],
-        ["resource|terraforged:warm_beach"]
-    ]
   },
+  "species":[
     {
-      "name": "gigas",
-      "variant": 1,
-      "scale": 1.2,
-      "rarity": 3,
-      "spawnBiomes": [
-        ["resource|minecraft:warm_ocean"],
-        ["resource|minecraft:lukewarm_ocean"],
-        ["resource|minecraft:deep_warm_ocean"],
-        ["resource|terraforged:warm_beach"]
+      "name":"derasa",
+      "variant":0,
+      "scale":1,
+      "rarity":1,
+      "spawnBiomes":[
+        [
+          "resource|minecraft:warm_ocean"
+        ],
+        [
+          "resource|minecraft:lukewarm_ocean"
+        ],
+        [
+          "resource|minecraft:deep_warm_ocean"
+        ],
+        [
+          "resource|terraforged:warm_beach"
+        ]
       ]
     },
     {
-      "name": "maxima",
-      "variant": 2,
-      "scale": 0.7,
-      "rarity": 2,
-      "spawnBiomes": [
-        ["resource|minecraft:warm_ocean"],
-        ["resource|minecraft:lukewarm_ocean"],
-        ["resource|minecraft:deep_warm_ocean"],
-        ["resource|terraforged:warm_beach"]
+      "name":"gigas",
+      "variant":1,
+      "scale":1.2,
+      "rarity":3,
+      "spawnBiomes":[
+        [
+          "resource|minecraft:warm_ocean"
+        ],
+        [
+          "resource|minecraft:lukewarm_ocean"
+        ],
+        [
+          "resource|minecraft:deep_warm_ocean"
+        ],
+        [
+          "resource|terraforged:warm_beach"
+        ]
       ]
     },
     {
-      "name": "squamosa",
-      "variant": 3,
-      "scale": 0.8,
-      "rarity": 2,
-      "spawnBiomes": [
-        ["resource|minecraft:warm_ocean"],
-        ["resource|minecraft:lukewarm_ocean"],
-        ["resource|minecraft:deep_warm_ocean"],
-        ["resource|terraforged:warm_beach"]
+      "name":"maxima",
+      "variant":2,
+      "scale":0.7,
+      "rarity":2,
+      "spawnBiomes":[
+        [
+          "resource|minecraft:warm_ocean"
+        ],
+        [
+          "resource|minecraft:lukewarm_ocean"
+        ],
+        [
+          "resource|minecraft:deep_warm_ocean"
+        ],
+        [
+          "resource|terraforged:warm_beach"
+        ]
+      ]
+    },
+    {
+      "name":"squamosa",
+      "variant":3,
+      "scale":0.8,
+      "rarity":2,
+      "spawnBiomes":[
+        [
+          "resource|minecraft:warm_ocean"
+        ],
+        [
+          "resource|minecraft:lukewarm_ocean"
+        ],
+        [
+          "resource|minecraft:deep_warm_ocean"
+        ],
+        [
+          "resource|terraforged:warm_beach"
+        ]
       ]
     }
   ]

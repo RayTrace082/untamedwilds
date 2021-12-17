@@ -1,21 +1,35 @@
 {
-  "name": "whale_shark",
-  "breeding": "MID_SUMMER",
-  "growing": 14,
-  "offspring": 8,
-  "favourite_food": "untamedwilds:chum",
-  "sounds": {},
+  "name":"whale_shark",
+  "breeding":"MID_SUMMER",
+  "growing":14,
+  "offspring":8,
+  "favourite_food":"untamedwilds:chum",
+  "sounds":{
 
-  "species": [{
-    "name": "whale_shark",
-    "variant": 0,
-    "scale": 1.8,
-    "rarity": 1,
-    "flags": {
-    },
-    "spawnBiomes": [
-        "ocean"
-    ]
-  }
+  },
+  "species":[
+    {
+      "name":"whale_shark",
+      "variant":0,
+      "scale":1.8,
+      "rarity":1,
+      "flags":{
+
+      },
+      "spawnBiomes":[
+        [
+          "resource|minecraft:warm_ocean"
+        ],
+        [
+          "resource|minecraft:lukewarm_ocean"
+        ],
+        [
+          "resource|minecraft:deep_warm_ocean"
+        ],
+        [
+          "resource|minecraft:deep_lukewarm_ocean"
+        ]
+      ]
+    }
   ]
 }

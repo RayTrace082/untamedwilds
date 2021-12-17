@@ -1,27 +1,45 @@
 {
-  "name": "sunfish",
-  "breeding": "EARLY_AUTUMN",
-  "growing": 6,
-  "offspring": 5,
-  "favourite_food": "untamedwilds:chum",
-  "sounds": {},
+  "name":"sunfish",
+  "breeding":"EARLY_AUTUMN",
+  "growing":6,
+  "offspring":5,
+  "favourite_food":"untamedwilds:chum",
+  "sounds":{
 
-  "species": [{
-    "name": "sunfish",
-    "variant": 0,
-    "scale": 1,
-    "rarity": 2,
-    "spawnBiomes": [
-        "ocean"
-    ]
   },
+  "species":[
     {
-      "name": "southern",
-      "variant": 1,
-      "scale": 1.1,
-      "rarity": 1,
-      "spawnBiomes": [
-        "ocean"
+      "name":"sunfish",
+      "variant":0,
+      "scale":1,
+      "rarity":2,
+      "spawnBiomes":[
+        [
+          "resource|minecraft:deep_lukewarm_ocean"
+        ],
+        [
+          "resource|minecraft:deep_warm_ocean"
+        ],
+        [
+          "resource|minecraft:deep_ocean"
+        ]
+      ]
+    },
+    {
+      "name":"southern",
+      "variant":1,
+      "scale":1.1,
+      "rarity":1,
+      "spawnBiomes":[
+        [
+          "resource|minecraft:deep_lukewarm_ocean"
+        ],
+        [
+          "resource|minecraft:deep_cold_ocean"
+        ],
+        [
+          "resource|minecraft:deep_ocean"
+        ]
       ]
     }
   ]

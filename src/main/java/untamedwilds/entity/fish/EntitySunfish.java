@@ -3,18 +3,14 @@ package untamedwilds.entity.fish;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
@@ -99,16 +95,5 @@ public class EntitySunfish extends ComplexMobAquatic implements ISpecies, INewSk
 
     public boolean isPotionApplicable(EffectInstance potionEffectIn) {
         return potionEffectIn.getPotion() != Effects.POISON && super.isPotionApplicable(potionEffectIn);
-    }
-
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (biomekey.equals(Biomes.DEEP_LUKEWARM_OCEAN) || biomekey.equals(Biomes.DEEP_OCEAN) || biomekey.equals(Biomes.DEEP_COLD_OCEAN)) {
-            return this.rand.nextInt(getEntityData(this.getType()).getSpeciesData().size());
-        }
-        if (isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(getEntityData(this.getType()).getSpeciesData().size());
-        }
-        return 99;
     }
 }

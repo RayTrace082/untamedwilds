@@ -1,69 +1,101 @@
 {
-  "name": "trevally",
-  "breeding": "MID_SUMMER",
-  "growing": 6,
-  "offspring": 4,
-  "favourite_food": "untamedwilds:chum",
-  "sounds": {},
+  "name":"trevally",
+  "breeding":"MID_SUMMER",
+  "growing":6,
+  "offspring":4,
+  "favourite_food":"untamedwilds:chum",
+  "sounds":{
 
-  "species": [{
-    "name": "bigeye",
-    "variant": 0,
-    "scale": 0.8,
-    "rarity": 2,
-    "flags": {
-      "groupCount": 8
-    },
-    "spawnBiomes": [
-        "ocean"
-    ]
   },
+  "species":[
     {
-      "name": "bluespotted",
-      "variant": 1,
-      "scale": 0.8,
-      "rarity": 2,
-      "flags": {
-        "groupCount": 8
+      "name":"bigeye",
+      "variant":0,
+      "scale":0.8,
+      "rarity":2,
+      "flags":{
+        "groupCount":8
       },
-      "spawnBiomes": [
-        "ocean"
+      "spawnBiomes":[
+        [
+          "category|ocean",
+          "!resource|minecraft:cold_ocean",
+          "!resource|minecraft:frozen_ocean",
+          "!resource|minecraft:deep_cold_ocean",
+          "!resource|minecraft:deep_frozen_ocean"
+        ]
       ]
     },
     {
-      "name": "giant",
-      "variant": 2,
-      "scale": 1.5,
-      "rarity": 1,
-      "flags": {
-        "groupCount": 1
+      "name":"bluespotted",
+      "variant":1,
+      "scale":0.8,
+      "rarity":2,
+      "flags":{
+        "groupCount":8
       },
-      "spawnBiomes": [
-        "ocean"
+      "spawnBiomes":[
+        [
+          "category|ocean",
+          "!resource|minecraft:cold_ocean",
+          "!resource|minecraft:frozen_ocean",
+          "!resource|minecraft:deep_cold_ocean",
+          "!resource|minecraft:deep_frozen_ocean"
+        ]
       ]
     },
     {
-      "name": "bigeye",
-      "variant": 3,
-      "scale": 1,
-      "rarity": 2,
-      "flags": {
-        "groupCount": 6
+      "name":"giant",
+      "variant":2,
+      "scale":1.5,
+      "rarity":1,
+      "flags":{
+        "groupCount":1
       },
-      "spawnBiomes": [
-        "ocean"
+      "spawnBiomes":[
+        [
+          "category|ocean",
+          "!resource|minecraft:cold_ocean",
+          "!resource|minecraft:frozen_ocean",
+          "!resource|minecraft:deep_cold_ocean",
+          "!resource|minecraft:deep_frozen_ocean"
+        ]
       ]
     },
     {
-      "name": "jack",
-      "variant": 4,
-      "scale": 1,
-      "rarity": 3,
-      "flags": {
-        "groupCount": 8
+      "name":"bigeye",
+      "variant":3,
+      "scale":1,
+      "rarity":2,
+      "flags":{
+        "groupCount":6
       },
-      "spawnBiomes": [
-        "ocean"
+      "spawnBiomes":[
+        [
+          "category|ocean",
+          "!resource|minecraft:cold_ocean",
+          "!resource|minecraft:frozen_ocean",
+          "!resource|minecraft:deep_cold_ocean",
+          "!resource|minecraft:deep_frozen_ocean"
+        ]
+      ]
+    },
+    {
+      "name":"jack",
+      "variant":4,
+      "scale":1,
+      "rarity":3,
+      "flags":{
+        "groupCount":8
+      },
+      "spawnBiomes":[
+        [
+          "category|ocean",
+          "!resource|minecraft:cold_ocean",
+          "!resource|minecraft:frozen_ocean",
+          "!resource|minecraft:deep_cold_ocean",
+          "!resource|minecraft:deep_frozen_ocean"
+        ]
       ]
     }
   ]

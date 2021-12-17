@@ -1,19 +1,30 @@
 {
-  "name": "football_fish",
-  "breeding": "EARLY_AUTUMN",
-  "growing": 12,
-  "offspring": 3,
-  "favourite_food": "untamedwilds:chum",
-  "sounds": {},
+  "name":"football_fish",
+  "breeding":"EARLY_AUTUMN",
+  "growing":12,
+  "offspring":3,
+  "favourite_food":"untamedwilds:chum",
+  "sounds":{
 
-  "species": [{
-    "name": "atlantic",
-    "variant": 0,
-    "scale": 1,
-    "rarity": 1,
-    "skins": 40,
-    "spawnBiomes": [
-        "ocean"
-    ]
-  }]
+  },
+  "species":[
+    {
+      "name":"atlantic",
+      "variant":0,
+      "scale":1,
+      "rarity":1,
+      "skins":40,
+      "spawnBiomes":[
+        [
+          "resource|minecraft:deep_lukewarm_ocean"
+        ],
+        [
+          "resource|minecraft:deep_cold_ocean"
+        ],
+        [
+          "resource|minecraft:deep_ocean"
+        ]
+      ]
+    }
+  ]
 }

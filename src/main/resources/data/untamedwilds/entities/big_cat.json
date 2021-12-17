@@ -1,193 +1,230 @@
 {
-  "name": "big_cat",
-  "breeding": "EARLY_SUMMER",
-  "growing": 8,
-  "offspring": 2,
-  "sounds": {
-    "ambient": "untamedwilds:entity.big_cat.ambient",
-    "hurt": "untamedwilds:entity.big_cat.hurt",
-    "death": "untamedwilds:entity.big_cat.death",
-    "threat": "untamedwilds:entity.big_cat.warning"
+  "name":"big_cat",
+  "breeding":"EARLY_SUMMER",
+  "growing":8,
+  "offspring":2,
+  "sounds":{
+    "ambient":"untamedwilds:entity.big_cat.ambient",
+    "hurt":"untamedwilds:entity.big_cat.hurt",
+    "death":"untamedwilds:entity.big_cat.death",
+    "threat":"untamedwilds:entity.big_cat.warning"
   },
-  "flags": {
-    "dimorphism": 0
+  "flags":{
+    "dimorphism":0
   },
+  "species":[
+    {
+      "name":"cave_lion",
+      "variant":0,
+      "scale":1.1,
+      "rarity":1,
+      "breeding":"ALL",
+      "growing":6,
+      "offspring":2,
+      "activityType":"diurnal",
+      "favourite_food":"minecraft:beef",
+      "attack":9,
+      "health":45,
+      "flags":{
+        "dimorphism":1,
+        "groupCount":3
+      },
+      "spawnBiomes":[
+        [
+          "category|taiga"
+        ],
+        [
+          "category|icy"
+        ]
+      ]
+    },
+    {
+      "name":"jaguar",
+      "variant":1,
+      "scale":0.9,
+      "rarity":5,
+      "breeding":"ALL",
+      "growing":5,
+      "offspring":2,
+      "activityType":"crepuscular",
+      "favourite_food":"minecraft:porkchop",
+      "attack":8,
+      "health":40,
+      "skins":30,
+      "flags":{
 
-  "species": [
-    {
-    "name": "cave_lion",
-    "variant": 0,
-    "scale": 1.1,
-    "rarity": 1,
-    "breeding": "ALL",
-    "growing": 6,
-    "offspring": 2,
-      "activityType": "diurnal",
-    "favourite_food": "minecraft:beef",
-    "attack": 9,
-    "health": 45,
-    "flags": {
-      "dimorphism": 1,
-      "groupCount": 3
-    },
-    "spawnBiomes": [
-        "taiga",
-        "icy"
-    ]
-  },
-    {
-      "name": "jaguar",
-      "variant": 1,
-      "scale": 0.9,
-      "rarity": 5,
-      "breeding": "ALL",
-      "growing": 5,
-      "offspring": 2,
-      "activityType": "crepuscular",
-      "favourite_food": "minecraft:porkchop",
-      "attack": 8,
-      "health": 40,
-      "skins": 30,
-      "flags": {
       },
-      "spawnBiomes": [
-        "jungle"
+      "spawnBiomes":[
+        [
+          "category|jungle"
+        ]
       ]
     },
     {
-      "name": "leopard",
-      "variant": 2,
-      "scale": 0.9,
-      "rarity": 5,
-      "breeding": "ALL",
-      "growing": 5,
-      "offspring": 2,
-      "activityType": "diurnal",
-      "favourite_food": "minecraft:porkchop",
-      "attack": 7,
-      "health": 40,
-      "skins": 30,
-      "flags": {
+      "name":"leopard",
+      "variant":2,
+      "scale":0.9,
+      "rarity":5,
+      "breeding":"ALL",
+      "growing":5,
+      "offspring":2,
+      "activityType":"diurnal",
+      "favourite_food":"minecraft:porkchop",
+      "attack":7,
+      "health":40,
+      "skins":30,
+      "flags":{
+
       },
-      "spawnBiomes": [
-        "taiga",
-        "savanna"
+      "spawnBiomes":[
+        [
+          "category|taiga"
+        ],
+        [
+          "category|savanna"
+        ]
       ]
     },
     {
-      "name": "lion",
-      "variant": 3,
-      "scale": 1,
-      "rarity": 3,
-      "breeding": "ALL",
-      "growing": 6,
-      "offspring": 2,
-      "activityType": "diurnal",
-      "favourite_food": "minecraft:beef",
-      "attack": 8,
-      "health": 40,
-      "flags": {
-        "dimorphism": 1,
-        "groupCount": 4
+      "name":"lion",
+      "variant":3,
+      "scale":1,
+      "rarity":3,
+      "breeding":"ALL",
+      "growing":6,
+      "offspring":2,
+      "activityType":"diurnal",
+      "favourite_food":"minecraft:beef",
+      "attack":8,
+      "health":40,
+      "flags":{
+        "dimorphism":1,
+        "groupCount":4
       },
-      "spawnBiomes": [
-        "savanna"
+      "spawnBiomes":[
+        [
+          "category|savanna"
+        ]
       ]
     },
     {
-      "name": "marsupial_lion",
-      "variant": 4,
-      "scale": 0.8,
-      "rarity": 1,
-      "breeding": "ALL",
-      "growing": 6,
-      "offspring": 1,
-      "activityType": "nocturnal",
-      "favourite_food": "minecraft:chicken",
-      "attack": 6,
-      "health": 25,
-      "flags": {
+      "name":"marsupial_lion",
+      "variant":4,
+      "scale":0.8,
+      "rarity":1,
+      "breeding":"ALL",
+      "growing":6,
+      "offspring":1,
+      "activityType":"nocturnal",
+      "favourite_food":"minecraft:chicken",
+      "attack":6,
+      "health":25,
+      "flags":{
+
       },
-      "spawnBiomes": [
-        "jungle"
+      "spawnBiomes":[
+        [
+          "category|jungle"
+        ]
       ]
     },
     {
-      "name": "puma",
-      "variant": 5,
-      "scale": 0.8,
-      "rarity": 8,
-      "breeding": "ALL",
-      "growing": 4,
-      "offspring": 3,
-      "activityType": "crepuscular",
-      "favourite_food": "minecraft:rabbit",
-      "attack": 6,
-      "health": 30,
-      "flags": {
+      "name":"puma",
+      "variant":5,
+      "scale":0.8,
+      "rarity":8,
+      "breeding":"ALL",
+      "growing":4,
+      "offspring":3,
+      "activityType":"crepuscular",
+      "favourite_food":"minecraft:rabbit",
+      "attack":6,
+      "health":30,
+      "flags":{
+
       },
-      "spawnBiomes": [
-        "mesa",
-        "forest",
-        "taiga"
+      "spawnBiomes":[
+        [
+          "category|mesa"
+        ],
+        [
+          "category|forest"
+        ],
+        [
+          "category|taiga"
+        ]
       ]
     },
     {
-      "name": "sabertooth",
-      "variant": 6,
-      "scale": 1,
-      "rarity": 1,
-      "breeding": "ALL",
-      "growing": 6,
-      "offspring": 2,
-      "activityType": "diurnal",
-      "favourite_food": "minecraft:beef",
-      "attack": 9,
-      "health": 40,
-      "flags": {
+      "name":"sabertooth",
+      "variant":6,
+      "scale":1,
+      "rarity":1,
+      "breeding":"ALL",
+      "growing":6,
+      "offspring":2,
+      "activityType":"diurnal",
+      "favourite_food":"minecraft:beef",
+      "attack":9,
+      "health":40,
+      "flags":{
+
       },
-      "spawnBiomes": [
-        "taiga"
+      "spawnBiomes":[
+        [
+          "category|taiga"
+        ]
       ]
     },
     {
-      "name": "snow_leopard",
-      "variant": 7,
-      "scale": 0.8,
-      "rarity": 5,
-      "breeding": "ALL",
-      "growing": 5,
-      "offspring": 3,
-      "activityType": "nocturnal",
-      "favourite_food": "minecraft:beef",
-      "attack": 8,
-      "health": 30,
-      "flags": {
-        "fluffyTail": 1
+      "name":"snow_leopard",
+      "variant":7,
+      "scale":0.8,
+      "rarity":5,
+      "breeding":"ALL",
+      "growing":5,
+      "offspring":3,
+      "activityType":"nocturnal",
+      "favourite_food":"minecraft:beef",
+      "attack":8,
+      "health":30,
+      "flags":{
+        "fluffyTail":1
       },
-      "spawnBiomes": [
-        "icy",
-        "taiga",
-        "extreme_hills"
+      "spawnBiomes":[
+        [
+          "category|icy"
+        ],
+        [
+          "category|taiga"
+        ],
+        [
+          "category|extreme_hills"
+        ]
       ]
     },
     {
-      "name": "tiger",
-      "variant": 8,
-      "scale": 1.1,
-      "rarity": 3,
-      "breeding": "ALL",
-      "growing": 6,
-      "offspring": 2,
-      "activityType": "diurnal",
-      "favourite_food": "minecraft:porkchop",
-      "attack": 9,
-      "health": 40,
-      "flags": {
+      "name":"tiger",
+      "variant":8,
+      "scale":1.1,
+      "rarity":3,
+      "breeding":"ALL",
+      "growing":6,
+      "offspring":2,
+      "activityType":"diurnal",
+      "favourite_food":"minecraft:porkchop",
+      "attack":9,
+      "health":40,
+      "flags":{
+
       },
-      "spawnBiomes": [
-        "jungle",
-        "taiga"
+      "spawnBiomes":[
+        [
+          "category|jungle"
+        ],
+        [
+          "category|taiga"
+        ]
       ]
     }
   ]

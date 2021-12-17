@@ -30,13 +30,17 @@ public interface ISpecies {
         List<Integer> validTypes = new ArrayList<>();
         for (SpeciesDataHolder speciesDatum : ComplexMob.getEntityData(((MobEntity)this).getType()).getSpeciesData()) {
             for (List<BiomeDataHolder.BiomeTestHolder> testList : speciesDatum.getBiomeCategories()) {
+                List<Boolean> results = new ArrayList<>();
                 for (BiomeDataHolder.BiomeTestHolder test : testList) {
                     UntamedWilds.LOGGER.info("Trying to spawn " + ((MobEntity)this).getType().getRegistryName().getPath() + " in " + biome.getRegistryName() + " returns " + test.isValidBiome(biomekey, biome));
-                    if (test.isValidBiome(biomekey, biome)) {
-                        for (int i=0; i < speciesDatum.getRarity(); i++) {
-                            validTypes.add(speciesDatum.getVariant());
-                        }
+                    if (!test.isValidBiome(biomekey, biome)) {
                         break;
+                    }
+                    results.add(true);
+                }
+                if (results.size() == testList.size()) {
+                    for (int i=0; i < speciesDatum.getRarity(); i++) {
+                        validTypes.add(speciesDatum.getVariant());
                     }
                 }
             }

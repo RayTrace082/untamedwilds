@@ -4,7 +4,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
@@ -13,13 +12,10 @@ import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
-import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
@@ -98,20 +94,6 @@ public class EntityTriggerfish extends ComplexMobAquatic implements ISpecies, IN
     @Override
     protected SoundEvent getFlopSound() {
         return SoundEvents.ENTITY_GUARDIAN_FLOP;
-    }
-
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (isArtificialSpawnReason(reason)) {
-            return this.rand.nextInt(getEntityData(this.getType()).getSpeciesData().size());
-        }
-        if (biomekey.equals(Biomes.DEEP_LUKEWARM_OCEAN) || biomekey.equals(Biomes.LUKEWARM_OCEAN) || biomekey.equals(Biomes.WARM_OCEAN)) {
-            return this.rand.nextInt(getEntityData(this.getType()).getSpeciesData().size());
-        }
-        else if (biomekey.equals(Biomes.DEEP_OCEAN) || biomekey.equals(Biomes.OCEAN)) {
-            return 1;
-        }
-        return 99;
     }
 
     public class TriggerFishBlowGoal extends Goal {

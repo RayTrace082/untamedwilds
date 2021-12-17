@@ -1,83 +1,98 @@
 {
-  "name": "rhino",
-  "breeding": "EARLY_SUMMER",
-  "growing": 12,
-  "offspring": 1,
-  "activityType": "cathemeral",
-  "favourite_food": "minecraft:melon_slice",
-  "sounds": {
-    "ambient": "minecraft:entity.cow.ambient",
-    "hurt": "minecraft:entity.cow.hurt",
-    "death": "minecraft:entity.cow.death"
+  "name":"rhino",
+  "breeding":"EARLY_SUMMER",
+  "growing":12,
+  "offspring":1,
+  "activityType":"cathemeral",
+  "favourite_food":"minecraft:melon_slice",
+  "sounds":{
+    "ambient":"minecraft:entity.cow.ambient",
+    "hurt":"minecraft:entity.cow.hurt",
+    "death":"minecraft:entity.cow.death"
   },
-
-  "species": [
+  "species":[
     {
-    "name": "black",
-    "variant": 0,
-    "scale": 0.9,
-    "rarity": 5,
-      "attack": 8,
-      "health": 50,
-    "spawnBiomes": [
-        "savanna"
-    ]
-  },
-    {
-      "name": "indian",
-      "variant": 1,
-      "scale": 1.1,
-      "rarity": 4,
-      "attack": 8,
-      "health": 60,
-      "spawnBiomes": [
-        "jungle",
-        "extreme_hills"
+      "name":"black",
+      "variant":0,
+      "scale":0.9,
+      "rarity":5,
+      "attack":8,
+      "health":50,
+      "spawnBiomes":[
+        [
+          "category|savanna"
+        ]
       ]
     },
     {
-      "name": "javan",
-      "variant": 2,
-      "scale": 0.8,
-      "rarity": 1,
-      "attack": 6,
-      "health": 45,
-      "spawnBiomes": [
-        "jungle"
+      "name":"indian",
+      "variant":1,
+      "scale":1.1,
+      "rarity":4,
+      "attack":8,
+      "health":60,
+      "spawnBiomes":[
+        [
+          "category|jungle"
+        ],
+        [
+          "category|extreme_hills"
+        ]
       ]
     },
     {
-      "name": "sumatran",
-      "variant": 3,
-      "scale": 0.8,
-      "rarity": 1,
-      "attack": 5,
-      "health": 40,
-      "spawnBiomes": [
-        "jungle"
+      "name":"javan",
+      "variant":2,
+      "scale":0.8,
+      "rarity":1,
+      "attack":6,
+      "health":45,
+      "spawnBiomes":[
+        [
+          "category|jungle"
+        ]
       ]
     },
     {
-      "name": "white",
-      "variant": 4,
-      "scale": 1,
-      "rarity": 2,
-      "attack": 10,
-      "health": 60,
-      "spawnBiomes": [
-        "savanna"
+      "name":"sumatran",
+      "variant":3,
+      "scale":0.8,
+      "rarity":1,
+      "attack":5,
+      "health":40,
+      "spawnBiomes":[
+        [
+          "category|jungle"
+        ]
       ]
     },
     {
-      "name": "wooly",
-      "variant": 5,
-      "scale": 1.2,
-      "rarity": 1,
-      "attack": 10,
-      "health": 60,
-      "spawnBiomes": [
-        "icy",
-        "taiga"
+      "name":"white",
+      "variant":4,
+      "scale":1,
+      "rarity":2,
+      "attack":10,
+      "health":60,
+      "spawnBiomes":[
+        [
+          "category|savanna"
+        ]
+      ]
+    },
+    {
+      "name":"wooly",
+      "variant":5,
+      "scale":1.2,
+      "rarity":1,
+      "attack":10,
+      "health":60,
+      "spawnBiomes":[
+        [
+          "category|icy"
+        ],
+        [
+          "category|taiga"
+        ]
       ]
     }
   ]

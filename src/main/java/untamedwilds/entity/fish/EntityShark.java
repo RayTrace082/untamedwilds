@@ -3,7 +3,6 @@ package untamedwilds.entity.fish;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -12,13 +11,9 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.*;
@@ -30,9 +25,7 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimatedEntity, INeedsPostUpdate, INewSkins {
 
@@ -107,15 +100,6 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
         return SoundEvents.ENTITY_COD_FLOP;
     }
 
-    @Override
-    public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (reason == SpawnReason.SPAWN_EGG || ConfigGamerules.randomSpecies.get()) {
-            return this.rand.nextInt(EntityShark.SpeciesShark.values().length);
-        }
-        // TODO: Needed because I can't parse individual biomes from .json
-        return EntityShark.SpeciesShark.getSpeciesByBiome(biomekey);
-    }
-
     public boolean attackEntityAsMob(Entity entityIn) {
         boolean flag = super.attackEntityAsMob(entityIn);
         if (flag && this.getAnimation() == NO_ANIMATION && !this.isChild()) {
@@ -152,55 +136,5 @@ public class EntityShark extends ComplexMobAquatic implements ISpecies, IAnimate
     public void readAdditional(CompoundNBT compound){
         super.readAdditional(compound);
         this.setShortFins(compound.getBoolean("hasShortFins"));
-    }
-
-    public enum SpeciesShark implements IStringSerializable {
-
-        BIGEYE	    (0, 1, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
-        BLUNTNOSE	(1, 2, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
-        BULL    	(2, 4, Biomes.OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.WARM_OCEAN),
-        GOBLIN  	(3, 1, Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
-        GREAT_WHITE	(4, 2, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN),
-        GREENLAND	(5, 1, Biomes.DEEP_COLD_OCEAN, Biomes.FROZEN_OCEAN, Biomes.DEEP_FROZEN_OCEAN),
-        HAMMERHEAD	(6, 2, Biomes.OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.WARM_OCEAN),
-        LEMON   	(7, 1, Biomes.WARM_OCEAN),
-        MAKO    	(8, 4, Biomes.DEEP_OCEAN, Biomes.DEEP_COLD_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_WARM_OCEAN),
-        TIGER	    (9, 2, Biomes.WARM_OCEAN, Biomes.DEEP_WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN);
-
-        public int species;
-        public int rolls;
-        public RegistryKey<Biome>[] spawnBiomes;
-
-        @SafeVarargs
-        SpeciesShark(int species, int rolls, RegistryKey<Biome>... biomes) {
-            this.species = species;
-            this.rolls = rolls;
-            this.spawnBiomes = biomes;
-        }
-
-        public int getSpecies() { return this.species; }
-
-        public String getString() {
-            return I18n.format("entity.shark." + this.name().toLowerCase());
-        }
-
-        public static int getSpeciesByBiome(RegistryKey<Biome> biomekey) {
-            List<EntityShark.SpeciesShark> types = new ArrayList<>();
-
-            for (EntityShark.SpeciesShark type : values()) {
-                for(RegistryKey<Biome> biomeTypes : type.spawnBiomes) {
-                    if(biomekey.equals(biomeTypes)){
-                        for (int i=0; i < type.rolls; i++) {
-                            types.add(type);
-                        }
-                    }
-                }
-            }
-            if (types.isEmpty()) {
-                return 99;
-            } else {
-                return types.get(new Random().nextInt(types.size())).getSpecies();
-            }
-        }
     }
 }

@@ -1,224 +1,276 @@
 {
-  "name": "snake",
-  "breeding": "LATE_SUMMER",
-  "growing": 6,
-  "offspring": 4,
-  "favourite_food": "minecraft:rabbit",
-  "sounds": {
-    "ambient": "untamedwilds:entity.snake.warning",
-    "hurt": "untamedwilds:entity.snake.warning",
-    "death": "untamedwilds:entity.snake.warning",
-    "threat": "untamedwilds:entity.snake.warning"
+  "name":"snake",
+  "breeding":"LATE_SUMMER",
+  "growing":6,
+  "offspring":4,
+  "favourite_food":"minecraft:rabbit",
+  "sounds":{
+    "ambient":"untamedwilds:entity.snake.warning",
+    "hurt":"untamedwilds:entity.snake.warning",
+    "death":"untamedwilds:entity.snake.warning",
+    "threat":"untamedwilds:entity.snake.warning"
   },
-  "flags": {
-    "venom": 0,
-    "rattler": 0
+  "flags":{
+    "venom":0,
+    "rattler":0
   },
-
-  "species": [{
-    "name": "adder",
-    "variant": 0,
-    "scale": 0.7,
-    "rarity": 3,
-    "flags": {
-      "venom": 1
-    },
-    "spawnBiomes": [
-        "taiga",
-        "forest",
-        "plains"
-    ]
-  },
+  "species":[
     {
-      "name": "ball_python",
-      "variant": 1,
-      "scale": 1,
-      "rarity": 2,
-      "spawnBiomes": [
-        "savanna"
-      ]
-    },
-    {
-      "name": "black_mamba",
-      "variant": 2,
-      "scale": 1.3,
-      "rarity": 2,
-      "flags": {
-        "venom": 2
+      "name":"adder",
+      "variant":0,
+      "scale":0.7,
+      "rarity":3,
+      "flags":{
+        "venom":1
       },
-      "spawnBiomes": [
-        "savanna"
+      "spawnBiomes":[
+        [
+          "category|taiga"
+        ],
+        [
+          "category|forest"
+        ],
+        [
+          "category|plains"
+        ]
       ]
     },
     {
-      "name": "carpet_python",
-      "variant": 3,
-      "scale": 1.1,
-      "rarity": 1,
-      "spawnBiomes": [
-        "jungle"
+      "name":"ball_python",
+      "variant":1,
+      "scale":1,
+      "rarity":2,
+      "spawnBiomes":[
+        [
+          "category|savanna"
+        ]
       ]
     },
     {
-      "name": "cave_racer",
-      "variant": 4,
-      "scale": 1,
-      "rarity": 1,
-      "spawnBiomes": [
-        "jungle"
-      ]
-    },
-    {
-      "name": "coral",
-      "variant": 5,
-      "scale": 0.7,
-      "rarity": 3,
-      "flags": {
-        "venom": 2
+      "name":"black_mamba",
+      "variant":2,
+      "scale":1.3,
+      "rarity":2,
+      "flags":{
+        "venom":2
       },
-      "spawnBiomes": [
-        "mesa",
-        "forest",
-        "plains"
+      "spawnBiomes":[
+        [
+          "category|savanna"
+        ]
       ]
     },
     {
-      "name": "coral_blue",
-      "variant": 6,
-      "scale": 1.1,
-      "rarity": 1,
-      "flags": {
-        "venom": 1
+      "name":"carpet_python",
+      "variant":3,
+      "scale":1.1,
+      "rarity":1,
+      "spawnBiomes":[
+        [
+          "category|jungle"
+        ]
+      ]
+    },
+    {
+      "name":"cave_racer",
+      "variant":4,
+      "scale":1,
+      "rarity":1,
+      "spawnBiomes":[
+        [
+          "category|jungle"
+        ]
+      ]
+    },
+    {
+      "name":"coral",
+      "variant":5,
+      "scale":0.7,
+      "rarity":3,
+      "flags":{
+        "venom":2
       },
-      "spawnBiomes": [
-        "jungle"
+      "spawnBiomes":[
+        [
+          "category|mesa"
+        ],
+        [
+          "category|forest"
+        ],
+        [
+          "category|plains"
+        ]
       ]
     },
     {
-      "name": "corn",
-      "variant": 7,
-      "scale": 0.9,
-      "rarity": 3,
-      "spawnBiomes": [
-        "plains"
-      ]
-    },
-    {
-      "name": "emerald",
-      "variant": 8,
-      "scale": 0.9,
-      "rarity": 2,
-      "spawnBiomes": [
-        "jungle"
-      ]
-    },
-    {
-      "name": "grass_snake",
-      "variant": 9,
-      "scale": 0.8,
-      "rarity": 3,
-      "spawnBiomes": [
-        "swamp",
-        "forest"
-      ]
-    },
-    {
-      "name": "gray_kingsnake",
-      "variant": 10,
-      "scale": 0.7,
-      "rarity": 3,
-      "spawnBiomes": [
-        "mesa"
-      ]
-    },
-    {
-      "name": "green_mamba",
-      "variant": 11,
-      "scale": 1.3,
-      "rarity": 2,
-      "flags": {
-        "venom": 2
+      "name":"coral_blue",
+      "variant":6,
+      "scale":1.1,
+      "rarity":1,
+      "flags":{
+        "venom":1
       },
-      "spawnBiomes": [
-        "savanna",
-        "jungle"
+      "spawnBiomes":[
+        [
+          "category|jungle"
+        ]
       ]
     },
     {
-      "name": "rattlesnake",
-      "variant": 12,
-      "scale": 0.7,
-      "rarity": 2,
-      "sounds": {
-        "ambient": "untamedwilds:entity.snake.rattle",
-        "hurt": "untamedwilds:entity.snake.rattle",
-        "death": "untamedwilds:entity.snake.rattle",
-        "threat": "untamedwilds:entity.snake.rattle"
-      },
-      "flags": {
-        "rattler": 1,
-        "venom": 1
-      },
-      "spawnBiomes": [
-        "mesa",
-        "plains"
+      "name":"corn",
+      "variant":7,
+      "scale":0.9,
+      "rarity":3,
+      "spawnBiomes":[
+        [
+          "category|plains"
+        ]
       ]
     },
     {
-      "name": "rice_paddy",
-      "variant": 13,
-      "scale": 0.7,
-      "rarity": 2,
-      "flags": {
-        "venom": 1
-      },
-      "spawnBiomes": [
-        "swamp",
-        "forest"
+      "name":"emerald",
+      "variant":8,
+      "scale":0.9,
+      "rarity":2,
+      "spawnBiomes":[
+        [
+          "category|jungle"
+        ]
       ]
     },
     {
-      "name": "swamp_moccasin",
-      "variant": 14,
-      "scale": 0.7,
-      "rarity": 2,
-      "flags": {
-        "venom": 1
-      },
-      "spawnBiomes": [
-        "swamp"
+      "name":"grass_snake",
+      "variant":9,
+      "scale":0.8,
+      "rarity":3,
+      "spawnBiomes":[
+        [
+          "category|swamp"
+        ],
+        [
+          "category|forest"
+        ]
       ]
     },
     {
-      "name": "taipan",
-      "variant": 15,
-      "scale": 1,
-      "rarity": 2,
-      "flags": {
-        "venom": 2
-      },
-      "spawnBiomes": [
-        "mesa"
+      "name":"gray_kingsnake",
+      "variant":10,
+      "scale":0.7,
+      "rarity":3,
+      "spawnBiomes":[
+        [
+          "category|mesa"
+        ]
       ]
     },
     {
-      "name": "western_rattlesnake",
-      "variant": 16,
-      "scale": 0.7,
-      "rarity": 2,
-      "sounds": {
-        "ambient": "untamedwilds:entity.snake.rattle",
-        "hurt": "untamedwilds:entity.snake.rattle",
-        "death": "untamedwilds:entity.snake.rattle",
-        "threat": "untamedwilds:entity.snake.rattle"
+      "name":"green_mamba",
+      "variant":11,
+      "scale":1.3,
+      "rarity":2,
+      "flags":{
+        "venom":2
       },
-      "flags": {
-        "venom": 1,
-        "rattler": 1
+      "spawnBiomes":[
+        [
+          "category|savanna"
+        ],
+        [
+          "category|jungle"
+        ]
+      ]
+    },
+    {
+      "name":"rattlesnake",
+      "variant":12,
+      "scale":0.7,
+      "rarity":2,
+      "sounds":{
+        "ambient":"untamedwilds:entity.snake.rattle",
+        "hurt":"untamedwilds:entity.snake.rattle",
+        "death":"untamedwilds:entity.snake.rattle",
+        "threat":"untamedwilds:entity.snake.rattle"
       },
-      "spawnBiomes": [
-        "mesa",
-        "desert"
+      "flags":{
+        "rattler":1,
+        "venom":1
+      },
+      "spawnBiomes":[
+        [
+          "category|mesa"
+        ],
+        [
+          "category|plains"
+        ]
+      ]
+    },
+    {
+      "name":"rice_paddy",
+      "variant":13,
+      "scale":0.7,
+      "rarity":2,
+      "flags":{
+        "venom":1
+      },
+      "spawnBiomes":[
+        [
+          "category|swamp"
+        ],
+        [
+          "category|forest"
+        ]
+      ]
+    },
+    {
+      "name":"swamp_moccasin",
+      "variant":14,
+      "scale":0.7,
+      "rarity":2,
+      "flags":{
+        "venom":1
+      },
+      "spawnBiomes":[
+        [
+          "category|swamp"
+        ]
+      ]
+    },
+    {
+      "name":"taipan",
+      "variant":15,
+      "scale":1,
+      "rarity":2,
+      "flags":{
+        "venom":2
+      },
+      "spawnBiomes":[
+        [
+          "category|mesa"
+        ]
+      ]
+    },
+    {
+      "name":"western_rattlesnake",
+      "variant":16,
+      "scale":0.7,
+      "rarity":2,
+      "sounds":{
+        "ambient":"untamedwilds:entity.snake.rattle",
+        "hurt":"untamedwilds:entity.snake.rattle",
+        "death":"untamedwilds:entity.snake.rattle",
+        "threat":"untamedwilds:entity.snake.rattle"
+      },
+      "flags":{
+        "venom":1,
+        "rattler":1
+      },
+      "spawnBiomes":[
+        [
+          "category|mesa"
+        ],
+        [
+          "category|desert"
+        ]
       ]
     }
   ]

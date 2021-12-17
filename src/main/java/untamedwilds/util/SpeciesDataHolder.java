@@ -80,7 +80,7 @@ public class SpeciesDataHolder {
                 BiomeDataHolder.ConditionTypes type = BiomeDataHolder.getTypeOfCondition(condition);
                 BiomeDataHolder.ConditionModifiers modifier = BiomeDataHolder.getModifierFromString(condition);
                 BiomeDataHolder.BiomeTestHolder testHolder = new BiomeDataHolder.BiomeTestHolder(key, type, modifier);
-                UntamedWilds.LOGGER.info("Registering new BiomeTestHolder from " + key + " with type " + type.getString());
+                UntamedWilds.LOGGER.info("Registering new" + modifier.getString() + "BiomeTestHolder from " + key + " with type " + type.getString());
                 subsublist.add(testHolder);
             }
             this.spawnBiomeData.add(subsublist);

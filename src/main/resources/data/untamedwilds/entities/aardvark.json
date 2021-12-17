@@ -1,30 +1,33 @@
 {
-  "name": "aardvark",
-  "breeding": "EARLY_SUMMER",
-  "growing": 6,
-  "offspring": 1,
-  "activityType": "nocturnal",
-  "favourite_food": "untamedwilds:aardvark_cucumber",
-  "sounds": {
-    "ambient": "untamedwilds:entity.aardvark.ambient",
-    "hurt": "untamedwilds:entity.aardvark.hurt",
-    "death": "untamedwilds:entity.aardvark.death"
+  "name":"aardvark",
+  "breeding":"EARLY_SUMMER",
+  "growing":6,
+  "offspring":1,
+  "activityType":"nocturnal",
+  "favourite_food":"untamedwilds:aardvark_cucumber",
+  "sounds":{
+    "ambient":"untamedwilds:entity.aardvark.ambient",
+    "hurt":"untamedwilds:entity.aardvark.hurt",
+    "death":"untamedwilds:entity.aardvark.death"
   },
-
-  "species": [
+  "species":[
     {
-    "name": "common",
-    "variant": 0,
-    "scale": 1,
-    "rarity": 1,
-    "breeding": "LATE_SPRING",
-    "growing": 6,
-    "offspring": 1,
-      "skins": 30,
-    "flags": {
-    },
-    "spawnBiomes": [
-        "savanna"
-    ]
-  }]
+      "name":"common",
+      "variant":0,
+      "scale":1,
+      "rarity":1,
+      "breeding":"LATE_SPRING",
+      "growing":6,
+      "offspring":1,
+      "skins":30,
+      "flags":{
+
+      },
+      "spawnBiomes":[
+        [
+          "category|savanna"
+        ]
+      ]
+    }
+  ]
 }

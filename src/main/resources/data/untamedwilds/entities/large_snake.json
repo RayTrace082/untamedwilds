@@ -1,54 +1,61 @@
 {
-  "name": "large_snake",
-  "breeding": "LATE_SUMMER",
-  "growing": 7,
-  "offspring": 2,
-  "sounds": {
-    "ambient": "untamedwilds:entity.snake.warning",
-    "hurt": "untamedwilds:entity.snake.warning",
-    "death": "untamedwilds:entity.snake.warning",
-    "threat": "untamedwilds:entity.snake.warning"
+  "name":"large_snake",
+  "breeding":"LATE_SUMMER",
+  "growing":7,
+  "offspring":2,
+  "sounds":{
+    "ambient":"untamedwilds:entity.snake.warning",
+    "hurt":"untamedwilds:entity.snake.warning",
+    "death":"untamedwilds:entity.snake.warning",
+    "threat":"untamedwilds:entity.snake.warning"
   },
-  "flags": {
-    "eggLayer": 0
+  "flags":{
+    "eggLayer":0
   },
-
-  "species": [
+  "species":[
     {
-    "name": "anaconda",
-    "variant": 0,
-    "scale": 0.9,
-    "rarity": 1,
-    "offspring": 2,
-      "activityType": "cathemeral",
-    "favourite_food": "minecraft:beef",
-    "attack": 4,
-    "health": 30,
-    "flags": {
-      "parts": 3
-    },
-    "spawnBiomes": [
-        "jungle",
-        "swamp"
-    ]
-  },
-    {
-      "name": "reticulated_python",
-      "variant": 1,
-      "scale": 1,
-      "rarity": 1,
-      "offspring": 4,
-      "activityType": "cathemeral",
-      "favourite_food": "minecraft:porkchop",
-      "attack": 4,
-      "health": 30,
-      "flags": {
-        "eggLayer": 1,
-        "parts": 3
+      "name":"anaconda",
+      "variant":0,
+      "scale":0.9,
+      "rarity":1,
+      "offspring":2,
+      "activityType":"cathemeral",
+      "favourite_food":"minecraft:beef",
+      "attack":4,
+      "health":30,
+      "flags":{
+        "parts":3
       },
-      "spawnBiomes": [
-        "swamp",
-        "jungle"
+      "spawnBiomes":[
+        [
+          "category|jungle"
+        ],
+        [
+          "category|swamp"
+        ]
+      ]
+    },
+    {
+      "name":"reticulated_python",
+      "variant":1,
+      "scale":1,
+      "rarity":1,
+      "offspring":4,
+      "activityType":"cathemeral",
+      "favourite_food":"minecraft:porkchop",
+      "attack":4,
+      "health":30,
+      "flags":{
+        "eggLayer":1,
+        "parts":3
+      },
+      "spawnBiomes":[
+        [
+          "category|swamp"
+        ],
+        [
+          "category|jungle"
+        ]
       ]
     }
   ]

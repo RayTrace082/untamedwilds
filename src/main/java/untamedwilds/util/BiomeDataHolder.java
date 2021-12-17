@@ -39,16 +39,17 @@ public class BiomeDataHolder {
     }
 
     public static ConditionModifiers getModifierFromString(String strIn) {
-        if (strIn.matches("!"))
+        if (strIn.contains("!"))
             return ConditionModifiers.INVERTED;
-        else if (strIn.matches("#"))
+        else if (strIn.contains("#"))
             return ConditionModifiers.PRIORITY;
         return ConditionModifiers.NONE;
     }
 
     public static ConditionTypes getTypeOfCondition(String strIn) {
-        if (strIn.contains("|")) {
-            String str = strIn.split("\\|")[0];
+        String clean = strIn.replaceAll("[!#]","");
+        if (clean.contains("|")) {
+            String str = clean.split("\\|")[0];
             UntamedWilds.LOGGER.info(str);
             switch (str) {
                 case "category":
@@ -79,10 +80,21 @@ public class BiomeDataHolder {
         }
     }
 
-    public enum ConditionModifiers {
-        NONE,
-        INVERTED,
-        PRIORITY
+    public enum ConditionModifiers implements IStringSerializable {
+        NONE (" "),
+        INVERTED (" Inverted "),
+        PRIORITY (" Priority ");
+
+        public String type;
+
+        ConditionModifiers(String type) {
+            this.type = type;
+        }
+
+        @Override
+        public String getString() {
+            return this.type;
+        }
     }
 
     public static class BiomeTestHolder {
