@@ -22,6 +22,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
+import untamedwilds.UntamedWilds;
 import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
@@ -252,8 +253,8 @@ public abstract class ComplexMob extends TameableEntity {
         entity.setGender(this.rand.nextInt(2));
         entity.setRandomMobSize();
         entity.setVariant(this.getVariant());
-        if (this instanceof INeedsPostUpdate) {
-            ((INeedsPostUpdate) this).updateAttributes();
+        if (entity instanceof INeedsPostUpdate) {
+            ((INeedsPostUpdate) entity).updateAttributes();
         }
         return entity;
     }
@@ -397,6 +398,7 @@ public abstract class ComplexMob extends TameableEntity {
     @Override
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         if (reason != SpawnReason.DISPENSER && reason != SpawnReason.BUCKET) {
+            UntamedWilds.LOGGER.info("New Mob Spawned");
             if (this instanceof ISpecies) {
                 Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(this.getPosition());
                 if (optional.isPresent()) {
