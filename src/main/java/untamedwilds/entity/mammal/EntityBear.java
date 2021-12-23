@@ -327,32 +327,4 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
         this.setShortSnout(compound.getBoolean("hasShortSnout"));
         this.setHump(compound.getBoolean("hasHump"));
     }
-
-    /*public int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-            return this.getRNG().nextInt(ComplexMob.getEntityData(this.getType()).getSpeciesData().size());
-        }
-        // TODO: Need a better way to lock Polar and Panda bears
-        if (biomekey.equals(Biomes.FROZEN_OCEAN) || biomekey.equals(Biomes.DEEP_FROZEN_OCEAN)) {
-            return 5;
-        }
-        if (biomekey.equals(Biomes.BAMBOO_JUNGLE) || biomekey.equals(Biomes.BAMBOO_JUNGLE_HILLS)) {
-            return 4;
-        }
-        List<Integer> validTypes = new ArrayList<>();
-        for (SpeciesDataHolder speciesDatum : getEntityData(this.getType()).getSpeciesData()) {
-            for(Biome.Category biomeTypes : speciesDatum.getBiomeCategories()) {
-                if(biome.getCategory() == biomeTypes){
-                    for (int i=0; i < speciesDatum.getRarity(); i++) {
-                        validTypes.add(speciesDatum.getVariant());
-                    }
-                }
-            }
-        }
-        if (validTypes.isEmpty()) {
-            return 99;
-        } else {
-            return validTypes.get(new Random().nextInt(validTypes.size()));
-        }
-    }*/
 }
