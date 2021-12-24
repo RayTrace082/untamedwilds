@@ -4,10 +4,9 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import untamedwilds.entity.fish.EntityFootballFish;
 
-public class ModelFootballFish<T extends Entity> extends AdvancedEntityModel<EntityFootballFish> {
+public class ModelFootballFish extends AdvancedEntityModel<EntityFootballFish> {
 
     public AdvancedModelBox main_body;
     public AdvancedModelBox head_jaw;
@@ -18,6 +17,7 @@ public class ModelFootballFish<T extends Entity> extends AdvancedEntityModel<Ent
     public AdvancedModelBox tail_fin;
     public AdvancedModelBox tail_top;
     public AdvancedModelBox tail_bottom;
+    public AdvancedModelBox attached_male;
 
     public ModelFootballFish() {
         this.textureWidth = 32;
@@ -57,6 +57,10 @@ public class ModelFootballFish<T extends Entity> extends AdvancedEntityModel<Ent
         this.tail_fin = new AdvancedModelBox(this, 10, 24);
         this.tail_fin.setRotationPoint(0.0F, 0.0F, 2.0F);
         this.tail_fin.addBox(0.0F, -1.5F, 0.0F, 0, 3, 3, 0.0F);
+        this.attached_male = new AdvancedModelBox(this, 6, 4);
+        this.attached_male.setRotationPoint(0.0F, 0.0F, 2.0F);
+        this.attached_male.addBox(0.0F, 0.0F, 0.0F, 0, 3, 1, 0.0F);
+        this.setRotateAngle(attached_male, 0.36425021489121656F, 0.0F, 0.0F);
         this.main_body.addChild(this.head_fin_right);
         this.main_body.addChild(this.body_bait);
         this.main_body.addChild(this.body_tail);
@@ -65,6 +69,7 @@ public class ModelFootballFish<T extends Entity> extends AdvancedEntityModel<Ent
         this.main_body.addChild(this.head_fin_left);
         this.body_tail.addChild(this.tail_bottom);
         this.body_tail.addChild(this.tail_fin);
+        this.main_body.addChild(this.attached_male);
         updateDefaultPose();
     }
 
@@ -84,7 +89,8 @@ public class ModelFootballFish<T extends Entity> extends AdvancedEntityModel<Ent
             body_bait,
             tail_fin,
             tail_top,
-            tail_bottom
+            tail_bottom,
+            attached_male
         );
     }
 
@@ -93,7 +99,7 @@ public class ModelFootballFish<T extends Entity> extends AdvancedEntityModel<Ent
         resetToDefaultPose();
 
         if (!football_fish.isInWater()) {
-            main_body.defaultPositionY =+ 20;
+            main_body.defaultPositionY = 20;
             this.setRotateAngle(main_body, 0, 0, (float)Math.toRadians(90D));
         }
         else {
@@ -102,6 +108,9 @@ public class ModelFootballFish<T extends Entity> extends AdvancedEntityModel<Ent
         float globalSpeed = 0.6f;
         float globalDegree = 0.6f;
 
+        if (football_fish.hasAttachedMale()) {
+            this.attached_male.setRotationPoint(0.0F, 3.0F, -2F);
+        }
 
         // Movement Animation
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{body_tail, tail_fin};

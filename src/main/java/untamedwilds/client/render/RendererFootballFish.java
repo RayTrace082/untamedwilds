@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import untamedwilds.client.layer.LayerFootballFishLure;
 import untamedwilds.client.model.ModelFootballFish;
@@ -14,7 +13,7 @@ import javax.annotation.Nonnull;
 
 public class RendererFootballFish extends MobRenderer<EntityFootballFish, SegmentedModel<EntityFootballFish>> {
 
-    private static final ModelFootballFish<Entity> FOOTBALL_FISH_MODEL = new ModelFootballFish<Entity>();
+    private static final ModelFootballFish FOOTBALL_FISH_MODEL = new ModelFootballFish();
 
     public RendererFootballFish(EntityRendererManager rendermanager) {
         super(rendermanager, FOOTBALL_FISH_MODEL, 0.6F);
