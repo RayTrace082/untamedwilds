@@ -21,7 +21,7 @@ public class EntityDataHolder {
             Codec.FLOAT.fieldOf("attack").orElse(-1F).forGetter((p_237054_0_) -> p_237054_0_.attack),
             Codec.FLOAT.fieldOf("health").orElse(-1F).forGetter((p_237054_0_) -> p_237054_0_.health),
             ComplexMobTerrestrial.ActivityType.CODEC.fieldOf("activityType").orElse(ComplexMobTerrestrial.ActivityType.INSOMNIAC).forGetter((p_237052_0_) -> p_237052_0_.activityType),
-            Codec.STRING.fieldOf("favourite_food").orElse("").forGetter((p_237052_0_) -> p_237052_0_.favouriteFood),
+            Codec.STRING.fieldOf("favourite_food").orElse("").forGetter((p_237052_0_) -> p_237052_0_.favouriteFood_input),
             Codec.INT.fieldOf("growing_time").orElse(1).forGetter((p_237054_0_) -> p_237054_0_.growing_time),
             Codec.INT.fieldOf("offspring").orElse(1).forGetter((p_237054_0_) -> p_237054_0_.offspring),
             Codec.STRING.fieldOf("breeding_season").orElse("ANY").forGetter((p_237054_0_) -> p_237054_0_.breeding_season),
@@ -35,7 +35,8 @@ public class EntityDataHolder {
     private final float attack;
     private final float health;
     private final ComplexMobTerrestrial.ActivityType activityType;
-    private final String favouriteFood;
+    private final String favouriteFood_input;
+    private final ItemStack favouriteFood;
     private final int growing_time;
     private final int offspring;
     private final String breeding_season;
@@ -52,7 +53,8 @@ public class EntityDataHolder {
         this.health = health;
         this.activityType = activityType;
 
-        this.favouriteFood = favouriteFood;
+        this.favouriteFood_input = favouriteFood;
+        this.favouriteFood = new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryCreate(this.favouriteFood_input)));
         this.growing_time = growing_time;
         this.offspring = offspring;
         this.breeding_season = breeding;
@@ -146,12 +148,11 @@ public class EntityDataHolder {
         return this.speciesData.get(i).getActivityType();
     }
 
-    // TODO: May be possible to define ItemStack during resource reload, rather than calculate it every time
     public ItemStack getFavouriteFood(int i) {
         if (this.speciesData.get(i).getFavouriteFood().equals("")) {
-            return new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryCreate(this.favouriteFood)));
+            return this.favouriteFood;
         }
-        return new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryCreate(this.speciesData.get(i).getFavouriteFood())));
+        return this.speciesData.get(i).getFavouriteFood();
     }
 
     public int getGrowingTime(int i) {

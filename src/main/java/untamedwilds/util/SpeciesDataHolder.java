@@ -2,12 +2,14 @@ package untamedwilds.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
@@ -28,7 +30,7 @@ public class SpeciesDataHolder {
             Codec.FLOAT.fieldOf("attack").orElse(-1F).forGetter((p_237055_0_) -> p_237055_0_.attack),
             Codec.FLOAT.fieldOf("health").orElse(-1F).forGetter((p_237055_0_) -> p_237055_0_.health),
             ComplexMobTerrestrial.ActivityType.CODEC.fieldOf("activityType").orElse(ComplexMobTerrestrial.ActivityType.INSOMNIAC).forGetter((p_237052_0_) -> p_237052_0_.activityType),
-            Codec.STRING.fieldOf("favourite_food").orElse("").forGetter((p_237052_0_) -> p_237052_0_.favouriteFood),
+            Codec.STRING.fieldOf("favourite_food").orElse("").forGetter((p_237052_0_) -> p_237052_0_.favouriteFood_input),
             Codec.INT.fieldOf("growing_time").orElse(-1).forGetter((p_237054_0_) -> p_237054_0_.growing_time),
             Codec.INT.fieldOf("offspring").orElse(-1).forGetter((p_237054_0_) -> p_237054_0_.offspring),
                     Codec.INT.fieldOf("skins").orElse(10).forGetter((p_237054_0_) -> p_237054_0_.skins),
@@ -46,7 +48,8 @@ public class SpeciesDataHolder {
     private final float attack;
     private final float health;
     private final ComplexMobTerrestrial.ActivityType activityType;
-    private final String favouriteFood;
+    private final String favouriteFood_input;
+    private final ItemStack favouriteFood;
     private final int growing_time;
     private final int offspring;
     private final int skins;
@@ -64,7 +67,8 @@ public class SpeciesDataHolder {
         this.attack = attack;
         this.health = health;
         this.activityType = activityType;
-        this.favouriteFood = favourite_food;
+        this.favouriteFood_input = favourite_food;
+        this.favouriteFood = new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryCreate(this.favouriteFood_input)));
         this.growing_time = growing_time;
         this.offspring = offspring;
         this.skins = skins;
@@ -124,7 +128,7 @@ public class SpeciesDataHolder {
     }
 
     @Nullable
-    public String getFavouriteFood() {
+    public ItemStack getFavouriteFood() {
         return this.favouriteFood;
     }
 
