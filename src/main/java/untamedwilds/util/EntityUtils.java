@@ -229,7 +229,7 @@ public abstract class EntityUtils {
         entityTag.remove("Pos"); // Remove the Position from the NBT data, as it would fuck things up later on
         entityTag.remove("Motion");
         if (entityTag.contains("BoundingBox")) {
-            entityTag.remove("BoundingBox"); // TODO: Shitty RandomPatches solution
+            entityTag.remove("BoundingBox"); // Stripping this NBT data prevents RandomPatches from moving mobs back to their original position
         }
         if (entity instanceof ISpecies && !keepHomeData) {
             entityTag.remove("HomePosX");

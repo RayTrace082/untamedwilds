@@ -139,7 +139,7 @@ public class FaunaSpawn {
                                                 ((ComplexMob)mobentity).setVariant(species);
                                             } // Wrong spawning messages are most likely due to their inclusion on onMobSpawning, not here
                                         }
-                                        // TODO: Jesus christ, I hate the AddReloadListenerEvent event
+                                        // Two possible fail-states, entity being assigned variant 99 (no valid variant found) or the Entity Data does not exist
                                         if (((ComplexMob)mobentity).getVariant() == 99 || !ComplexMob.ENTITY_DATA_HASH.containsKey(entityType)) {
                                             mobentity.remove();
                                             return false;
