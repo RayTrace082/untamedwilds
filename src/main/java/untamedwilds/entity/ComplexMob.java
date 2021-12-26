@@ -320,8 +320,9 @@ public abstract class ComplexMob extends TameableEntity {
 
     // Returns the ecological level of an entity. Values are dynamically calculated based on current HP, Attack and Herd size (if any)
     public static int getEcoLevel(LivingEntity entity) {
-        if (entity instanceof PlayerEntity)
-            return 6;
+        if (entity instanceof PlayerEntity) {
+            return Math.round(4 + (entity.getHealth() / 6));
+        }
         double attack = Math.max(entity.getAttributeManager().hasAttributeInstance(Attributes.ATTACK_DAMAGE) ? entity.getAttribute(Attributes.ATTACK_DAMAGE).getValue() : 1, 4);
         if (entity instanceof ComplexMob && ((ComplexMob) entity).herd != null) {
             return Math.round((float) Math.sqrt(entity.getHealth() * attack) / 2.5F) + ((ComplexMob) entity).herd.creatureList.size();
