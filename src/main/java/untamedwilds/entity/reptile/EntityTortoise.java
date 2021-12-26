@@ -52,7 +52,7 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
         this.goalSelector.addGoal(1, new SmartSwimGoal(this));
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
-        this.goalSelector.addGoal(2, new TortoiseHideInShellGoal<>(this, LivingEntity.class, 7, input -> getEcoLevel(input) > 4));
+        this.goalSelector.addGoal(2, new TortoiseHideInShellGoal<>(this, LivingEntity.class, 7, input -> getEcoLevel(input) > getEcoLevel(this)));
         this.goalSelector.addGoal(3, new SmartWanderGoal(this, 1.0D, 400, 0,true));
         //this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }

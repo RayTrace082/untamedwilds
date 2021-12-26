@@ -29,6 +29,7 @@ public class IpecacItem extends Item {
         if (target instanceof ComplexMobTerrestrial) {
             ComplexMobTerrestrial entity = (ComplexMobTerrestrial)target;
             entity.addHunger(-100);
+            entity.peacefulTicks = 0;
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.FAIL;

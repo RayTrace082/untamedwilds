@@ -1,17 +1,12 @@
 package untamedwilds.init;
 
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.LanguageMap;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -34,10 +29,6 @@ import untamedwilds.item.UntamedSpawnEggItem;
 import untamedwilds.world.FaunaHandler;
 import untamedwilds.world.FaunaHandler.animalType;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +78,6 @@ public class ModEntity {
         for (EntityType<?> entity : entities) {
             event.getRegistry().register(entity);
         }
-        readEcoLevels();
     }
 
     private static <T extends Entity> EntityType<T> createEntity(boolean enable, EntityType.IFactory<T> factory, EntityClassification classification, String name, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, float sizeX, float sizeY, int baseColor, int overlayColor) {
@@ -213,21 +203,6 @@ public class ModEntity {
 
         if (!found)
             spawns.add(new FaunaHandler.SpawnListEntry(entityClass, weightedProb, groupCount));
-    }
-
-    // TODO: Reminder to rework ecoLevels
-    @Deprecated
-    private static void readEcoLevels() {
-        try (InputStream inputstream = LanguageMap.class.getResourceAsStream("/data/untamedwilds/eco_levels.json")) {
-            JsonObject jsonobject = new Gson().fromJson(new InputStreamReader(inputstream, StandardCharsets.UTF_8), JsonObject.class);
-
-            for(Map.Entry<String, JsonElement> entry : jsonobject.entrySet()) {
-                eco_levels.put(entry.getKey(), entry.getValue().getAsInt());
-            }
-        } catch (JsonParseException | IOException ioexception) {
-            UntamedWilds.LOGGER.error("Couldn't read data from /data/untamedwilds/eco_levels.json", ioexception);
-        }
-
     }
 
     /*public static void addVanillaSpawn(Class <? extends LivingEntity> entityClass, int weightedProb, int min, int max, BiomeDictionary.Type... biomes) {

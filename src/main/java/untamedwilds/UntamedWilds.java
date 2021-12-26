@@ -27,7 +27,6 @@ public class UntamedWilds {
     // TODO: Store the children's UUID in their mother's NBT, to allow checking for Children without constant AABB checking
     // TODO: Have carnivorous mobs gain hunger when attacking
     // TODO: Make "ProtectChildren" only apply to mobs of similar ecoLevel, make HurtByTargetGoal call in adult mobs in Range if the target is children
-    // TODO: Rework ecoLevels to be dynamically calculated based on HP and damage sqrt(HP * Attack) / 2.5
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";

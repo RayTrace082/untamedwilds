@@ -59,7 +59,7 @@ public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, I
         this.goalSelector.addGoal(2, new PanicGoal(this, 1.25D));
         this.goalSelector.addGoal(4, new SwimGoal(this, 4));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new HuntMobTarget<>(this, LivingEntity.class, true, false, input -> getEcoLevel(input) < 5));
+        this.targetSelector.addGoal(2, new HuntMobTarget<>(this, LivingEntity.class, true, false, input -> getEcoLevel(input) < getEcoLevel(this)));
     }
 
     public void livingTick() {

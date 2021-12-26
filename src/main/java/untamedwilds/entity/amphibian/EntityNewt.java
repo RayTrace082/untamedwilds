@@ -49,7 +49,7 @@ public class EntityNewt extends ComplexMobAmphibious implements ISpecies, INewSk
         super.registerGoals();
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1.4D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
-        this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, (float)this.getAttributeValue(Attributes.FOLLOW_RANGE), 1D, 1.3D, input -> getEcoLevel(input) > 3));
+        this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, (float)this.getAttributeValue(Attributes.FOLLOW_RANGE), 1D, 1.3D,  input -> getEcoLevel(input) > getEcoLevel(this)));
         this.goalSelector.addGoal(3, new AmphibiousTransition(this, 1D));
         this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 120));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, 120, 0, false));

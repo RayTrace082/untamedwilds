@@ -30,7 +30,7 @@ public class AnalyzerItem extends Item {
         if (target instanceof ComplexMob) {
             ComplexMob entity = (ComplexMob)target;
             String entityName = entity instanceof ISpecies ? ((ISpecies) entity).getSpeciesName() : entity.getName().getString();
-            playerIn.sendMessage(new StringTextComponent("Diagnose: " + (ConfigGamerules.genderedBreeding.get() ? entity.getGenderString() + " " : "") + entityName + " (Skin: " + entity.getSkin() + ") " + entity.getHealth() + "/" + entity.getMaxHealth() + " HP"), playerIn.getUniqueID());
+            playerIn.sendMessage(new StringTextComponent("Diagnose: " + (ConfigGamerules.genderedBreeding.get() ? entity.getGenderString() + " " : "") + entityName + " (Skin: " + entity.getSkin() + ") (Eco Level: " + ComplexMob.getEcoLevel(entity) + ") " + entity.getHealth() + "/" + entity.getMaxHealth() + " HP"), playerIn.getUniqueID());
 
             if (ConfigGamerules.scientificNames.get()) {
                 String useVarName = entity instanceof ISpecies ? "_" + ((ISpecies) entity).getRawSpeciesName(entity.getVariant()) : "";
@@ -52,7 +52,7 @@ public class AnalyzerItem extends Item {
             return ActionResultType.SUCCESS;
         }
         else {
-            playerIn.sendMessage(new StringTextComponent("Diagnose: " + target.getName().getString() + " " + target.getHealth() + "/" + target.getMaxHealth() + " HP"), playerIn.getUniqueID());
+            playerIn.sendMessage(new StringTextComponent("Diagnose: " + target.getName().getString() + " " + target.getHealth() + "/" + target.getMaxHealth() + " HP (Eco Level: " + ComplexMob.getEcoLevel(target) + ")"), playerIn.getUniqueID());
             if (target.isChild() && target instanceof AgeableEntity) {
                 AgeableEntity entity = (AgeableEntity) target;
                 playerIn.sendMessage(new StringTextComponent("This mob will grow up in " + TimeUtils.convertTicksToDays(world, entity.getGrowingAge() * -1) + " (" + entity.getGrowingAge() * -1 + " ticks)"), playerIn.getUniqueID());

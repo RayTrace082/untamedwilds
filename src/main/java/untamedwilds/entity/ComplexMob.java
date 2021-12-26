@@ -4,7 +4,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -28,7 +28,6 @@ import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.config.ConfigMobControl;
-import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
 import untamedwilds.util.EntityDataHolder;
 import untamedwilds.util.EntityUtils;
@@ -319,13 +318,15 @@ public abstract class ComplexMob extends TameableEntity {
         return EntityUtils.getSkinFromEntity(this);
     }
 
-    // Returns the ecological level of an entity. Values are data-driven, defaulting to 4 if no key is found.
+    // Returns the ecological level of an entity. Values are dynamically calculated based on current HP, Attack and Herd size (if any)
     public static int getEcoLevel(LivingEntity entity) {
-        ResourceLocation name = entity.getType().getRegistryName();
-        if (name != null && ModEntity.eco_levels.containsKey(name.toString())) {
-            return ModEntity.eco_levels.get(name.toString());
+        if (entity instanceof PlayerEntity)
+            return 6;
+        double attack = Math.max(entity.getAttributeManager().hasAttributeInstance(Attributes.ATTACK_DAMAGE) ? entity.getAttribute(Attributes.ATTACK_DAMAGE).getValue() : 1, 4);
+        if (entity instanceof ComplexMob && ((ComplexMob) entity).herd != null) {
+            return Math.round((float) Math.sqrt(entity.getHealth() * attack) / 2.5F) + ((ComplexMob) entity).herd.creatureList.size();
         }
-        return entity instanceof MonsterEntity ? 7 : 4;
+        return Math.round((float) Math.sqrt(entity.getHealth() * attack) / 2.5F);
     }
 
     protected void setAngry(boolean isAngry) { this.dataManager.set(IS_ANGRY, isAngry); }
