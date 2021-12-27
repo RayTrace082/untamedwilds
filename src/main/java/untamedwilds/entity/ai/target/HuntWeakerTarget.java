@@ -59,11 +59,8 @@ public class HuntWeakerTarget<T extends LivingEntity> extends HuntMobTarget<T> {
 
     @Override
     public boolean shouldRemoveTarget(LivingEntity entity) {
-        if (entity instanceof CreeperEntity || entity == this.goalOwner) { // TODO: Bigger bugs
+        if (entity instanceof CreeperEntity || entity == this.goalOwner || entity.getRidingEntity() != null)  // TODO: Bigger bugs
             return true; // Hardcoded Creepers out because they will absolutely destroy wildlife if targeted
-        }
-        if (entity.getRidingEntity() != null)
-            return true;
         if (entity instanceof ComplexMob && entity.getHealth() / entity.getMaxHealth() > 0.8) {
             ComplexMob ctarget = (ComplexMob)entity;
             return (this.goalOwner.getClass() == entity.getClass() && ((ComplexMob)this.goalOwner).getVariant() == ctarget.getVariant()) || !ctarget.canBeTargeted();
