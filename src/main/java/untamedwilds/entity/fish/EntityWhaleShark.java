@@ -94,7 +94,8 @@ public class EntityWhaleShark extends ComplexMobAquatic implements ISpecies, INe
             if (this.ringBufferIndex == this.ringBuffer.length) {
                 this.ringBufferIndex = 0;
             }
-            this.ringBuffer[this.ringBufferIndex][0] = MathHelper.interpolateAngle(0.5F, this.prevRotationYaw, this.rotationYaw);
+            // Just replaced the contents of MathHelper.interpolateAngle with the returned formula. Why even is this shit @OnlyIn(Client)???
+            this.ringBuffer[this.ringBufferIndex][0] = this.prevRotationYaw + 0.5F * MathHelper.wrapDegrees(this.rotationYaw - this.prevRotationYaw);
             this.ringBuffer[ringBufferIndex][1] = this.getPosY();
             Vector3d[] avector3d = new Vector3d[this.whale_shark_parts.length];
 
