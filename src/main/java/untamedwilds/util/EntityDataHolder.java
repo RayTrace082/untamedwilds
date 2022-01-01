@@ -196,13 +196,13 @@ public class EntityDataHolder {
     }
 
     @Nullable
-    public Integer getFlags(int i, String flag) {
+    public int getFlags(int i, String flag) {
         if (!this.speciesData.get(i).getFlags().isEmpty() && this.speciesData.get(i).getFlags().get(flag) != null) {
             return this.speciesData.get(i).getFlags().get(flag);
         }
         if (!this.flags.containsKey(flag)) {
             UntamedWilds.LOGGER.error("Couldn't find " + flag + " flag in ENTITY_DATA");
-            return null;
+            return 0;
         }
         return this.flags.get(flag);
     }

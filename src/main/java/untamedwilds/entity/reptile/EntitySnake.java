@@ -164,8 +164,6 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
     }
 
     // Flags Parameters
-    public int getVenomStrength() {
-        return getEntityData(this.getType()).getFlags(this.getVariant(), "venom");
-    }
+    public Integer getVenomStrength() { return getEntityData(this.getType()).getFlags(this.getVariant(), "venom");}
     public boolean isRattler() { return getEntityData(this.getType()).getFlags(this.getVariant(), "rattler") == 1; }
 }
