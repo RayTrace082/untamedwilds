@@ -285,10 +285,7 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
     }
 
     public boolean hasDimorphism(){ return (this.dataManager.get(DIMORPHISM)); }
-    private void setDimorphism(boolean dimorphism){
-        UntamedWilds.LOGGER.info("Child Dimorphism? " + getEntityData(this.getType()).getFlags(this.getVariant(), "dimorphism"));
-        this.dataManager.set(DIMORPHISM, dimorphism);
-    }
+    private void setDimorphism(boolean dimorphism){ this.dataManager.set(DIMORPHISM, dimorphism); }
 
     public void writeAdditional(CompoundNBT compound){
         super.writeAdditional(compound);
