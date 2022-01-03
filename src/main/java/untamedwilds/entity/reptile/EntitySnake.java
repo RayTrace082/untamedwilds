@@ -9,6 +9,10 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResultType;
@@ -19,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.entity.ComplexMobTerrestrial;
+import untamedwilds.entity.INeedsPostUpdate;
 import untamedwilds.entity.INewSkins;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.SmartAvoidGoal;
@@ -33,12 +38,15 @@ import untamedwilds.util.EntityUtils;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INewSkins {
+public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INewSkins, INeedsPostUpdate {
+
+    private static final DataParameter<Boolean> RATTLER = EntityDataManager.createKey(EntitySnake.class, DataSerializers.BOOLEAN);
 
     public static Animation ANIMATION_TONGUE;
 
     public EntitySnake(EntityType<? extends ComplexMobTerrestrial> type, World worldIn) {
         super(type, worldIn);
+        this.dataManager.register(RATTLER, false);
         ANIMATION_TONGUE = Animation.create(10);
         this.ticksToSit = 20;
     }
@@ -165,5 +173,22 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
 
     // Flags Parameters
     public Integer getVenomStrength() { return getEntityData(this.getType()).getFlags(this.getVariant(), "venom");}
-    public boolean isRattler() { return getEntityData(this.getType()).getFlags(this.getVariant(), "rattler") == 1; }
+
+    @Override
+    public void updateAttributes() {
+        this.setRattler(getEntityData(this.getType()).getFlags(this.getVariant(), "rattler") == 1);
+    }
+
+    public boolean isRattler(){ return (this.dataManager.get(RATTLER)); }
+    private void setRattler(boolean dimorphism){ this.dataManager.set(RATTLER, dimorphism); }
+
+    public void writeAdditional(CompoundNBT compound){
+        super.writeAdditional(compound);
+        compound.putBoolean("rattler", this.isRattler());
+    }
+
+    public void readAdditional(CompoundNBT compound){
+        super.readAdditional(compound);
+        this.setRattler(compound.getBoolean("rattler"));
+    }
 }
