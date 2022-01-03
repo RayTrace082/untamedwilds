@@ -16,7 +16,7 @@
   "item.untamedwilds.bison_spawn_egg": "Bison Spawn Egg",
   "entity.untamedwilds.bison": "Bison",
   "entity.untamedwilds.bison_plains": "Plains Bison",
-  "entity.untamedwilds.bison_plains.sciname": "Bison bison",
+  "entity.untamedwilds.bison_plains.sciname": "Bison bison bison",
   "entity.untamedwilds.bison_wisent": "Wisent",
   "entity.untamedwilds.bison_wisent.sciname": "Bison bonasus",
   "untamedwilds.subtitles.bison.ambient": "Bison ruts",
@@ -80,6 +80,7 @@
   "item.untamedwilds.bear_spawn_egg": "Bear Spawn Egg",
   "item.untamedwilds.food_bear_raw": "Raw Bear Meat",
   "item.untamedwilds.food_bear_cooked": "Cooked Bear Meat",
+  "entity.untamedwilds.bear": "Bear",
   "entity.untamedwilds.bear_black": "Black Bear",
   "entity.untamedwilds.bear_black.sciname": "Ursus americanus",
   "entity.untamedwilds.bear_brown": "Brown Bear",
@@ -206,7 +207,7 @@
 
   "item.untamedwilds.arowana_spawn_egg": "Arowana Spawn Egg",
   "item.untamedwilds.egg_arowana": "Arowana Roe",
-  "entity.untamedwilds.arowana": "arowana",
+  "entity.untamedwilds.arowana": "Arowana",
   "entity.untamedwilds.arowana_black": "Black Arowana",
   "entity.untamedwilds.arowana_black.sciname": "Osteoglossum ferreirai",
   "entity.untamedwilds.arowana_dragon": "Super Red Arowana",
@@ -276,7 +277,7 @@
 
   "item.untamedwilds.football_fish_spawn_egg": "Football Fish Spawn Egg",
   "item.untamedwilds.egg_football_fish": "Football Fish Roe",
-  "entity.untamedwilds.football_fish": "football fish",
+  "entity.untamedwilds.football_fish": "Football Fish",
   "entity.untamedwilds.football_fish_atlantic": "Atlantic Football Fish",
   "entity.untamedwilds.football_fish_atlantic.sciname": "Himantolophus groenlandicus",
   "item.untamedwilds.bucket_football_fish_atlantic": "Bucket of Football Fish",
@@ -405,6 +406,7 @@
   "item.untamedwilds.hide_bigcat_puma": "Mountain Lion Hide",
   "item.untamedwilds.hide_bigcat_snow_leopard": "Snow Leopard Hide",
   "item.untamedwilds.hide_bigcat_tiger": "Tiger Hide",
+  "entity.untamedwilds.big_cat": "Big Cat",
 
   "item.untamedwilds.giant_salamander_spawn_egg": "Giant Salamander Spawn Egg",
   "item.untamedwilds.egg_giant_salamander": "Giant Salamander Egg",
