@@ -27,9 +27,11 @@ public class FeatureCritterBurrow extends Feature<NoFeatureConfig> {
     }
 
     public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        pos = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos);
+        int i = rand.nextInt(8) - rand.nextInt(8);
+        int j = rand.nextInt(8) - rand.nextInt(8);
+        int k = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos.getX() + i, pos.getZ() + j);
+        pos = new BlockPos(pos.getX() + i, k, pos.getZ() + j);
         FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.CRITTER));
-        boolean offsetY = Math.abs(pos.getY() - world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos).getY()) >= 10;
 
         Entity entity = entry.entityType.create(world.getWorld());
         if (entity != null && world.getBlockState(pos).canBeReplacedByLeaves(world, pos) && world.getBlockState(pos.down()).canSpawnMobs(world, pos, entity)) {
