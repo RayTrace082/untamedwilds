@@ -13,6 +13,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.gen.Heightmap;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
+import untamedwilds.entity.INeedsPostUpdate;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.util.EntityUtils;
 
@@ -137,6 +138,10 @@ public class FaunaSpawn {
                                                     k = EntityUtils.getPackSize(entityType, species);
                                             } else {
                                                 ((ComplexMob)mobentity).setVariant(species);
+                                                ((ComplexMob)mobentity).chooseSkinForSpecies((ComplexMob)mobentity, false);
+                                                if (mobentity instanceof INeedsPostUpdate) {
+                                                    ((INeedsPostUpdate)mobentity).updateAttributes();
+                                                }
                                             } // Wrong spawning messages are most likely due to their inclusion on onMobSpawning, not here
                                         }
                                         // Two possible fail-states, entity being assigned variant 99 (no valid variant found) or the Entity Data does not exist
