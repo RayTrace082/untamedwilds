@@ -4,8 +4,8 @@
 	"texture_size": [32, 32],
 	"textures": {
 		"0": "untamedwilds:block/flora/hemlock_stem",
-		"3": "untamedwilds:block/flora/hemlock_2",
-		"4": "untamedwilds:block/flora/hemlock_2",
+		"3": "untamedwilds:block/flora/hemlock_3",
+		"4": "untamedwilds:block/flora/hemlock_3",
 		"particle": "untamedwilds:block/flora/hemlock_2"
 	},
 	"elements": [

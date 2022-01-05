@@ -4,8 +4,8 @@
 	"texture_size": [32, 32],
 	"textures": {
 		"0": "untamedwilds:block/flora/hemlock_stem",
-		"3": "untamedwilds:block/flora/hemlock_2",
-		"4": "untamedwilds:block/flora/hemlock_2",
+		"1": "untamedwilds:block/flora/hemlock_1",
+		"2": "untamedwilds:block/flora/hemlock_flower",
 		"particle": "untamedwilds:block/flora/hemlock_2"
 	},
 	"elements": [
@@ -15,8 +15,8 @@
 			"to": [20, 16, 8],
 			"rotation": {"angle": 22.5, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
-				"north": {"uv": [2, 8, 13.5, 16], "texture": "#0"},
-				"south": {"uv": [2, 8, 13.5, 16], "texture": "#0"}
+				"north": {"uv": [2, 0, 13.5, 8], "texture": "#0"},
+				"south": {"uv": [2, 0, 13.5, 8], "texture": "#0"}
 			}
 		},
 		{
@@ -25,17 +25,26 @@
 			"to": [8, 16, 20],
 			"rotation": {"angle": 22.5, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
-				"east": {"uv": [2, 8, 13.5, 16], "texture": "#0"},
-				"west": {"uv": [2, 8, 13.5, 16], "texture": "#0"}
+				"east": {"uv": [2, 0, 13.5, 8], "texture": "#0"},
+				"west": {"uv": [2, 0, 13.5, 8], "texture": "#0"}
 			}
 		},
 		{
-			"name": "leaves_3",
+			"name": "leaves_1",
+			"from": [-8, 4, -8],
+			"to": [24, 4, 24],
+			"faces": {
+				"up": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#1"}
+			}
+		},
+		{
+			"name": "flowers",
 			"from": [-8, 12, -8],
 			"to": [24, 12, 24],
 			"faces": {
-				"up": {"uv": [0, 0, 16, 16], "texture": "#4"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#4"}
+				"up": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#2"}
 			}
 		}
 	],
