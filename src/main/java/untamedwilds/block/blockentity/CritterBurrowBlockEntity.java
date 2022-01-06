@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.ComplexMob;
@@ -89,7 +90,7 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
                         }
                         if (spawn instanceof ComplexMob) {
                             ComplexMob entitySpawn = (ComplexMob) spawn;
-                            entitySpawn.setVariant(this.variant);
+                            entitySpawn.setVariant(MathHelper.clamp(this.variant, 0, EntityUtils.getNumberOfSpecies(this.entityType) - 1));
                             entitySpawn.setHome(this.getPos());
                         }
                         worldIn.addEntity(spawn);

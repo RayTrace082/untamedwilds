@@ -17,6 +17,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.*;
@@ -387,7 +388,7 @@ public abstract class ComplexMob extends TameableEntity {
         if (compound.contains("OwnerUUID")) {
             this.setCommandInt(compound.getInt("Command"));
         }
-        this.setVariant(compound.getInt("Variant"));
+        this.setVariant(MathHelper.clamp(compound.getInt("Variant"), 0, EntityUtils.getNumberOfSpecies(this.getType()) - 1));
         this.setSkin(compound.getInt("Skin"));
         this.setMobSize(compound.getFloat("Size"));
         this.setGender(compound.getInt("Gender"));

@@ -39,14 +39,14 @@ public class FeatureCritterBurrow extends Feature<NoFeatureConfig> {
             if (entity instanceof ISpecies) {
                 Optional<RegistryKey<Biome>> optional = world.func_242406_i(pos);
                 int variant = ((ISpecies)entity).setSpeciesByBiome(optional.get(), world.getBiome(pos), SpawnReason.CHUNK_GENERATION);
-                if (variant != 99) {
-                    world.setBlockState(pos, ModBlock.BURROW.get().getDefaultState(), 1);
-                    CritterBurrowBlockEntity te = (CritterBurrowBlockEntity)world.getTileEntity(pos);
-                    te.setCount(Math.max(3, entry.groupCount * (rand.nextInt(2) + 1)));
-                    te.setEntityType(entry.entityType);
-                    te.setVariant(variant);
-                    entity.remove();
-                }
+                if (variant == 99)
+                    return false;
+                world.setBlockState(pos, ModBlock.BURROW.get().getDefaultState(), 1);
+                CritterBurrowBlockEntity te = (CritterBurrowBlockEntity)world.getTileEntity(pos);
+                te.setCount(Math.max(3, entry.groupCount * (rand.nextInt(2) + 1)));
+                te.setEntityType(entry.entityType);
+                te.setVariant(variant);
+                entity.remove();
             }
             else {
                 world.setBlockState(pos, ModBlock.BURROW.get().getDefaultState(), 1);
