@@ -13,7 +13,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.server.ServerWorld;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
-import untamedwilds.entity.ComplexMob;
 import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModTags;
 import untamedwilds.util.EntityUtils;
@@ -37,7 +36,6 @@ public class CageBlockEntity extends TileEntity {
     public boolean cageEntity(MobEntity entity) {
         if (!this.hasCagedEntity()) {
             if (!isBlacklisted(entity) && (ConfigGamerules.easyMobCapturing.get() || entity.getAttackTarget() == null)) {
-                ((ComplexMob)entity).setVariant(99);
                 this.setTagCompound(EntityUtils.writeEntityToNBT( entity));
                 this.setCagedEntity(true);
                 entity.remove();
