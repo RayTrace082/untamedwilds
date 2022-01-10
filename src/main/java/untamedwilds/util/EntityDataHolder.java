@@ -181,6 +181,14 @@ public class EntityDataHolder {
     }
 
     @Nullable
+    public SoundEvent getSoundsWithAlt(int i, String sound_id, SoundEvent alt_sound) {
+        SoundEvent event = this.getSounds(i, sound_id);
+        if (event == null)
+            return alt_sound;
+        return event;
+    }
+
+    @Nullable
     public SoundEvent getSounds(int i, String sound_id) {
         if (!this.speciesData.get(i).getSounds().isEmpty() && this.speciesData.get(i).getSounds().get(sound_id) != null) {
             return this.speciesData.get(i).getSounds().get(sound_id);

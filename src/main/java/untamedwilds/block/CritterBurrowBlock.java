@@ -91,13 +91,13 @@ public class CritterBurrowBlock extends Block implements IWaterLoggable {
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-
         if (worldIn.isRemote || hand.equals(Hand.OFF_HAND)) {
             return ActionResultType.FAIL;
         }
         else {
             CritterBurrowBlockEntity te = (CritterBurrowBlockEntity) worldIn.getTileEntity(pos);
             if (playerIn.isCreative() && te != null) {
+
                 if (playerIn.isSneaking())
                     te.cooldown = 1;
                 else {

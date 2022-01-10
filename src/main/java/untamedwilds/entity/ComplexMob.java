@@ -17,7 +17,6 @@ import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.*;
@@ -95,35 +94,19 @@ public abstract class ComplexMob extends TameableEntity {
     }
 
     protected SoundEvent getAmbientSound() {
-        try {
-            return getEntityData(this.getType()).getSounds(this.getVariant(), "ambient");
-        } catch (NullPointerException e) {
-            return null;
-        }
+        return getEntityData(this.getType()).getSounds(this.getVariant(), "ambient");
     }
 
     protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
-        try {
-            return getEntityData(this.getType()).getSounds(this.getVariant(), "hurt");
-        } catch (NullPointerException e) {
-            return SoundEvents.ENTITY_GENERIC_HURT;
-        }
+        return getEntityData(this.getType()).getSoundsWithAlt(this.getVariant(), "hurt", SoundEvents.ENTITY_GENERIC_HURT);
     }
 
     protected SoundEvent getDeathSound() {
-        try {
-            return getEntityData(this.getType()).getSounds(this.getVariant(), "death");
-        } catch (NullPointerException e) {
-            return SoundEvents.ENTITY_GENERIC_DEATH;
-        }
+        return getEntityData(this.getType()).getSoundsWithAlt(this.getVariant(), "death", SoundEvents.ENTITY_GENERIC_DEATH);
     }
 
     protected SoundEvent getThreatSound() {
-        try {
-            return getEntityData(this.getType()).getSounds(this.getVariant(), "threat");
-        } catch (NullPointerException e) {
-            return null;
-        }
+        return getEntityData(this.getType()).getSounds(this.getVariant(), "threat");
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
@@ -338,7 +321,6 @@ public abstract class ComplexMob extends TameableEntity {
     // 1 - Follow: The mob will follow it's owner, occasionally teleporting
     // 2 - Sit: The mob will sit in place
     // 3 - Guard: The mob will sit in place and attack nearby mobs (NIY)
-    // Commands can be implicitly used to check if a mob is tamed or not
     public void setCommandInt(int command) { this.dataManager.set(COMMAND, command % 3); }
     public int getCommandInt() { return (this.dataManager.get(COMMAND)); }
 
@@ -388,7 +370,7 @@ public abstract class ComplexMob extends TameableEntity {
         if (compound.contains("OwnerUUID")) {
             this.setCommandInt(compound.getInt("Command"));
         }
-        this.setVariant(MathHelper.clamp(compound.getInt("Variant"), 0, EntityUtils.getNumberOfSpecies(this.getType()) - 1));
+        this.setVariant(EntityUtils.getClampedNumberOfSpecies(compound.getInt("Variant"), this.getType()));
         this.setSkin(compound.getInt("Skin"));
         this.setMobSize(compound.getFloat("Size"));
         this.setGender(compound.getInt("Gender"));

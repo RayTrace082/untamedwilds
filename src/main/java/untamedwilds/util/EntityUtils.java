@@ -344,6 +344,14 @@ public abstract class EntityUtils {
         return 0;
     }
 
+    public static int getClampedNumberOfSpecies(int i, EntityType<?> typeIn) {
+        int size = Math.max(0, EntityUtils.getNumberOfSpecies(typeIn) - 1);
+        if (i > size) {
+            UntamedWilds.LOGGER.warn("Correcting wrong Variant value of " + i + " to " + size);
+        }
+        return MathHelper.clamp(i, 0, size);
+    }
+
     // Takes the skin from the TEXTURES_COMMON or TEXTURES_RARE array
     public static ResourceLocation getSkinFromEntity(ComplexMob entityIn) {
         if (entityIn.getType().getRegistryName() != null) {

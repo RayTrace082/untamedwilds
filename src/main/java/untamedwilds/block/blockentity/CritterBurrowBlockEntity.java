@@ -83,14 +83,17 @@ public class CritterBurrowBlockEntity extends TileEntity implements ITickableTil
                     }
                 }
                 else if (this.getCount() > 0 && this.getEntityType() != null) {
-                    Entity spawn = this.getEntityType().create(worldIn, null, null, null, blockpos, SpawnReason.CHUNK_GENERATION, true, false);
+                    // Turns out that calling EntityType.create(...) will fucking crash the game if it pulls an invalid variant
+                    //Entity spawn = this.getEntityType().create(worldIn, null, null, null, blockpos, SpawnReason.CHUNK_GENERATION, true, false);
+                    Entity spawn = this.getEntityType().create(worldIn);
                     if (spawn != null) {
+                        spawn.setLocationAndAngles(blockpos.getX() + 0.5D, blockpos.getY(), blockpos.getZ() + 0.5D, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
                         if (spawn instanceof MobEntity) {
                             ((MobEntity)spawn).onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(blockpos), SpawnReason.CHUNK_GENERATION, null, null);
                         }
                         if (spawn instanceof ComplexMob) {
                             ComplexMob entitySpawn = (ComplexMob) spawn;
-                            entitySpawn.setVariant(MathHelper.clamp(this.variant, 0, EntityUtils.getNumberOfSpecies(this.entityType) - 1));
+                            entitySpawn.setVariant(EntityUtils.getClampedNumberOfSpecies(this.variant, this.entityType));
                             entitySpawn.setHome(this.getPos());
                         }
                         worldIn.addEntity(spawn);
