@@ -86,6 +86,7 @@ public class FaunaSpawn {
             if (rand.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(Objects.requireNonNull(worldIn.getBiome(pos).getRegistryName()))) {
                 int k = 1;
                 int species = -1;
+
                 for(int packSize = 0; packSize < k; ++packSize) {
                     int x = pos.getX();
                     int y = pos.getY();
@@ -130,7 +131,7 @@ public class FaunaSpawn {
                                 if (net.minecraftforge.common.ForgeHooks.canEntitySpawn(mobentity, worldIn, d0, blockpos.getY(), d1, null, SpawnReason.CHUNK_GENERATION) == -1) continue;
                                 if (mobentity.canSpawn(worldIn, SpawnReason.CHUNK_GENERATION) && mobentity.isNotColliding(worldIn)) {
                                     mobentity.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(mobentity.getPosition()), SpawnReason.CHUNK_GENERATION, null, null);
-                                    if (mobentity instanceof ComplexMob) {
+                                    if (mobentity instanceof ComplexMob && mobentity.isAlive()) {
                                         if (mobentity instanceof ISpecies) {
                                             if (species == -1) {
                                                 species = ((ComplexMob)mobentity).getVariant();
@@ -150,7 +151,7 @@ public class FaunaSpawn {
                                             return false;
                                         }
                                     }
-                                    if (UntamedWilds.DEBUG && mobentity instanceof ComplexMob) {
+                                    if (UntamedWilds.DEBUG && mobentity instanceof ComplexMob && mobentity.isAlive()) {
                                         if (mobentity instanceof ISpecies) {
                                             UntamedWilds.LOGGER.info("Spawned: " + ((ComplexMob)mobentity).getGenderString() + " " + ((ISpecies)mobentity).getSpeciesName());
                                         }
@@ -159,7 +160,9 @@ public class FaunaSpawn {
                                         }
                                     }
 
-                                    worldIn.func_242417_l(mobentity);
+                                    if (mobentity.isAlive()) {
+                                        worldIn.func_242417_l(mobentity);
+                                    }
                                     break;
                                 }
                             }
