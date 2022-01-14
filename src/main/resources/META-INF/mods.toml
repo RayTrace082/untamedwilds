@@ -14,7 +14,7 @@ authors="RayTrace082"
 
 description='''Expanding on the natural world of Minecraft.'''
 
-[[dependencies.citadel]]
+[[dependencies.untamedwilds]]
     modId="citadel"
     mandatory=true
     versionRange="[1.6.0,)"
