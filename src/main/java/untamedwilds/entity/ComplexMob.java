@@ -28,10 +28,7 @@ import untamedwilds.compat.CompatSereneSeasons;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.init.ModItems;
-import untamedwilds.util.EntityDataHolder;
-import untamedwilds.util.EntityUtils;
-import untamedwilds.util.ResourceListenerEvent;
-import untamedwilds.util.SpeciesDataHolder;
+import untamedwilds.util.*;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -55,7 +52,7 @@ public abstract class ComplexMob extends TameableEntity {
     public float turn_speed = 1F;
     public int peacefulTicks;
     public static HashMap<EntityType<?>, EntityDataHolder> ENTITY_DATA_HASH = new HashMap<>();
-    public static HashMap<EntityType<?>, HashMap<Integer, String>> CLIENT_DATA_HASH = new HashMap<>();
+    public static HashMap<EntityType<?>, EntityDataHolderClient> CLIENT_DATA_HASH = new HashMap<>();
 
     public ComplexMob(EntityType<? extends ComplexMob> type, World worldIn){
         super(type, worldIn);
@@ -94,19 +91,19 @@ public abstract class ComplexMob extends TameableEntity {
     }
 
     protected SoundEvent getAmbientSound() {
-        return getEntityData(this.getType()).getSounds(this.getVariant(), "ambient");
+        return EntityUtils.getSound(this.getType(), this.getVariant(), "ambient");
     }
 
     protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
-        return getEntityData(this.getType()).getSoundsWithAlt(this.getVariant(), "hurt", SoundEvents.ENTITY_GENERIC_HURT);
+        return EntityUtils.getSound(this.getType(), this.getVariant(), "hurt", SoundEvents.ENTITY_GENERIC_HURT);
     }
 
     protected SoundEvent getDeathSound() {
-        return getEntityData(this.getType()).getSoundsWithAlt(this.getVariant(), "death", SoundEvents.ENTITY_GENERIC_DEATH);
+        return EntityUtils.getSound(this.getType(), this.getVariant(), "death", SoundEvents.ENTITY_GENERIC_DEATH);
     }
 
     protected SoundEvent getThreatSound() {
-        return getEntityData(this.getType()).getSounds(this.getVariant(), "threat");
+        return EntityUtils.getSound(this.getType(), this.getVariant(), "threat");
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
@@ -156,9 +153,9 @@ public abstract class ComplexMob extends TameableEntity {
         processSkins(dataIn, typeIn.getRegistryName().getPath());
         for (SpeciesDataHolder speciesData : ENTITY_DATA_HASH.get(typeIn).getSpeciesData()) {
             if (!ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
-                ComplexMob.CLIENT_DATA_HASH.put(typeIn, new HashMap<>());
+                ComplexMob.CLIENT_DATA_HASH.put(typeIn, new EntityDataHolderClient(new HashMap<>(), new HashMap<>()));
             }
-            ComplexMob.CLIENT_DATA_HASH.get(typeIn).put(speciesData.getVariant(), speciesData.getName());
+            ComplexMob.CLIENT_DATA_HASH.get(typeIn).species_data.put(speciesData.getVariant(), speciesData.getName());
         }
     }
 

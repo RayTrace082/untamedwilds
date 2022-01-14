@@ -8,50 +8,50 @@ import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.util.EntityDataHolderClient;
-import untamedwilds.util.EntityUtils;
 
 import java.util.HashMap;
 import java.util.function.Supplier;
 
-public class SyncTextureData {
+@Deprecated
+public class SyncSoundData {
 
     private final ResourceLocation entityName;
-    private final String speciesName;
-    private final Integer skinsData;
     private final Integer id;
+    private final String soundType;
+    private final ResourceLocation soundResource;
 
-    public SyncTextureData(PacketBuffer buf) {
+    public SyncSoundData(PacketBuffer buf) {
         entityName = buf.readResourceLocation();
-        speciesName = buf.readString();
-        skinsData = buf.readInt();
         id = buf.readInt();
+        soundType = buf.readString();
+        soundResource = buf.readResourceLocation();
     }
 
-    public SyncTextureData(ResourceLocation str, String species_name, Integer skins, Integer id) {
+    public SyncSoundData(ResourceLocation str, Integer id, String soundType, ResourceLocation soundResource) {
         this.entityName = str;
-        this.speciesName = species_name;
-        this.skinsData = skins;
         this.id = id;
+        this.soundType = soundType;
+        this.soundResource = soundResource;
     }
 
     public void toBytes(PacketBuffer buf) {
         buf.writeResourceLocation(entityName);
-        buf.writeString(speciesName);
-        buf.writeInt(skinsData);
         buf.writeInt(id);
+        buf.writeString(soundType);
+        buf.writeResourceLocation(soundResource);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             if (UntamedWilds.DEBUG) {
-                UntamedWilds.LOGGER.info("Handling texture data for entity: " + entityName + " with species: " + speciesName);
+                UntamedWilds.LOGGER.info("Handling sound data for entity: " + entityName + " with species: " + id);
             }
             EntityType<?> type = ForgeRegistries.ENTITIES.getValue(entityName);
             if (!ComplexMob.CLIENT_DATA_HASH.containsKey(type)) {
                 ComplexMob.CLIENT_DATA_HASH.put(type, new EntityDataHolderClient(new HashMap<>(), new HashMap<>()));
             }
-            EntityUtils.buildSkinArrays(entityName.getPath(), speciesName, skinsData, id, ComplexMob.TEXTURES_COMMON, ComplexMob.TEXTURES_RARE);
-            ComplexMob.CLIENT_DATA_HASH.get(type).addSpeciesName(id, speciesName);
+            ComplexMob.CLIENT_DATA_HASH.get(type).addSoundData(id, soundType, soundResource);
+            //ComplexMob.CLIENT_DATA_HASH.get(type).put(id, speciesName);
         });
         return true;
     }

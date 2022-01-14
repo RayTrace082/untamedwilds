@@ -42,6 +42,7 @@ public class UntamedWilds {
         ModBlock.TILE_ENTITIES.register(eventBus);
         ModItems.ITEMS.register(eventBus);
         ModItems.registerSpawnItems();
+        ModSounds.SOUNDS.register(eventBus);
         ModAdvancementTriggers.register();
         UntamedWildsGenerator.FEATURES.register(eventBus);
         CompatBridge.RegisterCompat();

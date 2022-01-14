@@ -25,6 +25,7 @@ public class EntityDataHolder {
             Codec.INT.fieldOf("growing_time").orElse(1).forGetter((p_237054_0_) -> p_237054_0_.growing_time),
             Codec.INT.fieldOf("offspring").orElse(1).forGetter((p_237054_0_) -> p_237054_0_.offspring),
             Codec.STRING.fieldOf("breeding_season").orElse("ANY").forGetter((p_237054_0_) -> p_237054_0_.breeding_season),
+            //Codec.unboundedMap(Codec.STRING, SoundEvent.CODEC).fieldOf("sounds").orElse(Collections.emptyMap()).forGetter((p_237052_0_) -> p_237052_0_.sounds),
             Codec.unboundedMap(Codec.STRING, SoundEvent.CODEC).fieldOf("sounds").orElse(Collections.emptyMap()).forGetter((p_237052_0_) -> p_237052_0_.sounds),
             Codec.unboundedMap(Codec.STRING, Codec.INT).fieldOf("flags").orElse(Collections.emptyMap()).forGetter((p_237054_0_) -> p_237054_0_.flags),
             SpeciesDataHolder.CODEC.listOf().fieldOf("species").orElse(new ArrayList<>()).forGetter((p_237052_0_) -> p_237052_0_.speciesData))
@@ -112,7 +113,6 @@ public class EntityDataHolder {
         return this.speciesData.get(i).getName();
     }
 
-
     public float getScale(int i) {
         if (this.speciesData.get(i).getModelScale() < 0) {
             return this.modelScale;
@@ -194,6 +194,10 @@ public class EntityDataHolder {
             return this.speciesData.get(i).getSounds().get(sound_id);
         }
         return this.sounds.get(sound_id);
+    }
+
+    public Map<String, SoundEvent> getBaseSounds() {
+        return this.sounds;
     }
 
     public Integer getGroupCount(int i) {

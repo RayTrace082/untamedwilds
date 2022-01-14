@@ -25,6 +25,12 @@ public class UntamedInstance {
                 .decoder(SyncTextureData::new)
                 .consumer(SyncTextureData::handle)
                 .add();
+
+        /*INSTANCE.messageBuilder(SyncSoundData.class, ID++)
+                .encoder(SyncSoundData::toBytes)
+                .decoder(SyncSoundData::new)
+                .consumer(SyncSoundData::handle)
+                .add();*/
     }
 
     public static void sendToClient(Object packet, ServerPlayerEntity player) {

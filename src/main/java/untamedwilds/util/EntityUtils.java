@@ -21,6 +21,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -327,7 +328,7 @@ public abstract class EntityUtils {
             return ComplexMob.ENTITY_DATA_HASH.get(typeIn).getName(variantIn);
         }
         else if (ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
-            return ComplexMob.CLIENT_DATA_HASH.get(typeIn).get(variantIn);
+            return ComplexMob.CLIENT_DATA_HASH.get(typeIn).getSpeciesName(variantIn);
         }
         //UntamedWilds.LOGGER.warn("There's no name provided for the species");
         return "";
@@ -338,10 +339,31 @@ public abstract class EntityUtils {
             return ComplexMob.ENTITY_DATA_HASH.get(typeIn).getSpeciesData().size();
         }
         else if (ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
-            return ComplexMob.CLIENT_DATA_HASH.get(typeIn).size();
+            return ComplexMob.CLIENT_DATA_HASH.get(typeIn).getNumberOfSpecies();
         }
         UntamedWilds.LOGGER.warn("There's no species provided for the EntityType");
         return 0;
+    }
+
+    public static SoundEvent getSound(EntityType<?> typeIn, int variantIn, String sound_type) {
+        return getSound(typeIn, variantIn, sound_type, null);
+    }
+
+    public static SoundEvent getSound(EntityType<?> typeIn, int variantIn, String sound_type, @Nullable SoundEvent fallback) {
+        if (ComplexMob.ENTITY_DATA_HASH.containsKey(typeIn)) {
+            SoundEvent location = ComplexMob.ENTITY_DATA_HASH.get(typeIn).getSounds(variantIn, sound_type);
+            if (location != null) {
+                return ForgeRegistries.SOUND_EVENTS.getValue(location.name);
+            }
+        }
+        /*else if (ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
+            SoundEvent location = ComplexMob.CLIENT_DATA_HASH.get(typeIn).getSounds(variantIn, sound_type);
+            if (location != null) {
+                return ForgeRegistries.SOUND_EVENTS.getValue(location.name);
+            }
+        }*/
+        //UntamedWilds.LOGGER.warn("There's no name provided for the species");
+        return fallback;
     }
 
     public static int getClampedNumberOfSpecies(int i, EntityType<?> typeIn) {

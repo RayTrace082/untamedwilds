@@ -82,14 +82,24 @@ public class ResourceListenerEvent {
     }
 
     @SubscribeEvent
-    public static void onPlayerLogIn(PlayerEvent.PlayerLoggedInEvent event) {
+    public static void onPlayerLogIn(PlayerEvent.PlayerLoggedInEvent event) throws NoSuchFieldException {
         UntamedWilds.LOGGER.info("Firing player login event");
         registerData();
+
         for (EntityType<?> types : ComplexMob.ENTITY_DATA_HASH.keySet()) {
             ResourceLocation entityName = types.getRegistryName();
             int size = 0;
-            UntamedWilds.LOGGER.info("Sending entity data for " + entityName);
+            /*for (String entry : ComplexMob.ENTITY_DATA_HASH.get(types).getBaseSounds().keySet()) {
+                ResourceLocation sound = ComplexMob.ENTITY_DATA_HASH.get(types).getBaseSounds().get(entry).name;
+                if (sound != null) {
+                    UntamedInstance.sendToClient(new SyncSoundData(entityName, -1, entry, sound), (ServerPlayerEntity) event.getPlayer());
+                }
+            }*/
+
             for (SpeciesDataHolder speciesData : ComplexMob.ENTITY_DATA_HASH.get(types).getSpeciesData()) {
+                /*for (Map.Entry<String, ResourceLocation> entry : speciesData.sounds_input.entrySet()) {
+                    UntamedInstance.sendToClient(new SyncSoundData(entityName, size, entry.getKey(), entry.getValue()), (ServerPlayerEntity) event.getPlayer());
+                }*/
                 UntamedInstance.sendToClient(new SyncTextureData(entityName, speciesData.getName(), speciesData.getSkins(), size++), (ServerPlayerEntity) event.getPlayer());
             }
         }
