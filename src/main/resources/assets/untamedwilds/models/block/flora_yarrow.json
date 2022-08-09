@@ -1,0 +1,65 @@
+{
+	"ambientocclusion": false,
+	"texture_size": [16, 32],
+	"textures": {
+		"0": "untamedwilds:block/flora/yarrow",
+		"1": "untamedwilds:block/flora/yarrow_white",
+		"particle": "untamedwilds:block/flora/yarrow"
+	},
+	"elements": [
+		{
+			"name": "stems_1",
+			"from": [0, 0, 4],
+			"to": [16, 16, 4],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 8], "texture": "#0", "tintindex": 0},
+				"south": {"uv": [0, 0, 16, 8], "texture": "#0", "tintindex": 0}
+			}
+		},
+		{
+			"name": "stems_2",
+			"from": [0, 0, 12],
+			"to": [16, 16, 12],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 8], "texture": "#0", "tintindex": 0},
+				"south": {"uv": [0, 0, 16, 8], "texture": "#0", "tintindex": 0}
+			}
+		},
+		{
+			"name": "stems_3",
+			"from": [4, 0, 0],
+			"to": [4, 16, 16],
+			"faces": {
+				"east": {"uv": [0, 0, 16, 8], "texture": "#0", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 8], "texture": "#0", "tintindex": 0}
+			}
+		},
+		{
+			"name": "stems_4",
+			"from": [12, 0, 0],
+			"to": [12, 16, 16],
+			"faces": {
+				"east": {"uv": [0, 0, 16, 8], "texture": "#0", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 8], "texture": "#0", "tintindex": 0}
+			}
+		},
+		{
+			"name": "flower_top",
+			"from": [0, 12, 0],
+			"to": [16, 12, 16],
+			"faces": {
+				"up": {"uv": [0, 0, 16, 8], "texture": "#1"},
+				"down": {"uv": [0, 0, 16, 8], "texture": "#1"}
+			}
+		},
+		{
+			"name": "flower_bottom",
+			"from": [0, 11, 0],
+			"to": [16, 11, 16],
+			"faces": {
+				"up": {"uv": [0, 8, 16, 16], "texture": "#1"},
+				"down": {"uv": [0, 8, 16, 16], "texture": "#1"}
+			}
+		}
+	]
+}

@@ -1,14 +1,15 @@
 package untamedwilds.entity.ai.target;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.TargetGoal;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.phys.AABB;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
+import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
@@ -18,93 +19,84 @@ public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
     protected final Class<T> targetClass;
     protected final Sorter sorter;
     protected Predicate<? super T> targetEntitySelector;
-    protected T targetEntity;
     private final int threshold;
     private final boolean isCannibal;
 
-    public HuntMobTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, boolean isCannibal, final Predicate<? super T > targetSelector) {
+    public HuntMobTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, boolean isCannibal, final Predicate<LivingEntity> targetSelector) {
         this(creature, classTarget, checkSight, 200, isCannibal, targetSelector);
     }
 
-    public HuntMobTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, int hungerThreshold, boolean isCannibal, final Predicate<? super T> targetSelector) {
+    public HuntMobTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, int hungerThreshold, boolean isCannibal, final Predicate<LivingEntity> targetSelector) {
         super(creature, checkSight, true);
         this.targetClass = classTarget;
         this.sorter = new Sorter(creature);
-        this.setMutexFlags(EnumSet.of(Flag.TARGET));
+        this.setFlags(EnumSet.of(Flag.TARGET));
         this.threshold = hungerThreshold;
         this.isCannibal = isCannibal;
-        this.targetEntitySelector = (Predicate<T>) entity -> {
-            if (targetSelector != null && !targetSelector.test(entity)) {
-                return false;
-            }
-            return this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
-        };
+        this.targetEntitySelector = entity -> isValidTarget(entity, targetSelector);
     }
 
-    public boolean shouldExecute() {
-        if (this.goalOwner.isChild() || this.goalOwner.getHealth() < this.goalOwner.getMaxHealth() / 3) {
+    protected boolean isValidTarget(LivingEntity entity, @Nullable Predicate<LivingEntity> predicate) {
+        if (entity instanceof Creeper || entity.equals(this.mob) || (predicate != null && !predicate.test(entity))) {
             return false;
         }
-        if (this.goalOwner instanceof ComplexMob) {
-            if (((ComplexMob)this.goalOwner).peacefulTicks != 0) {
+        if (!this.isCannibal && this.mob.getClass() == entity.getClass() && this.mob instanceof ComplexMob attacker && entity instanceof ComplexMob defender) {
+            if (attacker.getVariant() == defender.getVariant()) {
                 return false;
             }
-            if (this.goalOwner instanceof ComplexMobTerrestrial) {
-                ComplexMobTerrestrial temp = (ComplexMobTerrestrial) this.goalOwner;
-                if (temp.isTamed() || temp.getHunger() > this.threshold) {
+        }
+        return canAttack(entity, TargetingConditions.forCombat().range(getFollowDistance()));
+    }
+
+    public boolean canUse() {
+        if (this.mob.isBaby() || this.mob.getHealth() < this.mob.getMaxHealth() / 3) {
+            return false;
+        }
+        if (this.mob instanceof ComplexMob) {
+            if (((ComplexMob)this.mob).huntingCooldown != 0)
+                return false;
+            if (this.mob instanceof ComplexMobTerrestrial tamed) {
+                if (tamed.isTame() || tamed.getHunger() > this.threshold)
                     return false;
-                }
             }
         }
-        List<T> list = this.goalOwner.world.getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
-        list.removeIf((Predicate<LivingEntity>) this::shouldRemoveTarget);
 
-        if (list.isEmpty()) {
+        List<T> list = this.mob.level.getEntitiesOfClass(this.targetClass, this.getTargettableArea(this.getFollowDistance()), this.targetEntitySelector);
+        if (list.isEmpty())
             return false;
-        }
-        else {
-            list.sort(this.sorter);
-            this.targetEntity = list.get(0);
-            if (this.goalOwner instanceof ComplexMob) {
-                ((ComplexMob)this.goalOwner).peacefulTicks = 6000;
-            }
-            return true;
-        }
+
+        list.sort(this.sorter);
+        this.targetMob = list.get(0);
+        return true;
     }
 
-    AxisAlignedBB getTargetableArea(double targetDistance) {
-        return this.goalOwner.getBoundingBox().grow(targetDistance, 4.0D, targetDistance);
+    AABB getTargettableArea(double targetDistance) {
+        return this.mob.getBoundingBox().inflate(targetDistance, 4.0D, targetDistance);
     }
 
-    public void startExecuting() {
-        this.goalOwner.setAttackTarget(this.targetEntity);
-        super.startExecuting();
+    public void start() {
+        if (!this.mob.getNavigation().isDone())
+            this.mob.getNavigation().stop();
+        if (this.mob instanceof ComplexMob)
+            ((ComplexMob)this.mob).huntingCooldown = 6000;
+        this.mob.setTarget(this.targetMob);
+        super.start();
     }
 
-    public boolean shouldRemoveTarget(LivingEntity entity) {
-        if (entity instanceof CreeperEntity) {
-            return false; // Hardcoded Creepers out because they will absolutely destroy wildlife if targeted
-        }
-        if (!this.isCannibal) {
-            if (entity instanceof ComplexMob) {
-                ComplexMob ctarget = (ComplexMob)entity;
-                return (goalOwner.getClass() == entity.getClass() && ((ComplexMob)goalOwner).getVariant() == ctarget.getVariant()) || !ctarget.canBeTargeted();
-            }
-        }
-        return false;
+    public boolean canContinueToUse() {
+        return super.canContinueToUse();
     }
 
     public static class Sorter implements Comparator<Entity> {
         private final Entity entity;
 
-        private Sorter(Entity entityIn)
-        {
+        private Sorter(Entity entityIn) {
             this.entity = entityIn;
         }
 
         public int compare(Entity entity_1, Entity entity_2) {
-            double dist_1 = this.entity.getDistanceSq(entity_1);
-            double dist_2 = this.entity.getDistanceSq(entity_2);
+            double dist_1 = this.entity.distanceToSqr(entity_1);
+            double dist_2 = this.entity.distanceToSqr(entity_2);
 
             if (dist_1 < dist_2) {
                 return -1;

@@ -1,17 +1,16 @@
 package untamedwilds.entity.ai;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.pathfinding.Path;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.pathfinder.Node;
+import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import untamedwilds.util.EntityUtils;
 
 import java.util.EnumSet;
@@ -20,7 +19,7 @@ import java.util.Optional;
 import java.util.Random;
 
 public class SmartMeleeAttackGoal extends Goal {
-    protected final CreatureEntity attacker;
+    protected final PathfinderMob attacker;
     protected int attackTick;
     private final double speedTowardsTarget;
     private final boolean longMemory;
@@ -29,42 +28,42 @@ public class SmartMeleeAttackGoal extends Goal {
     private double targetX;
     private double targetY;
     private double targetZ;
-    private float extraReach;
+    private final float extraReach;
     private long field_220720_k;
     private int failedPathFindingPenalty = 0;
-    private boolean canPenalize = false;
+    private final boolean canPenalize = false;
     private final boolean doSkirmish;
     private final boolean isJumper;
 
-    public SmartMeleeAttackGoal(CreatureEntity entityIn, double speedIn, boolean useLongMemory) {
+    public SmartMeleeAttackGoal(PathfinderMob entityIn, double speedIn, boolean useLongMemory) {
         this(entityIn, speedIn, useLongMemory, 0, false, false);
     }
 
-    public SmartMeleeAttackGoal(CreatureEntity entityIn, double speedIn, boolean useLongMemory, float reach) {
+    public SmartMeleeAttackGoal(PathfinderMob entityIn, double speedIn, boolean useLongMemory, float reach) {
         this(entityIn, speedIn, useLongMemory, reach, false, false);
     }
 
-    public SmartMeleeAttackGoal(CreatureEntity entityIn, double speedIn, boolean useLongMemory, float reach, boolean doSkirmish, boolean isJumper) {
+    public SmartMeleeAttackGoal(PathfinderMob entityIn, double speedIn, boolean useLongMemory, float reach, boolean doSkirmish, boolean isJumper) {
         this.attacker = entityIn;
         this.speedTowardsTarget = speedIn;
         this.longMemory = useLongMemory;
         this.extraReach = reach;
         this.doSkirmish = doSkirmish;
         this.isJumper = isJumper;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (this.attacker.isChild() || (this.doSkirmish && !EntityUtils.hasFullHealth(this.attacker))) {
+    public boolean canUse() {
+        if (this.attacker.isBaby() || (this.doSkirmish && !EntityUtils.hasFullHealth(this.attacker))) {
             return false;
         }
-        long i = this.attacker.world.getGameTime();
+        long i = this.attacker.level.getGameTime();
         if (i - this.field_220720_k < 20L) {
             return false;
         } else {
             this.field_220720_k = i;
-            LivingEntity livingentity = this.attacker.getAttackTarget();
+            LivingEntity livingentity = this.attacker.getTarget();
             if (livingentity == null) {
                 return false;
             } else if (!livingentity.isAlive()) {
@@ -72,87 +71,87 @@ public class SmartMeleeAttackGoal extends Goal {
             } else {
                 if (canPenalize) {
                     if (--this.delayCounter <= 0) {
-                        this.path = this.attacker.getNavigator().getPathToEntity(livingentity, 0);
-                        this.delayCounter = 4 + this.attacker.getRNG().nextInt(7);
+                        this.path = this.attacker.getNavigation().createPath(livingentity, 0);
+                        this.delayCounter = 4 + this.attacker.getRandom().nextInt(7);
                         return this.path != null;
                     } else {
                         return true;
                     }
                 }
-                this.path = this.attacker.getNavigator().getPathToEntity(livingentity, 0);
+                this.path = this.attacker.getNavigation().createPath(livingentity, 0);
                 return this.path != null;
             }
         }
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         // TODO: DEBUG: Skirmish option, where a mob low on health will retreat if targeted, disabled
         if (false && this.doSkirmish && !EntityUtils.hasFullHealth(this.attacker)) {
-            if (this.attacker.getAttackTarget() instanceof CreatureEntity) {
-                CreatureEntity targetEntity = (CreatureEntity) this.attacker.getAttackTarget();
-                if (Objects.equals(targetEntity.getAttackTarget(), this.attacker)) {
-                    Vector3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(targetEntity, 12, 4, new Vector3d(targetEntity.getPosX(), targetEntity.getPosY(), targetEntity.getPosZ()));
+            if (this.attacker.getTarget() instanceof PathfinderMob targetEntity) {
+                if (Objects.equals(targetEntity.getTarget(), this.attacker)) {
+                    Vec3 vec3d = DefaultRandomPos.getPosAway(targetEntity, 12, 4, new Vec3(targetEntity.getX(), targetEntity.getY(), targetEntity.getZ()));
                     if (vec3d != null) {
-                        this.attacker.setAttackTarget(null);
-                        this.attacker.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, this.speedTowardsTarget);
+                        this.attacker.setTarget(null);
+                        this.attacker.getNavigation().moveTo(vec3d.x, vec3d.y, vec3d.z, this.speedTowardsTarget);
                         return false;
                     }
                 }
             }
         }
-        LivingEntity livingentity = this.attacker.getAttackTarget();
-        if (livingentity == null || (this.attacker.getAir() < 40 && !this.attacker.canBreatheUnderwater()) || !livingentity.isAlive()) {
+        LivingEntity livingentity = this.attacker.getTarget();
+        if (livingentity == null || (this.attacker.getAirSupply() < 40 && !this.attacker.canBreatheUnderwater()) || !livingentity.isAlive()) {
             return false;
         } else if (!this.longMemory) {
-            return !this.attacker.getNavigator().noPath();
-        } else if (!this.attacker.isWithinHomeDistanceFromPosition(livingentity.getPosition())) {
+            return !this.attacker.getNavigation().isDone();
+        } else if (!this.attacker.isWithinRestriction(livingentity.blockPosition())) {
             return false;
         }
         else {
-            return !(livingentity instanceof PlayerEntity) || !livingentity.isSpectator() && !((PlayerEntity)livingentity).isCreative();
+            return !(livingentity instanceof Player) || !livingentity.isSpectator() && !((Player)livingentity).isCreative();
         }
     }
 
-    public void startExecuting() {
-        this.attacker.getNavigator().setPath(this.path, this.speedTowardsTarget);
-        this.attacker.setAggroed(true);
+    public void start() {
+        this.attacker.getNavigation().moveTo(this.path, this.speedTowardsTarget);
+        this.attacker.setAggressive(true);
         this.delayCounter = 0;
     }
 
-    public void resetTask() {
-        LivingEntity livingentity = this.attacker.getAttackTarget();
-        if (!EntityPredicates.CAN_AI_TARGET.test(livingentity)) {
-            this.attacker.setAttackTarget(null);
-        }
-        this.attacker.setAggroed(false);
-        this.attacker.getNavigator().clearPath();
+    public void stop() {
+        /*LivingEntity livingentity = this.attacker.getTarget();
+        if (!TargetingConditions.forCombat().test(this.attacker, livingentity)) {
+            this.attacker.setTarget(null);
+        }*/
+        this.attacker.setTarget(null); // <- Edited
+        this.attacker.setAggressive(false);
+        this.attacker.getNavigation().stop();
     }
 
     public void tick() {
-        LivingEntity livingentity = this.attacker.getAttackTarget();
-        this.attacker.getLookController().setLookPosition(livingentity.getPositionVec());
-        //this.attacker.getLookController().setLookPositionWithEntity(livingentity, 30.0F, 30.0F);
-        double d0 = this.attacker.getDistanceSq(livingentity.getPosX(), livingentity.getBoundingBox().minY, livingentity.getPosZ());
+        LivingEntity livingentity = this.attacker.getTarget();
+        this.attacker.getLookControl().setLookAt(Vec3.atCenterOf(livingentity.blockPosition()));
+        //this.attacker.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
+        double d0 = this.attacker.distanceToSqr(livingentity.getX(), livingentity.getBoundingBox().minY, livingentity.getZ());
         --this.delayCounter;
 
         // This piece of code fixes mobs in water being unable to chase upwards
-        if (this.attacker.isInWater() && this.attacker.ticksExisted % 12 == 0) {
-            if ((livingentity.getBoundingBox().minY - 2) > this.attacker.getPosY()) {
-                this.attacker.getJumpController().setJumping();
+        if (this.attacker.isInWater() && this.attacker.tickCount % 12 == 0) {
+            if ((livingentity.getBoundingBox().minY - 2) > this.attacker.getY()) {
+                this.attacker.getJumpControl().jump();
             }
         }
 
-        if ((this.longMemory || this.attacker.getEntitySenses().canSee(livingentity)) && this.delayCounter <= 0 && (this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D || livingentity.getDistanceSq(this.targetX, this.targetY, this.targetZ) >= 1.0D || this.attacker.getRNG().nextFloat() < 0.05F)) {
-            this.targetX = livingentity.getPosX();
+        if ((this.longMemory || this.attacker.getSensing().hasLineOfSight(livingentity)) && this.delayCounter <= 0 && (this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D || livingentity.distanceToSqr(this.targetX, this.targetY, this.targetZ) >= 1.0D || this.attacker.getRandom().nextFloat() < 0.05F)) {
+            this.targetX = livingentity.getX();
             this.targetY = livingentity.getBoundingBox().minY;
-            this.targetZ = livingentity.getPosZ();
-            this.delayCounter = 4 + this.attacker.getRNG().nextInt(7);
+            this.targetZ = livingentity.getZ();
+            this.delayCounter = 4 + this.attacker.getRandom().nextInt(7);
             if (this.canPenalize) {
                 this.delayCounter += failedPathFindingPenalty;
-                if (this.attacker.getNavigator().getPath() != null) {
-                    net.minecraft.pathfinding.PathPoint finalPathPoint = this.attacker.getNavigator().getPath().getFinalPathPoint();
-                    if (finalPathPoint != null && livingentity.getDistanceSq(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
+                if (this.attacker.getNavigation().getPath() != null) {
+                    Node finalPathPoint = this.attacker.getNavigation().getPath().getEndNode();
+                    if (finalPathPoint != null && livingentity.distanceToSqr(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
                         failedPathFindingPenalty = 0;
                     else
                         failedPathFindingPenalty += 10;
@@ -166,27 +165,27 @@ public class SmartMeleeAttackGoal extends Goal {
                 this.delayCounter += 5;
             }
 
-            if (!this.attacker.getNavigator().tryMoveToEntityLiving(livingentity, this.speedTowardsTarget)) {
+            if (!this.attacker.getNavigation().moveTo(livingentity, this.speedTowardsTarget)) {
                 this.delayCounter += 15;
             }
         }
 
-        // TODO: Clean this shit up
-        BlockPos testpos = this.attacker.getPosition().add(Math.cos(Math.toRadians(this.attacker.rotationYaw + 90)) * 1.2, 0, Math.sin(Math.toRadians(this.attacker.rotationYaw + 90)) * 1.2);
-        if (this.isJumper && this.attacker.isOnGround() && this.attacker.getEntityWorld().getBlockState(testpos.down()).isAir() && this.attacker.getEntityWorld().getBlockState(testpos.down(2)).isAir() && this.attacker.getEntitySenses().canSee(livingentity)) { // TODO: "isJumper" param
-            BlockPos targetpos = this.attacker.getPosition().add(Math.cos(Math.toRadians(this.attacker.rotationYaw + 90)) * 5, 0, Math.sin(Math.toRadians(this.attacker.rotationYaw + 90)) * 5);
-            if (new Vector3d(targetpos.getX(), targetpos.getY(), targetpos.getZ()).distanceTo(livingentity.getPositionVec()) < this.attacker.getPositionVec().distanceTo(livingentity.getPositionVec())) {
-                //this.attacker.getEntityWorld().setBlockState(targetpos, Blocks.TORCH.getDefaultState());
-                Random rand = this.attacker.getRNG();
+        BlockPos forwardNearPos = EntityUtils.getRelativeBlockPos(this.attacker, 1.2F, 0);
+        if (this.isJumper && this.attacker.isOnGround() && this.attacker.getLevel().getBlockState(forwardNearPos.below()).isAir() && this.attacker.getLevel().getBlockState(forwardNearPos.below(2)).isAir() && this.attacker.getSensing().hasLineOfSight(livingentity)) {
+            BlockPos forwardFarPos = EntityUtils.getRelativeBlockPos(this.attacker, 5F, 0);
+            if (new Vec3(forwardFarPos.getX(), forwardFarPos.getY(), forwardFarPos.getZ()).distanceTo(livingentity.getPosition(0)) < this.attacker.getPosition(0).distanceTo(livingentity.getPosition(0))) {
+                //this.attacker.getEntityWorld().setBlockState(targetpos, Blocks.TORCH.defaultBlockState());
+                Random rand = this.attacker.getRandom();
                 for (int i = 0; i < 4; i++) {
-                    targetpos.add(rand.nextInt(2) - 1, rand.nextInt(2) - 1, rand.nextInt(2) - 1);
-                    if (this.attacker.getNavigator().canEntityStandOnPos(targetpos)) {
-                        Optional<Vector3d> jump_vec = this.calculateOptimalJumpVector(this.attacker, Vector3d.copyCentered(targetpos));
+                    forwardFarPos.offset(rand.nextInt(2) - 1, rand.nextInt(2) - 1, rand.nextInt(2) - 1);
+                    if (this.attacker.getNavigation().isStableDestination(forwardFarPos)) {
+                        Optional<Vec3> jump_vec = this.calculateOptimalJumpVector(this.attacker, Vec3.atCenterOf(forwardFarPos));
                         if (jump_vec.isPresent()) {
                             double d1 = jump_vec.get().length();
-                            double d2 = 1 + d1 + (this.attacker.isPotionActive(Effects.JUMP_BOOST) ? (double)(0.1F * (float)(this.attacker.getActivePotionEffect(Effects.JUMP_BOOST).getAmplifier() + 1)) : 0.0D);
-                            this.attacker.setMotion(jump_vec.get().x * d2 / d1, jump_vec.get().y, jump_vec.get().z * d2 / d1);
-                            this.attacker.getNavigator().clearPath();
+                            double d2 = 1 + d1 + (this.attacker.hasEffect(MobEffects.JUMP) ? (double)(0.1F * (float)(this.attacker.getEffect(MobEffects.JUMP).getAmplifier() + 1)) : 0.0D);
+                            this.attacker.setDeltaMovement(jump_vec.get().x * d2 / d1, jump_vec.get().y, jump_vec.get().z * d2 / d1);
+                            this.attacker.getNavigation().stop();
+                            break;
                         }
                     }
                 }
@@ -199,25 +198,25 @@ public class SmartMeleeAttackGoal extends Goal {
 
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
         double d0 = this.getAttackReachSqr(enemy);
-        if (this.attacker.canEntityBeSeen(enemy) && distToEnemySqr <= d0 && this.attackTick <= 0) {
+        if (this.attacker.hasLineOfSight(enemy) && distToEnemySqr <= d0 && this.attackTick <= 0) {
             this.attackTick = 20;
-            this.attacker.attackEntityAsMob(enemy);
+            this.attacker.doHurtTarget(enemy);
         }
 
     }
 
     protected double getAttackReachSqr(LivingEntity attackTarget) {
-        return (this.attacker.getWidth() * 2.0F * this.attacker.getWidth() * 2.0F + attackTarget.getWidth() + this.extraReach);
+        return (this.attacker.getBbWidth() * 2.0F * this.attacker.getBbWidth() * 2.0F + attackTarget.getBbWidth() + this.extraReach);
     }
 
     // Start of the code gore
-    private Optional<Vector3d> calculateOptimalJumpVector(CreatureEntity entityIn, Vector3d targetVector) {
-        Optional<Vector3d> optional = Optional.empty();
+    private Optional<Vec3> calculateOptimalJumpVector(PathfinderMob entityIn, Vec3 p_147658_) {
+        Optional<Vec3> optional = Optional.empty();
 
         for(int i = 20; i < 55; i += 5) {
             //for(int i = 65; i < 85; i += 5) {
-            Optional<Vector3d> optional1 = this.calculateJumpVectorForAngle(entityIn, targetVector, i);
-            if (!optional.isPresent() || optional1.isPresent() && optional1.get().lengthSquared() < optional.get().lengthSquared()) {
+            Optional<Vec3> optional1 = this.calculateJumpVectorForAngle(entityIn, p_147658_, i);
+            if (optional.isEmpty() || optional1.isPresent() && optional1.get().lengthSqr() < optional.get().lengthSqr()) {
                 optional = optional1;
             }
         }
@@ -225,75 +224,70 @@ public class SmartMeleeAttackGoal extends Goal {
         return optional;
     }
 
-    private Optional<Vector3d> calculateJumpVectorForAngle(CreatureEntity entityIn, Vector3d targetVector, int upwardsAngle) {
-        Vector3d Vector3d = entityIn.getPositionVec();
-        Vector3d Vector3d1 = (new Vector3d(targetVector.x - Vector3d.x, 0.0D, targetVector.z - Vector3d.z)).normalize().scale(0.5D);
-        targetVector = targetVector.subtract(Vector3d1);
-        Vector3d Vector3d2 = targetVector.subtract(Vector3d);
-        float angleRad = (float)upwardsAngle * (float)Math.PI / 180.0F;
-        double d0 = Math.atan2(Vector3d2.z, Vector3d2.x);
-        double d1 = Vector3d2.subtract(0.0D, Vector3d2.y, 0.0D).lengthSquared();
+    private Optional<Vec3> calculateJumpVectorForAngle(PathfinderMob entityIn, Vec3 p_147661_, int angleIn) {
+        Vec3 vec3 = entityIn.position();
+        Vec3 vec31 = (new Vec3(p_147661_.x - vec3.x, 0.0D, p_147661_.z - vec3.z)).normalize().scale(0.5D);
+        p_147661_ = p_147661_.subtract(vec31);
+        Vec3 vec32 = p_147661_.subtract(vec3);
+        float f = (float)angleIn * (float)Math.PI / 180.0F;
+        double d0 = Math.atan2(vec32.z, vec32.x);
+        double d1 = vec32.subtract(0.0D, vec32.y, 0.0D).lengthSqr();
         double d2 = Math.sqrt(d1);
-        double d3 = Vector3d2.y;
-        double d4 = Math.sin(2.0F * angleRad);
-        double d6 = Math.pow(Math.cos(angleRad), 2.0D);
-        double up_sin = Math.sin(angleRad);
-        double up_cos = Math.cos(angleRad);
-        double horizontal_sin = Math.sin(d0);
-        double horizontal_cos = Math.cos(d0);
+        double d3 = vec32.y;
+        double d4 = Math.sin(2.0F * f);
+        double d6 = Math.pow(Math.cos(f), 2.0D);
+        double d7 = Math.sin(f);
+        double d8 = Math.cos(f);
+        double d9 = Math.sin(d0);
+        double d10 = Math.cos(d0);
         double d11 = d1 * 0.08D / (d2 * d4 - 2.0D * d3 * d6);
         if (d11 < 0.0D) {
             return Optional.empty();
         } else {
             double d12 = Math.sqrt(d11);
-            if (d12 > 4) {
+            /*if (d12 > (double)this.maxJumpVelocity) {
                 return Optional.empty();
-            } else {
-                double d13 = d12 * up_cos;
-                double d14 = d12 * up_sin;
-                int i = (int) (Math.ceil(d2 / d13) * 2);
+            } else {*/
+                double d13 = d12 * d8;
+                double d14 = d12 * d7;
+                int i = Mth.ceil(d2 / d13) * 2;
                 double d15 = 0.0D;
-                Vector3d Vector3d3 = null;
+                Vec3 vec33 = null;
 
                 for(int j = 0; j < i - 1; ++j) {
                     d15 += d2 / (double)i;
-                    double offsetY = up_sin / up_cos * d15 - Math.pow(d15, 2.0D) * 0.08D / (2.0D * d11 * Math.pow(up_cos, 2.0D));
-                    double offsetX = d15 * horizontal_cos;
-                    double offsetZ = d15 * horizontal_sin;
-                    Vector3d Vector3d4 = new Vector3d(Vector3d.x + offsetX, Vector3d.y + offsetY, Vector3d.z + offsetZ);
-                    if (Vector3d3 != null && !this.isClearTransition(Vector3d3, Vector3d4)) {
+                    double d16 = d7 / d8 * d15 - Math.pow(d15, 2.0D) * 0.08D / (2.0D * d11 * Math.pow(d8, 2.0D));
+                    double d17 = d15 * d10;
+                    double d18 = d15 * d9;
+                    Vec3 vec34 = new Vec3(vec3.x + d17, vec3.y + d16, vec3.z + d18);
+                    if (vec33 != null && !this.isClearTransition(entityIn, vec33, vec34)) {
                         return Optional.empty();
                     }
 
-                    Vector3d3 = Vector3d4;
+                    vec33 = vec34;
                 }
 
-                return Optional.of((new Vector3d(d13 * horizontal_cos, d14, d13 * horizontal_sin)).scale(0.95F));
-            }
+                return Optional.of((new Vec3(d13 * d10, d14, d13 * d9)).scale(0.95F));
+            //}
         }
     }
 
-    private boolean isClearTransition(Vector3d p_147665_, Vector3d p_147666_) {
-        Vector3d Vector3d = p_147666_.subtract(p_147665_);
-        double d0 = Math.min(this.attacker.getWidth(), this.attacker.getHeight());
-        int i = (int) Math.ceil(Vector3d.length() / d0);
-        Vector3d Vector3d1 = Vector3d.normalize();
-        Vector3d Vector3d2 = p_147665_;
+    private boolean isClearTransition(Mob p_147664_, Vec3 p_147665_, Vec3 p_147666_) {
+        EntityDimensions entitydimensions = p_147664_.getDimensions(Pose.LONG_JUMPING);
+        Vec3 vec3 = p_147666_.subtract(p_147665_);
+        double d0 = Math.min(entitydimensions.width, entitydimensions.height);
+        int i = Mth.ceil(vec3.length() / d0);
+        Vec3 vec31 = vec3.normalize();
+        Vec3 vec32 = p_147665_;
 
         for(int j = 0; j < i; ++j) {
-            Vector3d2 = j == i - 1 ? p_147666_ : Vector3d2.add(Vector3d1.scale(d0 * (double)0.9F));
-            AxisAlignedBB aabb = makeBoundingBox(Vector3d2.x, Vector3d2.y, Vector3d2.z);
-            if (!this.attacker.getEntityWorld().checkNoEntityCollision(this.attacker, VoxelShapes.create(aabb))) {
+            vec32 = j == i - 1 ? p_147666_ : vec32.add(vec31.scale(d0 * (double)0.9F));
+            AABB aabb = entitydimensions.makeBoundingBox(vec32);
+            if (!p_147664_.level.noCollision(p_147664_, aabb)) {
                 return false;
             }
         }
 
         return true;
-    }
-
-    public AxisAlignedBB makeBoundingBox(double p_20385_, double p_20386_, double p_20387_) {
-        float f = this.attacker.getWidth() / 2.0F;
-        float f1 = this.attacker.getHeight();
-        return new AxisAlignedBB(p_20385_ - (double)f, p_20386_, p_20387_ - (double)f, p_20385_ + (double)f, p_20386_ + (double)f1, p_20387_ + (double)f);
     }
 }

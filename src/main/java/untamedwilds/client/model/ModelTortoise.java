@@ -4,8 +4,8 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
 import untamedwilds.entity.reptile.EntityTortoise;
 
 public class ModelTortoise extends AdvancedEntityModel<EntityTortoise> {
@@ -23,8 +23,8 @@ public class ModelTortoise extends AdvancedEntityModel<EntityTortoise> {
     private final ModelAnimator animator;
 
     public ModelTortoise() {
-        this.textureWidth = 64;
-        this.textureHeight = 32;
+        this.texWidth = 64;
+        this.texHeight = 32;
 
         this.leg_right = new AdvancedModelBox(this, 0, 10);
         this.leg_right.setRotationPoint(-2.4F, -0.4F, 3.9F);
@@ -81,7 +81,7 @@ public class ModelTortoise extends AdvancedEntityModel<EntityTortoise> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.body_main);
     }
 
@@ -116,14 +116,14 @@ public class ModelTortoise extends AdvancedEntityModel<EntityTortoise> {
         );
     }
 
-    public void setRotationAngles(EntityTortoise tortoise, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityTortoise tortoise, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(tortoise);
         limbSwing *= -1.2;
         float globalSpeed = 1.4f;
         float globalDegree = 2f;
         //limbSwingAmount = 0.5F;
-        //limbSwing = tortoise.ticksExisted;
+        //limbSwing = tortoise.tickCount;
 
         // Head Tracking Animation
         if (!tortoise.isSitting()) {

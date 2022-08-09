@@ -1,8 +1,8 @@
 package untamedwilds.entity.ai.unique;
 
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import untamedwilds.entity.ComplexMob;
 
 import java.util.EnumSet;
@@ -15,26 +15,26 @@ public class TortoiseHideInShellGoal<T extends LivingEntity> extends Goal {
     protected T avoidTarget;
     protected ComplexMob taskOwner;
     protected final float avoidDistance;
-    private final EntityPredicate builtTargetSelector;
+    private final TargetingConditions builtTargetSelector;
 
     public TortoiseHideInShellGoal(ComplexMob entityIn, Class<T> classToAvoidIn, float avoidDistanceIn, final Predicate<LivingEntity> targetSelector) {
         this.taskOwner = entityIn;
         this.classToAvoid = classToAvoidIn;
         this.avoidDistance = avoidDistanceIn;
-        this.builtTargetSelector = (new EntityPredicate()).setDistance(avoidDistanceIn).setCustomPredicate(targetSelector);
-        this.setMutexFlags(EnumSet.of(Flag.MOVE));
+        this.builtTargetSelector = TargetingConditions.forCombat().range(avoidDistanceIn).selector(targetSelector);
+        this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (this.taskOwner.ticksExisted % 40 != 0) {
+    public boolean canUse() {
+        if (this.taskOwner.tickCount % 40 != 0) {
             return false;
         }
-        if (this.taskOwner.getAttackTarget() != null || this.taskOwner.getCommandInt() != 0 || this.taskOwner.isTamed()) {
+        if (this.taskOwner.getTarget() != null || this.taskOwner.getCommandInt() != 0 || this.taskOwner.isTame()) {
             return false;
         }
 
-        List<T> list = this.taskOwner.world.getTargettableEntitiesWithinAABB(classToAvoid, this.builtTargetSelector, this.taskOwner, this.taskOwner.getBoundingBox().grow(avoidDistance, 4f, avoidDistance));
+        List<T> list = this.taskOwner.level.getNearbyEntities(classToAvoid, this.builtTargetSelector, this.taskOwner, this.taskOwner.getBoundingBox().inflate(avoidDistance, 4f, avoidDistance));
         if (list.isEmpty()) {
             this.taskOwner.setSitting(false);
             return false;
@@ -43,30 +43,30 @@ public class TortoiseHideInShellGoal<T extends LivingEntity> extends Goal {
         return true;
     }
 
-    public void startExecuting() {
-        super.startExecuting();
-        this.taskOwner.getNavigator().clearPath();
+    public void start() {
+        super.start();
+        this.taskOwner.getNavigation().stop();
         this.taskOwner.setSitting(true);
     }
 
-    public void resetTask() {
-        super.resetTask();
+    public void stop() {
+        super.stop();
     }
 
     public void tick() {
-        if (this.taskOwner.getRNG().nextInt(40) == 0) {
-            List<T> list = this.taskOwner.world.getTargettableEntitiesWithinAABB(classToAvoid, this.builtTargetSelector, this.taskOwner, this.taskOwner.getBoundingBox().grow(avoidDistance, 4f, avoidDistance));
+        if (this.taskOwner.getRandom().nextInt(40) == 0) {
+            List<T> list = this.taskOwner.level.getNearbyEntities(classToAvoid, this.builtTargetSelector, this.taskOwner, this.taskOwner.getBoundingBox().inflate(avoidDistance, 4f, avoidDistance));
             if (list.isEmpty()) {
                 this.taskOwner.setSitting(false);
             }
         }
-        if (this.taskOwner.getDistance(this.avoidTarget) > 10) {
+        if (this.taskOwner.distanceTo(this.avoidTarget) > 10) {
             this.taskOwner.setSitting(false);
         }
         super.tick();
     }
 
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         return !this.taskOwner.isSitting();
     }
 }

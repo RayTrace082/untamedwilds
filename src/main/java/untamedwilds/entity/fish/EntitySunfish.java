@@ -1,17 +1,17 @@
 package untamedwilds.entity.fish;
 
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.PanicGoal;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.level.Level;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
@@ -26,19 +26,19 @@ public class EntitySunfish extends ComplexMobAquatic implements ISpecies, INewSk
 
     public int baskProgress;
 
-    public EntitySunfish(EntityType<? extends ComplexMob> type, World worldIn) {
+    public EntitySunfish(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
-        this.experienceValue = 5;
     }
 
-    public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.45D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 16.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 40.0D)
-                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1D)
-                .createMutableAttribute(Attributes.ARMOR, 2D);
+    public static AttributeSupplier.Builder registerAttributes() {
+        return LivingEntity.createLivingAttributes()
+                .add(Attributes.ATTACK_DAMAGE, 2.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.45D)
+                .add(Attributes.FOLLOW_RANGE, 16.0D)
+                .add(Attributes.MAX_HEALTH, 40.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1D)
+                .add(Attributes.ARMOR, 2D);
     }
 
     protected void registerGoals() {
@@ -47,21 +47,21 @@ public class EntitySunfish extends ComplexMobAquatic implements ISpecies, INewSk
         this.goalSelector.addGoal(4, new SwimGoal(this));
     }
 
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote) {
-            if (this.ticksExisted % 1000 == 0) {
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide) {
+            if (this.tickCount % 1000 == 0) {
                 if (this.wantsToBreed() && !this.isMale()) {
                     this.breed();
                 }
             }
-            if (this.world.getGameTime() % 4000 == 0) {
+            if (this.level.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
             }
         }
-        if (this.world.isRemote && !world.hasWater(this.getPosition().up().up()) && this.baskProgress < 100) {
+        if (this.level.isClientSide && !level.isWaterAt(this.blockPosition().above(2)) && this.baskProgress < 100) {
             this.baskProgress++;
-        } else if (this.world.isRemote && world.hasWater(this.getPosition().up().up()) && this.baskProgress > 0) {
+        } else if (this.level.isClientSide && level.isWaterAt(this.blockPosition().above(2)) && this.baskProgress > 0) {
             this.baskProgress--;
         }
     }
@@ -69,12 +69,12 @@ public class EntitySunfish extends ComplexMobAquatic implements ISpecies, INewSk
     /* Breeding conditions for the Sunfish are:
      * A nearby Sunfish */
     public boolean wantsToBreed() {
-        if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
-            List<EntitySunfish> list = this.world.getEntitiesWithinAABB(EntitySunfish.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
+        if (ConfigGamerules.naturalBreeding.get() && this.getAge() == 0 && EntityUtils.hasFullHealth(this)) {
+            List<EntitySunfish> list = this.level.getEntitiesOfClass(EntitySunfish.class, this.getBoundingBox().inflate(12.0D, 8.0D, 12.0D));
             list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
             if (list.size() >= 1) {
-                this.setGrowingAge(this.getGrowingAge());
-                list.get(0).setGrowingAge(this.getGrowingAge());
+                this.setAge(this.getAge());
+                list.get(0).setAge(this.getAge());
                 return true;
             }
         }
@@ -83,17 +83,17 @@ public class EntitySunfish extends ComplexMobAquatic implements ISpecies, INewSk
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         EntityUtils.dropEggs(this, "egg_sunfish", this.getOffspring());
         return null;
     }
 
     @Override
     protected SoundEvent getFlopSound() {
-        return SoundEvents.ENTITY_GUARDIAN_FLOP;
+        return SoundEvents.GUARDIAN_FLOP;
     }
 
-    public boolean isPotionApplicable(EffectInstance potionEffectIn) {
-        return potionEffectIn.getPotion() != Effects.POISON && super.isPotionApplicable(potionEffectIn);
+    public boolean canBeAffected(MobEffectInstance potionEffectIn) {
+        return potionEffectIn.getEffect() != MobEffects.POISON && super.canBeAffected(potionEffectIn);
     }
 }

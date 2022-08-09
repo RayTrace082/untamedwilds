@@ -1,14 +1,13 @@
 package untamedwilds.world.gen.treedecorator;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.treedecorator.TreeDecorator;
-import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import untamedwilds.block.EpyphitePlantBlock;
 import untamedwilds.init.ModBlock;
 import untamedwilds.world.UntamedWildsGenerator;
@@ -16,6 +15,7 @@ import untamedwilds.world.UntamedWildsGenerator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 public class TreeOrchidDecorator extends TreeDecorator {
     public static final Codec<TreeOrchidDecorator> CODEC;
@@ -29,7 +29,7 @@ public class TreeOrchidDecorator extends TreeDecorator {
         CODEC = Codec.unit(() -> field_236871_b_);
     }
 
-    public void func_225576_a_(ISeedReader worldIn, Random rand, List<BlockPos> posList, List<BlockPos> p_225576_4_, Set<BlockPos> blockPosSet, MutableBoundingBox boundingBox) {
+    public void type(LevelSimulatedReader worldIn, BiConsumer<BlockPos, BlockState> p_161746_, Random rand, List<BlockPos> posList, List<BlockPos> blockPosSet) {
       if (!(rand.nextFloat() >= 0.95)) {
          int i = posList.get(0).getY();
          posList.stream().filter((p_236867_1_) -> {
@@ -38,14 +38,24 @@ public class TreeOrchidDecorator extends TreeDecorator {
             for(Direction direction : Direction.Plane.HORIZONTAL) {
                if (rand.nextFloat() <= 0.25F) {
                   Direction direction1 = direction.getOpposite();
-                  BlockPos blockpos = p_242865_5_.add(direction1.getXOffset(), 0, direction1.getZOffset());
-                  if (Feature.isAirAt(worldIn, blockpos)) {
-                     BlockState blockstate = ModBlock.ORCHID_RED.get().getDefaultState().with(EpyphitePlantBlock.HORIZONTAL_FACING, direction);
-                     this.func_227423_a_(worldIn, blockpos, blockstate, blockPosSet, boundingBox);
+                  BlockPos blockpos = p_242865_5_.offset(direction1.getStepX(), 0, direction1.getStepZ());
+                  if (Feature.isAir(worldIn, blockpos)) {
+                     BlockState blockstate = ModBlock.ORCHID_RED.get().defaultBlockState().setValue(EpyphitePlantBlock.FACING, direction);
+                     this.type(worldIn, p_161746_, rand, posList, blockPosSet);
                   }
                }
             }
          });
       }
    }
+
+    @Override
+    protected TreeDecoratorType<?> type() {
+        return null;
+    }
+
+    @Override
+    public void place(LevelSimulatedReader p_161745_, BiConsumer<BlockPos, BlockState> p_161746_, Random p_161747_, List<BlockPos> p_161748_, List<BlockPos> p_161749_) {
+
+    }
 }

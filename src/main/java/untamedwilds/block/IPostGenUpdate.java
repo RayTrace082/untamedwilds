@@ -1,7 +1,7 @@
 package untamedwilds.block;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * Interface reserved for flora which need to have different BlockState setup than those from naturally generated
@@ -9,5 +9,5 @@ import net.minecraft.world.ISeedReader;
 
 public interface IPostGenUpdate {
 
-    void updatePostGen(ISeedReader worldIn, BlockPos pos);
+    void updatePostGen(LevelAccessor worldIn, BlockPos pos);
 }

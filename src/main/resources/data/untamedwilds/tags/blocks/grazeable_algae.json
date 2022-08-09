@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:seagrass",
+    "minecraft:tall_seagrass",
+    "minecraft:kelp",
+    "untamedwilds:flora_amazon_sword"
+  ]
+}

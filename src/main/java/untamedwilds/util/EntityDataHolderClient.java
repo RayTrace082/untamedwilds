@@ -1,7 +1,7 @@
 package untamedwilds.util;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +31,6 @@ public class EntityDataHolderClient {
             return this.sounds.get(i).get(sound_id);
         }
         if (this.sounds.get(-1).containsKey(sound_id)) {
-            UntamedWilds.LOGGER.info("THIS SHOULD FUCKING WORK");
             return this.sounds.get(-1).get(sound_id);
         }
         return null;

@@ -4,8 +4,9 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
 
 public class ModelGiantSalamander extends AdvancedEntityModel<EntityGiantSalamander> {
@@ -25,8 +26,8 @@ public class ModelGiantSalamander extends AdvancedEntityModel<EntityGiantSalaman
     private final ModelAnimator animator;
 
     public ModelGiantSalamander() {
-        this.textureWidth = 64;
-        this.textureHeight = 32;
+        this.texWidth = 64;
+        this.texHeight = 32;
         this.arm_right_1 = new AdvancedModelBox(this, 24, 0);
         this.arm_right_1.mirror = true;
         this.arm_right_1.setRotationPoint(-2.0F, 0.2F, -3.0F);
@@ -83,7 +84,7 @@ public class ModelGiantSalamander extends AdvancedEntityModel<EntityGiantSalaman
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.body_main);
     }
 
@@ -111,12 +112,12 @@ public class ModelGiantSalamander extends AdvancedEntityModel<EntityGiantSalaman
         animator.resetKeyframe(5);
     }
 
-    public void setRotationAngles(EntityGiantSalamander salamander, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityGiantSalamander salamander, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
         animate(salamander);
         float globalSpeed = 0.8f;
         float globalDegree = 1.0f;
-        limbSwingAmount = Math.min(1F, limbSwingAmount);
+        limbSwingAmount = Math.min(0.6F, limbSwingAmount);
 
         // Breathing Animation
         this.body_main.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
@@ -132,28 +133,34 @@ public class ModelGiantSalamander extends AdvancedEntityModel<EntityGiantSalaman
 
         // Pitch/Yaw handler
         if (salamander.isInWater() && !salamander.isOnGround()) {
-            this.setRotateAngle(body_main, salamander.rotationPitch * ((float) Math.PI / 180F), 0, 0);
+            this.setRotateAngle(body_main, salamander.getXRot() * ((float) Math.PI / 180F), 0, 0);
         }
+        this.body_torso.rotateAngleY = Mth.rotLerp((float) 0.05, this.body_torso.rotateAngleY, salamander.offset);
+        this.tail_1.rotateAngleY = Mth.rotLerp((float) 0.05, this.tail_1.rotateAngleY, -1F * salamander.offset);
+        this.tail_2.rotateAngleY = Mth.rotLerp((float) 0.05, this.tail_2.rotateAngleY, -2F * salamander.offset);
 
         // Movement Animation
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{head_main, body_torso, body_main, tail_1, tail_2};
-        chainSwing(bodyParts, globalSpeed * 1.4F, globalDegree * 1.2F, -4, limbSwing, limbSwingAmount * 0.8F);
+        chainSwing(bodyParts, globalSpeed * 1.4F, globalDegree * 1.2F, -4, limbSwing, limbSwingAmount * 0.3F);
         float onGround = Math.min(0.8F, limbSwingAmount * (salamander.isOnGround() ? 2 : 1));
-        swing(arm_left_1, globalSpeed, globalDegree * 2f, false, 0.8F, 1f, limbSwing, onGround);
-        swing(leg_left_1, globalSpeed, globalDegree * 1.8f, false, 1.6F, 1f, limbSwing, onGround);
-        swing(arm_right_1, globalSpeed, globalDegree * 2f, false, 2.4F, 1f, limbSwing, onGround);
-        swing(leg_right_1, globalSpeed, globalDegree * 1.8f, false, 3.2F, 1f, limbSwing, onGround);
         if (salamander.isInWater()) {
-            flap(arm_left_1, globalSpeed, globalDegree * 1.4f, false, 0.8F, 1f, limbSwing, limbSwingAmount);
-            flap(leg_left_1, globalSpeed, globalDegree * 1.2f, false, 1.6F, 1f, limbSwing, limbSwingAmount);
-            flap(arm_right_1, globalSpeed, globalDegree * 1.4f, false, 2.4F, 1f, limbSwing, limbSwingAmount);
-            flap(leg_right_1, globalSpeed, globalDegree * 1.2f, false, 3.2F, 1f, limbSwing, limbSwingAmount);
+            flap(arm_left_1, globalSpeed, globalDegree, false, 0.8F, 1f, limbSwing, limbSwingAmount);
+            flap(leg_left_1, globalSpeed, globalDegree * 0.8f, false, 1.6F, 1f, limbSwing, limbSwingAmount);
+            flap(arm_right_1, globalSpeed, globalDegree, false, 2.4F, 1f, limbSwing, limbSwingAmount);
+            flap(leg_right_1, globalSpeed, globalDegree * 0.8f, false, 3.2F, 1f, limbSwing, limbSwingAmount);
 
             flap(body_main, globalSpeed / 2, globalDegree * 1.2f, false, 0, 0.1f, limbSwing / 2, limbSwingAmount);
             swing(body_main, globalSpeed / 2, globalDegree * 1.2f, false, 0.8F, 0.1f, limbSwing / 3, limbSwingAmount);
+            chainWave(new AdvancedModelBox[]{head_main, body_torso, body_main}, globalSpeed * 0.8F, globalDegree, -4, limbSwing, limbSwingAmount * 0.2F);
+        }
+        else {
+            swing(arm_left_1, globalSpeed, globalDegree * 2f, false, 0.8F, 1f, limbSwing, onGround);
+            swing(leg_left_1, globalSpeed, globalDegree * 1.8f, false, 1.6F, 1f, limbSwing, onGround);
+            swing(arm_right_1, globalSpeed, globalDegree * 2f, false, 2.4F, 1f, limbSwing, onGround);
+            swing(leg_right_1, globalSpeed, globalDegree * 1.8f, false, 3.2F, 1f, limbSwing, onGround);
         }
 
-        // Sleeping Animation
+        // Swimming Animation
         if (salamander.swimProgress > 0) {
             this.progressRotation(arm_right_1, salamander.swimProgress, (float) Math.toRadians(-20.87F), (float) Math.toRadians(172.1F), (float) Math.toRadians(-78.26), 20);
             this.progressRotation(arm_left_1, salamander.swimProgress, (float) Math.toRadians(-20.87F), (float) Math.toRadians(-172.1F), (float) Math.toRadians(78.26), 20);

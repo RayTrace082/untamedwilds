@@ -2,8 +2,8 @@ package untamedwilds.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
 import untamedwilds.entity.fish.EntityTriggerfish;
 import untamedwilds.util.EntityUtils;
 
@@ -21,8 +21,8 @@ public class ModelTriggerfish extends AdvancedEntityModel<EntityTriggerfish> {
     private final AdvancedModelBox head_jaw;
 
     public ModelTriggerfish() {
-        this.textureWidth = 32;
-        this.textureHeight = 32;
+        this.texWidth = 32;
+        this.texHeight = 32;
         this.main_body = new AdvancedModelBox(this, 0, 0);
         this.main_body.setRotationPoint(0.0F, 19.9F, 0.0F);
         this.main_body.addBox(-1.51F, -3.5F, -3.5F, 3, 7, 7, 0.0F);
@@ -75,7 +75,7 @@ public class ModelTriggerfish extends AdvancedEntityModel<EntityTriggerfish> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.main_body);
     }
 
@@ -95,8 +95,8 @@ public class ModelTriggerfish extends AdvancedEntityModel<EntityTriggerfish> {
         );
     }
 
-    public void setRotationAngles(EntityTriggerfish triggerfish, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float f = ageInTicks - (float)triggerfish.ticksExisted / 10;
+    public void setupAnim(EntityTriggerfish triggerfish, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        float f = ageInTicks - (float)triggerfish.tickCount / 10;
         resetToDefaultPose();
 
         float globalSpeed = 0.5f;

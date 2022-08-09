@@ -1,11 +1,11 @@
 package untamedwilds.entity.ai.unique;
 
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.RandomSwimmingGoal;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.gen.Heightmap;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.Vec3;
 import untamedwilds.entity.fish.EntityShark;
 
 import javax.annotation.Nullable;
@@ -19,15 +19,15 @@ public class SharkSwimmingGoal extends RandomSwimmingGoal {
     }
 
     @Nullable
-    protected Vector3d getPosition() {
-        Vector3d vector3d = RandomPositionGenerator.findRandomTarget(this.creature, 10, 7);
+    protected Vec3 getPosition() {
+        Vec3 vector3d = BehaviorUtils.getRandomSwimmablePos(this.taskOwner, 10, 7);
 
-        for(int i = 0; vector3d != null && !this.creature.world.getBlockState(new BlockPos(vector3d)).allowsMovement(this.creature.world, new BlockPos(vector3d), PathType.WATER) && i++ < 10; vector3d = RandomPositionGenerator.findRandomTarget(this.creature, 10, 7)) {
+        for(int i = 0; vector3d != null && !this.taskOwner.level.getBlockState(new BlockPos(vector3d)).isPathfindable(this.taskOwner.level, new BlockPos(vector3d), PathComputationType.WATER) && i++ < 10; vector3d = BehaviorUtils.getRandomSwimmablePos(this.taskOwner, 10, 7)) {
         }
 
-        if (this.taskOwner.isBottomDweller() && vector3d != null && this.taskOwner.world.canBlockSeeSky(this.taskOwner.getPosition())) {
-            int offset = 5 + this.creature.getRNG().nextInt(7) - 4;
-            return new Vector3d(vector3d.getX(), this.creature.world.getHeight(Heightmap.Type.OCEAN_FLOOR, (int)vector3d.getX(), (int)vector3d.getZ()) + offset, vector3d.getZ());
+        if (this.taskOwner.isBottomDweller() && vector3d != null && this.taskOwner.level.canSeeSky(this.taskOwner.blockPosition())) {
+            int offset = 5 + this.taskOwner.getRandom().nextInt(7) - 4;
+            return new Vec3(vector3d.x(), this.taskOwner.level.getHeight(Heightmap.Types.OCEAN_FLOOR, (int)vector3d.x(), (int)vector3d.z()) + offset, vector3d.z());
         }
         return vector3d;
     }

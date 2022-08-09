@@ -1,7 +1,7 @@
 package untamedwilds.init;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -44,6 +44,11 @@ public class ModSounds {
     public static final SoundEvent ENTITY_BOAR_AMBIENT = registerSound("entity.boar.ambient");
     public static final SoundEvent ENTITY_BOAR_HURT = registerSound("entity.boar.hurt");
     public static final SoundEvent ENTITY_BOAR_DEATH = registerSound("entity.boar.death");
+
+    public static final SoundEvent ENTITY_CAMEL_SPIT = registerSound("entity.camel.spit");
+    public static final SoundEvent ENTITY_CAMEL_AMBIENT = registerSound("entity.camel.ambient");
+    public static final SoundEvent ENTITY_CAMEL_HURT = registerSound("entity.camel.hurt");
+    public static final SoundEvent ENTITY_CAMEL_DEATH = registerSound("entity.camel.death");
 
     public static final SoundEvent ENTITY_TARANTULA_AMBIENT = registerSound("entity.tarantula.ambient");
 

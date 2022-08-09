@@ -1,20 +1,20 @@
 package untamedwilds.item;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -31,66 +31,66 @@ public class OwnershipDeedItem extends Item {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         if (stack.hasTag()) {
-            CompoundNBT nbt = stack.getTag();
-            tooltip.add(new TranslationTextComponent("item.untamedwilds.ownership_deed_desc_4", nbt.getString("entityname")).mergeStyle(TextFormatting.GRAY));
-            tooltip.add(new TranslationTextComponent("item.untamedwilds.ownership_deed_desc_5").mergeStyle(TextFormatting.GRAY));
-            tooltip.add(new TranslationTextComponent("item.untamedwilds.ownership_deed_desc_6",  nbt.getString("ownername")).mergeStyle(TextFormatting.ITALIC).mergeStyle(TextFormatting.GRAY));
+            CompoundTag nbt = stack.getTag();
+            tooltip.add(new TranslatableComponent("item.untamedwilds.ownership_deed_desc_4", nbt.getString("entityname")).withStyle(ChatFormatting.GRAY));
+            tooltip.add(new TranslatableComponent("item.untamedwilds.ownership_deed_desc_5").withStyle(ChatFormatting.GRAY));
+            tooltip.add(new TranslatableComponent("item.untamedwilds.ownership_deed_desc_6",  nbt.getString("ownername")).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
         }
         else {
-            tooltip.add(new TranslationTextComponent("item.untamedwilds.ownership_deed_desc_1").mergeStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslatableComponent("item.untamedwilds.ownership_deed_desc_1").withStyle(ChatFormatting.GRAY));
         }
     }
 
-    public boolean hasEffect(ItemStack stack) {
+    public boolean isFoil(ItemStack stack) {
         return stack.hasTag();
     }
 
     @Nonnull
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack itemstack = playerIn.getHeldItem(handIn);
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+        ItemStack itemstack = playerIn.getItemInHand(handIn);
 
         if (itemstack.hasTag()) {
-            CompoundNBT nbt = itemstack.getTag();
+            CompoundTag nbt = itemstack.getTag();
             if (!nbt.getString("entityid").isEmpty()) {
-                List<LivingEntity> list = worldIn.getEntitiesWithinAABB(LivingEntity.class, playerIn.getBoundingBox().grow(8.0D));
+                List<LivingEntity> list = worldIn.getEntitiesOfClass(LivingEntity.class, playerIn.getBoundingBox().inflate(8.0D));
                 for(LivingEntity entity : list) {
-                    if (entity.getUniqueID().equals(UUID.fromString(nbt.getString("entityid")))) {
-                        entity.addPotionEffect(new EffectInstance(Effects.GLOWING, 80, 0, false, false));
+                    if (entity.getUUID().equals(UUID.fromString(nbt.getString("entityid")))) {
+                        entity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 80, 0, false, false));
                     }
                 }
             }
         }
-        return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
     }
 
 
     /*@Override
-    public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
+    public InteractionResult interactLivingEntity(ItemStack stack, Player playerIn, LivingEntity target, Hand hand) {
         UntamedWilds.LOGGER.log(Level.INFO, "Trying to get entity");
 
-        ItemStack itemstack = playerIn.getHeldItem(hand);
+        ItemStack itemstack = playerIn.getItemInHand(hand);
         if (target instanceof TameableEntity) {
             TameableEntity entity_target = (TameableEntity) target;
 
-            if (entity_target.isTamed()) {
-                if (entity_target.getOwnerId().equals(playerIn.getUniqueID()) && !itemstack.hasTag()) {
-                    CompoundNBT nbt = new CompoundNBT();
+            if (entity_target.isTame()) {
+                if (entity_target.getOwnerId().equals(playerIn.getUUID()) && !itemstack.hasTag()) {
+                    CompoundTag nbt = new CompoundTag();
                     nbt.putString("ownername", playerIn.getName().getString());
                     nbt.putString("entityname", entity_target.getName().getString());
-                    nbt.putString("ownerid", playerIn.getUniqueID().toString());
-                    nbt.putString("entityid", entity_target.getUniqueID().toString());
+                    nbt.putString("ownerid", playerIn.getUUID().toString());
+                    nbt.putString("entityid", entity_target.getUUID().toString());
                     itemstack.setTag(nbt);
                     if (UntamedWilds.DEBUG) {
                         UntamedWilds.LOGGER.log(Level.INFO, "Pet owner signed a deed for a " + entity_target.getName().getString());
                     }
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
 
                 else if (itemstack.hasTag()) {
-                    if (entity_target.getOwnerId().toString().equals(itemstack.getTag().getString("ownerid")) && entity_target.getUniqueID().toString().equals(itemstack.getTag().getString("entityid"))) {
-                        entity_target.setOwnerId(playerIn.getUniqueID());
+                    if (entity_target.getOwnerId().toString().equals(itemstack.getTag().getString("ownerid")) && entity_target.getUUID().toString().equals(itemstack.getTag().getString("entityid"))) {
+                        entity_target.setOwnerId(playerIn.getUUID());
                         if (!playerIn.isCreative()) {
                             itemstack.shrink(1);
                         }
@@ -98,12 +98,12 @@ public class OwnershipDeedItem extends Item {
                         if (UntamedWilds.DEBUG) {
                             UntamedWilds.LOGGER.log(Level.INFO, "Pet ownership transferred to " + playerIn.getName().getString());
                         }
-                        return ActionResultType.CONSUME;
+                        return InteractionResult.CONSUME;
                     }
                 }
-                return ActionResultType.FAIL;
+                return InteractionResult.FAIL;
             }
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }*/
 }

@@ -5,7 +5,6 @@
   "offspring":5,
   "favourite_food":"untamedwilds:food_turtle_raw",
   "sounds":{
-    "ambient":"entity.turtle.ambient_land",
     "hurt":"entity.turtle.hurt",
     "death":"entity.turtle.death"
   },
@@ -110,7 +109,7 @@
       "variant":5,
       "scale":1.2,
       "rarity":5,
-      "skins":20,
+      "skins":21,
       "spawnBiomes":[
         [
           "category|forest"

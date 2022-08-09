@@ -1,9 +1,9 @@
 package untamedwilds.init;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,12 +14,12 @@ import untamedwilds.client.particle.ChumParticle;
 @Mod.EventBusSubscriber(modid = UntamedWilds.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModParticles {
 
-    public static final BasicParticleType CHUM_DISPERSE = new BasicParticleType(true);
+    public static final SimpleParticleType CHUM_DISPERSE = new SimpleParticleType(true);
 
     @SubscribeEvent
     public static void registerParticleFactories(ParticleFactoryRegisterEvent event) {
-        ParticleManager manager = Minecraft.getInstance().particles;
-        manager.registerFactory(CHUM_DISPERSE, ChumParticle.Factory::new);
+        ParticleEngine manager = Minecraft.getInstance().particleEngine;
+        manager.register(CHUM_DISPERSE, ChumParticle.Provider::new);
     }
 
     @SubscribeEvent

@@ -1,6 +1,7 @@
 package untamedwilds.entity;
 
-import net.minecraft.util.math.vector.Vector3d;
+import com.mojang.math.Vector3d;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,10 +87,10 @@ public class HerdEntity {
             this.setOpenToCombine(!this.isOpenToCombine());
         }
 
-        if (this.getLeader().ticksExisted % 10 == 0) {
+        if (this.getLeader().tickCount % 10 == 0) {
             List<ComplexMob> toRemove = new ArrayList<>();
             if (this.isOpenToCombine()) {
-                List<ComplexMob> list = this.getLeader().getEntityWorld().getEntitiesWithinAABB(ComplexMob.class, this.getLeader().getBoundingBox().grow(16.0D, 12.0D, 16.0D));
+                List<ComplexMob> list = this.getLeader().getLevel().getEntitiesOfClass(ComplexMob.class, this.getLeader().getBoundingBox().inflate(16.0D, 12.0D, 16.0D));
                 for (ComplexMob creature : list) {
                     if (!this.containsCreature(creature) && creature.herd != null && canCombineHerds(this, creature.herd)) {
                         int netSize = this.creatureList.size() + creature.herd.creatureList.size();
@@ -110,11 +111,11 @@ public class HerdEntity {
                         continue;
                     }
                 }*/
-                if (creature.isAlive() && creature.getDistanceSq(this.leader) <= 1024.0D) {
+                if (creature.isAlive() && creature.distanceToSqr(this.leader) <= 1024.0D) {
                     if (creature != this.leader) {
-                        if (creature.getDistanceSq(this.leader) <= (double) (this.radius * this.radius)) {
-                            Vector3d vec = this.leader.getLookVec();
-                            creature.getLookController().setLookPosition(creature.getPosX() + vec.x, creature.getPosY() + vec.y, creature.getPosZ() + vec.z, 6.0F, 85.0F);
+                        if (creature.distanceToSqr(this.leader) <= (double) (this.radius * this.radius)) {
+                            Vec3 vec = this.leader.getLookAngle();
+                            creature.getLookControl().setLookAt(creature.getX() + vec.x, creature.getY() + vec.y, creature.getZ() + vec.z, 6.0F, 85.0F);
                         }
                     }
                 } else {

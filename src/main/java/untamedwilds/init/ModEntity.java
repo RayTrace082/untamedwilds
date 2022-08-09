@@ -1,20 +1,22 @@
 package untamedwilds.init;
 
-import com.google.common.collect.Lists;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraft.client.renderer.entity.LlamaSpitRenderer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import untamedwilds.UntamedWilds;
 import untamedwilds.client.render.*;
-import untamedwilds.config.ConfigMobControl;
+import untamedwilds.entity.ProjectileSpit;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
 import untamedwilds.entity.amphibian.EntityNewt;
 import untamedwilds.entity.arthropod.EntityTarantula;
@@ -27,165 +29,155 @@ import untamedwilds.entity.reptile.EntitySoftshellTurtle;
 import untamedwilds.entity.reptile.EntityTortoise;
 import untamedwilds.item.UntamedSpawnEggItem;
 import untamedwilds.world.FaunaHandler;
-import untamedwilds.world.FaunaHandler.animalType;
 
 import java.util.List;
-import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = UntamedWilds.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEntity {
-    private final static List<EntityType<? extends Entity>> entities = Lists.newArrayList();
-    private final static List<Item> spawnEggs = Lists.newArrayList();
-    public static final Map<String, Integer> eco_levels = new java.util.HashMap<>();
-
+    public final static DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, UntamedWilds.MOD_ID);
+    //public static Map<RegistryObject<EntityType<? extends Mob>>, EntityRendererProvider<?>> map = Collections.emptyMap(); 
+    
     // Arthropods
-    public static EntityType<EntityTarantula> TARANTULA = createEntity(ConfigMobControl.addTarantula.get(), EntityTarantula::new,  "tarantula",  0.4f, 0.3f, 0xB5B095, 0x26292B, animalType.CRITTER, 4);
+    public static RegistryObject<EntityType<EntityTarantula>> TARANTULA = createEntity(EntityTarantula::new, "tarantula", 0.4f, 0.3f, 0xB5B095, 0x26292B);
 
     // Reptiles
-    public static EntityType<EntitySnake> SNAKE = createEntity(ConfigMobControl.addSnake.get(), EntitySnake::new,  "snake",  0.6f, 0.3f, 0xD8A552, 0x5C3525, animalType.CRITTER, 4, 1);
-    public static EntityType<EntitySoftshellTurtle> SOFTSHELL_TURTLE = createEntity(ConfigMobControl.addSoftshellTurtle.get(), EntitySoftshellTurtle::new,  "softshell_turtle",  0.6f, 0.3f, 0x828444, 0x26292B, animalType.CRITTER, 3, 2);
-    public static EntityType<EntityTortoise> TORTOISE = createEntity(ConfigMobControl.addTortoise.get(), EntityTortoise::new,  "tortoise",  0.6f, 0.6f, 0xAF9F74, 0x775232, animalType.CRITTER, 3, 2);
-    public static EntityType<EntityAnaconda> ANACONDA = createEntity(ConfigMobControl.addLargeSnake.get(), EntityAnaconda::new,  "large_snake",  1.5f, 0.6f, 0x65704C, 0x42291A, animalType.APEX_PRED, 4, 1);
+    public static RegistryObject<EntityType<EntitySnake>> SNAKE = createEntity(EntitySnake::new, "snake", 0.95f, 0.3f, 0xD8A552, 0x5C3525);
+    public static RegistryObject<EntityType<EntitySoftshellTurtle>> SOFTSHELL_TURTLE = createEntity(EntitySoftshellTurtle::new, "softshell_turtle", 0.6f, 0.3f, 0x828444, 0x26292B);
+    public static RegistryObject<EntityType<EntityTortoise>> TORTOISE = createEntity(EntityTortoise::new, "tortoise", 0.6f, 0.6f, 0xAF9F74, 0x775232);
+    public static RegistryObject<EntityType<EntityAnaconda>> ANACONDA = createEntity(EntityAnaconda::new, "large_snake", 1.5f, 0.6f, 0x65704C, 0x42291A);
 
     // Mollusks
-    public static EntityType<EntityGiantClam> GIANT_CLAM = createEntity(ConfigMobControl.addGiantClam.get(), EntityGiantClam::new, EntityClassification.WATER_CREATURE, "giant_clam", 32, 10, true, 1.0F, 1.0F, 0x346B70, 0xAD713C, animalType.SESSILE, 1);
+    public static RegistryObject<EntityType<EntityGiantClam>> GIANT_CLAM = createEntity(EntityGiantClam::new, "giant_clam", 1.0F, 1.0F, 0x346B70, 0xAD713C);
+    //public static RegistryObject<EntityType<EntityGiantClam>> GIANT_CLAM = createEntity(EntityGiantClam::new, MobCategory.WATER_CREATURE, "giant_clam", 32, 10, true, 1.0F, 1.0F, 0x346B70, 0xAD713C, animalType.SESSILE, 1);
 
     // Mammals
-    public static EntityType<EntityBear> BEAR = createEntity(ConfigMobControl.addBear.get(), EntityBear::new,  "bear",  1.3F, 1.3F, 0x20130B, 0x564C45, animalType.APEX_PRED, 10, 1);
-    public static EntityType<EntityBigCat> BIG_CAT = createEntity(ConfigMobControl.addBigCat.get(), EntityBigCat::new,  "big_cat",  1.2F, 1.0F, 0xC59F45,0x383121, animalType.APEX_PRED, 10, 1);
-    public static EntityType<EntityHippo> HIPPO = createEntity(ConfigMobControl.addHippo.get(), EntityHippo::new,  "hippo",  1.8F, 1.8F, 0x463A31, 0x956761, animalType.APEX_PRED, 10, 5);
-    public static EntityType<EntityAardvark> AARDVARK = createEntity(ConfigMobControl.addAardvark.get(), EntityAardvark::new,  "aardvark",  0.9F, 0.9F, 0x463A31, 0x956761, animalType.CRITTER, 2);
-    public static EntityType<EntityRhino> RHINO = createEntity(ConfigMobControl.addRhino.get(), EntityRhino::new,  "rhino",  2.0F, 1.8F, 0x787676, 0x665956, animalType.APEX_PRED, 6);
-    public static EntityType<EntityHyena> HYENA = createEntity(ConfigMobControl.addHyena.get(), EntityHyena::new,  "hyena",  0.9F, 1.1F, 0x6C6857, 0x978966, animalType.APEX_PRED, 10, 6);
-    public static EntityType<EntityBoar> BOAR = createEntity(ConfigMobControl.addBoar.get(), EntityBoar::new,  "boar",  1.2F, 1.2F, 0x503C2A, 0x605449, animalType.APEX_PRED, 6, 3);
-    public static EntityType<EntityBison> BISON = createEntity(ConfigMobControl.addBison.get(), EntityBison::new,  "bison",  1.7F, 1.6F, 0x845B2B, 0x49342A, animalType.APEX_PRED, 6, 6);
+    public static RegistryObject<EntityType<EntityBear>> BEAR = createEntity(EntityBear::new, "bear", 1.3F, 1.3F, 0x20130B, 0x564C45);
+    public static RegistryObject<EntityType<EntityBigCat>> BIG_CAT = createEntity(EntityBigCat::new, "big_cat", 1.2F, 1.0F, 0xC59F45,0x383121);
+    public static RegistryObject<EntityType<EntityHippo>> HIPPO = createEntity(EntityHippo::new, "hippo", 1.8F, 1.8F, 0x463A31, 0x956761);
+    public static RegistryObject<EntityType<EntityAardvark>> AARDVARK = createEntity(EntityAardvark::new, "aardvark", 0.9F, 0.9F, 0x463A31, 0x956761);
+    public static RegistryObject<EntityType<EntityRhino>> RHINO = createEntity(EntityRhino::new, "rhino", 2.0F, 1.8F, 0x787676, 0x665956);
+    public static RegistryObject<EntityType<EntityHyena>> HYENA = createEntity(EntityHyena::new, "hyena", 0.9F, 1.1F, 0x6C6857, 0x978966);
+    public static RegistryObject<EntityType<EntityBoar>> BOAR = createEntity(EntityBoar::new, "boar", 1.2F, 1.2F, 0x503C2A, 0x605449);
+    public static RegistryObject<EntityType<EntityBison>> BISON = createEntity(EntityBison::new, "bison", 1.7F, 1.6F, 0x845B2B, 0x49342A);
+    public static RegistryObject<EntityType<EntityCamel>> CAMEL = createEntity(EntityCamel::new, "camel", 1.8F, 2F, 0xE0B989, 0x976B3D);
+    public static RegistryObject<EntityType<EntityManatee>> MANATEE = createEntity(EntityManatee::new, "manatee", 1.8F, 2F, 0x4A4040, 0x787676);
+    public static RegistryObject<EntityType<EntityBaleenWhale>> BALEEN_WHALE = createEntity(EntityBaleenWhale::new, "baleen_whale", 2.6F, 1.6F, 0x12141E, 0x5B6168);
 
     // Fish
-    public static EntityType<EntitySunfish> SUNFISH = createEntity(ConfigMobControl.addSunfish.get(), EntitySunfish::new,  "sunfish",  1.6F, 1.6F, 0x2C545B, 0xB6D0D3, animalType.LARGE_OCEAN, 2);
-    public static EntityType<EntityTrevally> TREVALLY = createEntity(ConfigMobControl.addTrevally.get(), EntityTrevally::new,  "trevally",  0.8F, 0.8F, 0xA5B4AF, 0xC89D17, animalType.LARGE_OCEAN, 4, 8);
-    public static EntityType<EntityArowana> AROWANA = createEntity(ConfigMobControl.addArowana.get(), EntityArowana::new,  "arowana",  0.6F, 0.6F, 0x645C45, 0xB29F52, animalType.DENSE_WATER, 1);
-    public static EntityType<EntityShark> SHARK = createEntity(ConfigMobControl.addShark.get(), EntityShark::new,  "shark",  1.8F, 1.3F, 0x6B5142, 0xB0B0A3, animalType.LARGE_OCEAN, 2);
-    public static EntityType<EntityFootballFish> FOOTBALL_FISH = createEntity(ConfigMobControl.addFootballFish.get(), EntityFootballFish::new,  "football_fish",  0.8F, 0.8F, 0x53556C, 0x2F3037, animalType.LARGE_OCEAN, 1);
-    public static EntityType<EntityWhaleShark> WHALE_SHARK = createEntity(ConfigMobControl.addWhaleShark.get(), EntityWhaleShark::new,  "whale_shark",  2.6F, 1.6F, 0x222426, 0x7E7D84, animalType.LARGE_OCEAN, 1);
-    public static EntityType<EntityTriggerfish> TRIGGERFISH = createEntity(ConfigMobControl.addTriggerfish.get(), EntityTriggerfish::new,  "triggerfish",  0.8F, 0.8F, 0x1F0A19, 0xFCBD00, animalType.LARGE_OCEAN, 4);
+    public static RegistryObject<EntityType<EntitySunfish>> SUNFISH = createEntity(EntitySunfish::new, "sunfish", 1.6F, 1.6F, 0x2C545B, 0xB6D0D3);
+    public static RegistryObject<EntityType<EntityTrevally>> TREVALLY = createEntity(EntityTrevally::new, "trevally", 0.8F, 0.8F, 0xA5B4AF, 0xC89D17);
+    public static RegistryObject<EntityType<EntityArowana>> AROWANA = createEntity(EntityArowana::new, "arowana", 0.6F, 0.6F, 0x645C45, 0xB29F52);
+    public static RegistryObject<EntityType<EntityShark>> SHARK = createEntity(EntityShark::new, "shark", 1.8F, 1.3F, 0x6B5142, 0xB0B0A3);
+    public static RegistryObject<EntityType<EntityFootballFish>> FOOTBALL_FISH = createEntity(EntityFootballFish::new, "football_fish", 0.8F, 0.8F, 0x53556C, 0x2F3037);
+    public static RegistryObject<EntityType<EntityWhaleShark>> WHALE_SHARK = createEntity(EntityWhaleShark::new, "whale_shark", 2.6F, 1.6F, 0x222426, 0x7E7D84);
+    public static RegistryObject<EntityType<EntityTriggerfish>> TRIGGERFISH = createEntity(EntityTriggerfish::new, "triggerfish", 0.8F, 0.8F, 0x1F0A19, 0xFCBD00);
+    public static RegistryObject<EntityType<EntityCatfish>> CATFISH = createEntity(EntityCatfish::new, "catfish", 0.8F, 0.8F, 0x545963, 0x3A2C23);
 
     // Amphibians
-    public static EntityType<EntityGiantSalamander> GIANT_SALAMANDER = createEntity(ConfigMobControl.addGiantSalamander.get(), EntityGiantSalamander::new,  "giant_salamander",  1F, 0.6f, 0x3A2C23, 0x6B5142, animalType.DENSE_WATER, 1);
-    public static EntityType<EntityNewt> NEWT = createEntity(ConfigMobControl.addNewt.get(), EntityNewt::new,  "newt",  0.6F, 0.3f, 0x232323, 0xFF8D00, animalType.CRITTER, 2);
+    public static RegistryObject<EntityType<EntityGiantSalamander>> GIANT_SALAMANDER = createEntity(EntityGiantSalamander::new, "giant_salamander", 1F, 0.6f, 0x3A2C23, 0x6B5142);
+    public static RegistryObject<EntityType<EntityNewt>> NEWT = createEntity(EntityNewt::new, "newt", 0.6F, 0.3f, 0x232323, 0xFF8D00);
 
-    @SubscribeEvent
-    public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
-        for (EntityType<?> entity : entities) {
-            event.getRegistry().register(entity);
-        }
-    }
+    // Projectiles
+    public static RegistryObject<EntityType<ProjectileSpit>> SPIT = createProjectile(ProjectileSpit::new, "spit", 64, 1, true,0.6F, 0.3f);
 
-    private static <T extends Entity> EntityType<T> createEntity(boolean enable, EntityType.IFactory<T> factory, EntityClassification classification, String name, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, float sizeX, float sizeY, int baseColor, int overlayColor) {
-        return createEntity(enable, factory, classification, name, trackingRange, updateFrequency, sendsVelocityUpdates, sizeX, sizeY, baseColor, overlayColor, FaunaHandler.animalType.CRITTER, 1);
-    }
-
-    private static <T extends Entity> EntityType<T> createEntity(boolean enable, EntityType.IFactory<T> factory, String name, float sizeX, float sizeY, int baseColor, int overlayColor, FaunaHandler.animalType spawnType, int weight) {
-        return createEntity(enable, factory, EntityClassification.CREATURE, name, 64, 1, true, sizeX, sizeY, baseColor, overlayColor, spawnType, weight);
-    }
-
-    private static <T extends Entity> EntityType<T> createEntity(boolean enable, EntityType.IFactory<T> factory, String name, float sizeX, float sizeY, int baseColor, int overlayColor, FaunaHandler.animalType spawnType, int weight, int groupCount) {
-        return createEntity(enable, factory, EntityClassification.CREATURE, name, 64, 1, true, sizeX, sizeY, baseColor, overlayColor, spawnType, weight, groupCount);
-    }
-
-    private static <T extends Entity> EntityType<T> createEntity(boolean enable, EntityType.IFactory<T> factory, EntityClassification classification, String name, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, float sizeX, float sizeY, int maincolor, int backcolor, FaunaHandler.animalType spawnType, int weight) {
-        return createEntity(enable, factory, EntityClassification.CREATURE, name, 64, 1, true, sizeX, sizeY, maincolor, backcolor, spawnType, weight, 1);
-    }
-
-    private static <T extends Entity> EntityType<T> createEntity(boolean enable, EntityType.IFactory<T> factory, EntityClassification classification, String name, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, float sizeX, float sizeY, int maincolor, int backcolor, FaunaHandler.animalType spawnType, int weight, int groupCount) {
-        ResourceLocation location = new ResourceLocation(UntamedWilds.MOD_ID, name);
-        EntityType<T> type = EntityType.Builder.create(factory, classification)
-                .size(sizeX, sizeY)
-                .setTrackingRange(trackingRange)
-                .setUpdateInterval(updateFrequency)
+    private static <T extends Projectile> RegistryObject<EntityType<T>> createProjectile(EntityType.EntityFactory<T> factory, String name, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, float sizeX, float sizeY) {
+        RegistryObject<EntityType<T>> type = ENTITIES.register(name, () -> EntityType.Builder.of(factory, MobCategory.MISC)
+                .sized(sizeX, sizeY)
+                .clientTrackingRange(trackingRange)
                 .setShouldReceiveVelocityUpdates(sendsVelocityUpdates)
-                .build(location.toString());
-        type.setRegistryName(name);
-        entities.add(type);
-        if (enable) {
-            spawnEggs.add(new UntamedSpawnEggItem(type, maincolor, backcolor, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(name + "_spawn_egg"));
-            if (ConfigMobControl.masterSpawner.get()) {
-                addWorldSpawn(type, weight, spawnType, groupCount);
-            }
-        }
+                .build(name));
+
+        return type;
+    }
+
+    private static <T extends Mob> RegistryObject<EntityType<T>> createEntity(EntityType.EntityFactory<T> factory, String name, float sizeX, float sizeY, int baseColor, int overlayColor) {
+        return createEntity(factory, MobCategory.CREATURE, name, 64, 1, true, sizeX, sizeY, baseColor, overlayColor);
+    }
+
+    private static <T extends Mob> RegistryObject<EntityType<T>> createEntity(EntityType.EntityFactory<T> factory, MobCategory classification, String name, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, float sizeX, float sizeY, int maincolor, int backcolor) {
+        RegistryObject<EntityType<T>> type = ENTITIES.register(name, () -> EntityType.Builder.of(factory, classification)
+                .sized(sizeX, sizeY)
+                .clientTrackingRange(trackingRange)
+                .setShouldReceiveVelocityUpdates(sendsVelocityUpdates)
+                .build(name));
+
+        ModItems.ITEMS.register(name + "_spawn_egg", () -> new UntamedSpawnEggItem(type, maincolor, backcolor, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
         return type;
     }
 
     @SubscribeEvent
     public static void bakeAttributes(EntityAttributeCreationEvent event) {
-        // TODO: I am 95% sure that with some fuckery this can be abstracted with a for-loop through `entities`
-        event.put(TARANTULA, EntityTarantula.registerAttributes().create());
+        event.put(TARANTULA.get(), EntityTarantula.registerAttributes().build());
 
-        event.put(SNAKE, EntitySnake.registerAttributes().create());
-        event.put(SOFTSHELL_TURTLE, EntitySoftshellTurtle.registerAttributes().create());
-        event.put(TORTOISE, EntityTortoise.registerAttributes().create());
-        event.put(ANACONDA, EntityAnaconda.registerAttributes().create());
+        event.put(SNAKE.get(), EntitySnake.registerAttributes().build());
+        event.put(SOFTSHELL_TURTLE.get(), EntitySoftshellTurtle.registerAttributes().build());
+        event.put(TORTOISE.get(), EntityTortoise.registerAttributes().build());
+        event.put(ANACONDA.get(), EntityAnaconda.registerAttributes().build());
 
-        event.put(GIANT_CLAM, EntityGiantClam.registerAttributes().create());
+        event.put(GIANT_CLAM.get(), EntityGiantClam.registerAttributes().build());
 
-        event.put(BEAR, EntityBear.registerAttributes().create());
-        event.put(BIG_CAT, EntityBigCat.registerAttributes().create());
-        event.put(HIPPO, EntityHippo.registerAttributes().create());
-        event.put(AARDVARK, EntityAardvark.registerAttributes().create());
-        event.put(RHINO, EntityRhino.registerAttributes().create());
-        event.put(HYENA, EntityHyena.registerAttributes().create());
-        event.put(BOAR, EntityBoar.registerAttributes().create());
-        event.put(BISON, EntityBison.registerAttributes().create());
+        event.put(BEAR.get(), EntityBear.registerAttributes().build());
+        event.put(BIG_CAT.get(), EntityBigCat.registerAttributes().build());
+        event.put(HIPPO.get(), EntityHippo.registerAttributes().build());
+        event.put(AARDVARK.get(), EntityAardvark.registerAttributes().build());
+        event.put(RHINO.get(), EntityRhino.registerAttributes().build());
+        event.put(HYENA.get(), EntityHyena.registerAttributes().build());
+        event.put(BOAR.get(), EntityBoar.registerAttributes().build());
+        event.put(BISON.get(), EntityBison.registerAttributes().build());
+        event.put(CAMEL.get(), EntityCamel.registerAttributes().build());
+        event.put(MANATEE.get(), EntityManatee.registerAttributes().build());
+        event.put(BALEEN_WHALE.get(), EntityBaleenWhale.registerAttributes().build());
 
-        event.put(SUNFISH, EntitySunfish.registerAttributes().create());
-        event.put(TREVALLY, EntityTrevally.registerAttributes().create());
-        event.put(AROWANA, EntityArowana.registerAttributes().create());
-        event.put(SHARK, EntityShark.registerAttributes().create());
-        event.put(FOOTBALL_FISH, EntityFootballFish.registerAttributes().create());
-        event.put(WHALE_SHARK, EntityWhaleShark.registerAttributes().create());
-        event.put(TRIGGERFISH, EntityTriggerfish.registerAttributes().create());
+        event.put(SUNFISH.get(), EntitySunfish.registerAttributes().build());
+        event.put(TREVALLY.get(), EntityTrevally.registerAttributes().build());
+        event.put(AROWANA.get(), EntityArowana.registerAttributes().build());
+        event.put(SHARK.get(), EntityShark.registerAttributes().build());
+        event.put(FOOTBALL_FISH.get(), EntityFootballFish.registerAttributes().build());
+        event.put(WHALE_SHARK.get(), EntityWhaleShark.registerAttributes().build());
+        event.put(TRIGGERFISH.get(), EntityTriggerfish.registerAttributes().build());
+        event.put(CATFISH.get(), EntityCatfish.registerAttributes().build());
 
-        event.put(GIANT_SALAMANDER, EntityGiantSalamander.registerAttributes().create());
-        event.put(NEWT, EntityNewt.registerAttributes().create());
-
+        event.put(GIANT_SALAMANDER.get(), EntityGiantSalamander.registerAttributes().build());
+        event.put(NEWT.get(), EntityNewt.registerAttributes().build());
     }
 
     @SubscribeEvent
-    public static void registerSpawnEggs(RegistryEvent.Register<Item> event) {
-        for (Item spawnEgg : spawnEggs) {
-            event.getRegistry().register(spawnEgg);
-        }
-    }
+    public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(ModEntity.TARANTULA.get(), RendererTarantula::new);
 
-    public static void registerRendering() {
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.TARANTULA, RendererTarantula::new);
-        //EntityTarantula.processSkins();
+        event.registerEntityRenderer(ModEntity.SOFTSHELL_TURTLE.get(), RendererSoftshellTurtle::new);
+        event.registerEntityRenderer(ModEntity.SNAKE.get(), RendererSnake::new);
+        event.registerEntityRenderer(ModEntity.TORTOISE.get(), RendererTortoise::new);
+        event.registerEntityRenderer(ModEntity.ANACONDA.get(), RendererAnaconda::new);
 
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SOFTSHELL_TURTLE, RendererSoftshellTurtle::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SNAKE, RendererSnake::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.TORTOISE, RendererTortoise::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.ANACONDA, RendererAnaconda::new);
+        event.registerEntityRenderer(ModEntity.GIANT_CLAM.get(), RendererGiantClam::new);
 
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_CLAM, RendererGiantClam::new);
+        event.registerEntityRenderer(ModEntity.BEAR.get(), RendererBear::new);
+        event.registerEntityRenderer(ModEntity.BIG_CAT.get(), RendererBigCat::new);
+        event.registerEntityRenderer(ModEntity.HIPPO.get(), RendererHippo::new);
+        event.registerEntityRenderer(ModEntity.AARDVARK.get(), RendererAardvark::new);
+        event.registerEntityRenderer(ModEntity.RHINO.get(), RendererRhino::new);
+        event.registerEntityRenderer(ModEntity.HYENA.get(), RendererHyena::new);
+        event.registerEntityRenderer(ModEntity.BOAR.get(), RendererBoar::new);
+        event.registerEntityRenderer(ModEntity.BISON.get(), RendererBison::new);
+        event.registerEntityRenderer(ModEntity.CAMEL.get(), RendererCamel::new);
+        event.registerEntityRenderer(ModEntity.MANATEE.get(), RendererManatee::new);
+        event.registerEntityRenderer(ModEntity.BALEEN_WHALE.get(), RendererBaleenWhale::new);
 
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BEAR, RendererBear::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BIG_CAT, RendererBigCat::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.HIPPO, RendererHippo::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.AARDVARK, RendererAardvark::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.RHINO, RendererRhino::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.HYENA, RendererHyena::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BOAR, RendererBoar::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.BISON, RendererBison::new);
+        event.registerEntityRenderer(ModEntity.SUNFISH.get(), RendererSunfish::new);
+        event.registerEntityRenderer(ModEntity.TREVALLY.get(), RendererTrevally::new);
+        event.registerEntityRenderer(ModEntity.AROWANA.get(), RendererArowana::new);
+        event.registerEntityRenderer(ModEntity.SHARK.get(), RendererShark::new);
+        event.registerEntityRenderer(ModEntity.FOOTBALL_FISH.get(), RendererFootballFish::new);
+        event.registerEntityRenderer(ModEntity.WHALE_SHARK.get(), RendererWhaleShark::new);
+        event.registerEntityRenderer(ModEntity.TRIGGERFISH.get(), RendererTriggerfish::new);
+        event.registerEntityRenderer(ModEntity.CATFISH.get(), RendererCatfish::new);
 
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SUNFISH, RendererSunfish::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.TREVALLY, RendererTrevally::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.AROWANA, RendererArowana::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.SHARK, RendererShark::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.FOOTBALL_FISH, RendererFootballFish::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.WHALE_SHARK, RendererWhaleShark::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.TRIGGERFISH, RendererTriggerfish::new);
+        event.registerEntityRenderer(ModEntity.GIANT_SALAMANDER.get(), RendererGiantSalamander::new);
+        event.registerEntityRenderer(ModEntity.NEWT.get(), RendererNewt::new);
 
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.GIANT_SALAMANDER, RendererGiantSalamander::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntity.NEWT, RendererNewt::new);
+        event.registerEntityRenderer(ModEntity.SPIT.get(), RendererProjectileSpit::new);
+
     }
 
     public static void addWorldSpawn(EntityType<?> entityClass, int weightedProb, FaunaHandler.animalType type, int groupCount) {
@@ -195,24 +187,13 @@ public class ModEntity {
             // Adjusting an existing spawn entry
             if (entry.entityType == entityClass) {
                 entry.itemWeight = weightedProb;
-                entry.groupCount = groupCount;
+                //entry.groupCount = groupCount;
                 found = true;
                 break;
             }
         }
 
-        if (!found)
-            spawns.add(new FaunaHandler.SpawnListEntry(entityClass, weightedProb, groupCount));
+        //if (!found)
+            //spawns.add(new FaunaHandler.SpawnListEntry(entityClass, weightedProb, groupCount));
     }
-
-    /*public static void addVanillaSpawn(Class <? extends LivingEntity> entityClass, int weightedProb, int min, int max, BiomeDictionary.Type... biomes) {
-        Set<Biome> spawnBiomes = new ObjectArraySet<>();
-        for (Biome b : ForgeRegistries.BIOMES) {
-            Set<BiomeDictionary.Type> types = BiomeDictionary.getTypes(b);
-            for(BiomeDictionary.Type biomeTypes : biomes) {
-                if (types.contains(biomeTypes))
-                    spawnBiomes.add(b);
-            }
-        }
-    }*/
 }

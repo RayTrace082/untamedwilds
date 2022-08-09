@@ -1,0 +1,87 @@
+{
+  "name":"manatee",
+  "breeding":"MID_SUMMER",
+  "growing":12,
+  "offspring":1,
+  "sounds":{
+    "ambient":"untamedwilds:entity.cow.ambient",
+    "hurt":"minecraft:entity.cow.hurt",
+    "death":"minecraft:entity.cow.death"
+  },
+  "flags":{
+
+  },
+  "species":[
+    {
+      "name":"african",
+      "variant":0,
+      "scale":1.0,
+      "rarity":5,
+      "attack":1,
+      "health":25,
+      "activityType":"diurnal",
+      "favourite_food":"minecraft:sea_grass",
+      "spawnBiomes":[
+        [ "resource|minecraft:warm_ocean" ],
+        [ "resource|minecraft:lukewarm_ocean" ],
+        [ "resource|minecraft:mangrove_swamp" ]
+      ]
+    },
+    {
+      "name":"amazon",
+      "variant":1,
+      "scale":0.8,
+      "rarity":5,
+      "attack":1,
+      "health":20,
+      "activityType":"diurnal",
+      "favourite_food":"minecraft:sea_grass",
+      "spawnBiomes":[
+        [ "category|jungle" ]
+      ]
+    },
+    {
+      "name":"dugong",
+      "variant":2,
+      "scale":0.9,
+      "rarity":5,
+      "attack":1,
+      "health":25,
+      "activityType":"diurnal",
+      "favourite_food":"minecraft:sea_grass",
+      "spawnBiomes":[
+        [ "resource|minecraft:warm_ocean" ],
+        [ "resource|minecraft:lukewarm_ocean" ],
+        [ "resource|minecraft:mangrove_swamp" ]
+      ]
+    },
+    {
+      "name":"steller",
+      "variant":3,
+      "scale":1.9,
+      "rarity":3,
+      "attack":1,
+      "health":60,
+      "activityType":"diurnal",
+      "favourite_food":"minecraft:kelp",
+      "spawnBiomes":[
+        [ "resource|minecraft:cold_ocean" ]
+      ]
+    },
+    {
+      "name":"west",
+      "variant":4,
+      "scale":1.1,
+      "rarity":5,
+      "attack":1,
+      "health":30,
+      "activityType":"diurnal",
+      "favourite_food":"minecraft:sea_grass",
+      "spawnBiomes":[
+        [ "resource|minecraft:warm_ocean" ],
+        [ "resource|minecraft:lukewarm_ocean" ],
+        [ "resource|minecraft:mangrove_swamp" ]
+      ]
+    }
+  ]
+}

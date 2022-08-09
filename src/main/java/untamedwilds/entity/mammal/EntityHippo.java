@@ -1,13 +1,16 @@
 package untamedwilds.entity.mammal;
 
 import com.github.alexthe666.citadel.animation.Animation;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.level.Level;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAmphibious;
@@ -29,15 +32,14 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
     public static Animation IDLE_TALK;
     public int angryProgress;
 
-    public EntityHippo(EntityType<? extends ComplexMob> type, World worldIn) {
+    public EntityHippo(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
         IDLE_YAWN = Animation.create(36);
         IDLE_LOOK = Animation.create(128);
         IDLE_TALK = Animation.create(20);
         EAT = Animation.create(48);
         ATTACK = Animation.create(24);
-        this.stepHeight = 1F;
-        this.experienceValue = 10;
+        this.maxUpStep = 1F;
         this.isAmphibious = true;
         this.buoyancy = 0.998F;
         this.turn_speed = 0.3F;
@@ -52,37 +54,41 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, 120, 0, false));
         this.goalSelector.addGoal(5, new AmphibiousRandomSwimGoal(this, 1, 120));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(3, new HippoTerritoryTargetGoal<>(this, LivingEntity.class, true, false, input -> !(input instanceof EntityHippo || input instanceof ISpecies || getEcoLevel(input) > getEcoLevel(this))));
     }
 
-    public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 9.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 24.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 60.0D)
-                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1D)
-                .createMutableAttribute(Attributes.ARMOR, 0D);
+    public static AttributeSupplier.Builder registerAttributes() {
+        return LivingEntity.createLivingAttributes()
+                .add(Attributes.ATTACK_DAMAGE, 9.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.6D)
+                .add(Attributes.MOVEMENT_SPEED, 0.8D)
+                .add(Attributes.FOLLOW_RANGE, 24.0D)
+                .add(Attributes.MAX_HEALTH, 60.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1D)
+                .add(Attributes.ARMOR, 0D);
     }
 
     public boolean wantsToBreed() {
-        if (ConfigGamerules.naturalBreeding.get() && this.growingAge == 0) {
+        if (ConfigGamerules.naturalBreeding.get() && this.age == 0) {
             return this.getHunger() >= 80;
         }
         return false;
     }
 
     @Override
-    public void livingTick() {
-        if (!this.world.isRemote) {
-            if (this.world.getGameTime() % 1000 == 0) {
+    public void aiStep() {
+        if (!this.level.isClientSide) {
+            if (this.isInWater() && this.getTarget() == null) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.01D, 0.0D));
+            }
+            if (this.level.getGameTime() % 1000 == 0) {
                 this.addHunger(-10);
                 if (!this.isStarving()) {
                     this.heal(1.0F);
                 }
             }
-            int i = this.rand.nextInt(3000);
+            int i = this.random.nextInt(3000);
             if (i <= 8 && !this.isInWater() && !this.isAngry() && !this.isSleeping() && this.getAnimation() == NO_ANIMATION) {
                 this.setAnimation(IDLE_YAWN);
             }
@@ -98,44 +104,44 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
             if (i == 15 && !this.isActive() && !this.isSleeping() && this.isInWater()){
                 this.setAnimation(IDLE_YAWN);
                 this.setSleeping(true);
-                this.forceSleep = -800 - this.rand.nextInt(1200);
+                this.forceSleep = -800 - this.random.nextInt(1200);
             }
-            if (i > 2980 && !this.isChild()) {
+            if (i > 2980 && !this.isBaby()) {
                 this.setAnimation(IDLE_TALK);
             }
-            if (this.getAnimation() == ATTACK && this.getAttackTarget() != null && this.getBoundingBox().grow(1.2F, 1.0F, 1.2F).contains(this.getAttackTarget().getPositionVec()) && (this.getAnimationTick() > 8)) {
-                LivingEntity target = this.getAttackTarget();
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
-                EntityUtils.destroyBoat(this.world, target);
+            if (this.getAnimation() == ATTACK && this.getTarget() != null && this.getBoundingBox().inflate(1.2F, 1.0F, 1.2F).contains(this.getTarget().getPosition(0)) && (this.getAnimationTick() > 8)) {
+                LivingEntity target = this.getTarget();
+                this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
+                EntityUtils.destroyBoat(this.level, target);
             }
-            this.setAngry(this.getAttackTarget() != null);
+            this.setAngry(this.getTarget() != null);
         }
         if (this.getAnimation() != NO_ANIMATION) {
-            if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-                this.playSound(this.getAmbientSound(), this.getSoundVolume(), this.getSoundPitch());
+            if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1 && this.getAmbientSound() != null) {
+                this.playSound(this.getAmbientSound(), this.getSoundVolume(), this.getVoicePitch());
             }
         }
-        if (this.world.isRemote && this.isAngry() && this.angryProgress < 40) {
+        if (this.level.isClientSide && this.isAngry() && this.angryProgress < 40) {
             this.angryProgress += 4;
-        } else if (this.world.isRemote && !this.isAngry() && this.angryProgress > 0) {
+        } else if (this.level.isClientSide && !this.isAngry() && this.angryProgress > 0) {
             this.angryProgress -= 4;
         }
-        super.livingTick();
+        super.aiStep();
     }
 
     @Override
-    public boolean wantsToLeaveWater(){
+    public boolean wantsToBeOnLand(){
         return this.isActive();
     }
 
     @Override
-    public boolean wantsToEnterWater(){
+    public boolean wantsToBeInWater(){
         return !this.isActive();
     }
 
-    public boolean attackEntityAsMob(Entity entityIn) {
-        boolean flag = super.attackEntityAsMob(entityIn);
-        if (flag && this.getAnimation() == NO_ANIMATION && !this.isChild()) {
+    public boolean doHurtTarget(Entity entityIn) {
+        boolean flag = super.doHurtTarget(entityIn);
+        if (flag && this.getAnimation() == NO_ANIMATION && !this.isBaby()) {
             Animation anim = chooseAttackAnimation();
             this.setAnimation(anim);
         }
@@ -147,8 +153,8 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
     }
 
     @Nullable
-    public EntityHippo func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityHippo(ModEntity.HIPPO, this.world));
+    public EntityHippo getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+        return create_offspring(new EntityHippo(ModEntity.HIPPO.get(), this.level));
     }
 
     @Override

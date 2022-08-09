@@ -2,9 +2,9 @@ package untamedwilds.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityBison;
 
 public class ModelBisonCalf extends AdvancedEntityModel<EntityBison> {
@@ -27,8 +27,8 @@ public class ModelBisonCalf extends AdvancedEntityModel<EntityBison> {
     public AdvancedModelBox arm_left_2;
 
     public ModelBisonCalf() {
-        this.textureWidth = 128;
-        this.textureHeight = 64;
+        this.texWidth = 128;
+        this.texHeight = 64;
 
         this.head_neck = new AdvancedModelBox(this, 16, 15);
         this.head_neck.setRotationPoint(0.0F, -1.0F, -4.5F);
@@ -111,7 +111,7 @@ public class ModelBisonCalf extends AdvancedEntityModel<EntityBison> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(body_main);
     }
 
@@ -137,7 +137,7 @@ public class ModelBisonCalf extends AdvancedEntityModel<EntityBison> {
         );
     }
 
-    public void setRotationAngles(EntityBison bison, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityBison bison, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
         // Breathing Animation
@@ -161,10 +161,10 @@ public class ModelBisonCalf extends AdvancedEntityModel<EntityBison> {
 
         // Movement Animation
         if (bison.canMove()) {
-            this.arm_right_1.rotateAngleX = MathHelper.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
-            this.arm_left_1.rotateAngleX = MathHelper.cos(limbSwing * 0.5F + (float) Math.PI) * 1.4F * limbSwingAmount;
-            this.leg_left_thigh.rotateAngleX = MathHelper.cos(limbSwing * 0.5F + (float) Math.PI) * 1.4F * limbSwingAmount;
-            this.leg_right_thigh.rotateAngleX = MathHelper.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
+            this.arm_right_1.rotateAngleX = Mth.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
+            this.arm_left_1.rotateAngleX = Mth.cos(limbSwing * 0.5F + (float) Math.PI) * 1.4F * limbSwingAmount;
+            this.leg_left_thigh.rotateAngleX = Mth.cos(limbSwing * 0.5F + (float) Math.PI) * 1.4F * limbSwingAmount;
+            this.leg_right_thigh.rotateAngleX = Mth.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
         }
 
         // Sitting Animation

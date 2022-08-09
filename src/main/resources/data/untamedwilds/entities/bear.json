@@ -37,9 +37,6 @@
         ],
         [
           "category|taiga"
-        ],
-        [
-          "resource|desert"
         ]
       ]
     },
@@ -59,7 +56,9 @@
         "hasShortSnout":1
       },
       "spawnBiomes":[
-
+        [
+          "category|underground"
+        ]
       ]
     },
     {
@@ -145,7 +144,7 @@
       "growing":10,
       "offspring":1,
       "activityType":"diurnal",
-      "favourite_food":"untamedwilds:material_fat",
+      "favourite_food":"untamedwilds:material_blubber",
       "attack":8,
       "health":45,
       "flags":{

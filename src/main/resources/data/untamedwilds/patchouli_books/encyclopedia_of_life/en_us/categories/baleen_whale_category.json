@@ -1,0 +1,6 @@
+{
+    "name": "Baleen whale" , 
+    "description": "List of all discovered Baleen whale species" , 
+    "icon": "untamedwilds:textures/icon/baleen_whale/category.png" , 
+    "parent": "untamedwilds:taxon_mammal"
+}

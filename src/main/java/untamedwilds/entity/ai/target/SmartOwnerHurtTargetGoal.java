@@ -1,13 +1,13 @@
 package untamedwilds.entity.ai.target;
 
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.TargetGoal;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.GhastEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.passive.horse.AbstractHorseEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Ghast;
+import net.minecraft.world.entity.player.Player;
 import untamedwilds.entity.ComplexMob;
 
 import java.util.EnumSet;
@@ -20,47 +20,46 @@ public class SmartOwnerHurtTargetGoal extends TargetGoal {
     public SmartOwnerHurtTargetGoal(ComplexMob entityIn) {
         super(entityIn, false);
         this.tameable = entityIn;
-        this.setMutexFlags(EnumSet.of(Flag.TARGET));
+        this.setFlags(EnumSet.of(Flag.TARGET));
     }
 
-    public boolean shouldExecute() {
-        if (this.tameable.isTamed() && !this.tameable.isSleeping() && !this.tameable.isChild()) {
-            LivingEntity owner = this.tameable.getOwner();
-            if (owner == null) {
+    public boolean canUse() {
+        if (this.tameable.isTame() && !this.tameable.isOrderedToSit()) {
+            LivingEntity livingentity = this.tameable.getOwner();
+            if (livingentity == null) {
                 return false;
             } else {
-                this.attacker = owner.getLastAttackedEntity();
-                int lvt_2_1_ = owner.getLastAttackedEntityTime();
-                return lvt_2_1_ != this.timestamp && this.isSuitableTarget(this.attacker, EntityPredicate.DEFAULT) && shouldAttackEntity(this.attacker, owner);
+                this.attacker = livingentity.getLastHurtMob();
+                int i = livingentity.getLastHurtMobTimestamp();
+                return i != this.timestamp && this.canAttack(this.attacker, TargetingConditions.DEFAULT) && this.shouldAttackEntity(this.attacker, livingentity);
             }
         } else {
             return false;
         }
     }
 
-    public void startExecuting() {
-        this.goalOwner.setAttackTarget(this.attacker);
-        LivingEntity lvt_1_1_ = this.tameable.getOwner();
-        if (lvt_1_1_ != null) {
-            this.timestamp = lvt_1_1_.getLastAttackedEntityTime();
+    public void start() {
+        this.mob.setTarget(this.attacker);
+        LivingEntity livingentity = this.tameable.getOwner();
+        if (livingentity != null) {
+            this.timestamp = livingentity.getLastHurtMobTimestamp();
         }
 
-        super.startExecuting();
+        super.start();
     }
 
     // Taken from WolfEntity
     private boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
-        if (!(target instanceof CreeperEntity) && !(target instanceof GhastEntity)) {
-            if (target instanceof TameableEntity) {
-                TameableEntity tameableTarget = (TameableEntity)target;
-                if (tameableTarget.isTamed() && tameableTarget.getOwner() == owner) {
+        if (!(target instanceof Creeper) && !(target instanceof Ghast)) {
+            if (target instanceof TamableAnimal tamableTarget) {
+                if (tamableTarget.isTame() && tamableTarget.getOwner() == owner) {
                     return false;
                 }
             }
 
-            if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canAttackPlayer((PlayerEntity)owner)) {
+            if (target instanceof Player && owner instanceof Player && !owner.canAttack(owner)) {
                 return false;
-            } else return !(target instanceof AbstractHorseEntity) || !((AbstractHorseEntity) target).isTame();
+            } else return !(target instanceof Horse) || !((Horse) target).isTamed();
         }
         return false;
     }

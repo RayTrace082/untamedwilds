@@ -69,13 +69,12 @@
       ]
     },
     {
-      "name":"spotted",
+      "name":"striped",
       "variant":3,
       "scale":0.9,
       "rarity":3,
       "attack":4,
       "health":16,
-      "skins":30,
       "flags":{
         "groupCount":1
       },

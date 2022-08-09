@@ -1,81 +1,96 @@
 package untamedwilds.entity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.SpyglassItem;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
 import untamedwilds.compat.CompatBridge;
 import untamedwilds.compat.CompatSereneSeasons;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.config.ConfigMobControl;
-import untamedwilds.init.ModItems;
+import untamedwilds.init.ModAdvancementTriggers;
 import untamedwilds.util.*;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
 
-public abstract class ComplexMob extends TameableEntity {
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public abstract class ComplexMob extends TamableAnimal {
 
-    private static final DataParameter<BlockPos> HOME_POS = EntityDataManager.createKey(ComplexMob.class, DataSerializers.BLOCK_POS);
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> SKIN = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT);
     public static HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> TEXTURES_COMMON = new HashMap<>();
     public static HashMap<String, HashMap<Integer, ArrayList<ResourceLocation>>> TEXTURES_RARE = new HashMap<>();
-    private static final DataParameter<Float> SIZE = EntityDataManager.createKey(ComplexMob.class, DataSerializers.FLOAT);
-    private static final DataParameter<Integer> GENDER = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT); // 0 - Male, 1 - Female
-    private static final DataParameter<Boolean> IS_ANGRY = EntityDataManager.createKey(ComplexMob.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(ComplexMob.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(ComplexMobTerrestrial.class, DataSerializers.BOOLEAN);
+
+    private static final EntityDataAccessor<BlockPos> HOME_POS = SynchedEntityData.defineId(ComplexMob.class, EntityDataSerializers.BLOCK_POS);
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(ComplexMob.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SKIN = SynchedEntityData.defineId(ComplexMob.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(ComplexMob.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> GENDER = SynchedEntityData.defineId(ComplexMob.class, EntityDataSerializers.INT); // 0 - Male, 1 - Female
+    private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(ComplexMob.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> COMMAND = SynchedEntityData.defineId(ComplexMob.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(ComplexMob.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(ComplexMob.class, EntityDataSerializers.BOOLEAN);
     public HerdEntity herd = null;
     public float turn_speed = 1F;
-    public int peacefulTicks;
+    public int huntingCooldown;
     public static HashMap<EntityType<?>, EntityDataHolder> ENTITY_DATA_HASH = new HashMap<>();
     public static HashMap<EntityType<?>, EntityDataHolderClient> CLIENT_DATA_HASH = new HashMap<>();
 
-    public ComplexMob(EntityType<? extends ComplexMob> type, World worldIn){
+    public ComplexMob(EntityType<? extends ComplexMob> type, Level worldIn){
         super(type, worldIn);
+        this.moveControl = new MoveControl(this);
     }
 
     @Override
-    protected void registerData(){
-        super.registerData();
-        this.dataManager.register(HOME_POS, BlockPos.ZERO);
-        this.dataManager.register(VARIANT, 0);
-        this.dataManager.register(SKIN, 0);
-        this.dataManager.register(SIZE, 1F);
-        this.dataManager.register(GENDER, 0);
-        this.dataManager.register(IS_ANGRY, false);
-        this.dataManager.register(COMMAND, 0);
-        this.dataManager.register(SLEEPING, false);
-        this.dataManager.register(SITTING, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(HOME_POS, BlockPos.ZERO);
+        this.entityData.define(VARIANT, 0);
+        this.entityData.define(SKIN, 0);
+        this.entityData.define(SIZE, 1F);
+        this.entityData.define(GENDER, 0);
+        this.entityData.define(IS_ANGRY, false);
+        this.entityData.define(COMMAND, 0);
+        this.entityData.define(SLEEPING, false);
+        this.entityData.define(SITTING, false);
     }
 
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote && this.peacefulTicks > 0) {
-            this.peacefulTicks--;
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide && this.huntingCooldown > 0) {
+            this.huntingCooldown--;
         }
     }
 
@@ -85,7 +100,7 @@ public abstract class ComplexMob extends TameableEntity {
      */
     public static EntityDataHolder getEntityData(EntityType<?> typeIn) {
         if (!ENTITY_DATA_HASH.containsKey(typeIn)) {
-            ResourceListenerEvent.registerEntityData(typeIn);
+            EntityDataListenerEvent.registerEntityData(typeIn);
         }
         return ENTITY_DATA_HASH.get(typeIn);
     }
@@ -94,57 +109,66 @@ public abstract class ComplexMob extends TameableEntity {
         return EntityUtils.getSound(this.getType(), this.getVariant(), "ambient");
     }
 
-    protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
-        return EntityUtils.getSound(this.getType(), this.getVariant(), "hurt", SoundEvents.ENTITY_GENERIC_HURT);
+    protected SoundEvent getHurtSound(@NotNull DamageSource source) {
+        return EntityUtils.getSound(this.getType(), this.getVariant(), "hurt", SoundEvents.GENERIC_HURT);
     }
 
     protected SoundEvent getDeathSound() {
-        return EntityUtils.getSound(this.getType(), this.getVariant(), "death", SoundEvents.ENTITY_GENERIC_DEATH);
+        return EntityUtils.getSound(this.getType(), this.getVariant(), "death", SoundEvents.GENERIC_DEATH);
     }
 
     protected SoundEvent getThreatSound() {
         return EntityUtils.getSound(this.getType(), this.getVariant(), "threat");
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
         return true;
     }
 
-    // Why is a method called 'isNotColliding()' also checking for Water?
-    public boolean isNotColliding(IWorldReader worldIn) {
-        return worldIn.checkNoEntityCollision(this);
+    // Why is a method called 'checkSpawnObstruction()' also checking for Water?
+    @Override
+    public boolean checkSpawnObstruction(LevelReader worldIn) {
+        //return !p_21433_.containsAnyLiquid(this.getBoundingBox()) && p_21433_.isUnobstructed(this);
+        return worldIn.isUnobstructed(this);
     }
 
-    public boolean canBeLeashedTo(PlayerEntity player) {
+    @Override
+    public boolean canBeLeashed(Player player) {
         if (player.isCreative()) {
-            return !this.getLeashed();
+            return !this.isLeashed();
         }
-        return (!this.getLeashed() && this.isTamed());
+        return (!this.isLeashed() && this.isTame());
     }
 
-    public boolean preventDespawn() {
-        return true;
+    @Override
+    public boolean removeWhenFarAway(double p_21542_) {
+        return false;
     }
 
-    public void setSleeping(boolean sleeping){ this.dataManager.set(SLEEPING, sleeping); }
-    public boolean isSleeping(){ return (this.dataManager.get(SLEEPING)); }
+    public void setSleeping(boolean sleeping){ this.entityData.set(SLEEPING, sleeping); }
+    public boolean isSleeping(){ return (this.entityData.get(SLEEPING)); }
 
-    public void setSitting(boolean sitting){ this.dataManager.set(SITTING, sitting); }
-    public boolean isSitting(){ return (this.dataManager.get(SITTING)); }
+    public void setSitting(boolean sitting){ this.entityData.set(SITTING, sitting); }
+    public boolean isSitting(){ return (this.entityData.get(SITTING)); }
     public boolean isNotMoving(){
-        return this.getMotion().x == 0 && this.getMotion().z == 0;
+        return this.getDeltaMovement().x == 0 && this.getDeltaMovement().z == 0;
     }
     public boolean canBeTargeted() { return true; }
-    public double getCurrentSpeed() { return Math.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z); }
+    public double getCurrentSpeed() { return Math.sqrt(this.getDeltaMovement().x * this.getDeltaMovement().x + this.getDeltaMovement().z * this.getDeltaMovement().z); }
 
-    public int getTalkInterval() {
+    public int getAmbientSoundInterval() {
         //return Integer.MAX_VALUE;
         return 300;
     }
 
+    protected int getExperienceReward(Player p_27590_) {
+        int xp = Math.max(getEcoLevel(this) / 2, 1);
+        return xp + this.level.random.nextInt(xp);
+    }
+
     /**
      * Method that links an EntityType with an EntityDataHolder object, and uses the EntityDataHolder to build a
-     * hash with only Variant data to be synced and accessed by the client
+     * hash with only Variant data, to be synced and accessed by the client
      * @param dataIn The EntityDataHolder to introduce in ENTITY_DATA_HASH
      * @param typeIn The EntityType to be associated with the dataIn object
      */
@@ -165,28 +189,28 @@ public abstract class ComplexMob extends TameableEntity {
         }
     }
 
-    public int getVariant(){ return (this.dataManager.get(VARIANT)); }
-    public void setVariant(int variant){ this.dataManager.set(VARIANT, variant); }
-    public int getSkin(){ return (this.dataManager.get(SKIN)); }
-    public void setSkin(int skin){ this.dataManager.set(SKIN, skin); }
+    public int getVariant(){ return (this.entityData.get(VARIANT)); }
+    public void setVariant(int variant){ this.entityData.set(VARIANT, variant); }
+    public int getSkin(){ return (this.entityData.get(SKIN)); }
+    public void setSkin(int skin){ this.entityData.set(SKIN, skin); }
     public <T extends ComplexMob> void chooseSkinForSpecies(T entityIn, boolean allowRares) {
-        if (entityIn.getType().getRegistryName() != null && this instanceof INewSkins && !this.world.isRemote) {
+        if (entityIn.getType().getRegistryName() != null && this instanceof INewSkins && !this.level.isClientSide) {
             String name = entityIn.getType().getRegistryName().getPath();
             if (!TEXTURES_COMMON.get(name).isEmpty()) {
-                boolean isRare = allowRares && TEXTURES_RARE.get(name).containsKey(this.getVariant()) && this.rand.nextFloat() < ConfigGamerules.rareSkinChance.get();
-                int skin = this.rand.nextInt(isRare ? TEXTURES_RARE.get(name).get(this.getVariant()).size() : TEXTURES_COMMON.get(name).get(this.getVariant()).size()) + (isRare ? 100 : 0);
+                boolean isRare = allowRares && TEXTURES_RARE.get(name).containsKey(this.getVariant()) && this.random.nextFloat() < ConfigGamerules.rareSkinChance.get();
+                int skin = this.random.nextInt(isRare ? TEXTURES_RARE.get(name).get(this.getVariant()).size() : TEXTURES_COMMON.get(name).get(this.getVariant()).size()) + (isRare ? 100 : 0);
                 this.setSkin(skin);
             }
         }
     }
 
     public float getModelScale() { return getEntityData(this.getType()).getScale(this.getVariant()); }
-    public float getMobSize(){ return (this.dataManager.get(SIZE)); }
-    public void setMobSize(float size){ this.dataManager.set(SIZE, size); }
-    public void setRandomMobSize(){ this.dataManager.set(SIZE, this.getModelScale() + ((float)this.rand.nextGaussian() * 0.1F)); }
+    public float getMobSize(){ return (this.entityData.get(SIZE)); }
+    public void setMobSize(float size){ this.entityData.set(SIZE, size); }
+    public void setRandomMobSize(){ this.entityData.set(SIZE, this.getModelScale() + ((float)this.random.nextGaussian() * 0.1F)); }
 
-    public void setGender(int gender){ this.dataManager.set(GENDER, gender); }
-    public int getGender(){	return (this.dataManager.get(GENDER)); }
+    public void setGender(int gender){ this.entityData.set(GENDER, gender); }
+    public int getGender(){	return (this.entityData.get(GENDER)); }
     public boolean isMale() { return this.getGender() == 0; }
     public String getGenderString() {
         return this.isMale() ? "male" : "female";
@@ -195,7 +219,7 @@ public abstract class ComplexMob extends TameableEntity {
     public boolean wantsToBreed() {
         if (ConfigGamerules.naturalBreeding.get()) {
             if (CompatBridge.SereneSeasons) {
-                return CompatSereneSeasons.isCurrentSeason(this.world, this.getBreedingSeason());
+                return CompatSereneSeasons.isCurrentSeason(this.level, this.getBreedingSeason());
             }
             return true;
             //return this.isInLove();
@@ -205,31 +229,33 @@ public abstract class ComplexMob extends TameableEntity {
 
     @SuppressWarnings("unchecked") // Don't use this outside ComplexMobs
     public <T extends ComplexMob> void breed() {
-        int bound = 1 + (this.getOffspring() > 0 ? this.rand.nextInt(this.getOffspring() + 1) : 0);
+        int bound = 1 + (this.getOffspring() > 0 ? this.random.nextInt(this.getOffspring() + 1) : 0);
         for (int i = 0; i < bound; i++) {
-            T child = (T) this.func_241840_a((ServerWorld) this.world, this);
+            T child = (T) this.getBreedOffspring((ServerLevel) this.level, this);
             if (child != null) {
                 child.setVariant(this.getVariant());
-                child.setGrowingAge(this.getAdulthoodTime() * -1);
-                child.setGender(this.rand.nextInt(2));
+                child.setAge(this.getAdulthoodTime() * -1);
+                child.setGender(this.random.nextInt(2));
                 child.setRandomMobSize();
-                child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
-                if (this.getOwner() != null) {
-                    child.setTamedBy((PlayerEntity) this.getOwner());
-                }
+                child.setBaby(true);
+                child.moveTo(this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F);
+                if (this.getOwner() != null)
+                    child.tame((Player) this.getOwner());
                 if (this instanceof INeedsPostUpdate) {
                     ((INeedsPostUpdate) child).updateAttributes();
                 }
                 if (TEXTURES_COMMON.containsKey(child.getType().getRegistryName().getPath())) {
                     chooseSkinForSpecies(child, true);
                 }
-                this.world.addEntity(child);
+                //((ServerLevel)this.level).addFreshEntityWithPassengers(child);
+                this.level.addFreshEntity(child);
+                this.level.broadcastEntityEvent(this, (byte)18);
             }
         }
     }
 
     protected <T extends ComplexMob> T create_offspring(T entity) {
-        entity.setGender(this.rand.nextInt(2));
+        entity.setGender(this.random.nextInt(2));
         entity.setRandomMobSize();
         entity.setVariant(this.getVariant());
         if (entity instanceof INeedsPostUpdate) {
@@ -251,42 +277,40 @@ public abstract class ComplexMob extends TameableEntity {
         return getEntityData(this.getType()).getGrowingTime(this.getVariant()) * ConfigGamerules.cycleLength.get();
     }
 
-    public boolean isBreedingItem(ItemStack stack) {
-        return stack.getItem().equals(getEntityData(this.getType()).getFavouriteFood(this.getVariant()).getItem());
-    }
-
     protected int getOffspring() {
         return getEntityData(this.getType()).getOffspring(this.getVariant());
     }
 
-    public boolean isFavouriteFood(ItemStack stack) {
-        return stack.getItem() == ModItems.DEBUG_LOVE_POTION.get();
+    public boolean isFood(ItemStack stack) {
+        if (getEntityData(this.getType()).getFavouriteFood(this.getVariant()).getItem().equals(Blocks.AIR.asItem()))
+            return false;
+        return stack.getItem().equals(getEntityData(this.getType()).getFavouriteFood(this.getVariant()).getItem());
     }
-    public boolean canEquipItem(ItemStack stack) {
+    public boolean canTakeItem(ItemStack stack) {
         return false;
     }
 
     private boolean isBlinking() {
-        return this.ticksExisted % 60 > 53;
+        return this.tickCount % 60 > 53;
     }
 
     public boolean shouldRenderEyes() { return !this.isSleeping() && !this.dead && !this.isBlinking() && this.hurtTime == 0; }
 
-    public boolean canMove() { return !this.isSitting() && !this.isSleeping(); }
+    public boolean canMove() { return !this.isSitting() && !this.isSleeping() && !this.isVehicle(); }
 
     public void setHome(BlockPos position) {
-        this.dataManager.set(HOME_POS, position);
+        this.entityData.set(HOME_POS, position);
     }
-    public BlockPos getHome() { return this.dataManager.get(HOME_POS); }
-    public Vector3d getHomeAsVec() {
+    public BlockPos getHome() { return this.entityData.get(HOME_POS); }
+    public Vec3 getHomeAsVec() {
         BlockPos home = this.getHome();
-        return new Vector3d(home.getX(), home.getY(), home.getZ());
+        return new Vec3(home.getX(), home.getY(), home.getZ());
     }
 
-    public void setGrowingAge(int age) {
-        int i = this.growingAge;
-        super.setGrowingAge(age);
-        this.growingAge = age;
+    public void setAge(int age) {
+        int i = this.age;
+        super.setAge(age);
+        this.age = age;
         if (!this.isMale() && !ConfigGamerules.easyBreeding.get()) {
             if (i > 0 && age <= 0) {
                 this.breed();
@@ -300,52 +324,52 @@ public abstract class ComplexMob extends TameableEntity {
 
     // Returns the ecological level of an entity. Values are dynamically calculated based on current HP, Attack and Herd size (if any)
     public static int getEcoLevel(LivingEntity entity) {
-        if (entity instanceof PlayerEntity) {
-            return Math.round(4 + (entity.getHealth() / 6));
+        if (entity instanceof Player) {
+            return (int) (4 + (entity.getHealth() / 6));
         }
-        double attack = Math.max(entity.getAttributeManager().hasAttributeInstance(Attributes.ATTACK_DAMAGE) ? entity.getAttribute(Attributes.ATTACK_DAMAGE).getValue() : 1, 4);
+        int attack = (int) Math.max(entity.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE) ? entity.getAttribute(Attributes.ATTACK_DAMAGE).getValue() : 1, 4);
         if (entity instanceof ComplexMob && ((ComplexMob) entity).herd != null) {
-            return Math.round((float) Math.sqrt(entity.getHealth() * attack) / 2.5F) + ((ComplexMob) entity).herd.creatureList.size();
+            return (int) (Math.sqrt(entity.getHealth() * attack) / 2.5F) + ((ComplexMob) entity).herd.creatureList.size();
         }
-        return Math.round((float) Math.sqrt(entity.getHealth() * attack) / 2.5F);
+        return (int) (Math.sqrt(entity.getHealth() * attack) / 2.5F);
     }
 
-    protected void setAngry(boolean isAngry) { this.dataManager.set(IS_ANGRY, isAngry); }
-    public boolean isAngry() { return (this.dataManager.get(IS_ANGRY)); }
+    protected void setAngry(boolean isAngry) { this.entityData.set(IS_ANGRY, isAngry); }
+    public boolean isAngry() { return (this.entityData.get(IS_ANGRY)); }
 
     // Commands:
     // 0 - Wander: The mob wanders around naturally
-    // 1 - Follow: The mob will follow it's owner, occasionally teleporting
+    // 1 - Follow: The mob will follow its owner, occasionally teleporting
     // 2 - Sit: The mob will sit in place
     // 3 - Guard: The mob will sit in place and attack nearby mobs (NIY)
-    public void setCommandInt(int command) { this.dataManager.set(COMMAND, command % 3); }
-    public int getCommandInt() { return (this.dataManager.get(COMMAND)); }
+    public void setCommandInt(int command) { this.entityData.set(COMMAND, command % 3); }
+    public int getCommandInt() { return (this.entityData.get(COMMAND)); }
 
     public boolean shouldDespawn() { return this instanceof ISpecies && this.getHome() != BlockPos.ZERO; }
     @Override
     public void checkDespawn() {
         super.checkDespawn();
         if (this.shouldDespawn()) {
-            if (!this.world.isPlayerWithin(this.getPosX(), this.getPosY(), this.getPosZ(), ConfigMobControl.critterSpawnRange.get())) {
+            if (!this.level.hasNearbyAlivePlayer(this.getX(), this.getY(), this.getZ(), ConfigMobControl.critterSpawnRange.get())) {
                 if (this instanceof ISpecies && this.getHome() != BlockPos.ZERO) {
-                    TileEntity burrow = this.world.getTileEntity(this.getHome());
+                    BlockEntity burrow = this.level.getBlockEntity(this.getHome());
                     if (burrow instanceof CritterBurrowBlockEntity) {
                         ((CritterBurrowBlockEntity)burrow).tryEnterBurrow(this);
-                        burrow.markDirty();
+                        burrow.setChanged();
                     }
                 }
             }
         }
     }
 
-    public void writeAdditional(CompoundNBT compound){
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound){
+        super.addAdditionalSaveData(compound);
         if (this.getHome() != BlockPos.ZERO) {
             compound.putInt("HomePosX", this.getHome().getX());
             compound.putInt("HomePosY", this.getHome().getY());
             compound.putInt("HomePosZ", this.getHome().getZ());
         }
-        if (this.isTamed()) {
+        if (this.isTame()) {
             compound.putInt("Command", this.getCommandInt());
         }
         compound.putInt("Variant", this.getVariant());
@@ -353,11 +377,11 @@ public abstract class ComplexMob extends TameableEntity {
         compound.putFloat("Size", this.getMobSize());
         compound.putInt("Gender", this.getGender());
         compound.putBoolean("isAngry", this.isAngry());
-        compound.putInt("PeacefulTicks", this.peacefulTicks);
+        compound.putInt("PeacefulTicks", this.huntingCooldown);
     }
 
-    public void readAdditional(CompoundNBT compound){
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundTag compound){
+        super.readAdditionalSaveData(compound);
         if (compound.contains("HomePosX")) {
             int i = compound.getInt("HomePosX");
             int j = compound.getInt("HomePosY");
@@ -367,30 +391,28 @@ public abstract class ComplexMob extends TameableEntity {
         if (compound.contains("OwnerUUID")) {
             this.setCommandInt(compound.getInt("Command"));
         }
-        this.setVariant(EntityUtils.getClampedNumberOfSpecies(compound.getInt("Variant"), this.getType()));
+        //this.setVariant(EntityUtils.getClampedNumberOfSpecies(compound.getInt("Variant"), this.getType()));
+        this.setVariant(compound.getInt("Variant"));
         this.setSkin(compound.getInt("Skin"));
         this.setMobSize(compound.getFloat("Size"));
         this.setGender(compound.getInt("Gender"));
         this.setAngry(compound.getBoolean("isAngry"));
-        this.peacefulTicks = compound.getInt("PeacefulTicks");
+        this.huntingCooldown = compound.getInt("PeacefulTicks");
     }
 
     @Nullable
-    @Override
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        if (reason != SpawnReason.DISPENSER && reason != SpawnReason.BUCKET) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        if (reason != MobSpawnType.DISPENSER && reason != MobSpawnType.BUCKET) {
             if (this instanceof ISpecies) {
-                Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(this.getPosition());
-                if (optional.isPresent()) {
-                    int i = ((ISpecies)this).setSpeciesByBiome(optional.get(), worldIn.getBiome(this.getPosition()), reason);
-                    this.setVariant(i);
-                    if (i == 99) {
-                        this.remove();
-                        return null;
-                    }
+                Holder<Biome> optional = worldIn.getBiome(new BlockPos(this.position()));
+                int i = ((ISpecies)this).setSpeciesByBiome(optional, reason);
+                this.setVariant(i);
+                if (i == 99) {
+                    this.remove(RemovalReason.DISCARDED);
+                    return null;
                 }
             }
-            this.setGender(this.rand.nextInt(2));
+            this.setGender(this.random.nextInt(2));
             this.setRandomMobSize();
             if (TEXTURES_COMMON.containsKey(this.getType().getRegistryName().getPath())) {
                 chooseSkinForSpecies(this, ConfigGamerules.wildRareSkins.get());
@@ -399,7 +421,7 @@ public abstract class ComplexMob extends TameableEntity {
                 ((INeedsPostUpdate) this).updateAttributes();
             }
 
-            this.setGrowingAge(0);
+            this.setAge(0);
         }
         if (this instanceof IPackEntity) {
             IPackEntity.initPack(this);
@@ -407,25 +429,28 @@ public abstract class ComplexMob extends TameableEntity {
         return spawnDataIn;
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
-        if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
-            ItemStack itemstack = player.getHeldItem(hand);
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (hand == InteractionHand.MAIN_HAND && !this.level.isClientSide()) {
+            if (!CompatBridge.Patchouli) {
+                ModAdvancementTriggers.NO_PATCHOULI_LOADED.trigger((ServerPlayer) player);
+            }
+            ItemStack itemstack = player.getItemInHand(hand);
 
             // Highlight mobs in the same pack if Player is in Creative mode
-            if (player.isCreative() && itemstack.isEmpty() && this instanceof IPackEntity) {
+            if (player.isCreative() && itemstack.isEmpty() && this instanceof IPackEntity && this.herd != null) {
                 for (int i = 0; i < this.herd.creatureList.size(); ++i) {
                     ComplexMob creature = this.herd.creatureList.get(i);
-                    creature.addPotionEffect(new EffectInstance(Effects.GLOWING, 80, 0));
+                    creature.addEffect(new MobEffectInstance(MobEffects.GLOWING, 80, 0));
                 }
             }
 
             // Command handler for tamed mobs, includes Food/Potion consumption
-            if (this.isTamed() && this.getOwner() == player) {
+            if (this.isTame() && this.getOwner() == player) {
                 if (itemstack.isEmpty()) {
                     this.setCommandInt(this.getCommandInt() + 1);
-                    player.sendMessage(new TranslationTextComponent("entity.untamedwilds.command." + this.getCommandInt()), Util.DUMMY_UUID);
+                    player.sendMessage(new TranslatableComponent("entity.untamedwilds.command." + this.getCommandInt()), Util.NIL_UUID);
                     if (this.getCommandInt() > 1) {
-                        this.getNavigator().clearPath();
+                        this.getNavigation().stop();
                         this.setSitting(true);
                     } else if (this.getCommandInt() <= 1 && this.isSitting()) {
                         this.setSitting(false);
@@ -435,8 +460,8 @@ public abstract class ComplexMob extends TameableEntity {
                     EntityUtils.consumeItemStack(this, itemstack);
                 }
             }
-            return super.func_230254_b_(player, hand);
+            return super.mobInteract(player, hand);
         }
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 }

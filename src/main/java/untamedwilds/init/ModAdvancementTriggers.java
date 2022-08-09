@@ -2,37 +2,36 @@ package untamedwilds.init;
 
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
-import net.minecraft.advancements.criterion.CriterionInstance;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.loot.ConditionArrayParser;
-import net.minecraft.loot.ConditionArraySerializer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.critereon.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import untamedwilds.UntamedWilds;
 
 public class ModAdvancementTriggers {
+    public static UntamedTriggers<?> NO_PATCHOULI_LOADED = new UntamedTriggers<>(new ResourceLocation(UntamedWilds.MOD_ID, "guidebook_alt"));
     public static UntamedTriggers<?> BAIT_BASIC = new UntamedTriggers<>(new ResourceLocation(UntamedWilds.MOD_ID, "used_bait"));
     public static UntamedTriggers<?> MASTER_BAIT = new UntamedTriggers<>(new ResourceLocation(UntamedWilds.MOD_ID, "master_bait"));
 
     public static void register() {
+        CriteriaTriggers.register(NO_PATCHOULI_LOADED);
         CriteriaTriggers.register(BAIT_BASIC);
         CriteriaTriggers.register(MASTER_BAIT);
     }
 
-    public static class UntamedTriggers<T extends CriterionInstance> extends AbstractCriterionTrigger<UntamedTriggers.Instance> {
+    public static class UntamedTriggers<T extends CriterionTriggerInstance> extends SimpleCriterionTrigger<UntamedTriggers.Instance> {
         private final ResourceLocation id;
 
         public UntamedTriggers(ResourceLocation resourceLocation) {
             this.id = resourceLocation;
         }
 
-        public Instance deserializeTrigger(JsonObject objectIn, EntityPredicate.AndPredicate predicateIn, ConditionArrayParser p_230241_3_) {
+        public Instance createInstance(JsonObject objectIn, EntityPredicate.Composite predicateIn, DeserializationContext p_230241_3_) {
             return new UntamedTriggers.Instance(predicateIn, id);
         }
 
-        public void trigger(ServerPlayerEntity entityIn) {
-            this.triggerListeners(entityIn, (input) -> true);
+        public void trigger(ServerPlayer entityIn) {
+            this.trigger(entityIn, (input) -> true);
         }
 
         @Override
@@ -40,14 +39,14 @@ public class ModAdvancementTriggers {
             return id;
         }
 
-        public static class Instance extends CriterionInstance {
+        public static class Instance extends AbstractCriterionTriggerInstance  {
 
-            public Instance(EntityPredicate.AndPredicate p_i231507_1_, ResourceLocation res) {
+            public Instance(EntityPredicate.Composite p_i231507_1_, ResourceLocation res) {
                 super(res, p_i231507_1_);
             }
 
-            public JsonObject serialize(ConditionArraySerializer p_230240_1_) {
-                return super.serialize(p_230240_1_);
+            public JsonObject serializeToJson(SerializationContext p_230240_1_) {
+                return super.serializeToJson(p_230240_1_);
             }
         }
     }

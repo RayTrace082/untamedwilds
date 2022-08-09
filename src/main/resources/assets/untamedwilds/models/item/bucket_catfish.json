@@ -1,0 +1,12 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "untamedwilds:item/spawn/bucket_catfish_blue"
+    },
+
+    "overrides":[
+        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/entity/bucket_catfish_blue"},
+        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/entity/bucket_catfish_channel"},
+        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/entity/bucket_catfish_redtail"}
+    ]
+}

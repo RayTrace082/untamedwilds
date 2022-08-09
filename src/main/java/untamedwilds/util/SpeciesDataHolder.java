@@ -2,12 +2,13 @@ package untamedwilds.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.core.Holder;
+import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
@@ -68,7 +69,7 @@ public class SpeciesDataHolder {
         this.health = health;
         this.activityType = activityType;
         this.favouriteFood_input = favourite_food;
-        this.favouriteFood = new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryCreate(this.favouriteFood_input)));
+        this.favouriteFood = new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(this.favouriteFood_input)));
         this.growing_time = growing_time;
         this.offspring = offspring;
         this.skins = skins;
@@ -177,6 +178,8 @@ public class SpeciesDataHolder {
                     return ConditionTypes.BIOME_CATEGORY;
                 case "dictionary":
                     return ConditionTypes.FORGE_DICTIONARY;
+                case "tag":
+                    return ConditionTypes.BIOME_TAG;
                 case "resource":
                     return ConditionTypes.REGISTRY_NAME;
             }
@@ -184,9 +187,10 @@ public class SpeciesDataHolder {
         return ConditionTypes.BIOME_CATEGORY;
     }
 
-    public enum ConditionTypes implements IStringSerializable {
+    public enum ConditionTypes {
         BIOME_CATEGORY ("Category"),
         FORGE_DICTIONARY ("Dictionary"),
+        BIOME_TAG ("Tag"),
         REGISTRY_NAME ("Resource Location");
 
         public String type;
@@ -195,13 +199,12 @@ public class SpeciesDataHolder {
             this.type = type;
         }
 
-        @Override
         public String getString() {
             return this.type;
         }
     }
 
-    public enum ConditionModifiers implements IStringSerializable {
+    public enum ConditionModifiers {
         NONE (" "),
         INVERTED (" Inverted "),
         PRIORITY (" Priority ");
@@ -212,7 +215,6 @@ public class SpeciesDataHolder {
             this.type = type;
         }
 
-        @Override
         public String getString() {
             return this.type;
         }
@@ -230,19 +232,13 @@ public class SpeciesDataHolder {
             this.modifier = modifierIn;
         }
 
-        public boolean isValidBiome(RegistryKey<Biome> biomekey, Biome biome) {
-            boolean result = false;
-            switch (this.type) {
-                case BIOME_CATEGORY:
-                    result = biome.getCategory() == Biome.Category.byName(this.key);
-                    break;
-                case FORGE_DICTIONARY:
-                    result = BiomeDictionary.hasType(biomekey, BiomeDictionary.Type.getType(this.key));
-                    break;
-                case REGISTRY_NAME:
-                    result = biome.getRegistryName().equals(new ResourceLocation(this.key));
-                    break;
-            }
+        public boolean isValidBiome(Holder<Biome> biomekey, Biome biome) {
+            boolean result = switch (this.type) {
+                case BIOME_CATEGORY -> biome.biomeCategory == Biome.BiomeCategory.byName(this.key);
+                case FORGE_DICTIONARY -> BiomeDictionary.hasType(biomekey.unwrapKey().get(), BiomeDictionary.Type.getType(this.key));
+                case BIOME_TAG -> biomekey.is(new ResourceLocation(this.key));
+                case REGISTRY_NAME -> biome.getRegistryName().equals(new ResourceLocation(this.key));
+            };
             if (this.modifier == ConditionModifiers.INVERTED) {
                 return !result;
             }

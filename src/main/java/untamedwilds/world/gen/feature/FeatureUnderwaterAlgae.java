@@ -2,41 +2,45 @@ package untamedwilds.world.gen.feature;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import untamedwilds.config.ConfigFeatureControl;
 import untamedwilds.init.ModBlock;
 
 import java.util.*;
 
-public class FeatureUnderwaterAlgae extends Feature<NoFeatureConfig> {
-   public FeatureUnderwaterAlgae(Codec<NoFeatureConfig> p_i231988_1_) {
+public class FeatureUnderwaterAlgae extends Feature<NoneFeatureConfiguration> {
+   public FeatureUnderwaterAlgae(Codec<NoneFeatureConfiguration> p_i231988_1_) {
       super(p_i231988_1_);
    }
 
-   public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+   public boolean place(FeaturePlaceContext context) {
+      Random rand = context.level().getRandom();
+      BlockPos pos = context.origin();
+      WorldGenLevel world = context.level();
+      if (ConfigFeatureControl.dimensionFeatureBlacklist.get().contains(world.getLevel().dimension().location().toString()))
+         return false;
+
       boolean flag = false;
       int i = rand.nextInt(8) - rand.nextInt(8);
       int j = rand.nextInt(8) - rand.nextInt(8);
-      int k = reader.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.getX() + i, pos.getZ() + j);
+      int k = world.getHeight(Heightmap.Types.OCEAN_FLOOR, pos.getX() + i, pos.getZ() + j);
       BlockPos blockpos = new BlockPos(pos.getX() + i, k, pos.getZ() + j);
-      Pair<Block, Integer> algae = AlgaeTypes.getAlgaeForPos(reader, blockpos);
-      if (reader.getBlockState(blockpos).isIn(Blocks.WATER) && algae != null) {
-         BlockState blockstate = algae.getFirst().getDefaultState();
-         if (blockstate.isValidPosition(reader, blockpos)) {
-            reader.setBlockState(blockpos, blockstate, 2);
+      Pair<Block, Integer> algae = AlgaeTypes.getAlgaeForPos(world, blockpos);
+      if (world.getBlockState(blockpos).is(Blocks.WATER) && algae != null) {
+         BlockState blockstate = algae.getFirst().defaultBlockState();
+         if (blockstate.canSurvive(world, blockpos)) {
+            world.setBlock(blockpos, blockstate, 2);
             flag = true;
          }
       }
@@ -45,18 +49,18 @@ public class FeatureUnderwaterAlgae extends Feature<NoFeatureConfig> {
    }
 
    // Algae available, referenced to properly distribute them in the world if their conditions are filled
-   public enum AlgaeTypes implements IStringSerializable {
+   public enum AlgaeTypes {
 
-      AMAZON_SWORD	(ModBlock.AMAZON_SWORD.get(), 4, ConfigFeatureControl.addAlgae.get(), 6, Biome.Category.SWAMP, Biome.Category.JUNGLE),
-      EELGRASS	(ModBlock.EELGRASS.get(), 4, ConfigFeatureControl.addAlgae.get(), 6, Biome.Category.OCEAN);
+      AMAZON_SWORD	(ModBlock.AMAZON_SWORD.get(), 4, ConfigFeatureControl.addAlgae.get(), 6, Biome.BiomeCategory.SWAMP, Biome.BiomeCategory.JUNGLE),
+      EELGRASS	(ModBlock.EELGRASS.get(), 4, ConfigFeatureControl.addAlgae.get(), 6, Biome.BiomeCategory.OCEAN);
 
       public Block type;
       public int rarity;
       public boolean enabled;
       public int size;
-      public Biome.Category[] spawnBiomes;
+      public Biome.BiomeCategory[] spawnBiomes;
 
-      AlgaeTypes(Block type, int rolls, boolean add, int size, Biome.Category... biomes) {
+      AlgaeTypes(Block type, int rolls, boolean add, int size, Biome.BiomeCategory... biomes) {
          this.type = type;
          this.rarity = rolls;
          this.enabled = add;
@@ -64,24 +68,18 @@ public class FeatureUnderwaterAlgae extends Feature<NoFeatureConfig> {
          this.size = size;
       }
 
-      @Override
-      public String getString() {
-         return "why would you do this?";
-      }
-
-      public static Pair<Block, Integer> getAlgaeForPos(IWorld world, BlockPos pos) {
-         // TODO: Add this information to the Blacklist
-         Optional<RegistryKey<Biome>> optional = world.func_242406_i(pos);
-         if (Objects.equals(optional, Optional.of(Biomes.FROZEN_OCEAN)) || Objects.equals(optional, Optional.of(Biomes.DEEP_FROZEN_OCEAN))) {
+      public static Pair<Block, Integer> getAlgaeForPos(WorldGenLevel world, BlockPos pos) {
+         Optional<ResourceKey<Biome>> optional = world.getBiome(pos).unwrapKey();
+         if (Objects.equals(optional, Biomes.FROZEN_OCEAN) || Objects.equals(optional, Optional.of(Biomes.DEEP_FROZEN_OCEAN))) {
             return null;
          }
 
-         Biome biome = world.getBiome(pos);
+         Biome biome = world.getBiome(pos).value();
          List<AlgaeTypes> types = new ArrayList<>();
          for (AlgaeTypes type : values()) {
             if (type.enabled) {
-               for(Biome.Category biomeTypes : type.spawnBiomes) {
-                  if(biome.getCategory() == biomeTypes){
+               for(Biome.BiomeCategory biomeTypes : type.spawnBiomes) {
+                  if(biome.biomeCategory == biomeTypes){
                      for (int i=0; i < type.rarity; i++) {
                         types.add(type);
                      }

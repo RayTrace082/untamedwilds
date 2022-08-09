@@ -9,11 +9,11 @@ public class CompatBridge {
 
     private static final String SERENSEASONS_MODID = "sereneseasons";
     private static final String BETTER_CAVES_MODID = "bettercaves";
-    private static final String CAVES_AND_CLIFFS_MODID = "cavesandcliffs";
+    private static final String PATCHOULI_MODID = "patchouli";
 
+    public static boolean Patchouli = false;
     public static boolean SereneSeasons = false;
     public static boolean betterCaves = false;
-    public static boolean cavesAndCliffs = false;
 
     public static void RegisterCompat() {
         if (ModList.get().isLoaded(SERENSEASONS_MODID) && ConfigModCompat.sereneSeasonsCompat.get()) {
@@ -24,9 +24,9 @@ public class CompatBridge {
             betterCaves = true;
             UntamedWilds.LOGGER.log(Level.INFO, "Loading compatibility module with YUNG's Better Caves");
         }
-        if (ModList.get().isLoaded(CAVES_AND_CLIFFS_MODID) && ConfigModCompat.cavesAndCliffsCompat.get()) {
-            cavesAndCliffs = true;
-            UntamedWilds.LOGGER.log(Level.INFO, "Loading compatibility module with Caves and Cliffs");
+        if (ModList.get().isLoaded(PATCHOULI_MODID) && ConfigModCompat.sereneSeasonsCompat.get()) {
+            Patchouli = true;
+            UntamedWilds.LOGGER.log(Level.INFO, "Loading compatibility module with Patchouli");
         }
     }
 }

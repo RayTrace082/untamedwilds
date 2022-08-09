@@ -1,10 +1,12 @@
 package untamedwilds.client.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import untamedwilds.client.model.ModelGiantClam;
 import untamedwilds.entity.mollusk.EntityGiantClam;
 
@@ -14,19 +16,19 @@ public class RendererGiantClam extends MobRenderer<EntityGiantClam, EntityModel<
 
     private static final ModelGiantClam GIANT_CLAM_MODEL = new ModelGiantClam();
 
-    public RendererGiantClam(EntityRendererManager renderManager) {
+    public RendererGiantClam(EntityRendererProvider.Context renderManager) {
         super(renderManager, GIANT_CLAM_MODEL, 1F);
     }
 
     @Override
-    protected void preRenderCallback(EntityGiantClam entity, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(EntityGiantClam entity, PoseStack matrixStackIn, float partialTickTime) {
         float f = entity.getMobSize();
-        f *= entity.getRenderScale();
+        f *= entity.getScale();
         matrixStackIn.scale(f, f, f);
-        this.shadowSize = f;
+        this.shadowRadius = f;
     }
 
-    public ResourceLocation getEntityTexture(@Nonnull EntityGiantClam entity) {
+    public @NotNull ResourceLocation getTextureLocation(EntityGiantClam entity) {
         return entity.getTexture();
     }
 }

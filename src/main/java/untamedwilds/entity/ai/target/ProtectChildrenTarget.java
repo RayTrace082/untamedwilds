@@ -1,82 +1,73 @@
 package untamedwilds.entity.ai.target;
 
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.util.EntityPredicates;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.monster.Creeper;
 import untamedwilds.entity.ComplexMob;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
 public class ProtectChildrenTarget<T extends LivingEntity> extends HuntMobTarget<T> {
 
-    private final int executionChance;
-    private MobEntity protectTarget;
+    private Mob protectTarget;
 
-    public ProtectChildrenTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight) {
-        this(creature, classTarget, checkSight, false);
+    public ProtectChildrenTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, final Predicate<LivingEntity> targetSelector) {
+        super(creature, classTarget, checkSight,200, false, targetSelector);
     }
 
-    public ProtectChildrenTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, boolean onlyNearby) {
-        this(creature, classTarget, 10, checkSight, onlyNearby, null);
-    }
-
-    public ProtectChildrenTarget(ComplexMob creature, Class<T> classTarget, int chance, boolean checkSight, boolean onlyNearby, final Predicate <? super LivingEntity> targetSelector) {
-        super(creature, classTarget, checkSight,200, false, EntityPredicates.NOT_SPECTATING);
-        this.executionChance = chance;
-        this.targetEntitySelector = (Predicate<T>) entity -> {
-            if (targetSelector != null && !targetSelector.test(entity)) {
+    protected boolean isValidTarget(LivingEntity entity, @Nullable Predicate<LivingEntity> predicate) {
+        if (entity instanceof Creeper || entity.equals(this.mob) || (predicate != null && !predicate.test(entity))) {
+            return false;
+        }
+        if (ComplexMob.getEcoLevel(entity) < ComplexMob.getEcoLevel(this.mob) && this.mob.getClass() == entity.getClass() && this.mob instanceof ComplexMob attacker && entity instanceof ComplexMob defender) {
+            if (attacker.getVariant() == defender.getVariant()) {
                 return false;
             }
-            return this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
-        };
+        }
+        return canAttack(entity, TargetingConditions.forCombat().range(getFollowDistance()));
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (this.goalOwner.isChild()) {
+    public boolean canUse() {
+        if (this.mob.isBaby() || (this.mob instanceof TamableAnimal tamable && tamable.isTame()))
             return false;
-        }
 
-        if (this.goalOwner instanceof ComplexMob) {
-            ComplexMob temp = (ComplexMob) this.goalOwner;
-            if (temp.isTamed()) {
-                return false;
-            }
+        if (this.mob instanceof ComplexMob temp) {
 
-            for (MobEntity child : this.goalOwner.world.getEntitiesWithinAABB(this.goalOwner.getClass(), goalOwner.getBoundingBox().grow(8.0D, 4.0D, 8.0D))) {
-                if (child.isChild() && ((ComplexMob)child).getVariant() == temp.getVariant()) {
+            for (Mob child : this.mob.level.getEntitiesOfClass(this.mob.getClass(), mob.getBoundingBox().inflate(8.0D, 4.0D, 8.0D))) {
+                if (child.isBaby() && ((ComplexMob)child).getVariant() == temp.getVariant()) {
                     this.protectTarget = child;
-                    List<T> list = this.goalOwner.world.getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
-                    list.removeIf((Predicate<LivingEntity>) this::shouldRemoveTarget);
+                    List<T> list = this.mob.level.getEntitiesOfClass(this.targetClass, this.getTargettableArea(this.getFollowDistance()), this.targetEntitySelector);
 
                     if (list.isEmpty()) {
                         return false;
                     }
-                    else {
-                        list.sort(this.sorter);
-                        this.targetEntity = list.get(0);
-                        return true;
-                    }
+
+                    list.sort(this.sorter);
+                    this.targetMob = list.get(0);
+                    return true;
                 }
             }
         }
         return false;
     }
 
-    public boolean shouldContinueExecuting() {
-        if (this.protectTarget.getDistance(this.goalOwner) > 12) {
-            this.goalOwner.setAttackTarget(null);
-            this.target = null;
-            this.goalOwner.getNavigator().tryMoveToEntityLiving(this.protectTarget, 1);
+    public boolean canContinueToUse() {
+        if (this.protectTarget.distanceTo(this.mob) > 12) {
+            this.mob.setTarget(null);
+            this.targetMob = null;
+            this.mob.getNavigation().moveTo(this.protectTarget, 1);
             return false;
         }
-        return super.shouldContinueExecuting();
+        return super.canContinueToUse();
     }
 
     @Override
-    protected double getTargetDistance() {
-        return super.getTargetDistance() * 0.5D;
+    protected double getFollowDistance() {
+        return super.getFollowDistance() * 0.5D;
     }
 }

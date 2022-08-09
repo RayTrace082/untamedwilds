@@ -1,22 +1,22 @@
 package untamedwilds.entity.fish;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.PanicGoal;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
@@ -30,19 +30,19 @@ import java.util.List;
 
 public class EntityTriggerfish extends ComplexMobAquatic implements ISpecies, INewSkins {
 
-    public EntityTriggerfish(EntityType<? extends ComplexMob> type, World worldIn) {
+    public EntityTriggerfish(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
-        this.experienceValue = 2;
     }
 
-    public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.6D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 16.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 6.0D)
-                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0D)
-                .createMutableAttribute(Attributes.ARMOR, 2D);
+    public static AttributeSupplier.Builder registerAttributes() {
+        return LivingEntity.createLivingAttributes()
+                .add(Attributes.ATTACK_DAMAGE, 2.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.6D)
+                .add(Attributes.FOLLOW_RANGE, 16.0D)
+                .add(Attributes.MAX_HEALTH, 6.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0D)
+                .add(Attributes.ARMOR, 2D);
     }
 
     protected void registerGoals() {
@@ -54,30 +54,30 @@ public class EntityTriggerfish extends ComplexMobAquatic implements ISpecies, IN
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote) {
-            if (this.ticksExisted % 1000 == 0) {
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide) {
+            if (this.tickCount % 1000 == 0) {
                 if (this.wantsToBreed() && !this.isMale()) {
                     this.breed();
                 }
             }
-            if (this.world.getGameTime() % 4000 == 0) {
+            if (this.level.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
             }
-            this.setAngry(this.getAttackTarget() != null);
+            this.setAngry(this.getTarget() != null);
         }
     }
 
     /* Breeding conditions for the Triggerfish are:
      * A nearby Triggerfish of different gender */
     public boolean wantsToBreed() {
-        if (ConfigGamerules.naturalBreeding.get() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
-            List<EntityTriggerfish> list = this.world.getEntitiesWithinAABB(EntityTriggerfish.class, this.getBoundingBox().grow(12.0D, 8.0D, 12.0D));
+        if (ConfigGamerules.naturalBreeding.get() && this.getAge() == 0 && EntityUtils.hasFullHealth(this)) {
+            List<EntityTriggerfish> list = this.level.getEntitiesOfClass(EntityTriggerfish.class, this.getBoundingBox().inflate(12.0D, 8.0D, 12.0D));
             list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
             if (list.size() >= 1) {
-                this.setGrowingAge(this.getGrowingAge());
-                list.get(0).setGrowingAge(this.getGrowingAge());
+                this.setAge(this.getAge());
+                list.get(0).setAge(this.getAge());
                 return true;
             }
         }
@@ -86,14 +86,14 @@ public class EntityTriggerfish extends ComplexMobAquatic implements ISpecies, IN
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         EntityUtils.dropEggs(this, "egg_triggerfish", this.getOffspring());
         return null;
     }
 
     @Override
     protected SoundEvent getFlopSound() {
-        return SoundEvents.ENTITY_GUARDIAN_FLOP;
+        return SoundEvents.GUARDIAN_FLOP;
     }
 
     public class TriggerFishBlowGoal extends Goal {
@@ -109,10 +109,10 @@ public class EntityTriggerfish extends ComplexMobAquatic implements ISpecies, IN
             this.chance = chance;
         }
 
-        public boolean shouldExecute() {
-            if (this.taskOwner.getRNG().nextInt(this.chance) == 0) {
+        public boolean canUse() {
+            if (this.taskOwner.getRandom().nextInt(this.chance) == 0) {
                 this.taskComplete = false;
-                this.targetPos = getNearbySandBlock(this.taskOwner.getPosition());
+                this.targetPos = getNearbySandBlock(this.taskOwner.blockPosition());
                 return this.targetPos != null;
             }
             return false;
@@ -122,9 +122,9 @@ public class EntityTriggerfish extends ComplexMobAquatic implements ISpecies, IN
             int X = 4;
             int Y = 6;
             //List<BlockPos> inventories = new ArrayList<>();
-            for (BlockPos blockpos : BlockPos.getAllInBoxMutable(roomCenter.add(-X, -Y, -X), roomCenter.add(X, 0, X))) {
+            for (BlockPos blockpos : BlockPos.betweenClosed(roomCenter.offset(-X, -Y, -X), roomCenter.offset(X, 0, X))) {
 
-                if (this.taskOwner.world.getBlockState(blockpos).getBlock() == Blocks.SAND && !this.taskOwner.world.getBlockState(blockpos.up()).isSolid() && rand.nextInt(2) == 0) {
+                if (this.taskOwner.level.getBlockState(blockpos).getBlock() == Blocks.SAND && this.taskOwner.level.getBlockState(blockpos.above()).isAir() && random.nextInt(2) == 0) {
 
                     return blockpos;
                 }
@@ -132,28 +132,28 @@ public class EntityTriggerfish extends ComplexMobAquatic implements ISpecies, IN
             return null;
         }
 
-        public boolean shouldContinueExecuting() {
-            return !this.taskComplete && !this.taskOwner.getNavigator().noPath() && this.counter >= 0;
+        public boolean canContinueToUse() {
+            return !this.taskComplete && !this.taskOwner.getNavigation().isDone() && this.counter >= 0;
         }
 
-        public void startExecuting() {
-            this.taskOwner.getNavigator().tryMoveToXYZ(this.targetPos.getX() + 0.5, this.targetPos.up(3).getY(), this.targetPos.getZ() + 0.5, 1);
+        public void start() {
+            this.taskOwner.getNavigation().moveTo(this.targetPos.getX() + 0.5, this.targetPos.above(3).getY(), this.targetPos.getZ() + 0.5, 1);
         }
 
         public void tick() {
-            if (this.counter == 0 && this.taskOwner.getDistanceSq(this.targetPos.getX() + 0.5, this.targetPos.up().getY(), this.targetPos.getZ() + 0.5) < 1) {
-                //this.taskOwner.getNavigator().clearPath();
-                this.counter = this.taskOwner.getRNG().nextInt(20) + 30;
-                //this.taskOwner.addPotionEffect(new EffectInstance(Effects.GLOWING, 80, 0));
+            if (this.counter == 0 && this.taskOwner.distanceToSqr(this.targetPos.getX() + 0.5, this.targetPos.above().getY(), this.targetPos.getZ() + 0.5) < 1) {
+                //this.taskOwner.getNavigation().stop();
+                this.counter = this.taskOwner.getRandom().nextInt(20) + 30;
+                //this.taskOwner.addEffect(new EffectInstance(Effects.GLOWING, 80, 0));
             }
             if (this.counter > 0) {
                 this.counter--;
                 if (this.counter == 0) {
-                    Direction direction = this.taskOwner.getAdjustedHorizontalFacing();
-                    this.taskOwner.setMotion(this.taskOwner.getMotion().add((double)direction.getXOffset() * -0.2D, 0.2D, (double)direction.getZOffset() * -0.2D));
-                    this.taskOwner.getNavigator().clearPath();
-                    World worldIn = this.taskOwner.getEntityWorld();
-                    ((ServerWorld)worldIn).spawnParticle(new BlockParticleData(ParticleTypes.BLOCK, worldIn.getBlockState(this.targetPos)), this.targetPos.getX() + 0.5, this.targetPos.up().getY(), this.targetPos.getZ() + 0.5, 50, 0.0D, 0.0D, 0.0D, 0.15F);
+                    Direction direction = this.taskOwner.getMotionDirection();
+                    this.taskOwner.setDeltaMovement(this.taskOwner.getDeltaMovement().add((double)direction.getStepX() * -0.2D, 0.2D, (double)direction.getStepZ() * -0.2D));
+                    this.taskOwner.getNavigation().stop();
+                    Level worldIn = this.taskOwner.getLevel();
+                    ((ServerLevel)worldIn).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, worldIn.getBlockState(this.targetPos)), this.targetPos.getX() + 0.5, this.targetPos.above().getY(), this.targetPos.getZ() + 0.5, 50, 0.0D, 0.0D, 0.0D, 0.15F);
                     this.taskComplete = true;
                 }
             }

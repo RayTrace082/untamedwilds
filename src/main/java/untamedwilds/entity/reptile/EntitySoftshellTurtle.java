@@ -1,25 +1,34 @@
 package untamedwilds.entity.reptile;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.animal.Dolphin;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAmphibious;
 import untamedwilds.entity.INewSkins;
 import untamedwilds.entity.ISpecies;
 import untamedwilds.entity.ai.*;
+import untamedwilds.entity.ai.control.look.SmartSwimmerLookControl;
+import untamedwilds.entity.ai.control.movement.SmartSwimmingMoveControl;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 import untamedwilds.init.ModItems;
 import untamedwilds.util.EntityUtils;
@@ -31,21 +40,23 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
 
     public int baskProgress;
 
-    public EntitySoftshellTurtle(EntityType<? extends ComplexMob> type, World worldIn) {
+    public EntitySoftshellTurtle(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
-        this.experienceValue = 1;
+        this.moveControl = new SmartSwimmingMoveControl(this, 60, 10, 0.4F, 0.25F, true);
+        this.lookControl = new SmartSwimmerLookControl(this, 20);
         this.swimSpeedMult = 3;
         this.buoyancy = 0.998F;
     }
 
-    public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 16.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 6.0D)
-                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0D)
-                .createMutableAttribute(Attributes.ARMOR, 2D);
+    public static AttributeSupplier.Builder registerAttributes() {
+        return LivingEntity.createLivingAttributes()
+                .add(Attributes.ATTACK_DAMAGE, 1.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.7D)
+                .add(Attributes.FOLLOW_RANGE, 16.0D)
+                .add(Attributes.MAX_HEALTH, 6.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0D)
+                .add(Attributes.ARMOR, 2D);
     }
 
     public void registerGoals() {
@@ -59,36 +70,54 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, input -> getEcoLevel(input) < getEcoLevel(this)));
     }
 
-    public boolean wantsToLeaveWater() { return this.world.getDayTime() > 5000 && this.world.getDayTime() < 7000; }
+    public boolean wantsToBeOnLand() { return this.level.getDayTime() > 5000 && this.level.getDayTime() < 7000; }
 
-    public boolean wantsToEnterWater() { return !(this.world.getDayTime() > 5000 && this.world.getDayTime() < 7000); }
+    public boolean wantsToBeInWater() { return !(this.level.getDayTime() > 5000 && this.level.getDayTime() < 7000); }
 
-    public boolean isPushedByWater() {
+    public boolean isPushedByFluid() {
         return false;
     }
 
-    public void onDeath(DamageSource cause) {
-        if (cause == DamageSource.ANVIL && !this.isChild()) {
+    public void die(DamageSource cause) {
+        if (cause == DamageSource.ANVIL && !this.isBaby()) {
             // Advancement Trigger: "Unethical Soup"
-            ItemEntity entityitem = this.entityDropItem(new ItemStack(ModItems.FOOD_TURTLE_SOUP.get()), 0.2F);
+            ItemEntity entityitem = this.spawnAtLocation(new ItemStack(ModItems.FOOD_TURTLE_SOUP.get()), 0.2F);
             if (entityitem != null) {
                 entityitem.getItem().setCount(1);
             }
         }
-        super.onDeath(cause);
+        super.die(cause);
     }
 
-    public void livingTick() {
-        super.livingTick();
+    public void tick() {
+        super.tick();
+        if (this.level.isClientSide && this.isInWater() && this.getDeltaMovement().lengthSqr() > 0.03D) {
+            Vec3 vec3 = this.getViewVector(0.0F);
+            float f = Mth.cos(this.getYRot() * ((float)Math.PI / 180F)) * 0.3F;
+            float f1 = Mth.sin(this.getYRot() * ((float)Math.PI / 180F)) * 0.3F;
+            float f2 = 1.2F - this.random.nextFloat() * 0.7F;
 
-        if (!this.world.isRemote) {
-            if (this.ticksExisted % 1000 == 0) {
+            for(int i = 0; i < 2; ++i) {
+                this.level.addParticle(ParticleTypes.DOLPHIN, this.getX() - vec3.x * (double)f2 + (double)f, this.getY() - vec3.y, this.getZ() - vec3.z * (double)f2 + (double)f1, 0.0D, 0.0D, 0.0D);
+                this.level.addParticle(ParticleTypes.DOLPHIN, this.getX() - vec3.x * (double)f2 - (double)f, this.getY() - vec3.y, this.getZ() - vec3.z * (double)f2 - (double)f1, 0.0D, 0.0D, 0.0D);
+            }
+        }
+    }
+
+    public void aiStep() {
+        super.aiStep();
+
+        if (!this.level.isClientSide) {
+            if (this.tickCount % 1000 == 0) {
                 if (this.wantsToBreed() && !this.isMale()) {
                     this.breed();
                 }
             }
-            if (this.world.getGameTime() % 4000 == 0) {
+            if (this.level.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
+            }
+            if (this.isInWater()) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.003D, 0.0D));
             }
         }
         else {
@@ -104,12 +133,12 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
      * A nearby softshell_turtle of the opposite gender and the same species */
     public boolean wantsToBreed() {
         if (super.wantsToBreed()) {
-            if (!this.isSleeping() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
-                List<EntitySoftshellTurtle> list = this.world.getEntitiesWithinAABB(EntitySoftshellTurtle.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
+            if (!this.isSleeping() && this.getAge() == 0 && EntityUtils.hasFullHealth(this)) {
+                List<EntitySoftshellTurtle> list = this.level.getEntitiesOfClass(EntitySoftshellTurtle.class, this.getBoundingBox().inflate(6.0D, 4.0D, 6.0D));
                 list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
                 if (list.size() >= 1) {
-                    this.setGrowingAge(this.getPregnancyTime());
-                    list.get(0).setGrowingAge(this.getPregnancyTime());
+                    this.setAge(this.getPregnancyTime());
+                    list.get(0).setAge(this.getPregnancyTime());
                     return true;
                 }
             }
@@ -119,24 +148,24 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         EntityUtils.dropEggs(this, "egg_softshell_turtle", this.getOffspring());
         return null;
     }
 
     @Override
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
-        ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(InteractionHand.MAIN_HAND);
 
         if (itemstack.isEmpty() && this.isAlive()) {
             EntityUtils.turnEntityIntoItem(this, "spawn_softshell_turtle");
-            return ActionResultType.func_233537_a_(this.world.isRemote);
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
-        return super.func_230254_b_(player, hand);
+        return super.mobInteract(player, hand);
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        SoundEvent soundevent = this.isChild() ? SoundEvents.ENTITY_TURTLE_SHAMBLE_BABY : SoundEvents.ENTITY_TURTLE_SHAMBLE;
+        SoundEvent soundevent = this.isBaby() ? SoundEvents.TURTLE_SHAMBLE_BABY : SoundEvents.TURTLE_SHAMBLE;
         this.playSound(soundevent, 0.15F, 1.0F);
     }
 }

@@ -1,17 +1,17 @@
 package untamedwilds.entity.ai.unique;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.phys.AABB;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 
-public class PandaEatBamboo extends Goal  {
+public class PandaEatBamboo extends Goal {
     private final ComplexMobTerrestrial taskOwner;
     private final Sorter sorter;
     private final int executionChance;
@@ -24,17 +24,17 @@ public class PandaEatBamboo extends Goal  {
         this.executionChance = chance;
         this.sorter = new Sorter(creature);
         this.distance = distance;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.TARGET));
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.TARGET));
     }
 
-    public boolean shouldExecute() {
-        if (this.taskOwner.getHunger() > 80 || this.taskOwner.isChild() || this.taskOwner.isSleeping()) {
+    public boolean canUse() {
+        if (this.taskOwner.getHunger() > 80 || this.taskOwner.isBaby() || this.taskOwner.isSleeping()) {
             return false;
         }
-        if (this.taskOwner.getRNG().nextInt(this.executionChance) != 0) {
+        if (this.taskOwner.getRandom().nextInt(this.executionChance) != 0) {
             return false;
         }
-        List<ItemEntity> list = this.taskOwner.world.getEntitiesWithinAABB(ItemEntity.class, this.getTargetableArea(distance));
+        List<ItemEntity> list = this.taskOwner.level.getEntitiesOfClass(ItemEntity.class, this.getTargetableArea(distance));
         list.removeIf((ItemEntity item) -> item.getItem().getItem().equals("bamboo")); // Stupid way to do this
 
         if (list.isEmpty()) {
@@ -48,39 +48,39 @@ public class PandaEatBamboo extends Goal  {
         }
     }
 
-    private AxisAlignedBB getTargetableArea(double targetDistance) {
-        return this.taskOwner.getBoundingBox().grow(targetDistance, 4.0D, targetDistance);
+    private AABB getTargetableArea(double targetDistance) {
+        return this.taskOwner.getBoundingBox().inflate(targetDistance, 4.0D, targetDistance);
     }
 
-    public void startExecuting() {
-        this.taskOwner.getNavigator().tryMoveToXYZ(this.targetItem.getPosX(), this.targetItem.getPosY(), this.targetItem.getPosZ(), 1D);
+    public void start() {
+        this.taskOwner.getNavigation().moveTo(this.targetItem.getX(), this.targetItem.getY(), this.targetItem.getZ(), 1D);
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         if (this.targetItem == null || !this.targetItem.isAlive()) {
             return false;
         } else if (this.taskOwner.isSitting()) {
             return false;
         }
-        return !this.taskOwner.hasPath();
+        return !this.taskOwner.isPathFinding();
     }
 
     @Override
     public void tick() {
-        double distance = Math.sqrt(Math.pow(this.taskOwner.getPosX() - this.targetItem.getPosX(), 2.0D) + Math.pow(this.taskOwner.getPosZ() - this.targetItem.getPosZ(), 2.0D));
+        double distance = Math.sqrt(Math.pow(this.taskOwner.getX() - this.targetItem.getX(), 2.0D) + Math.pow(this.taskOwner.getZ() - this.targetItem.getZ(), 2.0D));
         if (distance < 1.5D) {
             this.taskOwner.addHunger(10);
             this.targetItem.getItem().shrink(1);
             if (this.targetItem.getItem().getCount() == 0) {
-                this.targetItem.remove();
+                this.targetItem.discard();
             }
             this.taskOwner.setAnimation(taskOwner.getAnimationEat());
         }
-        if(this.taskOwner.getNavigator().noPath()){
-            resetTask();
+        if(this.taskOwner.getNavigation().isDone()){
+            stop();
         }
-        this.taskOwner.getNavigator().tryMoveToXYZ(this.targetItem.getPosX(), this.targetItem.getPosY(), this.targetItem.getPosZ(), 1D);
+        this.taskOwner.getNavigation().moveTo(this.targetItem.getX(), this.targetItem.getY(), this.targetItem.getZ(), 1D);
     }
 
     public static class Sorter implements Comparator<Entity> {
@@ -92,8 +92,8 @@ public class PandaEatBamboo extends Goal  {
         }
 
         public int compare(Entity entity_1, Entity entity_2) {
-            double dist_1 = this.entity.getDistanceSq(entity_1);
-            double dist_2 = this.entity.getDistanceSq(entity_2);
+            double dist_1 = this.entity.distanceToSqr(entity_1);
+            double dist_2 = this.entity.distanceToSqr(entity_2);
 
             if (dist_1 < dist_2) {
                 return -1;

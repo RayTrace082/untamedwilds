@@ -1,0 +1,64 @@
+{
+    "ambientocclusion": false,
+    "textures": {
+        "all": "untamedwilds:block/flora/junegrass_base",
+        "2": "untamedwilds:block/flora/junegrass_seeds",
+        "3": "untamedwilds:block/flora/junegrass_top",
+        "particle": "untamedwilds:block/flora/junegrass_base"
+    },
+    "elements": [
+        {
+            "name": "grass_1",
+            "from": [ 0.8, 0, 8 ],
+            "to": [ 15.2, 16, 8 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+            "shade": false,
+            "faces": {
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#all", "tintindex": 0},
+                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#all", "tintindex": 0}
+            }
+        },
+        {
+            "name": "grass_2",
+            "from": [ 8, 0, 0.8 ],
+            "to": [ 8, 16, 15.2 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+            "shade": false,
+            "faces": {
+                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#all", "tintindex": 0},
+                "east": { "uv": [ 0, 0, 16, 16 ], "texture": "#all", "tintindex": 0}
+            }
+        },
+        {
+            "name": "top_1",
+            "from": [ 0.8, 0, 8 ],
+            "to": [ 15.2, 16, 8 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+            "shade": false,
+            "faces": {
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#2" },
+                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#2" }
+            }
+        },
+        {
+            "name": "top_2",
+            "from": [ 8, 0, 0.8 ],
+            "to": [ 8, 16, 15.2 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+            "shade": false,
+            "faces": {
+                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#2" },
+                "east": { "uv": [ 0, 0, 16, 16 ], "texture": "#2" }
+            }
+        },
+        {
+            "name": "top_flat",
+            "from": [0.8, 13.1, 0.8],
+            "to": [15.2, 13.1, 15.2],
+            "faces": {
+                "up": {"uv": [0, 0, 16, 16], "texture": "#3"},
+                "down": {"uv": [0, 0, 16, 16], "texture": "#3"}
+            }
+        }
+    ]
+}

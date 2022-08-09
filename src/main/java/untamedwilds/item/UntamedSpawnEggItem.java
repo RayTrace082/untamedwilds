@@ -1,52 +1,54 @@
 package untamedwilds.item;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
-import net.minecraft.tileentity.MobSpawnerTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.spawner.AbstractSpawner;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.BaseSpawner;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.SpawnData;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.INeedsPostUpdate;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Supplier;
 
-public class UntamedSpawnEggItem extends SpawnEggItem {
+public class UntamedSpawnEggItem extends ForgeSpawnEggItem {
 
    private int currentSpecies;
    private boolean isCached;
-   private final EntityType<?> entityType;
+   private final Supplier<? extends EntityType<? extends Mob>> entityType;
 
-   // TODO: Egg-Spawner interaction is screwed
-   public UntamedSpawnEggItem(EntityType<?> typeIn, int primaryColorIn, int secondaryColorIn, Properties builder) {
+   public UntamedSpawnEggItem(Supplier<? extends EntityType<? extends Mob>> typeIn, int primaryColorIn, int secondaryColorIn, Properties builder) {
       super(typeIn, primaryColorIn, secondaryColorIn, builder);
       this.currentSpecies = 0;
       this.entityType = typeIn;
@@ -55,12 +57,12 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
 
    @Override
    @OnlyIn(Dist.CLIENT)
-   public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-      tooltip.add(new TranslationTextComponent("item.untamedwilds.spawn_egg_info").mergeStyle(TextFormatting.GRAY));
-      tooltip.add(new TranslationTextComponent("item.untamedwilds.spawn_egg_current",  this.getCurrentSpeciesNumber(stack)).mergeStyle(TextFormatting.ITALIC).mergeStyle(TextFormatting.GRAY));
+   public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+      tooltip.add(new TranslatableComponent("item.untamedwilds.spawn_egg_info").withStyle(ChatFormatting.GRAY));
+      tooltip.add(new TranslatableComponent("item.untamedwilds.spawn_egg_current",  this.getCurrentSpeciesName(stack)).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
    }
 
-   private String getCurrentSpeciesNumber(ItemStack stack) {
+   private String getCurrentSpeciesName(ItemStack stack) {
       if (!this.isCached && stack.hasTag()) {
          if (stack.getTag().contains("EntityTag")) {
             this.currentSpecies = stack.getTag().getCompound("EntityTag").getInt("Variant");
@@ -68,103 +70,87 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
          }
       }
       int i = this.currentSpecies - 1;
-      return i >= 0 ? String.valueOf(i) : "Random";
+      return i >= 0 ? EntityUtils.getVariantName(this.entityType.get(), i) + " (" + i + ")" : "Random";
    }
 
    public void increaseSpeciesNumber(int intIn) {
-      this.currentSpecies = (intIn % (ComplexMob.getEntityData(this.entityType).getSpeciesData().size() + 1));
+      this.currentSpecies = (intIn % (ComplexMob.getEntityData(this.entityType.get()).getSpeciesData().size() + 1));
       this.isCached = true;
    }
 
    @Override
-   public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-      ItemStack itemstack = playerIn.getHeldItem(handIn);
-      if (!worldIn.isRemote && playerIn.isSneaking()) {
-         //UntamedWilds.LOGGER.info(this.currentSpecies);
+   public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+      ItemStack itemstack = playerIn.getItemInHand(handIn);
+      if (!(worldIn instanceof ServerLevel)) {
+         return InteractionResultHolder.success(itemstack);
+      }
+      if (playerIn.isSteppingCarefully()) {
          this.increaseSpeciesNumber(this.currentSpecies + 1);
-         playerIn.sendStatusMessage(new TranslationTextComponent("item.untamedwilds.spawn_egg_change",  this.getCurrentSpeciesNumber(itemstack)), true);
+         playerIn.displayClientMessage(new TranslatableComponent("item.untamedwilds.spawn_egg_change",  this.getCurrentSpeciesName(itemstack)), true);
 
-         itemstack.setTag(new CompoundNBT());
+         itemstack.setTag(new CompoundTag());
          if (this.currentSpecies != 0) {
-            CompoundNBT entityNBT = new CompoundNBT();
+            CompoundTag entityNBT = new CompoundTag();
             entityNBT.putInt("Variant", this.currentSpecies - 1);
             itemstack.getTag().put("EntityTag", entityNBT);
          }
-         return ActionResult.resultPass(itemstack);
+         return InteractionResultHolder.pass(itemstack);
       }
 
-      BlockRayTraceResult raytraceresult = rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
-      if (raytraceresult.getType() != RayTraceResult.Type.BLOCK) {
-         return ActionResult.resultPass(itemstack);
-      } else if (!(worldIn instanceof ServerWorld)) {
-         return ActionResult.resultSuccess(itemstack);
+      BlockHitResult raytraceresult = getPlayerPOVHitResult(worldIn, playerIn, ClipContext.Fluid.SOURCE_ONLY);
+      if (raytraceresult.getType() != BlockHitResult.Type.BLOCK) {
+         return InteractionResultHolder.pass(itemstack);
       } else {
-         BlockPos blockpos = raytraceresult.getPos();
-         if (!(worldIn.getBlockState(blockpos).getBlock() instanceof FlowingFluidBlock)) {
-            return ActionResult.resultPass(itemstack);
-         } else if (worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, raytraceresult.getFace(), itemstack)) {
-            EntityType<?> entitytype = this.getType(itemstack.getTag());
-            Entity spawn = entitytype.create((ServerWorld) worldIn, itemstack.getTag(), null, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
-            if (spawn == null) {
-               return ActionResult.resultPass(itemstack);
-            }
-            if (spawn instanceof ComplexMob) {
-               ComplexMob entitySpawn = (ComplexMob) spawn;
-               entitySpawn.chooseSkinForSpecies(entitySpawn, true);
-               entitySpawn.setRandomMobSize();
-               entitySpawn.setGender(entitySpawn.getRNG().nextInt(2));
-               if (spawn instanceof INeedsPostUpdate) {
-                  ((INeedsPostUpdate) spawn).updateAttributes();
-               }
-               worldIn.addEntity(spawn);
-            }
-            if (!playerIn.abilities.isCreativeMode) {
-               itemstack.shrink(1);
-            }
-            playerIn.addStat(Stats.ITEM_USED.get(this));
-            return ActionResult.resultConsume(itemstack);
+         BlockPos blockpos = raytraceresult.getBlockPos();
+         if (!(worldIn.getBlockState(blockpos).getBlock() instanceof LiquidBlock)) {
+            return InteractionResultHolder.pass(itemstack);
+         } else if (worldIn.mayInteract(playerIn, blockpos) && playerIn.mayUseItemAt(blockpos, raytraceresult.getDirection(), itemstack)) {
+            Integer species = this.currentSpecies - 1 < 0 ? null : this.currentSpecies - 1;
+            EntityUtils.createMobFromItem((ServerLevel) worldIn, itemstack, this.entityType.get(), species, blockpos, playerIn, false, true);
+
+            playerIn.awardStat(Stats.ITEM_USED.get(this));
+            worldIn.gameEvent(GameEvent.ENTITY_PLACE, playerIn);
+            return InteractionResultHolder.consume(itemstack);
          } else {
-            return ActionResult.resultFail(itemstack);
+            return InteractionResultHolder.fail(itemstack);
          }
       }
    }
 
    @Override
-   public ActionResultType onItemUse(ItemUseContext context) {
-      World world = context.getWorld();
-      if (!(world instanceof ServerWorld)) {
-         return ActionResultType.SUCCESS;
+   public InteractionResult useOn(UseOnContext useContext) {
+      Level world = useContext.getLevel();
+      if (!(world instanceof ServerLevel)) {
+         return InteractionResult.SUCCESS;
       } else {
-         ItemStack itemstack = context.getItem();
-         BlockPos blockpos = context.getPos();
-         Direction direction = context.getFace();
+         ItemStack itemstack = useContext.getItemInHand();
+         BlockPos blockpos = useContext.getClickedPos();
+         Direction direction = useContext.getClickedFace();
          BlockState blockstate = world.getBlockState(blockpos);
-         if (blockstate.isIn(Blocks.SPAWNER)) {
-            TileEntity tileentity = world.getTileEntity(blockpos);
-            if (tileentity instanceof MobSpawnerTileEntity) {
-               AbstractSpawner abstractspawner = ((MobSpawnerTileEntity)tileentity).getSpawnerBaseLogic();
+
+         if (blockstate.is(Blocks.SPAWNER)) {
+            BlockEntity tileentity = world.getBlockEntity(blockpos);
+            if (tileentity instanceof SpawnerBlockEntity) {
+               BaseSpawner abstractspawner = ((SpawnerBlockEntity)tileentity).getSpawner();
                EntityType<?> entitytype1 = this.getType(itemstack.getTag());
-               abstractspawner.setEntityType(entitytype1);
-               CompoundNBT entityNBT = new CompoundNBT();
-               abstractspawner.write(entityNBT);
+               abstractspawner.setEntityId(entitytype1);
 
-               ListNBT listnbt = new ListNBT();
-               CompoundNBT compoundnbt = new CompoundNBT();
-               CompoundNBT entityNBT_2 = new CompoundNBT();
+               CompoundTag entityNBT_2 = new CompoundTag();
                entityNBT_2.putString("id", entitytype1.getRegistryName().toString());
-               entityNBT_2.putInt("Variant", this.currentSpecies - 1);
-               compoundnbt.put("Entity", entityNBT_2);
-               compoundnbt.putInt("Weight", 1);
-               listnbt.add(compoundnbt);
+               if (this.currentSpecies - 1 >= 0) {
+                  entityNBT_2.putInt("Variant", this.currentSpecies - 1);
+                  entityNBT_2.putFloat("Size", ComplexMob.getEntityData(entitytype1).getScale(this.currentSpecies - 1));
+               }
+               else {
+                  entityNBT_2.putFloat("Size", 1);
+               }
 
-               entityNBT.getList("SpawnPotentials", 10).clear();
-               entityNBT.getList("SpawnPotentials", 10).add(listnbt);
+               abstractspawner.setNextSpawnData(world, blockpos, new SpawnData(entityNBT_2, Optional.empty()));
 
-               abstractspawner.read(entityNBT);
-               tileentity.markDirty();
-               world.notifyBlockUpdate(blockpos, blockstate, blockstate, 3);
+               tileentity.setChanged();
+               world.sendBlockUpdated(blockpos, blockstate, blockstate, 3);
                itemstack.shrink(1);
-               return ActionResultType.CONSUME;
+               return InteractionResult.CONSUME;
             }
          }
 
@@ -172,27 +158,25 @@ public class UntamedSpawnEggItem extends SpawnEggItem {
          if (blockstate.getCollisionShape(world, blockpos).isEmpty()) {
             blockpos1 = blockpos;
          } else {
-            blockpos1 = blockpos.offset(direction);
+            blockpos1 = blockpos.relative(direction);
          }
 
-         EntityType<?> entitytype = this.getType(itemstack.getTag());
-         Entity spawn = entitytype.create((ServerWorld) world, itemstack.getTag(), null, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, true, !Objects.equals(blockpos, blockpos1) && direction == Direction.UP);
+         if (!itemstack.hasTag())
+            itemstack.setTag(new CompoundTag());
+         Entity spawn = this.entityType.get().create((ServerLevel) world, itemstack.getTag(), null, useContext.getPlayer(), blockpos, MobSpawnType.SPAWN_EGG, true, !Objects.equals(blockpos, blockpos1) && direction == Direction.UP);
          if (spawn == null) {
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
          }
-         if (spawn instanceof ComplexMob) {
-            ComplexMob entitySpawn = (ComplexMob) spawn;
-            entitySpawn.chooseSkinForSpecies(entitySpawn, true);
-            entitySpawn.setRandomMobSize();
-            entitySpawn.setGender(entitySpawn.getRNG().nextInt(2));
-            if (spawn instanceof INeedsPostUpdate) {
-               ((INeedsPostUpdate) spawn).updateAttributes();
-            }
-            world.addEntity(spawn);
-         }
-         itemstack.shrink(1);
+         //BlockPos spawnPos = blockstate.getCollisionShape(world, blockpos).isEmpty() ? blockpos : blockpos.relative(direction);
 
-         return ActionResultType.CONSUME;
+         Integer species = this.currentSpecies - 1 < 0 ? null : this.currentSpecies - 1;
+         EntityUtils.createMobFromItem((ServerLevel) world, itemstack, this.entityType.get(), species, blockpos1, useContext.getPlayer(), false, true);
+
+         if (useContext.getPlayer() != null) {
+            itemstack.shrink(1);
+            world.gameEvent(useContext.getPlayer(), GameEvent.ENTITY_PLACE, blockpos);
+         }
+         return InteractionResult.CONSUME;
       }
    }
 }

@@ -2,8 +2,8 @@ package untamedwilds.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
 import untamedwilds.entity.fish.EntityFootballFish;
 
 public class ModelFootballFish extends AdvancedEntityModel<EntityFootballFish> {
@@ -20,8 +20,8 @@ public class ModelFootballFish extends AdvancedEntityModel<EntityFootballFish> {
     public AdvancedModelBox attached_male;
 
     public ModelFootballFish() {
-        this.textureWidth = 32;
-        this.textureHeight = 32;
+        this.texWidth = 32;
+        this.texHeight = 32;
         this.head_fin_right = new AdvancedModelBox(this, 0, 0);
         this.head_fin_right.mirror = true;
         this.head_fin_right.setRotationPoint(-3.5F, 0.0F, 0.0F);
@@ -74,7 +74,7 @@ public class ModelFootballFish extends AdvancedEntityModel<EntityFootballFish> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(main_body);
     }
 
@@ -94,8 +94,8 @@ public class ModelFootballFish extends AdvancedEntityModel<EntityFootballFish> {
         );
     }
 
-    public void setRotationAngles(EntityFootballFish football_fish, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float f = ageInTicks - (float)football_fish.ticksExisted / 10;
+    public void setupAnim(EntityFootballFish football_fish, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        float f = ageInTicks - (float)football_fish.tickCount / 10;
         resetToDefaultPose();
 
         if (!football_fish.isInWater()) {

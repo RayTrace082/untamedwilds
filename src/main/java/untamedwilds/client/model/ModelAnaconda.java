@@ -4,12 +4,13 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.vector.Vector3d;
+import com.mojang.math.Vector3d;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import untamedwilds.entity.reptile.EntityAnaconda;
 
 public class ModelAnaconda extends AdvancedEntityModel<EntityAnaconda> {
@@ -37,8 +38,8 @@ public class ModelAnaconda extends AdvancedEntityModel<EntityAnaconda> {
     private final AdvancedModelBox[] bodyParts;
 
     public ModelAnaconda() {
-        this.textureWidth = 64;
-        this.textureHeight = 32;
+        this.texWidth = 64;
+        this.texHeight = 32;
 
         this.body_7 = new AdvancedModelBox(this, 0, 0);
         this.body_7.setRotationPoint(0.0F, 0.01F, 8.0F);
@@ -118,7 +119,7 @@ public class ModelAnaconda extends AdvancedEntityModel<EntityAnaconda> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.body_5);
     }
 
@@ -128,27 +129,10 @@ public class ModelAnaconda extends AdvancedEntityModel<EntityAnaconda> {
 
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
-        return ImmutableList.of(
-                head_main,
-            body_head_top,
-                    body_head_top_1, body_snout_top, body_snout_top_1,
-                body_1,
-                body_2,
-                body_3,
-                body_4,
-                body_5,
-                body_6,
-                body_7,
-                body_8,
-                body_9,
-                body_10,
-                body_11,
-                body_12,
-                body_13
-        );
+        return ImmutableList.of(head_main, body_head_top, body_head_top_1, body_snout_top, body_snout_top_1, body_1, body_2, body_3, body_4, body_5, body_6, body_7, body_8, body_9, body_10, body_11, body_12, body_13);
     }
 
-    public void setRotationAngles(EntityAnaconda anaconda, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityAnaconda anaconda, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(anaconda);
         limbSwing *= -1.2;
@@ -157,18 +141,18 @@ public class ModelAnaconda extends AdvancedEntityModel<EntityAnaconda> {
         limbSwingAmount = 0.5F;
 
         // Pitch/Yaw handler
-        if (anaconda.isInWater() && anaconda.isAirBorne) {
-            this.setRotateAngle(body_5, anaconda.rotationPitch * ((float) Math.PI / 180F), 0, 0);
+        if (anaconda.isInWater() && !anaconda.isOnGround()) {
+            this.setRotateAngle(body_5, anaconda.getXRot() * ((float) Math.PI / 180F), 0, 0);
         }
 
         this.body_5.rotationPointX += (float)(Math.sin(limbSwing * -globalSpeed * 0.5) * (double)limbSwingAmount * (double)globalDegree * -4 - (double)(limbSwingAmount * globalDegree * -4));
         limbSwingAmount /= Math.max((double) anaconda.sitProgress / 6, 1);
-        float partialTicks = ageInTicks - anaconda.ticksExisted;
+        float partialTicks = ageInTicks - anaconda.tickCount;
         float renderYaw = (float)anaconda.getMovementOffsets(0, partialTicks)[0] ;
-        this.body_6.rotateAngleY += MathHelper.clamp((float)anaconda.getMovementOffsets(6, partialTicks)[0] - renderYaw, -15, 15)  * 0.017453292F;
-        this.body_8.rotateAngleY += MathHelper.clamp((float)anaconda.getMovementOffsets(12, partialTicks)[0] - renderYaw, -15, 15)  * 0.017453292F;
-        this.body_10.rotateAngleY += MathHelper.clamp((float)anaconda.getMovementOffsets(18, partialTicks)[0] - renderYaw, -15, 15)  * 0.017453292F;
-        this.body_12.rotateAngleY += MathHelper.clamp((float)anaconda.getMovementOffsets(24, partialTicks)[0] - renderYaw, -15, 15)  * 0.017453292F;
+        this.body_6.rotateAngleY += Mth.clamp((float)anaconda.getMovementOffsets(6, partialTicks)[0] - renderYaw, -15, 15)  * 0.017453292F;
+        this.body_8.rotateAngleY += Mth.clamp((float)anaconda.getMovementOffsets(12, partialTicks)[0] - renderYaw, -15, 15)  * 0.017453292F;
+        this.body_10.rotateAngleY += Mth.clamp((float)anaconda.getMovementOffsets(18, partialTicks)[0] - renderYaw, -15, 15)  * 0.017453292F;
+        this.body_12.rotateAngleY += Mth.clamp((float)anaconda.getMovementOffsets(24, partialTicks)[0] - renderYaw, -15, 15)  * 0.017453292F;
         swing(head_main, 0.5f * globalSpeed, 0.6f * globalDegree, false, -5.4f, 0, limbSwing, limbSwingAmount);
         swing(body_1, 0.5f * globalSpeed, 0.8f * globalDegree, false, -4.4f, 0, limbSwing, limbSwingAmount);
         swing(body_2, 0.5f * globalSpeed, 0.6f * globalDegree, false, -3.6f, 0, limbSwing, limbSwingAmount);
@@ -189,23 +173,23 @@ public class ModelAnaconda extends AdvancedEntityModel<EntityAnaconda> {
             body_head_top.rotateAngleX += (float) Math.toRadians(-41.74F);
             body_head_top_1.rotateAngleX += (float) Math.toRadians(49.57F);
         }
-        if (!anaconda.isInWater() && !anaconda.isChild() && anaconda.canMove()) {
-            Vector3d position;
+        if (!anaconda.isInWater() && !anaconda.isBaby() && anaconda.canMove()) {
+            Vec3 position;
             double difference = 0F;
             int counter = 0;
             int parts = 0;
             //UntamedWilds.LOGGER.info("---ANACONDA CLIENT DATA---");
             for (EntityAnaconda.EntityAnacondaPart multipart : anaconda.anacondaParts) {
                 if (counter > 0 && counter < 3 && multipart.getParent() == anaconda) {
-                    position = multipart.getPositionVec().add(0, difference, 0);
-                    BlockRayTraceResult rayTrace = anaconda.world.rayTraceBlocks(new RayTraceContext(position.add(0, 3, 0), position.add(0, -3, 0), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.ANY, null));
-                    Vector3d vec3d = rayTrace.getHitVec();
-                    difference = vec3d.getY() - position.getY();
-                    float angle = Math.abs(difference) > 0.2 ? (float) MathHelper.atan2(difference, 0) : 0;
+                    position = multipart.getPosition(0).add(0, difference, 0);
+                    BlockHitResult rayTrace = anaconda.level.clip(new ClipContext(position.add(0, 3, 0), position.add(0, -3, 0), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, null));
+                    Vec3 vec3d = rayTrace.getLocation();
+                    difference = vec3d.y() - position.y;
+                    float angle = Math.abs(difference) > 0.2 ? (float) Mth.atan2(difference, 0) : 0;
                     /*UntamedWilds.LOGGER.info("Joint " + counter + ": " + angle);
                     UntamedWilds.LOGGER.info("Ray Trace " + rayTrace.getHitVec() + " BlockPos: " + position);
                     UntamedWilds.LOGGER.info("Difference: " + difference + " (" + vec3d.getY() + " " + position.getY() + ")"); */
-                    float newZ = MathHelper.lerp(0.1F, anaconda.buffer[counter], this.bodyParts[counter].defaultRotationX + angle);
+                    float newZ = Mth.lerp(0.1F, anaconda.buffer[counter], this.bodyParts[counter].defaultRotationX + angle);
                     this.bodyParts[parts].rotateAngleX = newZ / 2;
                     this.bodyParts[parts + 1].rotateAngleX = newZ / 4;
                     this.bodyParts[parts + 2].rotateAngleX = -newZ / 4;

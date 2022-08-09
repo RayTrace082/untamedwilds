@@ -1,74 +1,83 @@
 package untamedwilds.entity.mammal;
 
 import com.github.alexthe666.citadel.animation.Animation;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
-import net.minecraft.entity.monster.IFlinging;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.monster.hoglin.HoglinBase;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.*;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.ProtectChildrenTarget;
 import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
+import untamedwilds.entity.ai.unique.BisonTerritorialityFight;
 import untamedwilds.init.ModEntity;
+import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 
 public class EntityBison extends ComplexMobTerrestrial implements INewSkins, ISpecies, IPackEntity {
 
-   private static final DataParameter<Boolean> CHARGING = EntityDataManager.createKey(EntityBison.class, DataSerializers.BOOLEAN);
+   private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(EntityBison.class, EntityDataSerializers.BOOLEAN);
 
     public static Animation ATTACK_THREATEN;
     public static Animation ATTACK_GORE;
 
-    public EntityBison(EntityType<? extends ComplexMob> type, World worldIn) {
+    public EntityBison(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
         ATTACK_THREATEN = Animation.create(50);
         ATTACK_GORE = Animation.create(14);
-        this.stepHeight = 1F;
-        this.experienceValue = 10;
+        this.maxUpStep = 1F;
         this.turn_speed = 0.2F;
     }
 
-    protected void registerData() {
-        super.registerData();
-        dataManager.register(CHARGING, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(CHARGING, false);
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(1, new SmartSwimGoal(this));
+        this.goalSelector.addGoal(1, new SmartSwimGoal_Land(this));
+        this.goalSelector.addGoal(2, new RodeoGoal(this, 1.8F));
         this.goalSelector.addGoal(2, new MeleeAttackCharger(this, 1.4F, 3));
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1.6D, false));
         this.goalSelector.addGoal(3, new SmartMateGoal(this, 0.8D));
         this.goalSelector.addGoal(3, new GrazeGoal(this, 10));
         this.goalSelector.addGoal(4, new GotoSleepGoal(this, 1D));
+        this.goalSelector.addGoal(5, new BisonTerritorialityFight(this, 1.4F));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, 120, 0, true));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntityBison) && getEcoLevel(input) > getEcoLevel(this)));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, true, input -> !(input instanceof EntityBison) && getEcoLevel(input) > getEcoLevel(this)));
     }
 
     @Override
-    protected void setupTamedAI() {
-        if (this.isTamed()) {
+    protected void reassessTameGoals() {
+        if (this.isTame()) {
             if (UntamedWilds.DEBUG) {
                 UntamedWilds.LOGGER.info("Updating AI tasks for tamed mob");
             }
@@ -78,70 +87,71 @@ public class EntityBison extends ComplexMobTerrestrial implements INewSkins, ISp
         }
     }
 
-    public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 7.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 12.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 35.0D)
-                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1D)
-                .createMutableAttribute(Attributes.ARMOR, 2D);
+    public static AttributeSupplier.Builder registerAttributes() {
+        return LivingEntity.createLivingAttributes()
+                .add(Attributes.ATTACK_DAMAGE, 7.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.5D)
+                .add(Attributes.MOVEMENT_SPEED, 0.2D)
+                .add(Attributes.FOLLOW_RANGE, 12.0D)
+                .add(Attributes.MAX_HEALTH, 35.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1D)
+                .add(Attributes.ARMOR, 2D);
     }
 
     public boolean wantsToBreed() {
-        if (ConfigGamerules.naturalBreeding.get() && this.growingAge == 0) {
+        if (ConfigGamerules.naturalBreeding.get() && this.age == 0) {
             return this.getHunger() >= 80;
         }
         return false;
     }
 
     @Override
-    public void livingTick() {
-        if (!this.world.isRemote) {
+    public void aiStep() {
+        if (!this.level.isClientSide) {
             if (this.herd == null) {
                 IPackEntity.initPack(this);
             }
             else {
                 this.herd.tick();
             }
-            if (this.world.getGameTime() % 1000 == 0) {
+            if (this.level.getGameTime() % 1000 == 0) {
                 this.addHunger(-10);
                 if (!this.isStarving()) {
                     this.heal(1.0F);
                 }
             }
-            int i = this.rand.nextInt(3000);
-            if (i == 13 && !this.isInWater() && this.getAttackTarget() == null && this.isNotMoving() && this.canMove() && this.getAnimation() == NO_ANIMATION) {
+            int i = this.random.nextInt(3000);
+            if (i == 13 && !this.isInWater() && this.getTarget() == null && this.isNotMoving() && this.canMove() && this.getAnimation() == NO_ANIMATION) {
                 this.setSitting(true);
             }
             if (i == 14 && this.isSitting()) {
                 this.setSitting(false);
             }
-            this.setAngry(this.getAttackTarget() != null);
+            this.setAngry(this.getTarget() != null);
         }
         else {
             if (this.getAnimation() == ATTACK_THREATEN) {
                 this.setSprinting(this.getAnimationTick() % 18 < 6);
             }
         }
-        super.livingTick();
+        super.aiStep();
     }
 
-    public boolean attackEntityAsMob(Entity entityIn) {
-        boolean flag = super.attackEntityAsMob(entityIn);
-        if (flag && this.getAnimation() == NO_ANIMATION && !this.isChild()) {
+    public boolean doHurtTarget(Entity entityIn) {
+        boolean flag = super.doHurtTarget(entityIn);
+        if (flag && this.getAnimation() == NO_ANIMATION && !this.isBaby()) {
             Animation anim = chooseAttackAnimation();
             this.setAnimation(anim);
             if (!this.isCharging()) {
-                this.playSound(SoundEvents.ENTITY_ZOGLIN_ATTACK, 1.0F, this.getSoundPitch());
-                IFlinging.func_234403_a_(this, (LivingEntity)entityIn);
+                this.playSound(SoundEvents.ZOGLIN_ATTACK, 1.0F, this.getVoicePitch());
+                HoglinBase.hurtAndThrowTarget(this, (LivingEntity)entityIn);
             }
         }
         return flag;
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.ENTITY_RAVAGER_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.RAVAGER_STEP, 0.15F, 1.0F);
     }
 
     private Animation chooseAttackAnimation() {
@@ -149,37 +159,42 @@ public class EntityBison extends ComplexMobTerrestrial implements INewSkins, ISp
     }
 
     @Nullable
-    public EntityBison func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityBison(ModEntity.BISON, this.world));
+    public EntityBison getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+        return create_offspring(new EntityBison(ModEntity.BISON.get(), this.level));
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
-        ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(InteractionHand.MAIN_HAND);
 
-        if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
-            if (!this.isTamed() && this.isChild() && EntityUtils.hasFullHealth(this) && this.isFavouriteFood(itemstack)) {
-                this.playSound(SoundEvents.ENTITY_HORSE_EAT, 1.5F, 0.8F);
-                if (this.getRNG().nextInt(3) == 0) {
-                    this.setTamedBy(player);
-                    EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.HEART, 3, 6);
+        if (hand == InteractionHand.MAIN_HAND && !this.level.isClientSide()) {
+            if (!this.isTame() && this.isBaby() && EntityUtils.hasFullHealth(this) && this.isFood(itemstack)) {
+                this.playSound(SoundEvents.HORSE_EAT, 1.5F, 0.8F);
+                if (this.getRandom().nextInt(3) == 0) {
+                    this.tame(player);
+                    EntityUtils.spawnParticlesOnEntity(this.level, this, ParticleTypes.HEART, 3, 6);
                 } else {
-                    EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.SMOKE, 3, 3);
+                    EntityUtils.spawnParticlesOnEntity(this.level, this, ParticleTypes.SMOKE, 3, 3);
+                }
+            }
+            if (!this.isTame() && !this.isBaby() && itemstack.isEmpty()) {
+                this.setSitting(false);
+                this.setSleeping(false);
+                if (!this.level.isClientSide) {
+                    player.setYRot(this.getYRot());
+                    player.setXRot(this.getXRot());
+                    player.startRiding(this);
                 }
             }
         }
 
-        return super.func_230254_b_(player, hand);
+        return super.mobInteract(player, hand);
     }
 
     public boolean isCharging() {
-        return dataManager.get(CHARGING);
+        return entityData.get(CHARGING);
     }
 
-    public void setCharging(boolean bool) { dataManager.set(CHARGING, bool); }
-
-    public boolean isBreedingItem(ItemStack stack) {
-        return (stack.getItem() == Items.MELON);
-    }
+    public void setCharging(boolean bool) { entityData.set(CHARGING, bool); }
 
     @Override
     public Animation[] getAnimations() {
@@ -187,4 +202,59 @@ public class EntityBison extends ComplexMobTerrestrial implements INewSkins, ISp
     }
 
     public Animation getAnimationEat() { return NO_ANIMATION; }
+
+    public static class RodeoGoal extends Goal {
+        private final EntityBison bison;
+        private final double speedModifier;
+        private double posX;
+        private double posY;
+        private double posZ;
+
+        public RodeoGoal(EntityBison p_25890_, double p_25891_) {
+            this.bison = p_25890_;
+            this.speedModifier = p_25891_;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        public boolean canUse() {
+            if (!this.bison.isTame() && this.bison.isVehicle()) {
+                Vec3 vec3 = DefaultRandomPos.getPos(this.bison, 5, 4);
+                if (vec3 == null) {
+                    return false;
+                } else {
+                    this.posX = vec3.x;
+                    this.posY = vec3.y;
+                    this.posZ = vec3.z;
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        public void start() {
+            this.bison.getNavigation().moveTo(this.posX, this.posY, this.posZ, this.speedModifier);
+        }
+
+        public boolean canContinueToUse() {
+            return !this.bison.isTame() && !this.bison.getNavigation().isDone() && this.bison.isVehicle();
+        }
+
+        public void tick() {
+            if (this.bison.getRandom().nextInt(this.adjustedTickDelay(50)) < 3) {
+                this.bison.setAnimation(ATTACK_GORE);
+                this.bison.playSound(ModSounds.ENTITY_BISON_AMBIENT, this.bison.getSoundVolume(), this.bison.getVoicePitch());
+            }
+            if (!this.bison.isTame() && this.bison.getRandom().nextInt(this.adjustedTickDelay(50)) == 0) {
+                Entity entity = this.bison.getPassengers().get(0);
+                if (entity == null) {
+                    return;
+                }
+
+                this.bison.ejectPassengers();
+                this.bison.setTarget((LivingEntity) entity);
+                this.bison.level.broadcastEntityEvent(this.bison, (byte)6);
+            }
+        }
+    }
 }

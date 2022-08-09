@@ -1,13 +1,13 @@
 package untamedwilds.item.debug;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
 public class IpecacItem extends Item {
@@ -17,21 +17,21 @@ public class IpecacItem extends Item {
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        context.getPlayer().sendMessage(new StringTextComponent("Pos: " + context.getPos()), context.getPlayer().getUniqueID());
-        return ActionResultType.PASS;
+    public InteractionResult useOn(UseOnContext context) {
+        context.getPlayer().sendMessage(new TextComponent("Pos: " + context.getClickedPos()), context.getPlayer().getUUID());
+        return InteractionResult.PASS;
     }
 
     @Override
-    public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
-        if (target.getEntityWorld().isRemote) return ActionResultType.PASS;
-        if (target instanceof PlayerEntity || !target.isNonBoss()) return ActionResultType.FAIL;
+    public InteractionResult interactLivingEntity(ItemStack stack, Player playerIn, LivingEntity target, InteractionHand hand) {
+        if (target.getLevel().isClientSide) return InteractionResult.PASS;
+        if (target instanceof Player/* || !target.isNonBoss()*/) return InteractionResult.FAIL;
         if (target instanceof ComplexMobTerrestrial) {
             ComplexMobTerrestrial entity = (ComplexMobTerrestrial)target;
             entity.addHunger(-100);
-            entity.peacefulTicks = 0;
-            return ActionResultType.SUCCESS;
+            entity.huntingCooldown = 0;
+            return InteractionResult.SUCCESS;
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 }

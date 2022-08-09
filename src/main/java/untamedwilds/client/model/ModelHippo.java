@@ -4,9 +4,9 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityHippo;
 
 public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
@@ -35,8 +35,8 @@ public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
     private final ModelAnimator animator;
 
     public ModelHippo() {
-        this.textureWidth = 128;
-        this.textureHeight = 64;
+        this.texWidth = 128;
+        this.texHeight = 64;
         this.body_main = new AdvancedModelBox(this, 0, 0);
         this.body_main.setRotationPoint(0.0F, 12.5F, 0.0F);
         this.body_main.addBox(-6.0F, -6.0F, -12.0F, 12, 12, 24, 0.0F);
@@ -128,7 +128,7 @@ public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.body_main);
     }
 
@@ -247,7 +247,7 @@ public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
         animator.resetKeyframe(10);
     }
 
-    public void setRotationAngles(EntityHippo hippo, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityHippo hippo, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animate(hippo);
         //limbSwing = ageInTicks / 3;
         //limbSwingAmount = 0.5f;
@@ -262,7 +262,7 @@ public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
             this.eye_left.setRotationPoint(2F, -2.0F, -4.0F);
         }
         if (hippo.isInWater() && !hippo.isOnGround()) {
-            float pitch = MathHelper.clamp(hippo.rotationPitch - 10, -25F, 25.0F);
+            float pitch = Mth.clamp(hippo.getXRot() - 10, -25F, 25.0F);
             this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 

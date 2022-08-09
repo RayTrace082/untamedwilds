@@ -1,15 +1,14 @@
 package untamedwilds.entity.ai;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CropsBlock;
-import net.minecraft.block.FarmlandBlock;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootContext;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
 import java.util.EnumSet;
@@ -24,42 +23,43 @@ public class RaidCropsGoal extends Goal {
     public RaidCropsGoal(ComplexMobTerrestrial entityIn) {
         this.taskOwner = entityIn;
         this.continueTask = true;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (this.taskOwner.isTamed() || !net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.taskOwner.world, this.taskOwner)) {
+    public boolean canUse() {
+        if (this.taskOwner.isTame() || !net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.taskOwner.level, this.taskOwner)) {
             return false;
         }
-        if (this.taskOwner.getHunger() > 80 || this.taskOwner.getAttackTarget() != null) {
+        if (this.taskOwner.getHunger() > 80 || this.taskOwner.getTarget() != null) {
             return false;
         }
-        if (this.taskOwner.getRNG().nextInt(120) != 0) {
+        if (this.taskOwner.getRandom().nextInt(120) != 0) {
             return false;
         }
-        BlockPos pos = this.taskOwner.getPosition();
+        BlockPos pos = this.taskOwner.blockPosition();
 
         this.targetPos = getNearbyFarmland(pos);
         return this.targetPos != null;
     }
 
     @Override
-    public void startExecuting() {
-        this.taskOwner.getNavigator().tryMoveToXYZ((double)this.targetPos.getX() + 0.5D, this.targetPos.getY() + 1, (double)this.targetPos.getZ() + 0.5D, 1f);
+    public void start() {
+        this.taskOwner.getNavigation().moveTo((double)this.targetPos.getX() + 0.5D, this.targetPos.getY() + 1, (double)this.targetPos.getZ() + 0.5D, 1f);
     }
 
     @Override
     public void tick() {
-        if (this.taskOwner.getDistanceSq(targetPos.getX(), targetPos.getY(), targetPos.getZ()) < 4) {
-            BlockState block = this.taskOwner.world.getBlockState(this.targetPos);
-            if (block.getBlock() instanceof CropsBlock) {
-                LootContext.Builder loot = new LootContext.Builder((ServerWorld)taskOwner.world).withParameter(LootParameters.field_237457_g_, taskOwner.getPositionVec()).withRandom(this.taskOwner.getRNG()).withLuck(1.0F);
+        if (this.taskOwner.distanceToSqr(targetPos.getX(), targetPos.getY(), targetPos.getZ()) < 4) {
+            BlockState block = this.taskOwner.level.getBlockState(this.targetPos);
+            if (block.getBlock() instanceof CropBlock) {
+                // TODO: Broken
+                LootContext.Builder loot = new LootContext.Builder((ServerLevel) taskOwner.level).withRandom(this.taskOwner.getRandom()).withLuck(1.0F);
                 List<ItemStack> drops = block.getBlock().getDrops(block, loot);
                 if (!drops.isEmpty()) {
                     this.taskOwner.addHunger(Math.max(drops.size() * 10, 10));
-                    this.taskOwner.world.destroyBlock(this.targetPos, false);
-                    this.taskOwner.getNavigator().clearPath();
+                    this.taskOwner.level.destroyBlock(this.targetPos, false);
+                    this.taskOwner.getNavigation().stop();
                 }
             }
             this.continueTask = false;
@@ -67,8 +67,8 @@ public class RaidCropsGoal extends Goal {
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
-        if (this.taskOwner.getHunger() > 80 || this.taskOwner.world.isAirBlock(this.targetPos)) {
+    public boolean canContinueToUse() {
+        if (this.taskOwner.getHunger() > 80 || this.taskOwner.level.isEmptyBlock(this.targetPos)) {
             return false;
         }
         return this.continueTask;
@@ -79,18 +79,18 @@ public class RaidCropsGoal extends Goal {
         int X = 15;
         int Y = 3;
         //List<BlockPos> inventories = new ArrayList<>();
-        for (BlockPos blockpos : BlockPos.getAllInBoxMutable(roomCenter.add(-X, -Y, -X), roomCenter.add(X, Y, X))) {
-            if (this.taskOwner.world.getBlockState(blockpos).getBlock() instanceof FarmlandBlock) {
-                if (this.hasPlantedCrop(this.taskOwner.world, blockpos)) {
-                    return blockpos.up();
+        for (BlockPos blockpos : BlockPos.betweenClosed(roomCenter.offset(-X, -Y, -X), roomCenter.offset(X, Y, X))) {
+            if (this.taskOwner.level.getBlockState(blockpos).getBlock() instanceof FarmBlock) {
+                if (this.hasPlantedCrop(this.taskOwner.level, blockpos)) {
+                    return blockpos.above();
                 }
             }
         }
         return null;
     }
 
-    private boolean hasPlantedCrop(IWorldReader worldIn, BlockPos pos) {
-        BlockState block = worldIn.getBlockState(pos.up());
-        return block.getBlock() instanceof CropsBlock;
+    private boolean hasPlantedCrop(LevelReader worldIn, BlockPos pos) {
+        BlockState block = worldIn.getBlockState(pos.above());
+        return block.getBlock() instanceof CropBlock;
     }
 }

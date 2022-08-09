@@ -1,86 +1,87 @@
 package untamedwilds.item;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.INeedsPostUpdate;
 import untamedwilds.util.EntityUtils;
-import untamedwilds.util.ItemGroupUT;
+import untamedwilds.util.ModCreativeModeTab;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 public class MobEggItem extends Item {
-    private final EntityType<? extends ComplexMob> entity;
+    private final Supplier<? extends EntityType<?>> entity;
 
-    public MobEggItem(EntityType<? extends ComplexMob> typeIn, Properties properties) {
+    public MobEggItem(Supplier<? extends EntityType<?>> typeIn, Properties properties) {
         super(properties);
         this.entity = typeIn;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("mobspawn.tooltip.unknown").mergeStyle(TextFormatting.GRAY));
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(new TranslatableComponent("mobspawn.tooltip.unknown").withStyle(ChatFormatting.GRAY));
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext useContext) {
-        World worldIn = useContext.getWorld();
-        if (!(worldIn instanceof ServerWorld)) {
-            return ActionResultType.SUCCESS;
+    public InteractionResult useOn(UseOnContext useContext) {
+        Level worldIn = useContext.getLevel();
+        if (!(worldIn instanceof ServerLevel)) {
+            return InteractionResult.SUCCESS;
         } else {
-            ItemStack itemStack = useContext.getItem();
-            BlockPos pos = useContext.getPos();
-            Direction facing = useContext.getFace();
+            ItemStack itemStack = useContext.getItemInHand();
+            BlockPos pos = useContext.getClickedPos();
+            Direction facing = useContext.getClickedFace();
             BlockState blockState = worldIn.getBlockState(pos);
 
-            BlockPos spawnPos = blockState.getCollisionShape(worldIn, pos).isEmpty() ? pos : pos.offset(facing);
+            BlockPos spawnPos = blockState.getCollisionShape(worldIn, pos).isEmpty() ? pos : pos.relative(facing);
 
-            EntityType<?> entity = EntityUtils.getEntityTypeFromTag(itemStack.getTag(), this.entity);
-            Entity spawn = entity.create((ServerWorld) worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, SpawnReason.BUCKET, true, !Objects.equals(pos, spawnPos) && facing == Direction.UP);
+            EntityType<?> entity = EntityUtils.getEntityTypeFromTag(itemStack.getTag(), this.entity.get());
+            Entity spawn = entity.create((ServerLevel) worldIn, itemStack.getTag(), null, useContext.getPlayer(), spawnPos, MobSpawnType.BUCKET, true, !Objects.equals(pos, spawnPos) && facing == Direction.UP);
             if (spawn instanceof ComplexMob) {
                 ComplexMob entitySpawn = (ComplexMob) spawn;
                 entitySpawn.setVariant(this.getSpecies(itemStack, entitySpawn));
                 entitySpawn.chooseSkinForSpecies(entitySpawn, true);
                 entitySpawn.setRandomMobSize();
-                entitySpawn.setGender(entitySpawn.getRNG().nextInt(2));
-                entitySpawn.setGrowingAge(entitySpawn.getAdulthoodTime() * -1);
+                entitySpawn.setGender(entitySpawn.getRandom().nextInt(2));
+                entitySpawn.setAge(entitySpawn.getAdulthoodTime() * -1);
 
                 if (spawn instanceof INeedsPostUpdate) {
                     ((INeedsPostUpdate) spawn).updateAttributes();
                 }
             }
             if (spawn != null) {
-                worldIn.addEntity(spawn);
+                ((ServerLevel) worldIn).addFreshEntityWithPassengers(spawn);
             }
             itemStack.shrink(1);
         }
-        return ActionResultType.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
-    public String getTranslationKey() {
-        return new TranslationTextComponent("item.untamedwilds.egg_" + this.entity.getRegistryName().getPath()).getString();
+    public String getDescriptionId() {
+        return new TranslatableComponent("item.untamedwilds.egg_" + this.entity.get().getRegistryName().getPath()).getString();
     }
 
     private int getSpecies(ItemStack itemIn, ComplexMob entityIn) {
@@ -90,11 +91,10 @@ public class MobEggItem extends Item {
         return entityIn.getVariant();
     }
 
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        if (group == ItemGroupUT.untamedwilds_items) {
-            int j = EntityUtils.getNumberOfSpecies(this.entity);
-            for(int i = 0; i < EntityUtils.getNumberOfSpecies(this.entity); i++) {
-                CompoundNBT baseTag = new CompoundNBT();
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+        if (group == ModCreativeModeTab.untamedwilds_items) {
+            for(int i = 0; i < EntityUtils.getNumberOfSpecies(this.entity.get()); i++) {
+                CompoundTag baseTag = new CompoundTag();
                 ItemStack item = new ItemStack(this);
                 baseTag.putInt("variant", i);
                 baseTag.putInt("CustomModelData", i);
@@ -109,9 +109,9 @@ public class MobEggItem extends Item {
     public boolean onEntityItemUpdate(EntityItem entityItem) {
 
         ItemStack itemstack = entityItem.getItem();
-        World worldIn = entityItem.world;
+        Level worldIn = entityItem.world;
 
-        if (entityItem.world.isRemote || entityItem.ticksExisted < this.getHatchingTime(itemstack)) {
+        if (entityItem.world.isClientSide || entityItem.tickCount < this.getHatchingTime(itemstack)) {
             return super.onEntityItemUpdate(entityItem);
         }
 
@@ -122,7 +122,7 @@ public class MobEggItem extends Item {
             entitySpawn.setSpecies(this.getSpecies(itemstack));
             entitySpawn.setPosition(entityItem.getPosition().getX() + 0.5, entityItem.getPosition().getY() + 1, entityItem.getPosition().getZ() + 0.5);
             entitySpawn.setRandomMobSize();
-            entitySpawn.setGender(worldIn.rand.nextInt(2));
+            entitySpawn.setGender(worldIn.random.nextInt(2));
 
             itemstack.shrink(1);
             if (itemstack.isEmpty()) {

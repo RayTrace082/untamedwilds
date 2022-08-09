@@ -1,11 +1,17 @@
 {
+    "replace": false,
+    "slots": [
+      "sword/guard"
+    ],
+    "type": "tetra:basic_module",
+    "renderLayer": "higher",
     "variants": [
         {
             "key": "sword_socket/pearl",
             "category": "gem",
             "durability": 64,
             "integrity": -1,
-			"effects": {
+			"attributes": {
                 "generic.armor_toughness": 2
             },
             "glyph": {
@@ -23,7 +29,7 @@
             "category": "gem",
             "durability": 92,
             "integrity": -1,
-			"effects": {
+			"attributes": {
                 "generic.armor_toughness": 4
             },
             "glyph": {

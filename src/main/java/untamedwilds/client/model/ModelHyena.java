@@ -4,9 +4,9 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityHyena;
 
 public class ModelHyena extends AdvancedEntityModel<EntityHyena> {
@@ -35,8 +35,8 @@ public class ModelHyena extends AdvancedEntityModel<EntityHyena> {
     private float tailX = -1;
 
     public ModelHyena() {
-        this.textureWidth = 64;
-        this.textureHeight = 32;
+        this.texWidth = 64;
+        this.texHeight = 32;
         this.leg_left_lower = new AdvancedModelBox(this, 48, 10);
         this.leg_left_lower.mirror = true;
         this.leg_left_lower.setRotationPoint(0.5F, 2.0F, 2.0F);
@@ -140,7 +140,7 @@ public class ModelHyena extends AdvancedEntityModel<EntityHyena> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.body_main);
     }
 
@@ -234,7 +234,7 @@ public class ModelHyena extends AdvancedEntityModel<EntityHyena> {
         animator.resetKeyframe(8);
     }
 
-    public void setRotationAngles(EntityHyena hyena, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityHyena hyena, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(hyena);
         float globalSpeed = 2.8f;
@@ -243,7 +243,7 @@ public class ModelHyena extends AdvancedEntityModel<EntityHyena> {
         limbSwing *= 0.5F;
 
         //globalSpeed = 1;
-        //limbSwing = big_cat.ticksExisted;
+        //limbSwing = big_cat.tickCount;
         //limbSwingAmount = 0.5F;
 
         // Breathing Animation
@@ -274,12 +274,12 @@ public class ModelHyena extends AdvancedEntityModel<EntityHyena> {
             limbSwingAmount = 0.5f;
             this.body_main.rotationPointY += 4; // Model offset to make the Big Cat "sink" in water (while not drowning)
             this.setRotateAngle(head_neck, -0.18203784098300857F, 0.0F, 0.0F);
-            float pitch = MathHelper.clamp(hyena.rotationPitch - 10, -25F, 25.0F);
+            float pitch = Mth.clamp(hyena.getXRot() - 10, -25F, 25.0F);
             this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 
         // Movement Animation
-        float newZ = MathHelper.lerp(0.4F, this.tailX, this.tail_1.defaultRotationX + (float)hyena.getCurrentSpeed() * 2);
+        float newZ = Mth.lerp(0.4F, this.tailX, this.tail_1.defaultRotationX + (float)hyena.getCurrentSpeed() * 2);
         this.tail_1.rotateAngleX = newZ;
         this.tailX = newZ;
         if (hyena.canMove()) {

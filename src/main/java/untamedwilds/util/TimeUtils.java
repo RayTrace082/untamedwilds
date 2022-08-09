@@ -1,13 +1,13 @@
 package untamedwilds.util;
 
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
 // A set of functions relating Time conversion between Ticks, Days and Months
 // Handles compatibility with SereneSeasons, using their functions if the Mod and the option are enabled
 public abstract class TimeUtils {
 
-    public static String convertTicksToDays(World world, int ticks) {
+    public static String convertTicksToDays(Level world, int ticks) {
         /*if (CompatBridge.SereneSeasons) {
             int d = ticks/CompatSereneSeasons.getDayLength(world);
             if (d > CompatSereneSeasons.getDaysInMonth(world)) {
@@ -21,13 +21,13 @@ public abstract class TimeUtils {
         if (d > 7) {
             int m = d/7;
             d -= m * 7;
-            return new TranslationTextComponent("untamedwilds.timeutils.weeks", m, d).getString();
+            return new TranslatableComponent("untamedwilds.timeutils.weeks", m, d).getString();
         }
-        return new TranslationTextComponent("untamedwilds.timeutils.days", d).getString();
+        return new TranslatableComponent("untamedwilds.timeutils.days", d).getString();
     }
 
     // No concept of month outside of Serene Seasons
-    public static int getTicksInMonth(World world) {
+    public static int getTicksInMonth(Level world) {
         /*if (CompatBridge.SereneSeasons) {
             return CompatSereneSeasons.getTicksInMonth(world);
         }*/

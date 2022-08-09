@@ -1,26 +1,30 @@
 package untamedwilds.entity.fish;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.PanicGoal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.*;
 import untamedwilds.entity.ai.SmartMeleeAttackGoal;
@@ -31,26 +35,26 @@ import javax.annotation.Nullable;
 
 public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, INewSkins, INeedsPostUpdate {
 
-    private static final DataParameter<Boolean> HAS_MALE = EntityDataManager.createKey(EntityFootballFish.class, DataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HAS_MALE = SynchedEntityData.defineId(EntityFootballFish.class, EntityDataSerializers.BOOLEAN);
 
-    public EntityFootballFish(EntityType<? extends ComplexMob> type, World worldIn) {
+    public EntityFootballFish(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
-        //this.dataManager.register(HAS_MALE, false);
-        this.experienceValue = 2;
     }
 
-    protected void registerData() {
-        super.registerData();
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(HAS_MALE, false);
     }
 
-    public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.42D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 8.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 8.0D)
-                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0D)
-                .createMutableAttribute(Attributes.ARMOR, 2D);
+    public static AttributeSupplier.Builder registerAttributes() {
+        return LivingEntity.createLivingAttributes()
+                .add(Attributes.ATTACK_DAMAGE, 3.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.42D)
+                .add(Attributes.FOLLOW_RANGE, 8.0D)
+                .add(Attributes.MAX_HEALTH, 8.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0D)
+                .add(Attributes.ARMOR, 2D);
     }
 
     protected void registerGoals() {
@@ -62,59 +66,59 @@ public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, I
         this.targetSelector.addGoal(2, new HuntMobTarget<>(this, LivingEntity.class, true, false, input -> getEcoLevel(input) < 5));
     }
 
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote) {
-            if (this.ticksExisted % 1000 == 0) {
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide) {
+            if (this.tickCount % 1000 == 0) {
                 if (this.wantsToBreed() && !this.isMale()) {
                     this.breed();
                 }
-                if (!this.hasAttachedMale() && this.rand.nextInt(40) == 0 && this.getPosY() < 42) {
+                if (!this.hasAttachedMale() && this.random.nextInt(40) == 0 && this.getY() < 42) {
                     this.setAttachedMale(true);
                 }
             }
-            if (this.world.getGameTime() % 4000 == 0) {
+            if (this.level.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
             }
-            // TODO: In 1.17, feature glow squid particles
-            //EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.CRIT, 1, 1);
+            if (this.random.nextInt(18) == 0)
+                ((ServerLevel)this.level).sendParticles(ParticleTypes.GLOW, this.getX(), this.getY() + 0.4, this.getZ(), 1, 0F, 0F, 0F, 0D);
         }
     }
 
     /* Breeding conditions for the Football Fish are:
      * Be really deep in the ocean (16 blocks at least), and that's it */
     public boolean wantsToBreed() {
-        if (ConfigGamerules.naturalBreeding.get() && this.hasAttachedMale() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
-            BlockPos.Mutable blockPos = new BlockPos.Mutable();
+        if (ConfigGamerules.naturalBreeding.get() && this.hasAttachedMale() && this.getAge() == 0 && EntityUtils.hasFullHealth(this)) {
+            BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
             for (int i = 0; i <= 16; i++) {
-                BlockState state = world.getBlockState(blockPos.setPos(this.getPosX(), this.getPosY() + i, this.getPosZ()));
-                if (!state.getFluidState().isTagged(FluidTags.WATER)) {
+                BlockState state = level.getBlockState(blockPos.set(this.getX(), this.getY() + i, this.getZ()));
+                if (!state.getFluidState().is(FluidTags.WATER)) {
                     return false;
                 }
             }
-            this.setGrowingAge(this.getGrowingAge());
+            this.setAge(this.getAge());
             return true;
         }
         return false;
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
-        ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
-        if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(InteractionHand.MAIN_HAND);
+        if (hand == InteractionHand.MAIN_HAND && !this.level.isClientSide()) {
 
             if (this.hasAttachedMale() && itemstack.getItem() == Items.SHEARS) {
-                this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.5F, 0.8F);
+                this.playSound(SoundEvents.SHEEP_SHEAR, 1.5F, 0.8F);
                 this.setAttachedMale(false);
-                this.attackEntityFrom(DamageSource.causeMobDamage(player), 1);
+                this.hurt(DamageSource.mobAttack(player), 1);
             }
         }
 
-        return super.func_230254_b_(player, hand);
+        return super.mobInteract(player, hand);
     }
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         if (!this.hasAttachedMale())
             this.setAttachedMale(true);
         EntityUtils.dropEggs(this, "egg_football_fish", this.getOffspring());
@@ -123,28 +127,28 @@ public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, I
 
     @Override
     protected SoundEvent getFlopSound() {
-        return SoundEvents.ENTITY_GUARDIAN_FLOP;
+        return SoundEvents.GUARDIAN_FLOP;
     }
 
     @Override
     public void updateAttributes() {
         // All Football Fish are female, for the purpose of the mod, males do not exist
         this.setGender(1);
-        if (this.rand.nextInt(3) == 0) {
+        if (this.random.nextInt(3) == 0) {
             this.setAttachedMale(true);
         }
     }
 
-    public boolean hasAttachedMale(){ return (this.dataManager.get(HAS_MALE)); }
-    private void setAttachedMale(boolean attachedMale){ this.dataManager.set(HAS_MALE, attachedMale); }
+    public boolean hasAttachedMale(){ return (this.entityData.get(HAS_MALE)); }
+    private void setAttachedMale(boolean attachedMale){ this.entityData.set(HAS_MALE, attachedMale); }
 
-    public void writeAdditional(CompoundNBT compound){
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound){
+        super.addAdditionalSaveData(compound);
         compound.putBoolean("hasMale", this.hasAttachedMale());
     }
 
-    public void readAdditional(CompoundNBT compound){
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundTag compound){
+        super.readAdditionalSaveData(compound);
         this.setAttachedMale(compound.getBoolean("hasMale"));
     }
 }

@@ -1,12 +1,12 @@
 package untamedwilds.item.debug;
 
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
 import untamedwilds.entity.ComplexMob;
 
 public class GrowthTonicItem extends Item {
@@ -16,18 +16,18 @@ public class GrowthTonicItem extends Item {
     }
 
     @Override
-    public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
-        if (target.getEntityWorld().isRemote) return ActionResultType.PASS;
-        if (target instanceof PlayerEntity || !target.isNonBoss()) return ActionResultType.FAIL;
-        if (target instanceof ComplexMob && !target.isChild()) {
+    public InteractionResult interactLivingEntity(ItemStack stack, Player playerIn, LivingEntity target, InteractionHand hand) {
+        if (target.getLevel().isClientSide) return InteractionResult.PASS;
+        if (target instanceof Player/* || !target.isNonBoss()*/) return InteractionResult.FAIL;
+        if (target instanceof ComplexMob && !target.isBaby()) {
             float prevSize = ((ComplexMob) target).getMobSize();
             ((ComplexMob) target).setMobSize(prevSize + 0.1F);
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        if (target instanceof AgeableEntity && target.isChild()) {
-            ((AgeableEntity) target).setGrowingAge(0);
-            return ActionResultType.SUCCESS;
+        if (target instanceof AgeableMob && target.isBaby()) {
+            ((AgeableMob) target).setAge(0);
+            return InteractionResult.SUCCESS;
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 }

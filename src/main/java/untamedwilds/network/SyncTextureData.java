@@ -1,9 +1,9 @@
 package untamedwilds.network;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
@@ -20,9 +20,9 @@ public class SyncTextureData {
     private final Integer skinsData;
     private final Integer id;
 
-    public SyncTextureData(PacketBuffer buf) {
+    public SyncTextureData(FriendlyByteBuf buf) {
         entityName = buf.readResourceLocation();
-        speciesName = buf.readString();
+        speciesName = buf.readUtf();
         skinsData = buf.readInt();
         id = buf.readInt();
     }
@@ -34,9 +34,9 @@ public class SyncTextureData {
         this.id = id;
     }
 
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeResourceLocation(entityName);
-        buf.writeString(speciesName);
+        buf.writeUtf(speciesName);
         buf.writeInt(skinsData);
         buf.writeInt(id);
     }

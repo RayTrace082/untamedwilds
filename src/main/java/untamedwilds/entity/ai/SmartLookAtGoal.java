@@ -1,11 +1,11 @@
 package untamedwilds.entity.ai;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EntityPredicates;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.player.Player;
 import untamedwilds.entity.ComplexMob;
 
 import java.util.EnumSet;
@@ -19,7 +19,7 @@ public class SmartLookAtGoal extends Goal {
     private double lookX;
     private double lookZ;
     protected final Class<? extends LivingEntity> watchedClass;
-    protected final EntityPredicate SHOULD_LOOK;
+    protected final TargetingConditions SHOULD_LOOK;
 
     public SmartLookAtGoal(ComplexMob entityIn, Class<? extends LivingEntity> targetClass, float maxDistance) {
         this(entityIn, targetClass, maxDistance, 60);
@@ -30,68 +30,67 @@ public class SmartLookAtGoal extends Goal {
         this.watchedClass = targetClass;
         this.maxDistance = maxDistance;
         this.chance = chanceIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.LOOK));
-        if (targetClass == PlayerEntity.class) {
-            this.SHOULD_LOOK = (new EntityPredicate()).setDistance(maxDistance).allowFriendlyFire().allowInvulnerable().setSkipAttackChecks().setCustomPredicate((p_220715_1_) -> EntityPredicates.notRiding(entityIn).test(p_220715_1_));
+        this.setFlags(EnumSet.of(Goal.Flag.LOOK));
+        if (targetClass == Player.class) {
+            this.SHOULD_LOOK = TargetingConditions.forNonCombat().range(maxDistance).selector((p_25531_) -> EntitySelector.notRiding(entityIn).test(p_25531_));
         } else {
-            this.SHOULD_LOOK = (new EntityPredicate()).setDistance(maxDistance).allowFriendlyFire().allowInvulnerable().setSkipAttackChecks();
+            this.SHOULD_LOOK = TargetingConditions.forNonCombat().range(maxDistance);
         }
-
     }
 
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         if (this.taskOwner.isSleeping()) {
             return false;
         }
-        if (this.taskOwner.getRNG().nextInt(this.chance) != 0) {
+        if (this.taskOwner.getRandom().nextInt(this.chance) != 0) {
             return false;
         } else {
-            if (this.taskOwner.getAttackTarget() != null) {
-                this.closestEntity = this.taskOwner.getAttackTarget();
+            if (this.taskOwner.getTarget() != null) {
+                this.closestEntity = this.taskOwner.getTarget();
             }
 
-            if (this.watchedClass == PlayerEntity.class) {
-                this.closestEntity = this.taskOwner.world.getClosestPlayer(this.SHOULD_LOOK, this.taskOwner, this.taskOwner.getPosX(), this.taskOwner.getPosY() + (double)this.taskOwner.getEyeHeight(), this.taskOwner.getPosZ());
+            if (this.watchedClass == Player.class) {
+                this.closestEntity = this.taskOwner.level.getNearestPlayer(this.SHOULD_LOOK, this.taskOwner, this.taskOwner.getX(), this.taskOwner.getY() + (double)this.taskOwner.getEyeHeight(), this.taskOwner.getZ());
             } else {
-                this.closestEntity = this.taskOwner.world.func_225318_b(this.watchedClass, this.SHOULD_LOOK, this.taskOwner, this.taskOwner.getPosX(), this.taskOwner.getPosY() + (double)this.taskOwner.getEyeHeight(), this.taskOwner.getPosZ(), this.taskOwner.getBoundingBox().grow(this.maxDistance, 3.0D, this.maxDistance));
+                this.closestEntity = this.taskOwner.level.getNearestEntity(this.watchedClass, this.SHOULD_LOOK, this.taskOwner, this.taskOwner.getX(), this.taskOwner.getY() + (double)this.taskOwner.getEyeHeight(), this.taskOwner.getZ(), this.taskOwner.getBoundingBox().inflate(this.maxDistance, 3.0D, this.maxDistance));
             }
 
-            return this.closestEntity != null || this.taskOwner.getRNG().nextInt(20) != 0;
+            return this.closestEntity != null || this.taskOwner.getRandom().nextInt(20) != 0;
         }
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
-        /*if (!this.closestEntity.isAlive() || this.taskOwner.getDistanceSq(this.closestEntity) > (double)(this.maxDistance * this.maxDistance)) {
+    public boolean canContinueToUse() {
+        /*if (!this.closestEntity.isAlive() || this.taskOwner.distanceToSqr(this.closestEntity) > (double)(this.maxDistance * this.maxDistance)) {
             return false;
         }*/
         return this.lookTime > 0;
     }
 
     @Override
-    public void startExecuting() {
+    public void start() {
         if (this.closestEntity == null) {
-            double d0 = (Math.PI * 2D) * this.taskOwner.getRNG().nextDouble();
+            double d0 = (Math.PI * 2D) * this.taskOwner.getRandom().nextDouble();
             this.lookX = Math.cos(d0);
             this.lookZ = Math.sin(d0);
-            this.lookTime = 20 + this.taskOwner.getRNG().nextInt(20);
+            this.lookTime = 20 + this.taskOwner.getRandom().nextInt(20);
         }
-        this.lookTime = 40 + this.taskOwner.getRNG().nextInt(40);
+        this.lookTime = 40 + this.taskOwner.getRandom().nextInt(40);
     }
 
     @Override
-    public void resetTask() {
+    public void stop() {
         this.closestEntity = null;
     }
 
     @Override
     public void tick() {
         if (this.closestEntity == null) {
-            this.taskOwner.getLookController().setLookPosition(this.taskOwner.getPosX() + this.lookX, this.taskOwner.getPosY() + (double)this.taskOwner.getEyeHeight(), this.taskOwner.getPosZ());
+            this.taskOwner.getLookControl().setLookAt(this.taskOwner.getX() + this.lookX, this.taskOwner.getY() + (double)this.taskOwner.getEyeHeight(), this.taskOwner.getZ());
         }
         else {
-            this.taskOwner.getLookController().setLookPosition(this.closestEntity.getPosX(), this.closestEntity.getPosY() + (double)this.closestEntity.getEyeHeight(), this.closestEntity.getPosZ(), 20, this.taskOwner.getVerticalFaceSpeed());
+            this.taskOwner.getLookControl().setLookAt(this.closestEntity.getX(), this.closestEntity.getY() + (double)this.closestEntity.getEyeHeight(), this.closestEntity.getZ(), 20, this.taskOwner.getHeadRotSpeed());
         }
         --this.lookTime;
     }

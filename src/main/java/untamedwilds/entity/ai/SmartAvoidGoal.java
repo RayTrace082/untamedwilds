@@ -1,12 +1,13 @@
 package untamedwilds.entity.ai;
 
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.phys.Vec3;
+import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
 
 import java.util.EnumSet;
@@ -17,37 +18,37 @@ public class SmartAvoidGoal <T extends LivingEntity> extends AvoidEntityGoal<T> 
 
     protected ComplexMob taskOwner;
     protected final float avoidDistance;
-    private final EntityPredicate builtTargetSelector;
+    private final TargetingConditions builtTargetSelector;
 
     public SmartAvoidGoal(ComplexMob entityIn, Class<T> classToAvoidIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, final Predicate<LivingEntity> targetSelector) {
-        super(entityIn, classToAvoidIn, avoidDistanceIn, farSpeedIn, nearSpeedIn, EntityPredicates.CAN_AI_TARGET::test);
+        super(entityIn, classToAvoidIn, avoidDistanceIn, farSpeedIn, nearSpeedIn, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test);
         this.taskOwner = entityIn;
         this.avoidDistance = avoidDistanceIn;
-        this.builtTargetSelector = (new EntityPredicate()).setDistance(avoidDistanceIn).setCustomPredicate(targetSelector);
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.builtTargetSelector = TargetingConditions.forCombat().range(avoidDistanceIn).selector(targetSelector);
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (this.taskOwner.ticksExisted % 40 != 0) {
+    public boolean canUse() {
+        if (this.taskOwner.tickCount % 40 != 0) {
             return false;
         }
-        if (this.taskOwner.getAttackTarget() != null || this.taskOwner.isSleeping() || this.taskOwner.getCommandInt() != 0 || this.taskOwner.isTamed()) {
+        if (this.taskOwner.getTarget() != null || this.taskOwner.isSleeping() || this.taskOwner.getCommandInt() != 0 || this.taskOwner.isTame()) {
             return false;
         }
 
-        List<T> list = this.taskOwner.world.getTargettableEntitiesWithinAABB(classToAvoid, this.builtTargetSelector, this.taskOwner, this.taskOwner.getBoundingBox().grow(avoidDistance, 4f, avoidDistance));
+        List<T> list = this.taskOwner.level.getNearbyEntities(avoidClass, this.builtTargetSelector, this.taskOwner, this.taskOwner.getBoundingBox().inflate(avoidDistance, 4f, avoidDistance));
         if (list.isEmpty()) {
             return false;
         } else {
-            this.avoidTarget = list.get(0);
-            Vector3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.taskOwner, 16, 7, new Vector3d(this.avoidTarget.getPosX(), this.avoidTarget.getPosY(), this.avoidTarget.getPosZ()));
+            this.toAvoid = list.get(0);
+            Vec3 vec3d = DefaultRandomPos.getPosAway(this.taskOwner, 16, 7, new Vec3(this.toAvoid.getX(), this.toAvoid.getY(), this.toAvoid.getZ()));
             if (vec3d == null) {
                 return false;
-            } else if (this.avoidTarget.getDistanceSq(vec3d.x, vec3d.y, vec3d.z) < this.avoidTarget.getDistanceSq(this.entity)) {
+            } else if (this.toAvoid.distanceToSqr(vec3d.x, vec3d.y, vec3d.z) < this.toAvoid.distanceToSqr(this.mob)) {
                 return false;
             } else {
-                this.path = this.navigation.getPathToPos(vec3d.x, vec3d.y, vec3d.z, 0);
+                this.path = this.pathNav.createPath(vec3d.x, vec3d.y, vec3d.z, 0);
                 return this.path != null;
             }
         }

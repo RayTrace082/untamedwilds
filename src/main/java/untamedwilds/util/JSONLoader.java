@@ -28,10 +28,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.client.resources.JsonReloadListener;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.profiling.ProfilerFiller;
 import untamedwilds.UntamedWilds;
 
 import javax.annotation.Nullable;
@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class JSONLoader<T> extends JsonReloadListener {
+public class JSONLoader<T> extends SimpleJsonResourceReloadListener {
 
     private static final Gson STANDARD_GSON = new Gson();
     private final Codec<T> codec;
@@ -84,7 +84,7 @@ public class JSONLoader<T> extends JsonReloadListener {
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> jsons, IResourceManager resourceManager, IProfiler profiler) {
+    protected void apply(Map<ResourceLocation, JsonElement> jsons, ResourceManager resourceManager, ProfilerFiller profiler) {
         UntamedWilds.LOGGER.info("Beginning loading of data for data loader: {}", this.folderName);
         this.data = this.mapValues(jsons);
         UntamedWilds.LOGGER.info("Data loader for {} loaded {} jsons", this.folderName, this.data.size());

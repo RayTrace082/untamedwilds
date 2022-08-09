@@ -1,27 +1,26 @@
 package untamedwilds.block;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.BushBlock;
-import net.minecraft.block.IGrowable;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.GrassColor;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Random;
 
-public class UndergrowthBlock extends BushBlock implements IGrowable, net.minecraftforge.common.IForgeShearable {
+public class UndergrowthBlock extends BushBlock implements BonemealableBlock, net.minecraftforge.common.IForgeShearable {
 
     protected OffsetType offset;
 
@@ -35,26 +34,27 @@ public class UndergrowthBlock extends BushBlock implements IGrowable, net.minecr
         this.offset = type;
     }
 
-    protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return state.isSolidSide(worldIn, pos, Direction.UP) && !state.isIn(Blocks.MAGMA_BLOCK);
+    protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos) {
+        return state.isFaceSturdy(worldIn, pos, Direction.UP) && !state.is(Blocks.MAGMA_BLOCK);
     }
 
-    public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-        return true;
-    }
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+    public boolean isPathfindable(BlockState state, BlockGetter worldIn, BlockPos pos, PathComputationType type) {
         return true;
     }
 
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return VoxelShapes.empty();
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+        return true;
     }
 
-    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-        if (entityIn instanceof PlayerEntity && !entityIn.isSneaking()) {
-            entityIn.setMotionMultiplier(state, new Vector3d(0.95F, 1D, 0.95F));
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+        return Shapes.empty();
+    }
+
+    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
+        if (entityIn instanceof Player && !entityIn.isSteppingCarefully()) {
+            entityIn.makeStuckInBlock(state, new Vec3(0.95F, 1D, 0.95F));
             if (worldIn.getRandom().nextInt(20) == 0) {
-                worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GRASS_STEP, SoundCategory.AMBIENT, 1, 1, true);
+                worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.GRASS_STEP, SoundSource.AMBIENT, 1, 1, true);
             }
         }
     }
@@ -63,29 +63,22 @@ public class UndergrowthBlock extends BushBlock implements IGrowable, net.minecr
         return this.offset;
     }
 
-    public boolean canGrow(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(BlockGetter worldIn, BlockPos pos, BlockState state, boolean isClient) {
         return true;
     }
 
-    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level worldIn, Random rand, BlockPos pos, BlockState state) {
         return true;
     }
 
-    public void grow(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel worldIn, Random rand, BlockPos pos, BlockState state) {
         BlockState blockstate = worldIn.getBlockState(pos);
-        int i = pos.getY();
-        if (i >= 1 && i + 1 < 256) { // TODO: Needs to be changed by 1.17
-            for(int k = 0; k < 3; ++k) {
-                BlockPos blockpos = pos.add(rand.nextInt(3) - 1, 1 - rand.nextInt(3), rand.nextInt(3) - 1);
-                if (worldIn.getBlockState(blockpos).canBeReplacedByLeaves(worldIn, blockpos) && blockstate.isValidPosition(worldIn, blockpos)) {
-                    worldIn.setBlockState(blockpos, blockstate, 2);
-                }
+        for(int k = 0; k < 3; ++k) {
+            BlockPos blockpos = pos.offset(rand.nextInt(3) - 1, 1 - rand.nextInt(3), rand.nextInt(3) - 1);
+            if (worldIn.isInWorldBounds(blockpos) && worldIn.isEmptyBlock(blockpos) && blockstate.canSurvive(worldIn, blockpos)) {
+                worldIn.setBlock(blockpos, blockstate, 2);
             }
         }
     }
-
-    //public OffsetType getOffsetType() {
-    //    return OffsetType.XZ;
-    //}
 }
 

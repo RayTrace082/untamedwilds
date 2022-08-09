@@ -1,7 +1,6 @@
 package untamedwilds;
 
-import net.minecraft.block.DispenserBlock;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -17,7 +16,6 @@ import untamedwilds.compat.CompatBridge;
 import untamedwilds.config.ConfigBase;
 import untamedwilds.init.*;
 import untamedwilds.network.UntamedInstance;
-import untamedwilds.util.ModEntityRightClickEvent;
 import untamedwilds.world.UntamedWildsGenerator;
 
 @Mod(value = UntamedWilds.MOD_ID)
@@ -26,7 +24,6 @@ public class UntamedWilds {
     // TODO: Abstract Herd logic to be functional with any LivingEntity (instead of being limited to IPackEntity ComplexMob)
     // TODO: Store the children's UUID in their mother's NBT, to allow checking for Children without constant AABB checking
     // TODO: Have carnivorous mobs gain hunger when attacking
-    // TODO: Make "ProtectChildren" only apply to mobs of similar ecoLevel, make HurtByTargetGoal call in adult mobs in Range if the target is children
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";
@@ -41,25 +38,25 @@ public class UntamedWilds {
         ModBlock.BLOCKS.register(eventBus);
         ModBlock.TILE_ENTITIES.register(eventBus);
         ModItems.ITEMS.register(eventBus);
+        ModEntity.ENTITIES.register(eventBus);
         ModItems.registerSpawnItems();
         ModSounds.SOUNDS.register(eventBus);
         ModAdvancementTriggers.register();
         UntamedWildsGenerator.FEATURES.register(eventBus);
         CompatBridge.RegisterCompat();
-        MinecraftForge.EVENT_BUS.register(ModVillagerTrades.class); // Custom Villager Trades
-        MinecraftForge.EVENT_BUS.register(UntamedWildsGenerator.class); // Custom Biome Features
-        MinecraftForge.EVENT_BUS.register(ModEntityRightClickEvent.class); // TODO: WIP solution because Wolves are really stupid, and there seems to be no way to 'this.' an entity through mixin
         UntamedWildsGenerator.readBioDiversityLevels();
     }
 
     private void setupCommon(final FMLCommonSetupEvent event) {
         UntamedInstance.registerMessages();
-        DispenserBlock.registerDispenseBehavior(ModBlock.TRAP_CAGE.get().asItem(), new CageBlock.DispenserBehaviorTrapCage());
+        DispenserBlock.registerBehavior(ModBlock.TRAP_CAGE.get().asItem(), new CageBlock.DispenserBehaviorTrapCage());
     }
 
     private void setupClient(final FMLClientSetupEvent event) {
-        ModEntity.registerRendering();
         ModBlock.registerRendering();
+        ModBlock.registerBlockColors();
+
+        //ModBlock.registerBlockColors();
         //ModParticles.registerParticles(); Handled through events
     }
 }

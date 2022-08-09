@@ -4,9 +4,9 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityBoar;
 
 public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
@@ -35,8 +35,8 @@ public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
     private final ModelAnimator animator;
 
     public ModelBoar() {
-        this.textureWidth = 64;
-        this.textureHeight = 64;
+        this.texWidth = 64;
+        this.texHeight = 64;
         this.shape14 = new AdvancedModelBox(this, 6, 0);
         this.shape14.setRotationPoint(0.0F, -5.0F, 6.0F);
         this.shape14.addBox(-1.5F, 0.0F, 0.0F, 3, 7, 0, 0.0F);
@@ -145,7 +145,7 @@ public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.main_body);
     }
 
@@ -227,7 +227,7 @@ public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
         animator.resetKeyframe(10);
     }
 
-    public void setRotationAngles(EntityBoar aardvark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityBoar aardvark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(aardvark);
         float globalSpeed = 1f;
@@ -257,7 +257,7 @@ public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
 
         // Pitch/Yaw handler
         if (aardvark.isInWater() && !aardvark.isOnGround()) {
-            float pitch = MathHelper.clamp(aardvark.rotationPitch, -20F, 20.0F) - 10;
+            float pitch = Mth.clamp(aardvark.getXRot(), -20F, 20.0F) - 10;
             this.setRotateAngle(main_body, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 

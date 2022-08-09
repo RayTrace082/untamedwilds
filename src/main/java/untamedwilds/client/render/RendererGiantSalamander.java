@@ -1,10 +1,11 @@
 package untamedwilds.client.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import untamedwilds.client.model.ModelGiantSalamander;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
 
@@ -14,19 +15,19 @@ public class RendererGiantSalamander extends MobRenderer<EntityGiantSalamander, 
 
     private static final ModelGiantSalamander GIANT_SALAMANDER_MODEL = new ModelGiantSalamander();
 
-    public RendererGiantSalamander(EntityRendererManager renderManager) {
+    public RendererGiantSalamander(EntityRendererProvider.Context renderManager) {
         super(renderManager, GIANT_SALAMANDER_MODEL, 0.2F);
     }
 
     @Override
-    protected void preRenderCallback(EntityGiantSalamander entity, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(EntityGiantSalamander entity, PoseStack matrixStackIn, float partialTickTime) {
         float f = entity.getMobSize();
-        f *= entity.getRenderScale();
+        f *= entity.getScale();
         matrixStackIn.scale(f, f, f);
-        this.shadowSize = f * 0.6F;
+        this.shadowRadius = f * 0.4F;
     }
 
-    public ResourceLocation getEntityTexture(@Nonnull EntityGiantSalamander entity) {
+    public @NotNull ResourceLocation getTextureLocation(EntityGiantSalamander entity) {
         return entity.getTexture();
     }
 }

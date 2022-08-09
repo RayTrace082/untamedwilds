@@ -1,0 +1,29 @@
+{
+  "name":"predators",
+  "entries":[
+    {
+      "type":"untamedwilds:bear",
+      "weight":6,
+      "size_min":1,
+      "size_max":1
+    },
+    {
+      "type":"untamedwilds:big_cat",
+      "weight":8,
+      "size_min":1,
+      "size_max":1
+    },
+    {
+      "type":"untamedwilds:hyena",
+      "weight":4,
+      "size_min":1,
+      "size_max":3
+    },
+    {
+      "type":"untamedwilds:large_snake",
+      "weight":4,
+      "size_min":1,
+      "size_max":1
+    }
+  ]
+}

@@ -125,3 +125,10 @@ A lot of config options are provided to tweak the mod to fit your needs. Mobs ca
 >Does this mod work with [Biome mod] and/or [WorldGen mod]?
 
 It should! Mobs are dynamically assigned to each Biome based on the Biome ~~Temperature and Type~~ Category. 
+
+## Credits
+
+Phweeeee - Code Contributor 
+Unkownn66 - Tetra support Contributor
+
+Daniel Simion - Hyena Laughing sound asset (CC BY 3.0)

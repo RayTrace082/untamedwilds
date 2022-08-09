@@ -1,11 +1,12 @@
 package untamedwilds.client.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import untamedwilds.client.model.ModelHippo;
 import untamedwilds.client.model.ModelHippoCalf;
 import untamedwilds.entity.mammal.EntityHippo;
@@ -17,28 +18,28 @@ public class RendererHippo extends MobRenderer<EntityHippo, EntityModel<EntityHi
     private static final ModelHippo HIPPO_MODEL = new ModelHippo();
     private static final ModelHippoCalf HIPPO_MODEL_CALF = new ModelHippoCalf();
 
-    public RendererHippo(EntityRendererManager renderManager) {
+    public RendererHippo(EntityRendererProvider.Context renderManager) {
         super(renderManager, HIPPO_MODEL, 1F);
     }
 
     @Override
-    public void render(EntityHippo entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        if (entityIn.isChild()) {
-            entityModel = HIPPO_MODEL_CALF;
+    public void render(EntityHippo entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+        if (entityIn.isBaby()) {
+            model = HIPPO_MODEL_CALF;
         } else {
-            entityModel = HIPPO_MODEL;
+            model = HIPPO_MODEL;
         }
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
-    protected void preRenderCallback(EntityHippo entity, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(EntityHippo entity, PoseStack matrixStackIn, float partialTickTime) {
         float f = entity.getMobSize();
-        //f *= entity.getRenderScale();
+        //f *= entity.getScale();
         matrixStackIn.scale(f, f, f);
-        this.shadowSize = f;
+        this.shadowRadius = f;
     }
 
-    public ResourceLocation getEntityTexture(@Nonnull EntityHippo entity) {
+    public @NotNull ResourceLocation getTextureLocation(EntityHippo entity) {
         return entity.getTexture();
     }
 }

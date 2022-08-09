@@ -4,7 +4,7 @@
   "growing":8,
   "offspring":1,
   "activityType":"cathemeral",
-  "favourite_food":"minecraft:melon_slice",
+  "favourite_food":"untamedwilds:flora_water_hyacinth_item",
   "sounds":{
     "ambient":"untamedwilds:entity.hippo.ambient",
     "hurt":"minecraft:entity.cow.hurt",

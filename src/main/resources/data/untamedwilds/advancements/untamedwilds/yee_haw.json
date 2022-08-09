@@ -1,0 +1,41 @@
+{
+  "parent": "untamedwilds:untamedwilds/hog_wild",
+  "display": {
+    "icon": {
+      "item": "minecraft:porkchop"
+    },
+    "title": {
+      "translate": "advancements.untamedwilds.yee_haw.title"
+    },
+    "description": {
+      "translate": "advancements.untamedwilds.yee_haw.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "riding_bison": {
+      "trigger": "minecraft:started_riding",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "vehicle": {
+                "type": "untamedwilds:bison"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "riding_bison"
+    ]
+  ]
+}

@@ -1,10 +1,11 @@
 package untamedwilds.client.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import untamedwilds.client.model.ModelTriggerfish;
 import untamedwilds.entity.fish.EntityTriggerfish;
 
@@ -14,19 +15,19 @@ public class RendererTriggerfish extends MobRenderer<EntityTriggerfish, EntityMo
 
     private static final ModelTriggerfish TRIGGERFISH_MODEL = new ModelTriggerfish();
 
-    public RendererTriggerfish(EntityRendererManager rendermanager) {
+    public RendererTriggerfish(EntityRendererProvider.Context rendermanager) {
         super(rendermanager, TRIGGERFISH_MODEL, 0.2F);
     }
 
     @Override
-    protected void preRenderCallback(EntityTriggerfish entity, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(EntityTriggerfish entity, PoseStack matrixStackIn, float partialTickTime) {
         float f = entity.getMobSize() * 0.8F;
-        f *= entity.getRenderScale();
+        f *= entity.getScale();
         matrixStackIn.scale(f, f, f * 1.1F);
-        this.shadowSize = f * 0.5F;
+        this.shadowRadius = f * 0.5F;
     }
 
-    public ResourceLocation getEntityTexture(@Nonnull EntityTriggerfish entity) {
+    public @NotNull ResourceLocation getTextureLocation(EntityTriggerfish entity) {
         return entity.getTexture();
     }
 }

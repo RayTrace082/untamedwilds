@@ -2,8 +2,8 @@ package untamedwilds.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
 import untamedwilds.entity.fish.EntityTrevally;
 
 public class ModelTrevally extends AdvancedEntityModel<EntityTrevally> {
@@ -20,8 +20,8 @@ public class ModelTrevally extends AdvancedEntityModel<EntityTrevally> {
     public AdvancedModelBox fin_tail;
 
     public ModelTrevally() {
-        this.textureWidth = 64;
-        this.textureHeight = 32;
+        this.texWidth = 64;
+        this.texHeight = 32;
         this.head_main = new AdvancedModelBox(this, 0, 18);
         this.head_main.setRotationPoint(0.0F, 1.57F, -2.53F);
         this.head_main.addBox(-1.5F, -3.5F, -5.0F, 3, 6, 5, 0.0F);
@@ -74,7 +74,7 @@ public class ModelTrevally extends AdvancedEntityModel<EntityTrevally> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.body_main);
     }
 
@@ -94,7 +94,7 @@ public class ModelTrevally extends AdvancedEntityModel<EntityTrevally> {
         );
     }
 
-    public void setRotationAngles(EntityTrevally trevally, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityTrevally trevally, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
         float globalSpeed = 0.5f;

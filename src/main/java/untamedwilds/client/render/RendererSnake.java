@@ -1,10 +1,11 @@
 package untamedwilds.client.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import untamedwilds.client.model.ModelSnake;
 import untamedwilds.entity.reptile.EntitySnake;
 
@@ -14,17 +15,17 @@ public class RendererSnake extends MobRenderer<EntitySnake, EntityModel<EntitySn
 
     private static final ModelSnake SNAKE_MODEL = new ModelSnake();
 
-    public RendererSnake(EntityRendererManager renderManager) {
+    public RendererSnake(EntityRendererProvider.Context renderManager) {
         super(renderManager, SNAKE_MODEL, 0F);
     }
 
-    protected void preRenderCallback(EntitySnake entity, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(EntitySnake entity, PoseStack matrixStackIn, float partialTickTime) {
         float f = entity.getMobSize();
-        f *= entity.getRenderScale();
+        f *= entity.getScale();
         matrixStackIn.scale(f, f, f);
     }
 
-    public ResourceLocation getEntityTexture(@Nonnull EntitySnake entity) {
+    public @NotNull ResourceLocation getTextureLocation(EntitySnake entity) {
         return entity.getTexture();
     }
 }

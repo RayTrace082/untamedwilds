@@ -1,23 +1,24 @@
 package untamedwilds.entity.fish;
 
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.*;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.util.Mth;
+import com.mojang.math.Vector3d;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.entity.PartEntity;
-import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ComplexMobAquatic;
-import untamedwilds.entity.INewSkins;
-import untamedwilds.entity.ISpecies;
+import untamedwilds.entity.*;
 import untamedwilds.entity.ai.SmartMateGoal;
 import untamedwilds.init.ModEntity;
 import untamedwilds.util.EntityUtils;
@@ -32,18 +33,18 @@ public class EntityWhaleShark extends ComplexMobAquatic implements ISpecies, INe
     public int ringBufferIndex = -1;
     public final double[][] ringBuffer = new double[64][3];
 
-    public EntityWhaleShark(EntityType<? extends ComplexMob> type, World worldIn) {
+    public EntityWhaleShark(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
         this.length = getMultiparts();
         this.whale_shark_parts = new EntityWhaleSharkPart[this.length];
         for (int i = 0; i < this.length; i++) {
-            this.whale_shark_parts[i] = new EntityWhaleSharkPart(this, this.getWidth(), this.getHeight());
+            this.whale_shark_parts[i] = new EntityWhaleSharkPart(this, this.getBbWidth(), this.getBbHeight());
         }
         this.turn_speed = 0.1F;
     }
 
     private void setPartPosition(EntityWhaleSharkPart part, double offsetX, double offsetY, double offsetZ) {
-        part.setPosition(this.getPosX() + offsetX * part.scale, this.getPosY() + offsetY * part.scale, this.getPosZ() + offsetZ * part.scale);
+        part.setPos(this.getX() + offsetX * part.scale, this.getY() + offsetY * part.scale, this.getZ() + offsetZ * part.scale);
     }
 
     @Override
@@ -56,14 +57,15 @@ public class EntityWhaleShark extends ComplexMobAquatic implements ISpecies, INe
         return this.whale_shark_parts;
     }
 
-    public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.8D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 12.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 80.0D)
-                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1D)
-                .createMutableAttribute(Attributes.ARMOR, 6D);
+    public static AttributeSupplier.Builder registerAttributes() {
+        return LivingEntity.createLivingAttributes()
+                .add(Attributes.ATTACK_DAMAGE, 3.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.6D)
+                .add(Attributes.MOVEMENT_SPEED, 0.8D)
+                .add(Attributes.FOLLOW_RANGE, 12.0D)
+                .add(Attributes.MAX_HEALTH, 80.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1D)
+                .add(Attributes.ARMOR, 6D);
     }
 
     public void registerGoals() {
@@ -75,40 +77,40 @@ public class EntityWhaleShark extends ComplexMobAquatic implements ISpecies, INe
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     }
 
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote) {
-            if (this.world.getGameTime() % 4000 == 0) {
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide) {
+            if (this.level.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
             }
         }
 
-        if (!this.isAIDisabled() && !this.isChild()) {
+        if (!this.isNoAi() && !this.isBaby()) {
             if (this.ringBufferIndex < 0) {
                 for (int i = 0; i < this.ringBuffer.length; ++i) {
-                    this.ringBuffer[i][0] = this.rotationYaw;
-                    this.ringBuffer[i][1] = this.getPosY();
+                    this.ringBuffer[i][0] = this.getYRot();
+                    this.ringBuffer[i][1] = this.getY();
                 }
             }
             this.ringBufferIndex++;
             if (this.ringBufferIndex == this.ringBuffer.length) {
                 this.ringBufferIndex = 0;
             }
-            // Just replaced the contents of MathHelper.interpolateAngle with the returned formula. Why even is this shit @OnlyIn(Client)???
-            this.ringBuffer[this.ringBufferIndex][0] = this.prevRotationYaw + 0.5F * MathHelper.wrapDegrees(this.rotationYaw - this.prevRotationYaw);
-            this.ringBuffer[ringBufferIndex][1] = this.getPosY();
+            // Just replaced the contents of Mth.interpolateAngle with the returned formula. Why even is this shit @OnlyIn(Client)???
+            this.ringBuffer[this.ringBufferIndex][0] = this.yRotO + 0.5F * Mth.wrapDegrees(this.getYRot() - this.yRotO);
+            this.ringBuffer[ringBufferIndex][1] = this.getY();
             Vector3d[] avector3d = new Vector3d[this.whale_shark_parts.length];
 
             for (int j = 0; j < this.whale_shark_parts.length; ++j) {
                 this.whale_shark_parts[j].collideWithNearbyEntities();
-                avector3d[j] = new Vector3d(this.whale_shark_parts[j].getPosX(), this.whale_shark_parts[j].getPosY(), this.whale_shark_parts[j].getPosZ());
+                avector3d[j] = new Vector3d(this.whale_shark_parts[j].getX(), this.whale_shark_parts[j].getY(), this.whale_shark_parts[j].getZ());
             }
             float f15 = (float) (this.getMovementOffsets(5, 1.0F)[1] - this.getMovementOffsets(10, 1.0F)[1]) * 10.0F * ((float) Math.PI / 180F);
-            float f16 = MathHelper.cos(f15);
-            float yaw = this.rotationYaw * ((float) Math.PI / 180F);
-            float pitch = this.rotationPitch * ((float) Math.PI / 180F);
-            float f3 = MathHelper.sin(yaw) * (1 - Math.abs(this.rotationPitch / 90F));
-            float f18 = MathHelper.cos(yaw) * (1 - Math.abs(this.rotationPitch / 90F));
+            float f16 = Mth.cos(f15);
+            float yaw = this.getYRot() * ((float) Math.PI / 180F);
+            float pitch = this.getXRot() * ((float) Math.PI / 180F);
+            float f3 = Mth.sin(yaw) * (1 - Math.abs(this.getXRot() / 90F));
+            float f18 = Mth.cos(yaw) * (1 - Math.abs(this.getXRot() / 90F));
 
             double[] adouble = this.getMovementOffsets(5, 1.0F);
 
@@ -116,30 +118,29 @@ public class EntityWhaleShark extends ComplexMobAquatic implements ISpecies, INe
                 EntityWhaleSharkPart whale_shark_part = this.whale_shark_parts[k];
 
                 double[] adouble1 = this.getMovementOffsets(5 + k * 2, 1.0F);
-                float f7 = yaw + (float) MathHelper.wrapDegrees(adouble1[0] - adouble[0]) * ((float) Math.PI / 180F);
-                float f20 = MathHelper.sin(f7) * (1 - Math.abs(this.rotationPitch / 90F));
-                float f21 = MathHelper.cos(f7) * (1 - Math.abs(this.rotationPitch / 90F));
+                float f7 = yaw + (float) Mth.wrapDegrees(adouble1[0] - adouble[0]) * ((float) Math.PI / 180F);
+                float f20 = Mth.sin(f7) * (1 - Math.abs(this.getXRot() / 90F));
+                float f21 = Mth.cos(f7) * (1 - Math.abs(this.getXRot() / 90F));
                 float f23 = k == 0 ? (float) (k + 3) : (k + 3) * -1;
-                float value = MathHelper.clamp(pitch * k, -20, 20);
+                float value = Mth.clamp(pitch * k, -20, 20);
                 this.setPartPosition(whale_shark_part, -(f3 * 0.5F + f20 * f23) * f16, value, (f18 * 0.5F + f21 * f23) * f16);
-
-                this.whale_shark_parts[k].prevPosX = avector3d[k].x;
-                this.whale_shark_parts[k].prevPosY = avector3d[k].y;
-                this.whale_shark_parts[k].prevPosZ = avector3d[k].z;
-                this.whale_shark_parts[k].lastTickPosX = avector3d[k].x;
-                this.whale_shark_parts[k].lastTickPosY = avector3d[k].y;
-                this.whale_shark_parts[k].lastTickPosZ = avector3d[k].z;
+                this.whale_shark_parts[k].xo = avector3d[k].x;
+                this.whale_shark_parts[k].yo = avector3d[k].y;
+                this.whale_shark_parts[k].zo = avector3d[k].z;
+                this.whale_shark_parts[k].xOld = avector3d[k].x;
+                this.whale_shark_parts[k].yOld = avector3d[k].y;
+                this.whale_shark_parts[k].zOld = avector3d[k].z;
             }
         }
     }
 
     @Override
     protected SoundEvent getFlopSound() {
-        return SoundEvents.ENTITY_GUARDIAN_FLOP;
+        return SoundEvents.GUARDIAN_FLOP;
     }
 
     public double[] getMovementOffsets(int offset, float partialTicks) {
-        if (this.getShouldBeDead()) {
+        if (this.isDeadOrDying()) {
             partialTicks = 0.0F;
         }
         partialTicks = 1.0F - partialTicks;
@@ -152,7 +153,7 @@ public class EntityWhaleShark extends ComplexMobAquatic implements ISpecies, INe
         d0 = this.ringBuffer[i][1];
         d1 = this.ringBuffer[j][1] - d0;
         adouble[1] = d0 + d1 * (double) partialTicks;
-        adouble[2] = MathHelper.lerp(partialTicks, this.ringBuffer[i][2], this.ringBuffer[j][2]);
+        adouble[2] = Mth.lerp(partialTicks, this.ringBuffer[i][2], this.ringBuffer[j][2]);
         return adouble;
     }
 
@@ -160,12 +161,12 @@ public class EntityWhaleShark extends ComplexMobAquatic implements ISpecies, INe
      * A nearby Snake of the opposite gender and the same species */
     public boolean wantsToBreed() {
         if (super.wantsToBreed()) {
-            if (!this.isSleeping() && this.getGrowingAge() == 0 && EntityUtils.hasFullHealth(this)) {
-                List<EntityWhaleShark> list = this.world.getEntitiesWithinAABB(EntityWhaleShark.class, this.getBoundingBox().grow(6.0D, 4.0D, 6.0D));
+            if (!this.isSleeping() && this.getAge() == 0 && EntityUtils.hasFullHealth(this)) {
+                List<EntityWhaleShark> list = this.level.getEntitiesOfClass(EntityWhaleShark.class, this.getBoundingBox().inflate(6.0D, 4.0D, 6.0D));
                 list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
                 if (list.size() >= 1) {
-                    this.setGrowingAge(this.getPregnancyTime());
-                    list.get(0).setGrowingAge(this.getPregnancyTime());
+                    this.setAge(this.getPregnancyTime());
+                    list.get(0).setAge(this.getPregnancyTime());
                     return true;
                 }
             }
@@ -175,12 +176,12 @@ public class EntityWhaleShark extends ComplexMobAquatic implements ISpecies, INe
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        return create_offspring(new EntityWhaleShark(ModEntity.WHALE_SHARK, this.world));
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
+        return create_offspring(new EntityWhaleShark(ModEntity.WHALE_SHARK.get(), this.level));
     }
 
     public boolean attackEntityPartFrom(EntityWhaleSharkPart whale_shark_part, DamageSource source, float amount) {
-        return this.attackEntityFrom(source, amount);
+        return this.hurt(source, amount);
     }
 
     // Flags Parameters
@@ -192,57 +193,58 @@ public class EntityWhaleShark extends ComplexMobAquatic implements ISpecies, INe
 
     public static class EntityWhaleSharkPart extends PartEntity<EntityWhaleShark> {
 
-        private final EntitySize size;
+        private final EntityDimensions size;
         public float scale = 1;
 
         public EntityWhaleSharkPart(EntityWhaleShark parent, float sizeX, float sizeY) {
             super(parent);
-            this.size = EntitySize.flexible(sizeX, sizeY);
-            this.recalculateSize();
+            this.size = EntityDimensions.scalable(sizeX, sizeY);
+            this.refreshDimensions();
         }
 
         protected void collideWithNearbyEntities() {
-            List<Entity> entities = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+            List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().inflate(0.20000000298023224D, 0.0D, 0.20000000298023224D));
             Entity parent = this.getParent();
             if (parent != null) {
-                entities.stream().filter(entity -> entity != parent && !(entity instanceof EntityWhaleSharkPart && ((EntityWhaleSharkPart) entity).getParent() == parent) && entity.canBePushed()).forEach(entity -> entity.applyEntityCollision(parent));
+                entities.stream().filter(entity -> entity != parent && !(entity instanceof EntityWhaleSharkPart && ((EntityWhaleSharkPart) entity).getParent() == parent) && entity.isPushable()).forEach(entity -> entity.push(parent));
             }
         }
 
-        public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
-            return this.getParent() == null ? ActionResultType.PASS : this.getParent().func_230254_b_(player, hand);
+        public InteractionResult mobInteract(Player player, InteractionHand hand) {
+            return this.getParent() == null ? InteractionResult.PASS : this.getParent().mobInteract(player, hand);
         }
 
-        public void applyEntityCollision(Entity entityIn) {
-            entityIn.applyEntityCollision(this);
+        public void push(Entity entityIn) {
+            entityIn.push(this);
         }
 
         public boolean canBeCollidedWith() {
             return true;
         }
 
-        @Override
-        protected void readAdditional(CompoundNBT compound) { }
-
-        @Override
-        protected void writeAdditional(CompoundNBT compound) { }
-
-        @Override
-        protected void registerData() { }
-
-        public boolean attackEntityFrom(DamageSource source, float amount) {
+        public boolean hurt(DamageSource source, float amount) {
             return !this.isInvulnerableTo(source) && this.getParent().attackEntityPartFrom(this, source, amount);
         }
 
-        public boolean isEntityEqual(Entity entityIn) {
+        @Override
+        protected void defineSynchedData() { }
+
+        @Override
+        protected void readAdditionalSaveData(CompoundTag compound) { }
+
+        @Override
+        protected void addAdditionalSaveData(CompoundTag compound) { }
+
+
+        public boolean is(Entity entityIn) {
             return this == entityIn || this.getParent() == entityIn;
         }
 
-        public IPacket<?> createSpawnPacket() {
+        public Packet<?> getAddEntityPacket() {
             throw new UnsupportedOperationException();
         }
 
-        public EntitySize getSize(Pose poseIn) {
+        public EntityDimensions getSize(Pose poseIn) {
             return this.size.scale(scale);
         }
     }

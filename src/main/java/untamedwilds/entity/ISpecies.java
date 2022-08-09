@@ -1,10 +1,11 @@
 package untamedwilds.entity;
 
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.core.Holder;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.biome.Biome;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.util.SpeciesDataHolder;
 
@@ -21,17 +22,17 @@ import java.util.Random;
 
 public interface ISpecies {
 
-    default int setSpeciesByBiome(RegistryKey<Biome> biomekey, Biome biome, SpawnReason reason) {
-        if (ConfigGamerules.randomSpecies.get() || isArtificialSpawnReason(reason)) {
-            return ((MobEntity)this).getRNG().nextInt(ComplexMob.getEntityData(((MobEntity)this).getType()).getSpeciesData().size());
+    default int setSpeciesByBiome(Holder<Biome> biome, MobSpawnType reason) {
+        if (ConfigGamerules.randomSpecies.get() || isArtificialMobSpawnType(reason)) {
+            return ((Mob)this).getRandom().nextInt(ComplexMob.getEntityData(((Mob)this).getType()).getSpeciesData().size());
         }
         List<Integer> validTypes = new ArrayList<>();
-        for (SpeciesDataHolder speciesDatum : ComplexMob.getEntityData(((MobEntity)this).getType()).getSpeciesData()) {
+        for (SpeciesDataHolder speciesDatum : ComplexMob.getEntityData(((Mob)this).getType()).getSpeciesData()) {
             for (List<SpeciesDataHolder.BiomeTestHolder> testList : speciesDatum.getBiomeCategories()) {
                 List<Boolean> results = new ArrayList<>();
                 for (SpeciesDataHolder.BiomeTestHolder test : testList) {
                     //UntamedWilds.LOGGER.info("Trying to spawn " + ((MobEntity)this).getType().getRegistryName().getPath() + " in " + biome.getRegistryName() + " returns " + test.isValidBiome(biomekey, biome));
-                    if (!test.isValidBiome(biomekey, biome)) {
+                    if (!test.isValidBiome(biome, biome.value())) {
                         break;
                     }
                     results.add(true);
@@ -55,14 +56,14 @@ public interface ISpecies {
     }
 
     default String getSpeciesName(int i) {
-        return new TranslationTextComponent("entity.untamedwilds." + ((ComplexMob)this).getType().getRegistryName().getPath() + "_" + getRawSpeciesName(i)).getString();
+        return new TranslatableComponent("entity.untamedwilds." + ((ComplexMob)this).getType().getRegistryName().getPath() + "_" + getRawSpeciesName(i)).getString();
     }
 
     default String getSpeciesName() {
         return this instanceof ComplexMob ? getSpeciesName(((ComplexMob)this).getVariant()) : "";
     }
 
-    default boolean isArtificialSpawnReason(SpawnReason reason) {
-        return reason == SpawnReason.SPAWN_EGG || reason == SpawnReason.BUCKET || reason == SpawnReason.MOB_SUMMONED || reason == SpawnReason.COMMAND || reason == SpawnReason.SPAWNER;
+    default boolean isArtificialMobSpawnType(MobSpawnType reason) {
+        return reason == MobSpawnType.SPAWN_EGG || reason == MobSpawnType.BUCKET || reason == MobSpawnType.MOB_SUMMONED || reason == MobSpawnType.COMMAND || reason == MobSpawnType.SPAWNER;
     }
 }

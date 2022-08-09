@@ -1,0 +1,11 @@
+{
+  "name":"underground",
+  "entries":[
+    {
+      "type":"untamedwilds:bear",
+      "weight":2,
+      "size_min":1,
+      "size_max":1
+    }
+  ]
+}

@@ -1,12 +1,12 @@
 package untamedwilds.item.debug;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
 import untamedwilds.entity.ComplexMob;
 
 public class LovePotionItem extends Item {
@@ -16,20 +16,20 @@ public class LovePotionItem extends Item {
     }
 
     @Override
-    public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
-        if (target.getEntityWorld().isRemote) return ActionResultType.PASS;
-        if (target instanceof PlayerEntity || !target.isNonBoss()) return ActionResultType.FAIL;
+    public InteractionResult interactLivingEntity(ItemStack stack, Player playerIn, LivingEntity target, InteractionHand hand) {
+        if (target.getLevel().isClientSide) return InteractionResult.PASS;
+        if (target instanceof Player/* || !target.isNonBoss()*/) return InteractionResult.FAIL;
         if (target instanceof ComplexMob) {
             ComplexMob entity = (ComplexMob)target;
             entity.setInLove(playerIn);
             //entity.breed();
-            //entity.setGrowingAge(60);
-            return ActionResultType.SUCCESS;
+            //entity.setAge(60);
+            return InteractionResult.SUCCESS;
         }
-        if (target instanceof AnimalEntity) {
-            ((AnimalEntity) target).setInLove(playerIn);
-            return ActionResultType.SUCCESS;
+        if (target instanceof Animal) {
+            ((Animal) target).setInLove(playerIn);
+            return InteractionResult.SUCCESS;
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 }

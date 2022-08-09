@@ -4,8 +4,10 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.reptile.EntitySnake;
 
 public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
@@ -28,8 +30,8 @@ public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
     private final ModelAnimator animator;
 
     public ModelSnake() {
-        this.textureWidth = 32;
-        this.textureHeight = 32;
+        this.texWidth = 32;
+        this.texHeight = 32;
 
         this.main_neck = new AdvancedModelBox(this, 0, 0);
         this.main_neck.setRotationPoint(0.0F, 0.01F, -4.0F);
@@ -106,7 +108,7 @@ public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.body_5);
     }
 
@@ -146,7 +148,7 @@ public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
         );
     }
 
-    public void setRotationAngles(EntitySnake snake, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntitySnake snake, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(snake);
         limbSwing *= -1.2;
@@ -155,9 +157,12 @@ public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
         limbSwingAmount = 0.5F;
 
         // Pitch/Yaw handler
-        if (snake.isInWater() && snake.isAirBorne) {
-            this.setRotateAngle(body_5, (float) (snake.getMotion().getY() * -30 * Math.PI / 180F), 0, 0);
+        if (snake.isInWater() && !snake.isOnGround()) {
+            this.setRotateAngle(body_5, (float) (snake.getDeltaMovement().get(Direction.Axis.Y) * -30 * Math.PI / 180F), 0, 0);
         }
+        this.body_1.rotateAngleY = Mth.rotLerp((float) 0.05, this.body_4.rotateAngleY, snake.offset);
+        this.body_9.rotateAngleY = Mth.rotLerp((float) 0.05, this.body_6.rotateAngleY, -1F * snake.offset);
+        this.body_10.rotateAngleY = Mth.rotLerp((float) 0.05, this.body_8.rotateAngleY, -2F * snake.offset);
 
         // Movement Animation
         // This chunk gives the snakes a slithering motion, replacing limbSwingAmount with a constant value prevents the snake from going stiff once not moving
@@ -181,8 +186,8 @@ public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
             if (snake.isRattler()) {
                 body_9.rotateAngleX += Math.toRadians(31.30F);
                 body_10.rotateAngleX += Math.toRadians(60F);
-                swing(body_10, globalSpeed, 0.2f * globalDegree, false, 0f, 0, snake.ticksExisted, 0.5F);
-                flap(body_10, globalSpeed, 0.2f * globalDegree, false, 0f, 0, snake.ticksExisted, 0.5F);
+                swing(body_10, globalSpeed, 0.2f * globalDegree, false, 0f, 0, snake.tickCount, 0.5F);
+                flap(body_10, globalSpeed, 0.2f * globalDegree, false, 0f, 0, snake.tickCount, 0.5F);
             }
         }
 

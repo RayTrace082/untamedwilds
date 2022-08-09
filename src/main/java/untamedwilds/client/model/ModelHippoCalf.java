@@ -2,9 +2,9 @@ package untamedwilds.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityHippo;
 
 public class ModelHippoCalf extends AdvancedEntityModel<EntityHippo> {
@@ -24,8 +24,8 @@ public class ModelHippoCalf extends AdvancedEntityModel<EntityHippo> {
     public AdvancedModelBox eye_right;
 
     public ModelHippoCalf() {
-        this.textureWidth = 128;
-        this.textureHeight = 64;
+        this.texWidth = 128;
+        this.texHeight = 64;
         this.leg_right = new AdvancedModelBox(this, 106, 40);
         this.leg_right.setRotationPoint(-2.51F, 2.5F, 6.51F);
         this.leg_right.addBox(-1.5F, 0.0F, -1.5F, 3, 5, 3, 0.0F);
@@ -88,7 +88,7 @@ public class ModelHippoCalf extends AdvancedEntityModel<EntityHippo> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.body_main);
     }
 
@@ -111,7 +111,7 @@ public class ModelHippoCalf extends AdvancedEntityModel<EntityHippo> {
         );
     }
 
-    public void setRotationAngles(EntityHippo hippo, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityHippo hippo, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
         this.body_main.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
@@ -131,10 +131,10 @@ public class ModelHippoCalf extends AdvancedEntityModel<EntityHippo> {
             this.eye_left.setRotationPoint(1F, -2.0F, -2.0F);
         }
         if (hippo.canMove()) {
-            this.arm_right.rotateAngleX = MathHelper.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
-            this.arm_left.rotateAngleX = MathHelper.cos(limbSwing * 0.5F + (float) Math.PI) * 1.4F * limbSwingAmount;
-            this.leg_left.rotateAngleX = MathHelper.cos(limbSwing * 0.5F + (float) Math.PI) * 1.4F * limbSwingAmount;
-            this.leg_right.rotateAngleX = MathHelper.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
+            this.arm_right.rotateAngleX = Mth.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
+            this.arm_left.rotateAngleX = Mth.cos(limbSwing * 0.5F + (float) Math.PI) * 1.4F * limbSwingAmount;
+            this.leg_left.rotateAngleX = Mth.cos(limbSwing * 0.5F + (float) Math.PI) * 1.4F * limbSwingAmount;
+            this.leg_right.rotateAngleX = Mth.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
         }
     }
 }

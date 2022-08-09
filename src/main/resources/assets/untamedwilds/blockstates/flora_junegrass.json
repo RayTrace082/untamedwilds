@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"": [
+			{	"model": "untamedwilds:block/flora_junegrass" },
+			{	"model": "untamedwilds:block/flora_junegrass", "y": 90 },
+			{	"model": "untamedwilds:block/flora_junegrass", "y": 180 },
+			{	"model": "untamedwilds:block/flora_junegrass", "y": 270 }
+		]
+	}
+}

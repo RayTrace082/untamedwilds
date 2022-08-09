@@ -39,7 +39,7 @@
 		"name": "hippo",
 		"rolls": 1,
 		"entries": [{
-			"type": "item",
+			"type": "minecraft:item",
 			"name": "untamedwilds:material_fat",
 			"weight": 1,
 			"functions": [{
@@ -62,7 +62,7 @@
 		"name": "hippo",
 		"rolls": 1,
 		"entries": [{
-			"type": "item",
+			"type": "minecraft:item",
 			"name": "minecraft:bone",
 			"weight": 1,
 			"functions": [{
@@ -85,7 +85,7 @@
 		"name": "hippo",
 		"rolls": 1,
 		"entries": [{
-			"type": "item",
+			"type": "minecraft:item",
 			"name": "minecraft:leather",
 			"weight": 1,
 			"functions": [{

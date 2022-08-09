@@ -4,8 +4,8 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
 import untamedwilds.entity.mammal.EntityRhino;
 
 public class ModelRhino extends AdvancedEntityModel<EntityRhino> {
@@ -33,8 +33,8 @@ public class ModelRhino extends AdvancedEntityModel<EntityRhino> {
     private final ModelAnimator animator;
 
     public ModelRhino() {
-        this.textureWidth = 128;
-        this.textureHeight = 64;
+        this.texWidth = 128;
+        this.texHeight = 64;
         
         this.horn_back = new AdvancedModelBox(this, 0, 0);
         this.horn_back.setRotationPoint(0.0F, -2.6F, -4.7F);
@@ -138,7 +138,7 @@ public class ModelRhino extends AdvancedEntityModel<EntityRhino> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(body_belly);
     }
 
@@ -187,7 +187,7 @@ public class ModelRhino extends AdvancedEntityModel<EntityRhino> {
         animator.resetKeyframe(4);
     }
 
-    public void setRotationAngles(EntityRhino rhino, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityRhino rhino, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(rhino);
         float globalSpeed = 1.5f;

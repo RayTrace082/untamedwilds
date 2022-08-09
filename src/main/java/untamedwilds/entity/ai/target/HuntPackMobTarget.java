@@ -1,34 +1,23 @@
 package untamedwilds.entity.ai.target;
 
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.EntityPredicates;
+import net.minecraft.world.entity.LivingEntity;
 import untamedwilds.entity.ComplexMob;
 
 import java.util.function.Predicate;
 
 public class HuntPackMobTarget<T extends LivingEntity> extends HuntMobTarget<T> {
 
-    public HuntPackMobTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, int hungerThreshold, boolean onlyNearby, final Predicate<? super T> targetSelector) {
-        super(creature, classTarget, checkSight, hungerThreshold, false, EntityPredicates.NOT_SPECTATING);
-        this.targetEntitySelector = (Predicate<T>) entity -> {
-            if (targetSelector != null && !targetSelector.test(entity)) {
-                return false;
-            }
-            return this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
-        };
+    public HuntPackMobTarget(ComplexMob creature, Class<T> classTarget, boolean checkSight, int hungerThreshold, boolean onlyNearby, final Predicate<LivingEntity> targetSelector) {
+        super(creature, classTarget, checkSight, hungerThreshold, false, null);
     }
 
-    public void startExecuting() {
-        this.goalOwner.setAttackTarget(this.targetEntity);
-        if (this.goalOwner instanceof ComplexMob) {
-            ComplexMob taskOwner = (ComplexMob)this.goalOwner;
-            if (taskOwner.herd != null) {
-                for (ComplexMob creature : taskOwner.herd.creatureList) {
-                    creature.setAttackTarget(this.targetEntity);
-                }
+    public void start() {
+        this.mob.setTarget(this.targetMob);
+        if (this.mob instanceof ComplexMob mob && mob.herd != null) {
+            for (ComplexMob creature : mob.herd.creatureList) {
+                creature.setTarget(this.targetMob);
             }
         }
-        super.startExecuting();
+        super.start();
     }
 }

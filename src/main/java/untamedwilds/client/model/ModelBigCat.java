@@ -4,9 +4,9 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityBigCat;
 
 public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
@@ -24,6 +24,7 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
     public AdvancedModelBox tail_2;
     public AdvancedModelBox tail_3;
     public AdvancedModelBox tail_4;
+    public AdvancedModelBox tail_5;
     public AdvancedModelBox leg_left_lower;
     public AdvancedModelBox leg_left_paw;
     public AdvancedModelBox head_main;
@@ -51,8 +52,8 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
     private float tailX = -1;
 
     public ModelBigCat() {
-        this.textureWidth = 128;
-        this.textureHeight = 64;
+        this.texWidth = 128;
+        this.texHeight = 64;
         this.arm_left_lower = new AdvancedModelBox(this, 42, 33);
         this.arm_left_lower.mirror = true;
         this.arm_left_lower.setRotationPoint(1.0F, 7.0F, 0.5F);
@@ -109,10 +110,18 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
         this.ear_right.setRotationPoint(-2F, -2.5F, -2.0F);
         this.ear_right.addBox(-2.0F, -2.0F, 0.0F, 2, 2, 1, 0.0F);
         this.setRotateAngle(ear_right, 0.0F, 0.045553093477052F, -0.22759093446006054F);
+        this.tail_3 = new AdvancedModelBox(this, 74, 16);
+        this.tail_3.setRotationPoint(0.0F, 0.0F, 5.5F);
+        this.tail_3.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 6, 0.0F);
+        this.setRotateAngle(tail_3, 0.31869712141416456F, 0.0F, 0.0F);
         this.tail_4 = new AdvancedModelBox(this, 74, 24);
         this.tail_4.setRotationPoint(0.0F, -0.1F, 5.5F);
         this.tail_4.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 6, 0.0F);
         this.setRotateAngle(tail_4, 0.6373942428283291F, 0.0F, 0.0F);
+        this.tail_5 = new AdvancedModelBox(this, 74, 32);
+        this.tail_5.setRotationPoint(0.0F, -0.1F, 5.5F);
+        this.tail_5.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 6, 0.0F);
+        this.setRotateAngle(tail_5, 0.8F, 0.0F, 0.0F);
         this.head_snout = new AdvancedModelBox(this, 0, 45);
         this.head_snout.setRotationPoint(0.0F, -1.2F, -4.0F);
         this.head_snout.addBox(-2.0F, 0.0F, -4.0F, 4, 3, 4, 0.0F);
@@ -169,10 +178,6 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
         this.head_cheek_right.setRotationPoint(-2.0F, 0.0F, -2.0F);
         this.head_cheek_right.addBox(-3.0F, -2.0F, -1.0F, 3, 5, 2, 0.0F);
         this.setRotateAngle(head_cheek_right, 0.0F, 0.0F, -0.22759093446006054F);
-        this.tail_3 = new AdvancedModelBox(this, 74, 16);
-        this.tail_3.setRotationPoint(0.0F, 0.0F, 5.5F);
-        this.tail_3.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 6, 0.0F);
-        this.setRotateAngle(tail_3, 0.31869712141416456F, 0.0F, 0.0F);
         this.teeth_right = new AdvancedModelBox(this, 16, 52);
         this.teeth_right.setRotationPoint(-1.48F, 2.4F, -2.70F);
         this.teeth_right.addBox(-0.5F, 0.0F, -1.0F, 1, 4, 2, 0.0F);
@@ -215,6 +220,7 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
         this.body_abdomen.addChild(this.tail_1);
         this.head_main.addChild(this.ear_right);
         this.tail_3.addChild(this.tail_4);
+        this.tail_4.addChild(this.tail_5);
         this.head_main.addChild(this.head_snout);
         this.head_main.addChild(this.head_jaw);
         this.body_abdomen.addChild(this.leg_left_upper);
@@ -229,13 +235,13 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
         this.head_main.addChild(this.head_cheek_right);
         this.tail_2.addChild(this.tail_3);
 
-        bodyParts_tail = new AdvancedModelBox[]{tail_1, tail_2, tail_3, tail_4};
+        bodyParts_tail = new AdvancedModelBox[]{tail_1, tail_2, tail_3, tail_4, tail_5};
         animator = ModelAnimator.create();
         updateDefaultPose();
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.body_main);
     }
 
@@ -244,7 +250,7 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
         return ImmutableList.of( body_main, body_abdomen, head_neck, arm_right_upper, arm_left_upper, leg_right_upper,
             tail_1, leg_left_upper, leg_right_lower, leg_right_paw, tail_2, tail_3, tail_4, leg_left_lower, leg_left_paw, head_main,
             eye_right, eye_right_1, head_snout, head_jaw, ear_right, ear_left, head_cheek_right, head_cheek_left, head_snout_teeth,
-            arm_right_lower, arm_right_paw, arm_left_lower, arm_left_paw);
+            arm_right_lower, arm_right_paw, arm_left_lower, arm_left_paw, tail_5);
     }
 
     private void animate(IAnimatedEntity entityIn) {
@@ -418,13 +424,20 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
         animator.resetKeyframe(20);
     }
 
-    public void setRotationAngles(EntityBigCat big_cat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityBigCat big_cat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(big_cat);
         float globalSpeed = 2.4f;
         float globalDegree = 1f;
         limbSwingAmount = Math.min(0.6F, limbSwingAmount * 2);
         limbSwing *= 0.5F;
+
+        // Model Parameters
+        float tail_scale = big_cat.hasFluffyTail() ? 2 : 1;
+        for (AdvancedModelBox tail_part : bodyParts_tail) {
+            tail_part.scaleX = tail_scale;
+            tail_part.scaleY = tail_scale;
+        }
 
         // Breathing Animation
         boolean isPurring = big_cat.getAnimation() == EntityBigCat.IDLE_STRETCH && big_cat.getAnimationTick() > 20;
@@ -459,12 +472,12 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
             limbSwingAmount = 0.5f;
             this.body_main.rotationPointY += 4; // Model offset to make the Big Cat "sink" in water (while not drowning)
             this.setRotateAngle(head_neck, -0.18203784098300857F, 0.0F, 0.0F);
-            float pitch = MathHelper.clamp(big_cat.rotationPitch - 10, -25F, 25.0F);
+            float pitch = Mth.clamp(big_cat.getXRot() - 10, -25F, 25.0F);
             this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 
         // Movement Animation
-        float newZ = MathHelper.lerp(0.4F, this.tailX, this.tail_1.defaultRotationX + (float)big_cat.getCurrentSpeed() * 2);
+        float newZ = Mth.lerp(0.4F, this.tailX, this.tail_1.defaultRotationX + (float)big_cat.getCurrentSpeed() * 2);
         this.tail_1.rotateAngleX = newZ;
         this.tailX = newZ;
         if (big_cat.canMove()) {

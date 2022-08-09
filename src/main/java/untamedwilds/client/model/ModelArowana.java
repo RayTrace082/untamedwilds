@@ -2,8 +2,8 @@ package untamedwilds.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
 import untamedwilds.entity.fish.EntityArowana;
 
 public class ModelArowana extends AdvancedEntityModel<EntityArowana> {
@@ -22,8 +22,8 @@ public class ModelArowana extends AdvancedEntityModel<EntityArowana> {
     public AdvancedModelBox head_mouth_whisker_2;
 
     public ModelArowana() {
-        this.textureWidth = 64;
-        this.textureHeight = 32;
+        this.texWidth = 64;
+        this.texHeight = 32;
         this.head_mouth = new AdvancedModelBox(this, 0, 25);
         this.head_mouth.setRotationPoint(0.0F, 1.5F, -6.0F);
         this.head_mouth.addBox(-1.5F, -4.0F, -1.0F, 3, 5, 1, 0.0F);
@@ -85,7 +85,7 @@ public class ModelArowana extends AdvancedEntityModel<EntityArowana> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.body_main);
     }
 
@@ -95,7 +95,7 @@ public class ModelArowana extends AdvancedEntityModel<EntityArowana> {
                 body_tail_fin, head_mouth, shape15, shape16, head_mouth_whisker_1, head_mouth_whisker_2);
     }
 
-    public void setRotationAngles(EntityArowana arowana, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityArowana arowana, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
         float globalSpeed = 0.5f;
         float globalDegree = 1f;

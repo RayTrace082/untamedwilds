@@ -1,10 +1,10 @@
 package untamedwilds.entity.ai;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.init.ModTags;
@@ -16,53 +16,53 @@ import java.util.Random;
 public class GrazeGoal extends Goal {
 
     private final ComplexMobTerrestrial taskOwner;
-    private final World entityWorld;
+    private final Level entityWorld;
     private BlockPos testpos;
     private int eatingGrassTimer;
     private final int executionChance;
 
     public GrazeGoal(ComplexMobTerrestrial entityIn, int chance) {
         this.taskOwner = entityIn;
-        this.entityWorld = entityIn.world;
+        this.entityWorld = entityIn.level;
         this.executionChance = chance;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (!this.taskOwner.canMove() || this.taskOwner.isChild() || this.taskOwner.getHunger() > 100 || this.taskOwner.getAttackTarget() != null || this.taskOwner.getRNG().nextInt(executionChance) != 0) {
+    public boolean canUse() {
+        if (!this.taskOwner.canMove() || this.taskOwner.isBaby() || this.taskOwner.getHunger() > 100 || this.taskOwner.getTarget() != null || this.taskOwner.getRandom().nextInt(executionChance) != 0) {
             return false;
         }
-        this.testpos = this.taskOwner.getPosition().add(Math.cos(Math.toRadians(this.taskOwner.rotationYaw + 90)) * 1.2, 0, Math.sin(Math.toRadians(this.taskOwner.rotationYaw + 90)) * 1.2);
+        this.testpos = this.taskOwner.blockPosition().offset(Math.cos(Math.toRadians(this.taskOwner.getYRot()+ 90)) * 1.2, 0, Math.sin(Math.toRadians(this.taskOwner.getYRot() + 90)) * 1.2);
         //this.testpos = new BlockPos(this.taskOwner.getPosition());
-        if (this.entityWorld.getBlockState(this.testpos).isIn(ModTags.BlockTags.GRAZEABLE_BLOCKS) || this.entityWorld.getBlockState(this.testpos.down()).getBlock() == Blocks.GRASS_BLOCK) {
+        if (this.entityWorld.getBlockState(this.testpos).is(ModTags.ModBlockTags.GRAZEABLE_BLOCKS) || this.entityWorld.getBlockState(this.testpos.below()).getBlock() == Blocks.GRASS_BLOCK) {
             return true;
         }
         if (this.taskOwner.getHunger() < 40) {
             BlockPos pos = this.locateGrazeables();
             if (pos != null) {
-                this.taskOwner.getNavigator().tryMoveToXYZ(pos.getX(), pos.getY(),pos.getZ(), 1);
+                this.taskOwner.getNavigation().moveTo(pos.getX(), pos.getY(),pos.getZ(), 1);
             }
         }
         return false;
     }
 
     @Override
-    public void startExecuting() {
+    public void start() {
         this.eatingGrassTimer = 40;
-        this.entityWorld.setEntityState(this.taskOwner, (byte)10);
-        this.taskOwner.getNavigator().clearPath();
+        this.entityWorld.broadcastEntityEvent(this.taskOwner, (byte)10);
+        this.taskOwner.getNavigation().stop();
         this.taskOwner.setAnimation(this.taskOwner.getAnimationEat());
     }
 
     @Override
-    public void resetTask()
+    public void stop()
     {
         this.eatingGrassTimer = 0;
     }
 
     @Override
-    public boolean shouldContinueExecuting()
+    public boolean canContinueToUse()
     {
         return this.eatingGrassTimer > 0;
     }
@@ -71,23 +71,23 @@ public class GrazeGoal extends Goal {
     public void tick() {
         this.eatingGrassTimer = Math.max(0, this.eatingGrassTimer - 1);
         if (this.eatingGrassTimer == 4) {
-            if (this.entityWorld.getBlockState(this.testpos).isIn(ModTags.BlockTags.GRAZEABLE_BLOCKS)) {
+            if (this.entityWorld.getBlockState(this.testpos).is(ModTags.ModBlockTags.GRAZEABLE_BLOCKS)) {
                 if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entityWorld, this.taskOwner) && ConfigGamerules.grazerGriefing.get()) {
                     this.entityWorld.destroyBlock(this.testpos, false);
                 }
                 this.taskOwner.addHunger(16);
-                this.taskOwner.eatGrassBonus();
+                this.taskOwner.ate();
             } else {
-                BlockPos blockpos1 = this.testpos.down();
+                BlockPos blockpos1 = this.testpos.below();
                 if (this.entityWorld.getBlockState(blockpos1).getBlock() == Blocks.GRASS_BLOCK) {
                     if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entityWorld, this.taskOwner)) {
-                        this.entityWorld.playEvent(2001, blockpos1, Block.getStateId(Blocks.GRASS_BLOCK.getDefaultState()));
+                        this.entityWorld.globalLevelEvent(2001, blockpos1, Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
                         if (ConfigGamerules.grazerGriefing.get()) {
-                            this.entityWorld.setBlockState(blockpos1, Blocks.DIRT.getDefaultState(), 2);
+                            this.entityWorld.setBlock(blockpos1, Blocks.DIRT.defaultBlockState(), 2);
                         }
                     }
                     this.taskOwner.addHunger(16);
-                    this.taskOwner.eatGrassBonus();
+                    this.taskOwner.ate();
                 }
             }
         }
@@ -95,12 +95,12 @@ public class GrazeGoal extends Goal {
 
     @Nullable
     private BlockPos locateGrazeables() {
-        Random random = this.taskOwner.getRNG();
-        BlockPos blockpos = this.taskOwner.getPosition();
+        Random random = this.taskOwner.getRandom();
+        BlockPos blockpos = this.taskOwner.blockPosition();
 
         for(int i = 0; i < 10; ++i) {
-            BlockPos blockpos1 = blockpos.add(random.nextInt(12) - 6, random.nextInt(4) - 2, random.nextInt(12) - 6);
-            if ((this.entityWorld.getBlockState(this.testpos).isIn(ModTags.BlockTags.GRAZEABLE_BLOCKS) || this.entityWorld.getBlockState(this.testpos.down()).getBlock() == Blocks.GRASS_BLOCK) && this.taskOwner.getBlockPathWeight(blockpos1) < 0.0F) {
+            BlockPos blockpos1 = blockpos.offset(random.nextInt(12) - 6, random.nextInt(4) - 2, random.nextInt(12) - 6);
+            if ((this.entityWorld.getBlockState(this.testpos).is(ModTags.ModBlockTags.GRAZEABLE_BLOCKS) || this.entityWorld.getBlockState(this.testpos.below()).getBlock() == Blocks.GRASS_BLOCK) && this.taskOwner.getWalkTargetValue(blockpos1) < 0.0F) {
                 return blockpos1;
             }
         }

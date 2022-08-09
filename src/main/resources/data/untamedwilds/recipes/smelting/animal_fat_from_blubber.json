@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "untamedwilds:material_blubber"
+  },
+  "result": "untamedwilds:material_fat",
+  "experience": 0.35,
+  "cookingtime": 200
+}

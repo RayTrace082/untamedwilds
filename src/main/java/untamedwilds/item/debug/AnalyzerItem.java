@@ -1,16 +1,17 @@
 package untamedwilds.item.debug;
 
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
@@ -24,40 +25,40 @@ public class AnalyzerItem extends Item {
     }
 
     @Override
-    public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
-        World world = target.getEntityWorld();
-        if (world.isRemote) return ActionResultType.PASS;
+    public InteractionResult interactLivingEntity(ItemStack stack, Player playerIn, LivingEntity target, InteractionHand hand) {
+        Level world = target.getLevel();
+        if (world.isClientSide) return InteractionResult.PASS;
         if (target instanceof ComplexMob) {
             ComplexMob entity = (ComplexMob)target;
             String entityName = entity instanceof ISpecies ? ((ISpecies) entity).getSpeciesName() : entity.getName().getString();
-            playerIn.sendMessage(new StringTextComponent("Diagnose: " + (ConfigGamerules.genderedBreeding.get() ? entity.getGenderString() + " " : "") + entityName + " (Skin: " + entity.getSkin() + ") (Eco Level: " + ComplexMob.getEcoLevel(entity) + ") " + entity.getHealth() + "/" + entity.getMaxHealth() + " HP"), playerIn.getUniqueID());
+            playerIn.sendMessage(new TextComponent("Diagnose: " + (ConfigGamerules.genderedBreeding.get() ? entity.getGenderString() + " " : "") + entityName + " (Skin: " + entity.getSkin() + ") (Eco Level: " + ComplexMob.getEcoLevel(entity) + ") " + entity.getHealth() + "/" + entity.getMaxHealth() + " HP"), playerIn.getUUID());
 
             if (ConfigGamerules.scientificNames.get()) {
                 String useVarName = entity instanceof ISpecies ? "_" + ((ISpecies) entity).getRawSpeciesName(entity.getVariant()) : "";
-                playerIn.sendMessage(new TranslationTextComponent(entity.getType().getTranslationKey() + useVarName + ".sciname").mergeStyle(TextFormatting.ITALIC), playerIn.getUniqueID());
+                playerIn.sendMessage(new TranslatableComponent(entity.getType().getDescriptionId() + useVarName + ".sciname").withStyle(ChatFormatting.ITALIC), playerIn.getUUID());
             }
             if (target instanceof ComplexMobTerrestrial) {
-                playerIn.sendMessage(new StringTextComponent("Hunger: " + ((ComplexMobTerrestrial)entity).getHunger() + "/100 Hunger"), playerIn.getUniqueID());
+                playerIn.sendMessage(new TextComponent("Hunger: " + ((ComplexMobTerrestrial)entity).getHunger() + "/100 Hunger"), playerIn.getUUID());
             }
-            if (!entity.isMale() && entity.getGrowingAge() > 0 && !ConfigGamerules.easyBreeding.get()) {
-                playerIn.sendMessage(new StringTextComponent("This female will give birth in " + TimeUtils.convertTicksToDays(world, entity.getGrowingAge()) + " (" + entity.getGrowingAge() + " ticks)"), playerIn.getUniqueID());
+            if (!entity.isMale() && entity.getAge() > 0 && !ConfigGamerules.easyBreeding.get()) {
+                playerIn.sendMessage(new TextComponent("This female will give birth in " + TimeUtils.convertTicksToDays(world, entity.getAge()) + " (" + entity.getAge() + " ticks)"), playerIn.getUUID());
             }
             if (entity.wantsToBreed()) {
-                playerIn.sendMessage(new StringTextComponent("This mob is looking for a suitable mate"), playerIn.getUniqueID());
+                playerIn.sendMessage(new TextComponent("This mob is looking for a suitable mate"), playerIn.getUUID());
             }
-            if (entity.isChild()) {
-                playerIn.sendMessage(new StringTextComponent("This mob will grow up in " + TimeUtils.convertTicksToDays(world, entity.getGrowingAge() * -1) + " (" + entity.getGrowingAge() * -1 + " ticks)"), playerIn.getUniqueID());
+            if (entity.isBaby()) {
+                playerIn.sendMessage(new TextComponent("This mob will grow up in " + TimeUtils.convertTicksToDays(world, entity.getAge() * -1) + " (" + entity.getAge() * -1 + " ticks)"), playerIn.getUUID());
             }
             //playerIn.sendMessage(new StringTextComponent("This mob will naturally despawn: " + !entity.preventDespawn()));
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
         else {
-            playerIn.sendMessage(new StringTextComponent("Diagnose: " + target.getName().getString() + " " + target.getHealth() + "/" + target.getMaxHealth() + " HP (Eco Level: " + ComplexMob.getEcoLevel(target) + ")"), playerIn.getUniqueID());
-            if (target.isChild() && target instanceof AgeableEntity) {
-                AgeableEntity entity = (AgeableEntity) target;
-                playerIn.sendMessage(new StringTextComponent("This mob will grow up in " + TimeUtils.convertTicksToDays(world, entity.getGrowingAge() * -1) + " (" + entity.getGrowingAge() * -1 + " ticks)"), playerIn.getUniqueID());
+            playerIn.sendMessage(new TextComponent("Diagnose: " + target.getName().getString() + " " + target.getHealth() + "/" + target.getMaxHealth() + " HP (Eco Level: " + ComplexMob.getEcoLevel(target) + ")"), playerIn.getUUID());
+            if (target.isBaby() && target instanceof AgeableMob) {
+                AgeableMob entity = (AgeableMob) target;
+                playerIn.sendMessage(new TextComponent("This mob will grow up in " + TimeUtils.convertTicksToDays(world, entity.getAge() * -1) + " (" + entity.getAge() * -1 + " ticks)"), playerIn.getUUID());
             }
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
     }
 }

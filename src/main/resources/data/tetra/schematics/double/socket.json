@@ -1,8 +1,18 @@
 {
+    "replace": false,
+    "slots": [
+      "double/binding"
+    ],
+    "materialSlotCount": 1,
+    "displayType": "minor",
+    "glyph": {
+      "textureX": 80,
+      "textureY": 16
+    },
     "outcomes": [
         {
             "material": {
-                "item": "untamedwilds:material_pearl"
+                "items": ["untamedwilds:material_pearl"]
             },
             "experienceCost": 3,
             "moduleKey": "double/socket",
@@ -10,7 +20,7 @@
         },
 		{
             "material": {
-                "item": "untamedwilds:material_giant_pearl"
+                "items": ["untamedwilds:material_giant_pearl"]
             },
             "experienceCost": 3,
             "moduleKey": "double/socket",

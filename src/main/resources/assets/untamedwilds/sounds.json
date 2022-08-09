@@ -1,12 +1,10 @@
 {
 	"entity.generic.bite": {
-		"category": "neutral",
 		"sounds": [
 			"untamedwilds:generic_bite"
 		]
 	},
 	"entity.bear.ambient": {
-		"category": "neutral",
 		"sounds": [
 			"untamedwilds:bear/idle_1",
 			"untamedwilds:bear/idle_2",
@@ -16,7 +14,6 @@
 		"subtitle": "untamedwilds.subtitles.bear.ambient"
 	},
 	"entity.bear.warning": {
-		"category": "neutral",
 		"sounds": [
 			"untamedwilds:bear/roar_1",
 			"untamedwilds:bear/roar_2",
@@ -25,7 +22,6 @@
 		"subtitle": "untamedwilds.subtitles.bear.warning"
 	},
 	"entity.bear.hurt": {
-		"category": "neutral",
 		"sounds": [
 			"untamedwilds:bear/hurt_1",
 			"untamedwilds:bear/hurt_2",
@@ -35,7 +31,6 @@
 		"subtitle": "untamedwilds.subtitles.bear.hurt"
 	},
 	"entity.bear.death": {
-		"category": "neutral",
 		"sounds": [
 			"untamedwilds:bear/death_1",
 			"untamedwilds:bear/death_2"
@@ -43,14 +38,12 @@
 		"subtitle": "untamedwilds.subtitles.bear.death"
 	},
 	"entity.bear.baby.ambient": {
-		"category": "neutral",
 		"sounds": [
 			"untamedwilds:bear/idle_cub"
 		],
 		"subtitle": "untamedwilds.subtitles.bear.baby.ambient"
 	},
 	"entity.bear.baby.cry": {
-		"category": "neutral",
 		"sounds": [
 			"untamedwilds:bear/cry_cub"
 		],
@@ -58,7 +51,6 @@
 	},
 
 	"entity.bison.ambient": {
-		"category": "neutral",
 		"sounds": [
 			"untamedwilds:bison/idle_1",
 			"untamedwilds:bison/idle_2"
@@ -67,22 +59,28 @@
 	},
 
 	"entity.big_cat.ambient": {
-		"category": "neutral",
 		"sounds": [
 			"untamedwilds:big_cat/idle_1",
 			"untamedwilds:big_cat/idle_2"
 		],
 		"subtitle": "untamedwilds.subtitles.big_cat.ambient"
 	},
+	"entity.big_cat.ambient_meow": {
+		"sounds": [
+			"mob/cat/ocelot/idle1",
+			"mob/cat/ocelot/idle2",
+			"mob/cat/ocelot/idle3",
+			"mob/cat/ocelot/idle4"
+		],
+		"subtitle": "untamedwilds.subtitles.big_cat.ambient_meow"
+	},
 	"entity.big_cat.hurt": {
-		"category": "neutral",
 		"sounds": [
 			"untamedwilds:big_cat/hurt_1"
 		],
 		"subtitle": "untamedwilds.subtitles.big_cat.hurt"
 	},
 	"entity.big_cat.death": {
-		"category": "neutral",
 		"sounds": [
 			"untamedwilds:big_cat/death_1"
 		],
@@ -90,7 +88,6 @@
 	},
 
 	"entity.aardvark.ambient": {
-		"category": "neutral",
 		"sounds": [
 			"mob/rabbit/idle1",
 			"mob/rabbit/idle2",
@@ -100,7 +97,6 @@
 		"subtitle": "untamedwilds.subtitles.aardvark.ambient"
 	},
 	"entity.aardvark.hurt": {
-		"category": "neutral",
 		"sounds": [
 			"mob/hoglin/hurt1",
 			"mob/hoglin/hurt2",
@@ -140,9 +136,10 @@
 	"entity.hyena.laugh": {
 		"category": "neutral",
 		"sounds": [
-			"mob/wolf/growl1",
-			"mob/wolf/growl2",
-			"mob/wolf/growl3"
+			"untamedwilds:hyena/laughing_1",
+			"untamedwilds:hyena/laughing_2",
+			"untamedwilds:hyena/laughing_3",
+			"untamedwilds:hyena/laughing_4"
 		],
 		"subtitle": "untamedwilds.subtitles.hyena.laugh"
 	},
@@ -217,6 +214,39 @@
 			"mob/hoglin/death3"
 		],
 		"subtitle": "untamedwilds.subtitles.boar.death"
+	},
+
+	"entity.camel.ambient": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:camel/idle_1",
+			"untamedwilds:camel/idle_2",
+			"untamedwilds:camel/idle_3"
+		],
+		"subtitle": "untamedwilds.subtitles.camel.ambient"
+	},
+	"entity.camel.hurt": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:camel/hurt_1",
+			"untamedwilds:camel/hurt_2"
+		],
+		"subtitle": "untamedwilds.subtitles.camel.hurt"
+	},
+	"entity.camel.death": {
+		"category": "neutral",
+		"sounds": [
+			"untamedwilds:camel/death_1"
+		],
+		"subtitle": "untamedwilds.subtitles.camel.death"
+	},
+	"entity.camel.spit": {
+		"category": "neutral",
+		"sounds": [
+			"mob/llama/spit1",
+			"mob/llama/spit2"
+		],
+		"subtitle": "untamedwilds.subtitles.camel.death"
 	},
 
 	"entity.snake.warning": {

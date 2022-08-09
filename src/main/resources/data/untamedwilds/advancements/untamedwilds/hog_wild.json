@@ -1,0 +1,41 @@
+{
+  "parent": "untamedwilds:untamedwilds/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:porkchop"
+    },
+    "title": {
+      "translate": "advancements.untamedwilds.hog_wild.title"
+    },
+    "description": {
+      "translate": "advancements.untamedwilds.hog_wild.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "riding_hog": {
+      "trigger": "minecraft:started_riding",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "vehicle": {
+                "type": "untamedwilds:boar"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "riding_hog"
+    ]
+  ]
+}

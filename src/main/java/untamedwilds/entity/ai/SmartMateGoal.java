@@ -1,18 +1,20 @@
 package untamedwilds.entity.ai;
 
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
+import untamedwilds.entity.arthropod.EntityTarantula;
 
 import java.util.EnumSet;
 import java.util.List;
 
 public class SmartMateGoal extends Goal {
     private final ComplexMob taskOwner;
-    private final World world;
+    private final Level world;
     private final int executionChance;
     private final Class<? extends ComplexMob> mateClass;
     private ComplexMob targetMate;
@@ -25,19 +27,19 @@ public class SmartMateGoal extends Goal {
 
     private SmartMateGoal(ComplexMob entityIn, double speedIn, int chance, Class<? extends ComplexMob> mateClass) {
         this.taskOwner = entityIn;
-        this.world = entityIn.world;
+        this.world = entityIn.level;
         this.mateClass = mateClass;
         this.executionChance = chance;
         this.moveSpeed = speedIn;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (!this.taskOwner.isInLove() || this.taskOwner.getGrowingAge() != 0) {
+    public boolean canUse() {
+        if (!this.taskOwner.isInLove() || this.taskOwner.getAge() != 0) {
             return false;
         }
-        if (this.taskOwner.getRNG().nextInt(this.executionChance) != 0) {
+        if (this.taskOwner.getRandom().nextInt(this.executionChance) != 0) {
             return false;
         }
         else {
@@ -47,50 +49,55 @@ public class SmartMateGoal extends Goal {
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         return this.targetMate.isAlive() && this.targetMate.isInLove() && this.spawnBabyDelay < 200;
     }
 
     @Override
-    public void resetTask() {
+    public void stop() {
         this.targetMate = null;
         this.spawnBabyDelay = 0;
     }
 
     @Override
     public void tick() {
-        this.taskOwner.getLookController().setLookPositionWithEntity(this.targetMate, 10.0F, (float) this.taskOwner.getVerticalFaceSpeed());
-        this.taskOwner.getNavigator().tryMoveToXYZ(this.targetMate.getPosX(), this.targetMate.getPosY(), this.targetMate.getPosZ(), this.moveSpeed);
+        this.taskOwner.getLookControl().setLookAt(this.targetMate, 10.0F, (float) this.taskOwner.getHeadRotSpeed());
+        this.taskOwner.getNavigation().moveTo(this.targetMate.getX(), this.targetMate.getY(), this.targetMate.getZ(), this.moveSpeed);
         ++this.spawnBabyDelay;
 
-        if (this.spawnBabyDelay >= 100 && this.taskOwner.getDistanceSq(this.targetMate) < 9.0D) {
-            this.taskOwner.resetInLove();
-            this.targetMate.resetInLove();
-            if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
-                this.world.addEntity(new ExperienceOrbEntity(this.world, this.taskOwner.getPosX(), this.taskOwner.getPosY(), this.taskOwner.getPosZ(), this.taskOwner.getRNG().nextInt(7) + 1));
+        if (this.spawnBabyDelay >= 100 && this.taskOwner.distanceToSqr(this.targetMate) < 9.0D) {
+            this.taskOwner.resetLove();
+            this.targetMate.resetLove();
+            if (this.world.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+                this.world.addFreshEntity(new ExperienceOrb(this.world, this.taskOwner.getX(), this.taskOwner.getY(), this.taskOwner.getZ(), this.taskOwner.getRandom().nextInt(7) + 1));
             }
             // Positive Growing Age is used as pregnancy counter (handled in ComplexMob)
-            this.taskOwner.setGrowingAge(this.taskOwner.getPregnancyTime());
-            this.targetMate.setGrowingAge(this.taskOwner.getPregnancyTime());
+            this.taskOwner.setAge(this.taskOwner.getPregnancyTime());
+            this.targetMate.setAge(this.taskOwner.getPregnancyTime());
             if (ConfigGamerules.easyBreeding.get()) {
-                if (!this.taskOwner.isMale()) {
+                if (ConfigGamerules.genderedBreeding.get()) {
                     this.taskOwner.breed();
-                } else {
-                    this.targetMate.breed();
+                }
+                else {
+                    if (!this.taskOwner.isMale()) {
+                        this.taskOwner.breed();
+                    } else {
+                        this.targetMate.breed();
+                    }
                 }
             }
         }
     }
 
     private ComplexMob getNearbyMate() {
-        List<ComplexMob> list = this.world.getEntitiesWithinAABB(mateClass, this.taskOwner.getBoundingBox().grow(8.0D));
+        List<? extends ComplexMob> list = this.world.getEntitiesOfClass(mateClass, this.taskOwner.getBoundingBox().inflate(8.0D));
         list.remove(this.taskOwner);
         double d0 = Double.MAX_VALUE;
         ComplexMob entityanimal = null;
         for (ComplexMob potentialMates : list) {
-            if (canMateWith(this.taskOwner, potentialMates) && this.taskOwner.getDistanceSq(potentialMates) < d0) {
+            if (canMateWith(this.taskOwner, potentialMates) && this.taskOwner.distanceToSqr(potentialMates) < d0) {
                 entityanimal = potentialMates;
-                d0 = this.taskOwner.getDistanceSq(potentialMates);
+                d0 = this.taskOwner.distanceToSqr(potentialMates);
             }
         }
         return entityanimal;

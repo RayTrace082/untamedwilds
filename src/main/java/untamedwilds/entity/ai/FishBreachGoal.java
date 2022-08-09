@@ -1,17 +1,16 @@
 package untamedwilds.entity.ai;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.goal.JumpGoal;
-import net.minecraft.fluid.FluidState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
 import untamedwilds.entity.ComplexMobAquatic;
 
-public class FishBreachGoal extends JumpGoal {
+public class FishBreachGoal extends Goal {
     private static final int[] JUMP_DISTANCES = new int[]{0, 1, 3, 4}; // Vanilla implementation {0, 1, 4, 5, 6, 7}
     private final ComplexMobAquatic taskOwner;
     private final int chance;
@@ -28,14 +27,14 @@ public class FishBreachGoal extends JumpGoal {
         this.safeJumping = safeJumping;
     }
 
-    public boolean shouldExecute() {
-        if (this.taskOwner.getRNG().nextInt(this.chance) != 0) {
+    public boolean canUse() {
+        if (this.taskOwner.getRandom().nextInt(this.chance) != 0) {
             return false;
         } else {
-            Direction direction = this.taskOwner.getAdjustedHorizontalFacing();
-            int i = direction.getXOffset();
-            int j = direction.getZOffset();
-            BlockPos blockpos = this.taskOwner.getPosition();
+            Direction direction = this.taskOwner.getMotionDirection();
+            int i = direction.getStepX();
+            int j = direction.getStepZ();
+            BlockPos blockpos = this.taskOwner.blockPosition();
 
             for(int k : JUMP_DISTANCES) {
                 if (!this.isAirAbove(blockpos, i, j, k) || (this.safeJumping && !this.canJumpTo(blockpos, i, j, k))) {
@@ -48,51 +47,51 @@ public class FishBreachGoal extends JumpGoal {
     }
 
     private boolean canJumpTo(BlockPos pos, int dx, int dz, int scale) {
-        BlockPos blockpos = pos.add(dx * scale, 0, dz * scale);
-        return this.taskOwner.world.getFluidState(blockpos).isTagged(FluidTags.WATER) && !this.taskOwner.world.getBlockState(blockpos).getMaterial().blocksMovement();
+        BlockPos blockpos = pos.offset(dx * scale, 0, dz * scale);
+        return this.taskOwner.level.getFluidState(blockpos).is(FluidTags.WATER) && !this.taskOwner.level.getBlockState(blockpos).getMaterial().blocksMotion();
     }
 
     private boolean isAirAbove(BlockPos pos, int dx, int dz, int scale) {
-        return this.taskOwner.world.getBlockState(pos.add(dx * scale, 1, dz * scale)).isAir() && this.taskOwner.world.getBlockState(pos.add(dx * scale, 2, dz * scale)).isAir();
+        return this.taskOwner.level.getBlockState(pos.offset(dx * scale, 1, dz * scale)).isAir() && this.taskOwner.level.getBlockState(pos.offset(dx * scale, 2, dz * scale)).isAir();
     }
 
-    public boolean shouldContinueExecuting() {
-        double d0 = this.taskOwner.getMotion().y;
-        return (!(d0 * d0 < (double)0.03F) || this.taskOwner.rotationPitch == 0.0F || !(Math.abs(this.taskOwner.rotationPitch) < 10.0F) || !this.taskOwner.isInWater()) && !this.taskOwner.isOnGround();
+    public boolean canContinueToUse() {
+        double d0 = this.taskOwner.getDeltaMovement().y;
+        return (!(d0 * d0 < (double)0.03F) || this.taskOwner.getXRot() == 0.0F || !(Math.abs(this.taskOwner.getXRot()) < 10.0F) || !this.taskOwner.isInWater()) && !this.taskOwner.isOnGround();
     }
 
-    public boolean isPreemptible() {
+    public boolean isInterruptable() {
         return false;
     }
 
-    public void startExecuting() {
-        Direction direction = this.taskOwner.getAdjustedHorizontalFacing();
-        this.taskOwner.setMotion(this.taskOwner.getMotion().add((double)direction.getXOffset() * 0.6D, 0.6D, (double)direction.getZOffset() * 0.6D));
-        this.taskOwner.getNavigator().clearPath();
+    public void start() {
+        Direction direction = this.taskOwner.getMotionDirection();
+        this.taskOwner.setDeltaMovement(this.taskOwner.getDeltaMovement().add((double)direction.getStepX() * 0.6D, 0.6D, (double)direction.getStepZ() * 0.6D));
+        this.taskOwner.getNavigation().stop();
     }
 
-    public void resetTask() {
-        this.taskOwner.rotationPitch = 0.0F;
+    public void stop() {
+        this.taskOwner.setXRot(0.0F);
     }
 
     public void tick() {
         boolean flag = this.inWater;
         if (!flag) {
-            FluidState fluidstate = this.taskOwner.world.getFluidState(this.taskOwner.getPosition());
-            this.inWater = fluidstate.isTagged(FluidTags.WATER);
+            FluidState fluidstate = this.taskOwner.level.getFluidState(this.taskOwner.blockPosition());
+            this.inWater = fluidstate.is(FluidTags.WATER);
         }
 
         if (this.inWater && !flag) {
-            this.taskOwner.playSound(SoundEvents.ENTITY_DOLPHIN_JUMP, 1.0F, 1.0F);
+            this.taskOwner.playSound(SoundEvents.DOLPHIN_JUMP, 1.0F, 1.0F);
         }
 
-        Vector3d vector3d = this.taskOwner.getMotion();
-        if (vector3d.y * vector3d.y < (double)0.03F && this.taskOwner.rotationPitch != 0.0F) {
-            this.taskOwner.rotationPitch = MathHelper.rotLerp(this.taskOwner.rotationPitch, 0.0F, 0.2F);
-        } else {
-            double d0 = Math.sqrt(Entity.horizontalMag(vector3d));
-            double d1 = Math.signum(-vector3d.y) * Math.acos(d0 / vector3d.length()) * (double)(180F / (float)Math.PI);
-            this.taskOwner.rotationPitch = (float)d1;
+        Vec3 vec3 = this.taskOwner.getDeltaMovement();
+        if (vec3.y * vec3.y < (double)0.03F && this.taskOwner.getXRot() != 0.0F) {
+            this.taskOwner.setXRot(Mth.rotlerp(this.taskOwner.getXRot(), 0.0F, 0.2F));
+        } else if (vec3.length() > (double)1.0E-5F) {
+            double d0 = vec3.horizontalDistance();
+            double d1 = Math.atan2(-vec3.y, d0) * (double)(180F / (float)Math.PI);
+            this.taskOwner.setXRot((float)d1);
         }
     }
 }

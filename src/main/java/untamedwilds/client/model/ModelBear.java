@@ -4,9 +4,9 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityBear;
 
 public class ModelBear extends AdvancedEntityModel<EntityBear> {
@@ -34,8 +34,8 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
     private final ModelAnimator animator;
 
     public ModelBear() {
-        this.textureWidth = 128;
-        this.textureHeight = 64;
+        this.texWidth = 128;
+        this.texHeight = 64;
 
         this.body_main = new AdvancedModelBox(this, 52, 0);
         this.body_main.setRotationPoint(0.0F, 8.5F, 0.0F);
@@ -158,7 +158,7 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(body_main);
     }
 
@@ -408,7 +408,7 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
         animator.resetKeyframe(20);
     }
 
-    public void setRotationAngles(EntityBear bear, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityBear bear, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(bear);
         float globalSpeed = 2.5f;
@@ -452,7 +452,7 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
             limbSwing = ageInTicks / 3;
             limbSwingAmount = 0.5f;
             this.setRotateAngle(head_face, -0.22759093446006054F, 0.0F, 0.0F);
-            float pitch = MathHelper.clamp(bear.rotationPitch - 10, -25F, 25.0F);
+            float pitch = Mth.clamp(bear.getXRot() - 10, -25F, 25.0F);
             this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 

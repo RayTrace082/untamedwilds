@@ -2,8 +2,9 @@ package untamedwilds.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.amphibian.EntityNewt;
 
 public class ModelNewt extends AdvancedEntityModel<EntityNewt> {
@@ -25,8 +26,8 @@ public class ModelNewt extends AdvancedEntityModel<EntityNewt> {
     private final AdvancedModelBox tail_1_crest;
 
     public ModelNewt() {
-        this.textureWidth = 32;
-        this.textureHeight = 16;
+        this.texWidth = 32;
+        this.texHeight = 16;
         this.leg_left = new AdvancedModelBox(this, 14, 5);
         this.leg_left.setRotationPoint(1.0F, 0.0F, 0.5F);
         this.leg_left.addBox(0.0F, -0.5F, -1.0F, 3, 1, 2, 0.0F);
@@ -107,22 +108,22 @@ public class ModelNewt extends AdvancedEntityModel<EntityNewt> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.body_main);
     }
 
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
         return ImmutableList.of(body_main, head_main, body_hip, arm_right, arm_left, leg_left, leg_right, body_crest, tail_1_crest,
-                tail_2, tail_1, gill_l_1, gill_l_2, gill_r_1, gill_l_1
+                tail_2, tail_1, gill_l_1, gill_l_2, gill_r_1, gill_r_2
         );
     }
 
-    public void setRotationAngles(EntityNewt newt, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityNewt newt, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
         float globalSpeed = 0.8f;
         float globalDegree = 1.0f;
-        limbSwingAmount = Math.min(0.5F, limbSwingAmount);
+        limbSwingAmount = Math.min(0.6F, limbSwingAmount);
 
         // Breathing Animation
         this.body_hip.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
@@ -136,25 +137,32 @@ public class ModelNewt extends AdvancedEntityModel<EntityNewt> {
 
         // Pitch/Yaw handler
         if (newt.isInWater() && !newt.isOnGround()) {
-            this.setRotateAngle(body_main, newt.rotationPitch * ((float) Math.PI / 180F), 0, 0);
+            this.setRotateAngle(body_main, newt.getXRot() * ((float) Math.PI / 180F), 0, 0);
         }
+        this.head_main.rotateAngleY = Mth.rotLerp((float) 0.05, this.head_main.rotateAngleY, newt.offset);
+        this.body_hip.rotateAngleY = Mth.rotLerp((float) 0.05, this.body_hip.rotateAngleY, -1F * newt.offset);
+        this.tail_2.rotateAngleY = Mth.rotLerp((float) 0.05, this.tail_2.rotateAngleY, -2F * newt.offset);
+
 
         // Movement Animation
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{head_main, body_main, body_hip, tail_1, tail_2};
-        chainSwing(bodyParts, globalSpeed * 1.4F, globalDegree * 1.2F, -4, limbSwing, limbSwingAmount * (newt.isInWater() ? 0.8F : 0.2F));
+        chainSwing(bodyParts, globalSpeed * 1.4F, globalDegree * 1.2F, -4, limbSwing, limbSwingAmount * 0.3F);
         float onGround = Math.min(0.8F, limbSwingAmount * (newt.isOnGround() ? 2 : 1));
-        swing(arm_left, globalSpeed, globalDegree * 2f, false, 0.8F, 1f, limbSwing, onGround);
-        swing(leg_left, globalSpeed, globalDegree * 1.8f, false, 1.6F, 1f, limbSwing, onGround);
-        swing(arm_right, globalSpeed, globalDegree * 2f, false, 2.4F, 1f, limbSwing, onGround);
-        swing(leg_right, globalSpeed, globalDegree * 1.8f, false, 3.2F, 1f, limbSwing, onGround);
         if (newt.isInWater()) {
-            flap(arm_left, globalSpeed, globalDegree * 1.4f, false, 0.8F, 1f, limbSwing, limbSwingAmount);
-            flap(leg_left, globalSpeed, globalDegree * 1.2f, false, 1.6F, 1f, limbSwing, limbSwingAmount);
-            flap(arm_right, globalSpeed, globalDegree * 1.4f, false, 2.4F, 1f, limbSwing, limbSwingAmount);
-            flap(leg_right, globalSpeed, globalDegree * 1.2f, false, 3.2F, 1f, limbSwing, limbSwingAmount);
+            flap(arm_left, globalSpeed, globalDegree, false, 0.8F, 1f, limbSwing, limbSwingAmount);
+            flap(leg_left, globalSpeed, globalDegree * 0.8f, false, 1.6F, 1f, limbSwing, limbSwingAmount);
+            flap(arm_right, globalSpeed, globalDegree, false, 2.4F, 1f, limbSwing, limbSwingAmount);
+            flap(leg_right, globalSpeed, globalDegree * 0.8f, false, 3.2F, 1f, limbSwing, limbSwingAmount);
 
             flap(body_main, globalSpeed / 2, globalDegree * 1.2f, false, 0, 0.1f, limbSwing / 2, limbSwingAmount);
             swing(body_main, globalSpeed / 2, globalDegree * 1.2f, false, 0.8F, 0.1f, limbSwing / 3, limbSwingAmount);
+            chainWave(new AdvancedModelBox[]{head_main, body_main, body_hip}, globalSpeed * 0.8F, globalDegree, -4, limbSwing, limbSwingAmount * 0.2F);
+        }
+        else {
+            swing(arm_left, globalSpeed, globalDegree * 1.2f, false, 0.8F, 1f, limbSwing, onGround);
+            swing(leg_left, globalSpeed, globalDegree * 1.1f, false, 1.6F, 1f, limbSwing, onGround);
+            swing(arm_right, globalSpeed, globalDegree * 1.2f, false, 2.4F, 1f, limbSwing, onGround);
+            swing(leg_right, globalSpeed, globalDegree * 1.1f, false, 3.2F, 1f, limbSwing, onGround);
         }
 
         // Sleeping Animation

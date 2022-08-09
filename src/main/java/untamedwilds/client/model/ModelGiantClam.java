@@ -2,8 +2,8 @@ package untamedwilds.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
 import untamedwilds.entity.mollusk.EntityGiantClam;
 
 public class ModelGiantClam extends AdvancedEntityModel<EntityGiantClam> {
@@ -13,8 +13,8 @@ public class ModelGiantClam extends AdvancedEntityModel<EntityGiantClam> {
     public AdvancedModelBox shell_1;
 
     public ModelGiantClam() {
-        this.textureWidth = 64;
-        this.textureHeight = 64;
+        this.texWidth = 64;
+        this.texHeight = 64;
         this.shell_1 = new AdvancedModelBox(this, 0, 0);
         this.shell_1.setRotationPoint(0.0F, 1.0F, -3.0F);
         this.shell_1.addBox(-9.0F, -10.0F, -3.0F, 18, 12, 6, 0.0F);
@@ -32,7 +32,7 @@ public class ModelGiantClam extends AdvancedEntityModel<EntityGiantClam> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.mantle);
     }
 
@@ -41,7 +41,7 @@ public class ModelGiantClam extends AdvancedEntityModel<EntityGiantClam> {
         return ImmutableList.of(this.mantle, this.shell_1, this.shell_2);
     }
 
-    public void setRotationAngles(EntityGiantClam clam, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityGiantClam clam, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
 
         // Breathing Animation

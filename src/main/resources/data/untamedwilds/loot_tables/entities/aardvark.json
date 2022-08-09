@@ -35,7 +35,7 @@
 			}
 		]},
 		{
-			"type": "item",
+			"type": "minecraft:item",
 			"name": "untamedwilds:material_fat",
 			"functions": [{
 				"function": "set_count",
@@ -57,7 +57,7 @@
 		"name": "aardvark",
 		"rolls": 1,
 		"entries": [{
-			"type": "item",
+			"type": "minecraft:item",
 			"name": "minecraft:bone",
 			"weight": 1,
 			"functions": [{
@@ -80,7 +80,7 @@
 		"name": "aardvark",
 		"rolls": 1,
 		"entries": [{
-			"type": "item",
+			"type": "minecraft:item",
 			"name": "minecraft:rabbit_hide",
 			"weight": 1,
 			"functions": [{

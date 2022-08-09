@@ -1,38 +1,37 @@
 package untamedwilds.client.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import untamedwilds.client.model.ModelAardvark;
 import untamedwilds.entity.mammal.EntityAardvark;
-
-import javax.annotation.Nonnull;
 
 public class RendererAardvark extends MobRenderer<EntityAardvark, EntityModel<EntityAardvark>> {
 
     private static final ModelAardvark AARDVARK_MODEL = new ModelAardvark();
 
-    public RendererAardvark(EntityRendererManager renderManager) {
+    public RendererAardvark(EntityRendererProvider.Context renderManager) {
         super(renderManager, AARDVARK_MODEL, 0.4F);
     }
 
     @Override
-    public void render(EntityAardvark entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        entityModel = AARDVARK_MODEL;
+    public void render(EntityAardvark entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+        model = AARDVARK_MODEL;
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
-    protected void preRenderCallback(EntityAardvark entity, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(EntityAardvark entity, PoseStack matrixStackIn, float partialTickTime) {
         float f = entity.getMobSize();
-        f *= entity.getRenderScale();
+        f *= entity.getScale();
         matrixStackIn.scale(f, f, f);
-        this.shadowSize = f * 0.6F;
+        this.shadowRadius = f * 0.6F;
     }
 
-    public ResourceLocation getEntityTexture(@Nonnull EntityAardvark entity) {
+    public @NotNull ResourceLocation getTextureLocation(EntityAardvark entity) {
         return entity.getTexture();
     }
 }

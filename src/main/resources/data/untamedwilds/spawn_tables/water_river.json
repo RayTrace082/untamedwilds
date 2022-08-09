@@ -1,0 +1,29 @@
+{
+  "name":"water_river",
+  "entries":[
+    {
+      "type":"untamedwilds:arowana",
+      "weight":3,
+      "size_min":1,
+      "size_max":1
+    },
+    {
+      "type":"untamedwilds:catfish",
+      "weight":6,
+      "size_min":1,
+      "size_max":1
+    },
+    {
+      "type":"untamedwilds:giant_salamander",
+      "weight":4,
+      "size_min":1,
+      "size_max":1
+    },
+    {
+      "type":"untamedwilds:manatee",
+      "weight":1,
+      "size_min":1,
+      "size_max":3
+    }
+  ]
+}

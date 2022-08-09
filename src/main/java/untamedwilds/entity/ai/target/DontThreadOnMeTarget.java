@@ -1,74 +1,74 @@
 package untamedwilds.entity.ai.target;
 
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.TargetGoal;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.util.EntityPredicates;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.monster.Creeper;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ISpecies;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 
 public class DontThreadOnMeTarget<T extends LivingEntity> extends TargetGoal {
     protected final Class<T> targetClass;
-    protected final int targetChance;
-    protected LivingEntity nearestTarget;
     protected Predicate<T> targetEntitySelector;
+    private int runningTicks;
 
-    public DontThreadOnMeTarget(MobEntity entityIn, Class<T> targetClassIn, boolean checkSight) {
+    public DontThreadOnMeTarget(Mob entityIn, Class<T> targetClassIn, boolean checkSight) {
         this(entityIn, targetClassIn, checkSight, false);
     }
 
-    public DontThreadOnMeTarget(MobEntity entityIn, Class<T> targetClassIn, boolean checkSight, boolean nearbyOnlyIn) {
-        this(entityIn, targetClassIn, 6, checkSight, nearbyOnlyIn);
-    }
-
-    public DontThreadOnMeTarget(MobEntity entityIn, Class<T> targetClassIn, int targetChanceIn, boolean checkSight, boolean nearbyOnlyIn) {
+    public DontThreadOnMeTarget(Mob entityIn, Class<T> targetClassIn, boolean checkSight, boolean nearbyOnlyIn) {
         super(entityIn, checkSight, nearbyOnlyIn);
         this.targetClass = targetClassIn;
-        this.targetChance = targetChanceIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.TARGET));
-        this.targetEntitySelector = entity -> {
-            if (entity instanceof CreeperEntity) {
-                return false;
-            }
-            if (this.goalOwner.getClass() == entity.getClass()) {
-                if (this.goalOwner instanceof ISpecies && entity instanceof ISpecies) {
-                    ComplexMob attacker = ((ComplexMob)this.goalOwner);
-                    ComplexMob defender = ((ComplexMob)entity);
-                    if (attacker.getVariant() == defender.getVariant()) {
-                        return false;
-                    }
-                }
-                return false;
-            }
-            return EntityPredicates.NOT_SPECTATING.test(entity) && this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
-        };
+        this.setFlags(EnumSet.of(Goal.Flag.TARGET));
+        this.targetEntitySelector = entity -> isValidTarget(entity, null);
     }
 
-    public boolean shouldExecute() {
-        if (!ConfigGamerules.contactAgression.get() || this.goalOwner.getRNG().nextInt(this.targetChance) != 0 || this.goalOwner.getNavigator().noPath()) {
+    protected boolean isValidTarget(LivingEntity entity, @Nullable Predicate<LivingEntity> predicate) {
+        if (entity instanceof Creeper || entity.equals(this.mob) || (predicate != null && !predicate.test(entity))) {
+            return false;
+        }
+        if (this.mob.getClass() == entity.getClass() && this.mob instanceof ComplexMob attacker && entity instanceof ComplexMob defender) {
+            if (attacker.getVariant() == defender.getVariant()) {
+                return false;
+            }
+        }
+        return entity.getBoundingBox().intersects(this.mob.getBoundingBox()) && canAttack(entity, TargetingConditions.forCombat().range(getFollowDistance()));
+    }
+
+    public boolean canUse() {
+        if (!ConfigGamerules.contactAgression.get()) {
             return false;
         } else {
-            List<T> list = this.goalOwner.world.getEntitiesWithinAABB(this.targetClass, this.goalOwner.getBoundingBox(), this.targetEntitySelector);
+            List<T> list = this.mob.level.getEntitiesOfClass(this.targetClass, this.mob.getBoundingBox().inflate(1F), this.targetEntitySelector);
             if (list.isEmpty()) {
                 return false;
             }
             else {
-                this.nearestTarget = list.get(0);
+                this.targetMob = list.get(0);
                 return true;
             }
         }
     }
 
-    public void startExecuting() {
-        this.goalOwner.setAttackTarget(this.nearestTarget);
-        super.startExecuting();
+    public void start() {
+        this.mob.setTarget(this.targetMob);
+        this.runningTicks = 60;
+        super.start();
+    }
+
+    public boolean canContinueToUse() {
+        this.runningTicks--;
+        if (this.runningTicks < 1) {
+            this.mob.setTarget(null);
+            return false;
+        }
+        return super.canContinueToUse();
     }
 }

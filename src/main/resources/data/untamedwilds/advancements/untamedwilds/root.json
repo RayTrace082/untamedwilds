@@ -22,15 +22,19 @@
         "items": [
           {
             "item": "patchouli:guide_book",
-            "nbt": "{\"patchouli:book\":\"untamedwilds:encyclopaedia_of_life\"}"
+            "nbt": "{\"patchouli:book\":\"untamedwilds:encyclopedia_of_life\"}"
           }
         ]
       }
+    },
+    "patchouli_not_loaded": {
+      "trigger": "untamedwilds:guidebook_alt"
     }
   },
   "requirements": [
     [
-      "encyclopedia_of_life"
+      "encyclopedia_of_life",
+      "patchouli_not_loaded"
     ]
   ]
 }

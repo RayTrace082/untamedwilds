@@ -1,12 +1,11 @@
 package untamedwilds.entity.ai;
 
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.pathfinding.Path;
-import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import com.mojang.math.Vector3f;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.pathfinder.Node;
+import net.minecraft.world.level.pathfinder.Path;
 import untamedwilds.entity.ComplexMobAmphibious;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
@@ -35,28 +34,30 @@ public class GotoSleepGoal extends Goal {
         this.speed = speedIn;
         this.executionChance = chance;
         this.usesHome = usesHome;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Flag.JUMP));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Flag.JUMP));
     }
 
-    // TODO: Sweet jesus, this needs to get cleaned up
     @Override
-    public boolean shouldExecute() {
-        if (this.creature.getRNG().nextInt(this.executionChance) != 0) {
+    public boolean canUse() {
+        // Common checks
+        if (this.creature.getRandom().nextInt(this.executionChance) != 0 || this.creature.forceSleep < 0 || this.creature.getTarget() != null) {
             return false;
         }
-        if (this.creature.isSleeping() && (this.creature.isActive() && this.creature.forceSleep <= 0) || (!(this.creature instanceof ComplexMobAmphibious) && this.creature.isInWater())) {
+        // Wake up checks
+        if (this.creature.isSleeping() && (this.creature.forceSleep <= 0 || (!(this.creature instanceof ComplexMobAmphibious) && this.creature.isInWater()))) {
             this.creature.setSleeping(false);
             return false;
         }
-        if (this.creature.getCommandInt() != 0 || this.creature.isActive() || this.creature.isBeingRidden() || !this.creature.canMove() || (this.creature.isInWater() && !(this.creature instanceof ComplexMobAmphibious))) {
+        // Valid sleep checks
+        if (this.creature.getCommandInt() != 0 || this.creature.isActive() || !this.creature.canMove() || (this.creature.isInWater() && !(this.creature instanceof ComplexMobAmphibious))) {
             return false;
         }
-        if (isValidShelter(this.creature.getPosition().offset(Direction.UP)) || !this.usesHome) {
-            this.creature.setHome(this.creature.getPosition());
+        if (isValidShelter(this.creature.blockPosition()) || !this.usesHome) {
+            this.creature.setHome(this.creature.blockPosition());
             this.creature.setSleeping(true);
             return false;
         }
-        if (this.creature.getHome() == BlockPos.ZERO || !canEasilyReach(this.creature.getHome()) || this.creature.getDistanceSq(this.creature.getHomeAsVec()) > 100000) {
+        if (this.creature.getHome() == BlockPos.ZERO || !canEasilyReach(this.creature.getHome()) || this.creature.distanceToSqr(this.creature.getHomeAsVec()) > 100000) {
             this.creature.setHome(BlockPos.ZERO);
             BlockPos pos = this.checkForNewHome();
             if (pos == null) {
@@ -70,40 +71,40 @@ public class GotoSleepGoal extends Goal {
     }
 
     private boolean canEasilyReach(BlockPos target) {
-        //this.targetSearchDelay = 10 + this.creature.getRNG().nextInt(5);
-        Path path = this.creature.getNavigator().getPathToPos(target, 0);
+        //this.targetSearchDelay = 10 + this.creature.getRandom().nextInt(5);
+        Path path = this.creature.getNavigation().createPath(target, 0);
         if (path == null) {
             return false;
         } else {
-            PathPoint pathpoint = path.getFinalPathPoint();
+            Node pathpoint = path.getEndNode();
             if (pathpoint == null) {
                 return false;
             } else {
-                int i = pathpoint.x - MathHelper.floor(target.getX());
-                int j = pathpoint.z - MathHelper.floor(target.getZ());
+                int i = pathpoint.x - Mth.floor(target.getX());
+                int j = pathpoint.z - Mth.floor(target.getZ());
                 return (double)(i * i + j * j) <= 2.25D;
             }
         }
     }
 
     @Override
-    public void startExecuting() {
-        this.creature.getNavigator().tryMoveToXYZ(this.target.getX(), this.target.getY(), this.target.getZ(), this.speed);
+    public void start() {
+        this.creature.getNavigation().moveTo(this.target.x(), this.target.y(), this.target.z(), this.speed);
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
-        return !this.creature.getNavigator().noPath();
+    public boolean canContinueToUse() {
+        return !this.creature.getNavigation().isDone();
     }
 
     @Nullable
     public BlockPos checkForNewHome() {
-        Random random = this.creature.getRNG();
-        BlockPos blockpos = this.creature.getPosition();
+        Random random = this.creature.getRandom();
+        BlockPos blockpos = this.creature.blockPosition();
 
         for(int i = 0; i < 10; ++i) {
-            BlockPos blockpos1 = blockpos.add(random.nextInt(12) - 6, random.nextInt(4) - 2, random.nextInt(12) - 6);
-            if (isValidShelter(blockpos1) && this.creature.getBlockPathWeight(blockpos1) < 0.0F) {
+            BlockPos blockpos1 = blockpos.offset(random.nextInt(12) - 6, random.nextInt(4) - 2, random.nextInt(12) - 6);
+            if (isValidShelter(blockpos1) && this.creature.getWalkTargetValue(blockpos1) < 0.0F) {
                 return blockpos1;
             }
         }
@@ -113,7 +114,7 @@ public class GotoSleepGoal extends Goal {
 
     private boolean isValidShelter(BlockPos blockPos) {
         // We consider a valid shelter a dark location, with Sky Light Level less than 14 (mostly, to prevent mobs sleeping under broad daylight)
-        return !this.creature.world.canBlockSeeSky(blockPos);
-        //return this.creature.world.getLightFor(LightType.SKY, blockPos) <= 14; // Was 12
+        return !this.creature.level.canSeeSky(blockPos);
+        //return this.creature.level.getLightFor(LightType.SKY, blockPos) <= 14; // Was 12
     }
 }

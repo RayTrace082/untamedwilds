@@ -2,9 +2,10 @@ package untamedwilds.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMobTerrestrial;
@@ -55,7 +56,7 @@ public class EntityDataHolder {
         this.activityType = activityType;
 
         this.favouriteFood_input = favouriteFood;
-        this.favouriteFood = new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryCreate(this.favouriteFood_input)));
+        this.favouriteFood = new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(this.favouriteFood_input)));
         this.growing_time = growing_time;
         this.offspring = offspring;
         this.breeding_season = breeding;
@@ -67,34 +68,6 @@ public class EntityDataHolder {
         this.flags = flags;
         this.speciesData = speciesData;
     }
-
-    /*public EntityDataHolder(CompoundNBT nbtData) {
-        this.name = nbtData.getString("name");
-        this.modelScale = nbtData.getFloat("scale");
-        this.rarity = nbtData.getInt("rarity");
-        this.attack = nbtData.getFloat("attack");
-        this.health = nbtData.getFloat("health");
-        this.activityType = ComplexMobTerrestrial.ActivityType.valueOf(nbtData.getString("activityType"));
-        this.favouriteFood = nbtData.getString("favourite_food");
-        this.growing_time = nbtData.getInt("growing_time");
-        this.offspring = nbtData.getInt("offspring");
-        this.breeding_season = nbtData.getString("breeding_season");
-        Map<String, SoundEvent> sounds = new HashMap<>();
-        for (String nbt : nbtData.getCompound("sounds").keySet()) {
-            sounds.put(nbt, new SoundEvent(new ResourceLocation(nbtData.getCompound("sounds").getString(nbt))));
-        }
-        this.sounds = sounds;
-        Map<String, Integer> flags = new HashMap<>();
-        for (String nbt : nbtData.getCompound("flags").keySet()) {
-            flags.put(nbt, nbtData.getCompound("flags").getInt(nbt));
-        }
-        this.flags = flags;
-        List<SpeciesDataHolder> species = new ArrayList<>();
-        for (String nbt : nbtData.getCompound("species").keySet()) {
-            species.add(new SpeciesDataHolder(nbtData.getCompound("species").getCompound(nbt)));
-        };
-        this.speciesData = species;
-    }*/
 
     public String getString() {
         return this.name + ": Scale: " + this.modelScale + " Rarity: " + this.rarity + " Attack: " + this.attack + " Health: " + this.health +  " Ambient Sound: " + this.sounds;
@@ -149,7 +122,7 @@ public class EntityDataHolder {
     }
 
     public ItemStack getFavouriteFood(int i) {
-        if (this.speciesData.get(i).getFavouriteFood().equals("")) {
+        if (this.speciesData.get(i).getFavouriteFood().getItem().getRegistryName().toString().equals("minecraft:air")) {
             return this.favouriteFood;
         }
         return this.speciesData.get(i).getFavouriteFood();
@@ -222,37 +195,4 @@ public class EntityDataHolder {
     public List<SpeciesDataHolder> getSpeciesData() {
         return this.speciesData;
     }
-
-    /*public CompoundNBT writeEntityDataToNBT() {
-        CompoundNBT result = new CompoundNBT();
-        result.putString("name", this.name);
-        result.putFloat("scale", this.modelScale);
-        result.putInt("rarity", this.rarity);
-        result.putFloat("attack", this.attack);
-        result.putFloat("health", this.health);
-        result.putString("activityType", this.activityType.toString());
-        result.putString("favourite_food", this.favouriteFood);
-        result.putInt("growing_time", this.growing_time);
-        result.putInt("offspring", this.offspring);
-        result.putString("breeding_season", this.breeding_season);
-        CompoundNBT sounds = new CompoundNBT();
-        for (Map.Entry<String, SoundEvent> sound_data : this.sounds.entrySet()) {
-            if (sound_data.getValue().getRegistryName() != null) {
-                sounds.putString(sound_data.getKey(), sound_data.getValue().getRegistryName().toString());
-            }
-        }
-        result.put("sounds", sounds);
-        CompoundNBT flags = new CompoundNBT();
-        for (Map.Entry<String, Integer> flags_data : this.flags.entrySet()) {
-            flags.putInt(flags_data.getKey(), flags_data.getValue());
-        }
-        result.put("flags", flags);
-        CompoundNBT species = new CompoundNBT();
-        for (SpeciesDataHolder species_data : this.speciesData) {
-            species.put(species_data.getName(), species_data.writeEntityDataToNBT());
-        }
-        result.put("species", species);
-        UntamedWilds.LOGGER.info(result);
-        return result;
-    }*/
 }

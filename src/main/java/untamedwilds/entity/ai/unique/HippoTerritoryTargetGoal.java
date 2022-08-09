@@ -1,8 +1,7 @@
 package untamedwilds.entity.ai.unique;
 
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.EntityPredicates;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ai.target.HuntMobTarget;
 
@@ -11,21 +10,21 @@ import java.util.function.Predicate;
 public class HippoTerritoryTargetGoal<T extends LivingEntity> extends HuntMobTarget<T>  {
 
     public HippoTerritoryTargetGoal(ComplexMob creature, Class<T> classTarget, boolean checkSight, boolean onlyNearby, final Predicate<? super T > targetSelector) {
-        super(creature, classTarget, checkSight,200, false, EntityPredicates.NOT_SPECTATING);
+        super(creature, classTarget, checkSight,200, false, ((Predicate<LivingEntity>)null));
         this.targetEntitySelector = (Predicate<T>) entity -> {
             if (targetSelector != null && !targetSelector.test(entity)) {
                 return false;
             }
             else {
-                return EntityPredicates.NOT_SPECTATING.test(entity) && this.isSuitableTarget(entity, EntityPredicate.DEFAULT);
+                return TargetingConditions.forCombat().test(creature, entity) && this.canAttack(entity, TargetingConditions.DEFAULT);
             }
         };
     }
 
-    public boolean shouldExecute() {
-        if (goalOwner.isChild() || !goalOwner.isInWater()) {
+    public boolean canUse() {
+        if (mob.isBaby() || !mob.isInWater()) {
             return false;
         }
-        return super.shouldExecute();
+        return super.canUse();
     }
 }

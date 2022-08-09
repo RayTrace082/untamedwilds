@@ -2,8 +2,8 @@ package untamedwilds.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
 import untamedwilds.entity.fish.EntitySunfish;
 
 public class ModelSunfish extends AdvancedEntityModel<EntitySunfish> {
@@ -18,8 +18,8 @@ public class ModelSunfish extends AdvancedEntityModel<EntitySunfish> {
     public AdvancedModelBox body_fin_bottom;
 
     public ModelSunfish() {
-        this.textureWidth = 128;
-        this.textureHeight = 64;
+        this.texWidth = 128;
+        this.texHeight = 64;
         this.body_main = new AdvancedModelBox(this, 0, 0);
         this.body_main.setRotationPoint(0.0F, 11.0F, 0.0F);
         this.body_main.addBox(-3.0F, -13.0F, -8.0F, 6, 26, 16, 0.0F);
@@ -59,7 +59,7 @@ public class ModelSunfish extends AdvancedEntityModel<EntitySunfish> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(body_main);
     }
 
@@ -77,8 +77,8 @@ public class ModelSunfish extends AdvancedEntityModel<EntitySunfish> {
         );
     }
 
-    public void setRotationAngles(EntitySunfish sunfish, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float f = ageInTicks - (float)sunfish.ticksExisted / 10;
+    public void setupAnim(EntitySunfish sunfish, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        float f = ageInTicks - (float)sunfish.tickCount / 10;
         resetToDefaultPose();
 
         if (!sunfish.isInWater()) {

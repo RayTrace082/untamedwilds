@@ -55,6 +55,9 @@
       "spawnBiomes":[
         [
           "category|savanna"
+        ],
+        [
+          "category|swamp"
         ]
       ]
     }

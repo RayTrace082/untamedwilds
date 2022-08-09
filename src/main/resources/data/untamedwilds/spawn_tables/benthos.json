@@ -1,0 +1,11 @@
+{
+  "name":"benthos",
+  "entries":[
+    {
+      "type":"untamedwilds:giant_clam",
+      "weight":6,
+      "size_min":1,
+      "size_max":1
+    }
+  ]
+}

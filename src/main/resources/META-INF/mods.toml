@@ -1,10 +1,10 @@
 modLoader="javafml"
-loaderVersion="[31,)"
+loaderVersion="[38,)"
 license="GNU General Public License"
 issueTrackerURL="https://github.com/RayTrace082/untamedwilds/issues"
 [[mods]]
 modId="untamedwilds"
-version="1.5.4"
+version="2.2.0"
 displayName="Untamed Wilds"
 # updateJSONURL="http://myurl.me/" #optional
 displayURL="https://github.com/RayTrace082/untamedwilds/"
@@ -15,8 +15,15 @@ authors="RayTrace082"
 description='''Expanding on the natural world of Minecraft.'''
 
 [[dependencies.untamedwilds]]
+    modId="forge"
+    mandatory=true
+    versionRange="[38,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.untamedwilds]]
     modId="citadel"
     mandatory=true
-    versionRange="[1.6.0,)"
+    versionRange="[1.10,)"
     ordering="AFTER"
     side="BOTH"

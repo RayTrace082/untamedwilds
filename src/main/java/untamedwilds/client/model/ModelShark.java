@@ -4,8 +4,9 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.fish.EntityShark;
 
 public class ModelShark extends AdvancedEntityModel<EntityShark> {
@@ -36,8 +37,8 @@ public class ModelShark extends AdvancedEntityModel<EntityShark> {
     private static AdvancedModelBox[] bodyParts_angry;
 
     public ModelShark() {
-        this.textureWidth = 128;
-        this.textureHeight = 64;
+        this.texWidth = 128;
+        this.texHeight = 64;
         this.head_hammer = new AdvancedModelBox(this, 0, 56);
         this.head_hammer.setRotationPoint(0.0F, -0.3F, -6.2F);
         this.head_hammer.addBox(-8.0F, -1.5F, -2.0F, 16, 3, 5, 0.0F);
@@ -146,7 +147,7 @@ public class ModelShark extends AdvancedEntityModel<EntityShark> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(body_main);
     }
 
@@ -175,7 +176,7 @@ public class ModelShark extends AdvancedEntityModel<EntityShark> {
         animator.resetKeyframe(5);
     }
 
-    public void setRotationAngles(EntityShark shark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityShark shark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(shark);
         float globalSpeed = 0.6f;
@@ -192,15 +193,27 @@ public class ModelShark extends AdvancedEntityModel<EntityShark> {
 
         // Pitch/Yaw handler
         if (shark.isInWater()) {
-            this.setRotateAngle(body_main, shark.rotationPitch * ((float) Math.PI / 180F), 0, 0);
+            this.setRotateAngle(body_main, shark.getXRot() * ((float) Math.PI / 180F), 0, 0);
         }
 
         // Movement Animation
-        if (!shark.isAngry()) {
+        if (!shark.isAngry())
             chainSwing(bodyParts_passive, globalSpeed * 0.8F, globalDegree, -5, limbSwing / 3, Math.max(0.3F, limbSwingAmount));
-        }
-        else {
+        else
             chainSwing(bodyParts_angry, globalSpeed, globalDegree / 1.5F, -4, limbSwing / 3, Math.max(0.3F, limbSwingAmount));
+        float partialTicks = ageInTicks - shark.tickCount;
+        float renderYaw = (float)shark.getMovementOffsets(0, partialTicks)[0];
+        this.body_tail_1.rotateAngleY += smartClamp((float)shark.getMovementOffsets(15, partialTicks)[0] - renderYaw, -40, 40) * ((float) Math.PI / 180F);
+        this.body_tail_2.rotateAngleY += smartClamp((float)shark.getMovementOffsets(17, partialTicks)[0] - renderYaw, -40, 40) * ((float) Math.PI / 180F);
+        this.body_main.rotateAngleZ += smartClamp((float)shark.getMovementOffsets(7, partialTicks)[0] - renderYaw, -20, 20) * ((float) Math.PI / 180F);
+    }
+
+    // This wrapper handles cases where the returned MovementOffset is a large negative angle, which throws off the clamp function
+    public float smartClamp(float angle, int min, int max) {
+        float val = Math.abs(angle);
+        if (val > 180) {
+            angle = 360 - val;
         }
+        return Mth.clamp(angle, min, max);
     }
 }

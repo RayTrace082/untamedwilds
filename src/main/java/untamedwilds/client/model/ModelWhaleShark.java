@@ -2,9 +2,9 @@ package untamedwilds.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.fish.EntityWhaleShark;
 
 public class ModelWhaleShark extends AdvancedEntityModel<EntityWhaleShark> {
@@ -29,8 +29,8 @@ public class ModelWhaleShark extends AdvancedEntityModel<EntityWhaleShark> {
     private static AdvancedModelBox[] bodyParts_passive;
 
     public ModelWhaleShark() {
-        this.textureWidth = 128;
-        this.textureHeight = 128;
+        this.texWidth = 128;
+        this.texHeight = 128;
         this.fin_pelvic_right_1 = new AdvancedModelBox(this, 40, 102);
         this.fin_pelvic_right_1.setRotationPoint(3.0F, 4.5F, 5.0F);
         this.fin_pelvic_right_1.addBox(-1.0F, 0.0F, -3.5F, 2, 7, 7, 0.0F);
@@ -118,7 +118,7 @@ public class ModelWhaleShark extends AdvancedEntityModel<EntityWhaleShark> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(body_main);
     }
 
@@ -143,7 +143,7 @@ public class ModelWhaleShark extends AdvancedEntityModel<EntityWhaleShark> {
         );
     }
 
-    public void setRotationAngles(EntityWhaleShark whale_shark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityWhaleShark whale_shark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
 
         float globalSpeed = 0.6f;
@@ -155,11 +155,11 @@ public class ModelWhaleShark extends AdvancedEntityModel<EntityWhaleShark> {
 
         // Pitch/Yaw handler
         if (whale_shark.isInWater()) {
-            this.setRotateAngle(body_main, MathHelper.clamp(whale_shark.rotationPitch, -20, 20) * ((float) Math.PI / 180F), 0, 0);
+            this.setRotateAngle(body_main, Mth.clamp(whale_shark.getXRot(), -20, 20) * ((float) Math.PI / 180F), 0, 0);
         }
 
         // Movement Animation
-        float partialTicks = ageInTicks - whale_shark.ticksExisted;
+        float partialTicks = ageInTicks - whale_shark.tickCount;
         float renderYaw = (float)whale_shark.getMovementOffsets(0, partialTicks)[0];
         chainSwing(bodyParts_passive, globalSpeed * 0.8F, globalDegree * 0.75F, -5, limbSwing / 4, Math.max(0.2F, limbSwingAmount));
         this.body_tail_1.rotateAngleY += smartClamp((float)whale_shark.getMovementOffsets(15, partialTicks)[0] - renderYaw, -40, 40) * ((float) Math.PI / 180F);
@@ -173,7 +173,7 @@ public class ModelWhaleShark extends AdvancedEntityModel<EntityWhaleShark> {
         if (val > 180) {
             angle = 360 - val;
         }
-        return MathHelper.clamp(angle, min, max);
+        return Mth.clamp(angle, min, max);
     }
 }
 

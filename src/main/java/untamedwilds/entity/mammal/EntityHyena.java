@@ -1,28 +1,25 @@
 package untamedwilds.entity.mammal;
 
 import com.github.alexthe666.citadel.animation.Animation;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.*;
 import untamedwilds.entity.ai.*;
-import untamedwilds.entity.ai.target.HuntPackMobTarget;
-import untamedwilds.entity.ai.target.HurtPackByTargetGoal;
-import untamedwilds.entity.ai.target.ProtectChildrenTarget;
-import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
+import untamedwilds.entity.ai.target.*;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModSounds;
 import untamedwilds.util.EntityUtils;
@@ -35,18 +32,17 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
     public static Animation IDLE_TALK;
     public static Animation ATTACK_BITE;
 
-    public EntityHyena(EntityType<? extends ComplexMob> type, World worldIn) {
+    public EntityHyena(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
         IDLE_TALK = Animation.create(20);
         ATTACK_POUNCE = Animation.create(42);
         ATTACK_BITE = Animation.create(15);
-        this.stepHeight = 1F;
-        this.experienceValue = 10;
+        this.maxUpStep = 1F;
         this.turn_speed = 0.1F;
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(1, new SmartSwimGoal(this));
+        this.goalSelector.addGoal(1, new SmartSwimGoal_Land(this));
         this.goalSelector.addGoal(2, new FindItemsGoal(this, 12, true));
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1.8D, false, 1, false, false));
         this.goalSelector.addGoal(3, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> getEcoLevel(input) > getEcoLevel(this)));
@@ -55,14 +51,15 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(5, new SmartWanderGoal(this, 1D, true));
         this.goalSelector.addGoal(6, new SmartLookAtGoal(this, LivingEntity.class, 10.0F));
-        this.targetSelector.addGoal(1, new HurtPackByTargetGoal(this).setCallsForHelp(EntityHyena.class));
-        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, 0, true, true, input -> !(input instanceof EntityHyena)));
+        this.targetSelector.addGoal(1, new HurtPackByTargetGoal(this).setAlertOthers(EntityHyena.class));
+        this.targetSelector.addGoal(2, new ProtectChildrenTarget<>(this, LivingEntity.class, true, input -> !(input instanceof EntityHyena)));
         this.targetSelector.addGoal(3, new HuntPackMobTarget<>(this, LivingEntity.class, true, 30, false, input -> getEcoLevel(input) < getEcoLevel(this)));
+        this.targetSelector.addGoal(4, new AngrySleeperTarget<>(this, LivingEntity.class, true));
     }
 
     @Override
-    protected void setupTamedAI() {
-        if (this.isTamed()) {
+    protected void reassessTameGoals() {
+        if (this.isTame()) {
             if (UntamedWilds.DEBUG) {
                 UntamedWilds.LOGGER.info("Updating AI tasks for tamed mob");
             }
@@ -72,63 +69,64 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
         }
     }
 
-    public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 24.0D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
-                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.2);
+    public static AttributeSupplier.Builder registerAttributes() {
+        return LivingEntity.createLivingAttributes()
+                .add(Attributes.ATTACK_DAMAGE, 6.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.4D)
+                .add(Attributes.MOVEMENT_SPEED, 0.2D)
+                .add(Attributes.FOLLOW_RANGE, 24.0D)
+                .add(Attributes.MAX_HEALTH, 20.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.2);
     }
 
     public boolean wantsToBreed() {
-        if (ConfigGamerules.naturalBreeding.get() && this.growingAge == 0) {
+        if (ConfigGamerules.naturalBreeding.get() && this.age == 0) {
             return this.getHunger() >= 80;
         }
         return false;
     }
 
     @Override
-    public void livingTick() {
-        if (!this.world.isRemote) {
+    public void aiStep() {
+        if (!this.level.isClientSide) {
             if (this.herd == null) {
                 IPackEntity.initPack(this);
             }
             else {
                 this.herd.tick();
             }
-            if (this.world.getGameTime() % 1000 == 0) {
+            if (this.level.getGameTime() % 1000 == 0) {
                 this.addHunger(-10);
                 if (!this.isStarving()) {
                     this.heal(1.0F);
                 }
             }
             // Random idle animations
-            if (this.getAnimation() == NO_ANIMATION && this.getAttackTarget() == null && !this.isSleeping()) {
+            if (this.getAnimation() == NO_ANIMATION && this.getTarget() == null && !this.isSleeping()) {
                 if (this.getCommandInt() == 0) {
-                    int i = this.rand.nextInt(3000);
+                    int i = this.random.nextInt(3000);
                     if (i == 0 && !this.isInWater() && this.isNotMoving() && this.canMove() && this.isActive()) {
-                        this.getNavigator().clearPath();
+                        this.getNavigation().stop();
                         this.setSitting(true);
                     }
                     if ((i == 1 || this.isInWater()) && this.isSitting() && this.getCommandInt() < 2) {
                         this.setSitting(false);
                     }
-                    if (i > 2980 && !this.isInWater() && !this.isChild()) {
+                    if (i > 2980 && !this.isInWater() && !this.isBaby()) {
                         this.setAnimation(IDLE_TALK);
                     }
                 }
             }
-            this.setAngry(this.getAttackTarget() != null);
+            this.setAngry(this.getTarget() != null);
             if (this.getAnimation() == ATTACK_POUNCE && this.getAnimationTick() == 10) {
-                this.getMoveHelper().strafe(2F, 0);
-                this.getJumpController().setJumping();
+                this.getMoveControl().strafe(2F, 0);
+                this.getJumpControl().jump();
             }
-            if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1) {
-                this.playSound(this.getAmbientSound(), this.getSoundVolume(), this.getSoundPitch());
+            if (this.getAnimation() == IDLE_TALK && this.getAnimationTick() == 1 && this.getAmbientSound() != null) {
+                this.playSound(this.getAmbientSound(), this.getSoundVolume(), this.getVoicePitch());
             }
-            if (this.getAttackTarget() != null && this.ticksExisted % 120 == 0) {
-                this.playSound(this.getThreatSound(), this.getSoundVolume(), this.getSoundPitch());
+            if (this.getTarget() != null && this.tickCount % 120 == 0) {
+                this.playSound(this.getThreatSound(), this.getSoundVolume(), this.getVoicePitch());
             }
         }
         if (this.getAnimation() != NO_ANIMATION) {
@@ -136,12 +134,12 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
                 this.playSound(ModSounds.ENTITY_ATTACK_BITE, 1.5F, 0.8F);
             }
         }
-        super.livingTick();
+        super.aiStep();
     }
 
-    public boolean attackEntityAsMob(Entity entityIn) {
-        boolean flag = super.attackEntityAsMob(entityIn);
-        if (flag && this.getAnimation() == NO_ANIMATION && !this.isChild()) {
+    public boolean doHurtTarget(Entity entityIn) {
+        boolean flag = super.doHurtTarget(entityIn);
+        if (flag && this.getAnimation() == NO_ANIMATION && !this.isBaby()) {
             Animation anim = chooseAttackAnimation();
             this.setAnimation(anim);
         }
@@ -149,38 +147,38 @@ public class EntityHyena extends ComplexMobTerrestrial implements INewSkins, ISp
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.WOLF_STEP, 0.15F, 1.0F);
     }
 
     private Animation chooseAttackAnimation() {
-        switch (this.rand.nextInt(4)) {
-            case 0: return ATTACK_POUNCE;
-            case 1: return ATTACK_POUNCE;
-            default: return ATTACK_BITE;
-        }
+        return switch (this.random.nextInt(4)) {
+            case 0 -> ATTACK_POUNCE;
+            case 1 -> ATTACK_POUNCE;
+            default -> ATTACK_BITE;
+        };
     }
 
     @Nullable
-    public EntityHyena func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
-        return create_offspring(new EntityHyena(ModEntity.HYENA, this.world));
+    public EntityHyena getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+        return create_offspring(new EntityHyena(ModEntity.HYENA.get(), this.level));
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
-        ItemStack itemstack = player.getHeldItem(Hand.MAIN_HAND);
-        if (hand == Hand.MAIN_HAND && !this.world.isRemote()) {
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(InteractionHand.MAIN_HAND);
+        if (hand == InteractionHand.MAIN_HAND && !this.level.isClientSide()) {
 
-            if (!this.isTamed() && this.isChild() && EntityUtils.hasFullHealth(this) && this.isFavouriteFood(itemstack)) {
-                this.playSound(SoundEvents.ENTITY_HORSE_EAT, 1.5F, 0.8F);
-                if (this.getRNG().nextInt(3) == 0) {
-                    this.setTamedBy(player);
-                    EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.HEART, 3, 6);
+            if (!this.isTame() && this.isBaby() && EntityUtils.hasFullHealth(this) && this.isFood(itemstack)) {
+                this.playSound(SoundEvents.HORSE_EAT, 1.5F, 0.8F);
+                if (this.getRandom().nextInt(3) == 0) {
+                    this.tame(player);
+                    EntityUtils.spawnParticlesOnEntity(this.level, this, ParticleTypes.HEART, 3, 6);
                 } else {
-                    EntityUtils.spawnParticlesOnEntity(this.world, this, ParticleTypes.SMOKE, 3, 3);
+                    EntityUtils.spawnParticlesOnEntity(this.level, this, ParticleTypes.SMOKE, 3, 3);
                 }
             }
         }
 
-        return super.func_230254_b_(player, hand);
+        return super.mobInteract(player, hand);
     }
 
     @Override

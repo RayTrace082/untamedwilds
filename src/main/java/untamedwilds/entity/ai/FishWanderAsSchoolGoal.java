@@ -1,8 +1,8 @@
 package untamedwilds.entity.ai;
 
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.RandomSwimmingGoal;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.phys.Vec3;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
 import untamedwilds.entity.IPackEntity;
@@ -23,30 +23,30 @@ public class FishWanderAsSchoolGoal extends RandomSwimmingGoal {
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (!(this.creature instanceof IPackEntity)) {
+    public boolean canUse() {
+        if (!(this.mob instanceof IPackEntity)) {
             return false;
         }
         if (this.taskOwner.herd == null || this.taskOwner.herd.getLeader() != this.taskOwner) {
             return false;
         }
-        return super.shouldExecute();
+        return super.canUse();
     }
 
     @Override
-    protected Vector3d getPosition() {
-        return RandomPositionGenerator.findRandomTarget(this.creature, 20, 7);
+    protected Vec3 getPosition() {
+        return DefaultRandomPos.getPos(this.mob, 20, 7);
     }
 
     @Override
-    public void startExecuting() {
-        this.creature.getNavigator().tryMoveToXYZ(this.x, this.y, this.z, this.speed);
+    public void start() {
+        this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
         for (ComplexMob herd_member : this.taskOwner.herd.creatureList) {
-            if (this.taskOwner.getDistance(this.taskOwner.herd.getLeader()) < this.maxDist) {
-                double posX = this.x + (herd_member.getPosX() - this.taskOwner.getPosX());
-                double posY = this.y + (herd_member.getPosY() - this.taskOwner.getPosY());
-                double posZ = this.z + (herd_member.getPosZ() - this.taskOwner.getPosZ());
-                herd_member.getNavigator().tryMoveToXYZ(posX, posY, posZ, this.speed);
+            if (this.taskOwner.distanceTo(this.taskOwner.herd.getLeader()) < this.maxDist) {
+                double posX = this.wantedX + (herd_member.getX() - this.taskOwner.getX());
+                double posY = this.wantedY + (herd_member.getY() - this.taskOwner.getY());
+                double posZ = this.wantedZ + (herd_member.getZ() - this.taskOwner.getZ());
+                herd_member.getNavigation().moveTo(posX, posY, posZ, this.speedModifier);
             }
         }
     }

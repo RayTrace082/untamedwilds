@@ -1,17 +1,19 @@
 package untamedwilds.world;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.fluid.FluidState;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.gen.Heightmap;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.BlockGetter;
 import untamedwilds.UntamedWilds;
+import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.INeedsPostUpdate;
 import untamedwilds.entity.ISpecies;
@@ -22,44 +24,44 @@ import java.util.Objects;
 import java.util.Random;
 
 public class FaunaSpawn {
-
-    private static boolean isSpawnableSpace(IBlockReader worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn, EntityType<?> entityTypeIn) {
-        if (state.hasOpaqueCollisionShape(worldIn, pos)) {
+    
+    private static boolean isSpawnableSpace(BlockGetter worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn, EntityType<?> entityTypeIn) {
+        if (state.isCollisionShapeFullBlock(worldIn, pos)) {
             return false;
-        } else if (state.canProvidePower()) {
+        } else if (state.isSignalSource()) {
             return false;
         } else if (!fluidStateIn.isEmpty()) {
             return false;
-        } else if (state.isIn(BlockTags.PREVENT_MOB_SPAWNING_INSIDE)) {
+        } else if (state.is(BlockTags.PREVENT_MOB_SPAWNING_INSIDE)) {
             return false;
         } else {
-            return !entityTypeIn.func_233597_a_(state);
+            return !entityTypeIn.isBlockDangerous(state);
         }
     }
 
-    private static boolean canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.PlacementType placeType, IWorldReader worldIn, BlockPos pos, @Nullable EntityType<?> entityTypeIn) {
-        if (placeType == EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS) {
+    private static boolean canCreatureTypeSpawnAtLocation(SpawnPlacements.Type placeType, LevelReader worldIn, BlockPos pos, @Nullable EntityType<?> entityTypeIn) {
+        if (placeType == SpawnPlacements.Type.NO_RESTRICTIONS) {
             return true;
-        } else if (entityTypeIn != null && worldIn.getWorldBorder().contains(pos)) {
+        } else if (entityTypeIn != null && worldIn.getWorldBorder().isWithinBounds(pos)) {
             return canSpawnAtBody(placeType, worldIn, pos, entityTypeIn);
         }
         return false;
     }
 
-    private static boolean canSpawnAtBody(EntitySpawnPlacementRegistry.PlacementType placeType, IWorldReader worldIn, BlockPos pos, @Nullable EntityType<?> entityTypeIn) {
+    private static boolean canSpawnAtBody(SpawnPlacements.Type placeType, LevelReader worldIn, BlockPos pos, @Nullable EntityType<?> entityTypeIn) {
         BlockState blockstate = worldIn.getBlockState(pos);
         FluidState ifluidstate = worldIn.getFluidState(pos);
         //BlockPos blockpos = pos.up();
-        BlockPos blockpos1 = pos.down();
+        BlockPos blockpos1 = pos.below();
         switch(placeType) {
             case IN_WATER:
-                return ifluidstate.isTagged(FluidTags.WATER) /*&& worldIn.getFluidState(blockpos1).isTagged(FluidTags.WATER) && !worldIn.getBlockState(blockpos).isNormalCube(worldIn, blockpos)*/;
+                return ifluidstate.is(FluidTags.WATER) /*&& worldIn.getFluidState(blockpos1).isTagged(FluidTags.WATER) && !worldIn.getBlockState(blockpos).isNormalCube(worldIn, blockpos)*/;
             case IN_LAVA:
-                return ifluidstate.isTagged(FluidTags.LAVA);
+                return ifluidstate.is(FluidTags.LAVA);
             case ON_GROUND:
             default:
                 BlockState blockstate1 = worldIn.getBlockState(blockpos1);
-                if (!blockstate1.canCreatureSpawn(worldIn, blockpos1, placeType, entityTypeIn)) {
+                if (!blockstate1.isValidSpawn(worldIn, blockpos1, placeType, entityTypeIn)) {
                     return false;
                 } else {
                     return isSpawnableSpace(worldIn, pos, blockstate, ifluidstate, entityTypeIn); /* && isSpawnableSpace(worldIn, blockpos, worldIn.getBlockState(blockpos), worldIn.getFluidState(blockpos)*/
@@ -71,19 +73,22 @@ public class FaunaSpawn {
     //    return performWorldGenSpawning(entityType, spawnType, Heightmap.Type.WORLD_SURFACE, worldIn, pos, rand, groupSize);
     //}
 
-    public static boolean performWorldGenSpawning(EntityType<?> entityType, EntitySpawnPlacementRegistry.PlacementType spawnType, @Nullable Heightmap.Type heightMap, ISeedReader worldIn, BlockPos pos, Random rand, int groupSize) {
+    public static boolean performWorldGenSpawning(EntityType<?> entityType, SpawnPlacements.Type spawnType, @Nullable Heightmap.Types heightMap, ServerLevelAccessor worldIn, BlockPos pos, Random random, int groupSize) {
         //UntamedWilds.LOGGER.info(entityType);
-        if (entityType != null && !worldIn.isRemote()) {
-            int i = pos.getX() + rand.nextInt(16);
-            int j = pos.getZ() + rand.nextInt(16);
+        if (ConfigMobControl.dimensionBlacklist.get().contains(worldIn.getLevel().dimension().location().toString()))
+            return false;
+
+        if (entityType != null && !worldIn.isClientSide()) {
+            int i = pos.getX() + random.nextInt(16);
+            int j = pos.getZ() + random.nextInt(16);
 
             if (heightMap != null) {
-                pos.add(i, 0, j);
-                pos = worldIn.getHeight(heightMap, pos);
-                //worldIn.setBlockState(pos, Blocks.TORCH.getDefaultState(), 2);
+                pos.offset(i, 0, j);
+                pos = worldIn.getHeightmapPos(heightMap, pos);
+                //worldIn.setBlockState(pos, Blocks.TORCH.defaultBlockState(), 2);
             }
 
-            if (rand.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(Objects.requireNonNull(worldIn.getBiome(pos).getRegistryName()))) {
+            if (random.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(Objects.requireNonNull(worldIn.getBiome(pos).value().getRegistryName()))) {
                 int k = 1;
                 int species = -1;
 
@@ -93,75 +98,72 @@ public class FaunaSpawn {
                     int z = pos.getZ();
                     if (packSize != 0) {
                         // Do not offset the first entity of the pack
-                        x += rand.nextInt(6);
-                        z += rand.nextInt(6);
+                        x += random.nextInt(6);
+                        z += random.nextInt(6);
                     }
 
                     for(int attempt = 0; attempt < 4; ++attempt) { // 4 attempts at spawning are made for each mob
                         if (attempt != 0) {
                             if (attempt == 1) {
-                                y += 1;
+                                y += ConfigMobControl.treeSpawnBias.get();
                             }
-                            x += rand.nextInt(2);
-                            z += rand.nextInt(2);
+                            x += random.nextInt(2);
+                            z += random.nextInt(2);
                         }
 
                         BlockPos blockpos = new BlockPos(x, y, z);
                         //BlockPos blockpos = getTopSolidOrLiquidBlock(worldIn, entityType, x, z);
 
-                        if (entityType.isSummonable() && canCreatureTypeSpawnAtLocation(spawnType, worldIn, blockpos, entityType)) {
+                        if (entityType.canSummon() && canCreatureTypeSpawnAtLocation(spawnType, worldIn, blockpos, entityType)) {
                             float f = entityType.getWidth();
-                            double d0 = MathHelper.clamp(x, (double)blockpos.getX() + (double)f, (double)blockpos.getX() + 16.0D - (double)f);
-                            double d1 = MathHelper.clamp(z, (double)blockpos.getZ() + (double)f, (double)blockpos.getZ() + 16.0D - (double)f);
-                            if (!worldIn.hasNoCollisions(entityType.getBoundingBoxWithSizeApplied(d0, y, d1)) || !EntitySpawnPlacementRegistry.canSpawnEntity(entityType, worldIn, SpawnReason.CHUNK_GENERATION, blockpos, worldIn.getRandom())) {
+                            double d0 = Mth.clamp(x, (double)blockpos.getX() + (double)f, (double)blockpos.getX() + 16.0D - (double)f);
+                            double d1 = Mth.clamp(z, (double)blockpos.getZ() + (double)f, (double)blockpos.getZ() + 16.0D - (double)f);
+                            if (!worldIn.noCollision(entityType.getAABB(d0, y, d1)) || !SpawnPlacements.checkSpawnRules(entityType, worldIn, MobSpawnType.CHUNK_GENERATION, blockpos, worldIn.getRandom())) {
                                 continue;
                             }
                             Entity entity;
                             try {
-                                entity = entityType.create(worldIn.getWorld());
+                                entity = entityType.create(worldIn.getLevel());
                             } catch (Exception exception) {
                                 UntamedWilds.LOGGER.warn("Failed to create mob", exception);
                                 continue;
                             }
 
                             assert entity != null;
-                            entity.setLocationAndAngles(blockpos.getX(), blockpos.getY(), blockpos.getZ(), rand.nextFloat() * 360.0F, 0.0F);
-                            if (entity instanceof MobEntity) {
-                                MobEntity mobentity = (MobEntity)entity;
-                                if (net.minecraftforge.common.ForgeHooks.canEntitySpawn(mobentity, worldIn, d0, blockpos.getY(), d1, null, SpawnReason.CHUNK_GENERATION) == -1) continue;
-                                if (mobentity.canSpawn(worldIn, SpawnReason.CHUNK_GENERATION) && mobentity.isNotColliding(worldIn)) {
-                                    mobentity.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(mobentity.getPosition()), SpawnReason.CHUNK_GENERATION, null, null);
-                                    if (mobentity instanceof ComplexMob && mobentity.isAlive()) {
-                                        if (mobentity instanceof ISpecies) {
+                            entity.moveTo(blockpos.getX(), blockpos.getY(), blockpos.getZ(), random.nextFloat() * 360.0F, 0.0F);
+                            if (entity instanceof Mob mobEntity) {
+                                if (net.minecraftforge.common.ForgeHooks.canEntitySpawn(mobEntity, worldIn, d0, blockpos.getY(), d1, null, MobSpawnType.CHUNK_GENERATION) == -1) continue;
+                                if (mobEntity.checkSpawnRules(worldIn, MobSpawnType.CHUNK_GENERATION) && worldIn.noCollision(entity)) {
+                                    mobEntity.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(mobEntity.blockPosition()), MobSpawnType.CHUNK_GENERATION, null, null);
+                                    if (mobEntity instanceof ComplexMob && mobEntity.isAlive()) {
+                                        if (mobEntity instanceof ISpecies) {
                                             if (species == -1) {
-                                                species = ((ComplexMob)mobentity).getVariant();
+                                                species = ((ComplexMob)mobEntity).getVariant();
                                                 if (species != 99)
                                                     k = EntityUtils.getPackSize(entityType, species);
                                             } else {
-                                                ((ComplexMob)mobentity).setVariant(species);
-                                                ((ComplexMob)mobentity).chooseSkinForSpecies((ComplexMob)mobentity, false);
-                                                if (mobentity instanceof INeedsPostUpdate) {
-                                                    ((INeedsPostUpdate)mobentity).updateAttributes();
+                                                ((ComplexMob)mobEntity).setVariant(species);
+                                                ((ComplexMob)mobEntity).chooseSkinForSpecies((ComplexMob)mobEntity, false);
+                                                if (mobEntity instanceof INeedsPostUpdate) {
+                                                    ((INeedsPostUpdate)mobEntity).updateAttributes();
                                                 }
                                             } // Wrong spawning messages are most likely due to their inclusion on onMobSpawning, not here
                                         }
                                         // Two possible fail-states, entity being assigned variant 99 (no valid variant found) or the Entity Data does not exist
-                                        if (((ComplexMob)mobentity).getVariant() == 99 || !ComplexMob.ENTITY_DATA_HASH.containsKey(entityType)) {
-                                            mobentity.remove();
+                                        if (((ComplexMob)mobEntity).getVariant() == 99 || !ComplexMob.ENTITY_DATA_HASH.containsKey(entityType)) {
+                                            mobEntity.remove(Entity.RemovalReason.DISCARDED);
                                             return false;
                                         }
                                     }
-                                    if (UntamedWilds.DEBUG && mobentity instanceof ComplexMob && mobentity.isAlive()) {
-                                        if (mobentity instanceof ISpecies) {
-                                            UntamedWilds.LOGGER.info("Spawned: " + ((ComplexMob)mobentity).getGenderString() + " " + ((ISpecies)mobentity).getSpeciesName());
-                                        }
-                                        else {
-                                            UntamedWilds.LOGGER.info("Spawned: " + ((ComplexMob)mobentity).getGenderString() + " " + mobentity.getName().getString());
-                                        }
-                                    }
 
-                                    if (mobentity.isAlive()) {
-                                        worldIn.func_242417_l(mobentity);
+                                    if (UntamedWilds.DEBUG && mobEntity instanceof ComplexMob && mobEntity.isAlive()) {
+                                        if (mobEntity instanceof ISpecies)
+                                            UntamedWilds.LOGGER.info("Spawned: " + ((ComplexMob)mobEntity).getGenderString() + " " + ((ISpecies)mobEntity).getSpeciesName());
+                                        else
+                                            UntamedWilds.LOGGER.info("Spawned: " + ((ComplexMob)mobEntity).getGenderString() + " " + mobEntity.getName().getString());
+                                    }
+                                    if (mobEntity.isAlive()) {
+                                        worldIn.addFreshEntityWithPassengers(mobEntity);
                                     }
                                     break;
                                 }
@@ -175,9 +177,9 @@ public class FaunaSpawn {
         return false;
     }
 
-    /*private static BlockPos getTopSolidOrLiquidBlock(IWorldReader worldIn, @Nullable EntityType<?> entity, int posX, int posZ) {
-        BlockPos blockpos = new BlockPos(posX, worldIn.getHeight(EntitySpawnPlacementRegistry.func_209342_b(entity), posX, posZ), posZ);
-        BlockPos blockpos1 = blockpos.down();
+    /*private static BlockPos getTopSolidOrLiquidBlock(LevelReader worldIn, @Nullable EntityType<?> entity, int posX, int posZ) {
+        BlockPos blockpos = new BlockPos(posX, worldIn.getBbHeight(EntitySpawnPlacementRegistry.func_209342_b(entity), posX, posZ), posZ);
+        BlockPos blockpos1 = blockpos.below();
         return worldIn.getBlockState(blockpos1).allowsMovement(worldIn, blockpos1, PathType.WATER) ? blockpos1 : blockpos;
     }*/
 }

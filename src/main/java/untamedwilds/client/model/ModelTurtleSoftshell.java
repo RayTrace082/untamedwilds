@@ -2,9 +2,9 @@ package untamedwilds.client.model;
 
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.reptile.EntitySoftshellTurtle;
 
 public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTurtle> {
@@ -22,8 +22,8 @@ public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTur
     public AdvancedModelBox head_nose;
 
     public ModelTurtleSoftshell() {
-        this.textureWidth = 64;
-        this.textureHeight = 32;
+        this.texWidth = 64;
+        this.texHeight = 32;
         this.neck = new AdvancedModelBox(this, 18, 0);
         this.neck.setRotationPoint(0.0F, 0.0F, -0.01F);
         this.neck.addBox(-1.0F, -1.0F, -4.0F, 2, 2, 4, 0.0F);
@@ -81,7 +81,7 @@ public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTur
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.main_body);
     }
 
@@ -91,7 +91,7 @@ public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTur
         );
     }
 
-    public void setRotationAngles(EntitySoftshellTurtle turtle, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntitySoftshellTurtle turtle, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetToDefaultPose();
 
         limbSwing = ageInTicks;
@@ -109,10 +109,10 @@ public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTur
             progressRotation(neck, turtle.baskProgress, -0.5009094953223726F, 0, 0.0F, 100);
             progressRotation(main_head, turtle.baskProgress, 0.36425021489121656F, 0, 0.0F, 100);
         }
-        if (turtle.isInWater() && turtle.isAirBorne) {
-            float pitch = MathHelper.clamp(turtle.rotationPitch, -45F, 45.0F) - 10;
+        if (turtle.isInWater() && !turtle.isOnGround()) {
+            float pitch = Mth.clamp(turtle.getXRot(), -45F, 45.0F) - 10;
             this.setRotateAngle(main_body, (float) (pitch * Math.PI / 180F), 0, 0);
-            //this.setRotateAngle(main_body, (float) (turtle.getMotion().getY() * -30 * Math.PI / 180F), 0, 0);
+            //this.setRotateAngle(main_body, (float) (turtle.getDeltaMovement().getY() * -30 * Math.PI / 180F), 0, 0);
         }
 
         this.main_body.setScale((float) (1F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F), (float) (1F + Math.sin(ageInTicks / 16) * 0.06F));

@@ -10,7 +10,8 @@
     "threat":"untamedwilds:entity.big_cat.warning"
   },
   "flags":{
-    "dimorphism":0
+    "fluffyTail": 0,
+    "dimorphism": 0
   },
   "species":[
     {
@@ -97,6 +98,7 @@
       "favourite_food":"minecraft:beef",
       "attack":8,
       "health":40,
+      "skins": 20,
       "flags":{
         "dimorphism":1,
         "groupCount":4
@@ -119,6 +121,9 @@
       "favourite_food":"minecraft:chicken",
       "attack":6,
       "health":25,
+      "sounds":{
+        "ambient": "untamedwilds:entity.big_cat.ambient_meow"
+      },
       "flags":{
 
       },
@@ -140,6 +145,9 @@
       "favourite_food":"minecraft:rabbit",
       "attack":6,
       "health":30,
+      "sounds":{
+        "ambient": "untamedwilds:entity.big_cat.ambient_meow"
+      },
       "flags":{
 
       },
@@ -188,6 +196,9 @@
       "favourite_food":"minecraft:beef",
       "attack":8,
       "health":30,
+      "sounds":{
+        "ambient": "untamedwilds:entity.big_cat.ambient_meow"
+      },
       "flags":{
         "fluffyTail":1
       },

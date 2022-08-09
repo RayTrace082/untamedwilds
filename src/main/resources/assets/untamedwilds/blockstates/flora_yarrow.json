@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"": [
+			{	"model": "untamedwilds:block/flora_yarrow" },
+			{	"model": "untamedwilds:block/flora_yarrow", "y": 90 },
+			{	"model": "untamedwilds:block/flora_yarrow", "y": 180 },
+			{	"model": "untamedwilds:block/flora_yarrow", "y": 270 }
+		]
+	}
+}

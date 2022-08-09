@@ -4,9 +4,9 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityAardvark;
 
 public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
@@ -36,8 +36,8 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
     private final ModelAnimator animator;
 
     public ModelAardvark() {
-        this.textureWidth = 64;
-        this.textureHeight = 32;
+        this.texWidth = 64;
+        this.texHeight = 32;
         this.leg_right_1 = new AdvancedModelBox(this, 46, 15);
         this.leg_right_1.mirror = true;
         this.leg_right_1.setRotationPoint(0.0F, -0.2F, 5.6F);
@@ -152,35 +152,13 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.body_main);
     }
 
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
-        return ImmutableList.of(
-            body_main,
-            head_neck,
-            arm_left_1,
-            body_booty,
-            arm_right_1,
-            hair,
-            head_head,
-            head_ear_left,
-            head_ear_right,
-            head_snout,
-            eye_left,
-            eye_right,
-            arm_left_2,
-            leg_left_1,
-            body_tail_1,
-            leg_right_1,
-            leg_left_2,
-            body_tail_2,
-            body_tail_3,
-            leg_right_2,
-            arm_right_2
-        );
+        return ImmutableList.of(body_main, head_neck, arm_left_1, body_booty, arm_right_1, hair, head_head, head_ear_left, head_ear_right, head_snout, eye_left, eye_right, arm_left_2, leg_left_1, body_tail_1, leg_right_1, leg_left_2, body_tail_2, body_tail_3, leg_right_2, arm_right_2);
     }
 
     private void animate(IAnimatedEntity entityIn) {
@@ -240,7 +218,7 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
         animator.resetKeyframe(3);
     }
 
-    public void setRotationAngles(EntityAardvark aardvark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityAardvark aardvark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(aardvark);
         float globalSpeed = 1f;
@@ -273,7 +251,7 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
 
         // Pitch/Yaw handler
         if (aardvark.isInWater() && !aardvark.isOnGround()) {
-            float pitch = MathHelper.clamp(aardvark.rotationPitch, -20F, 20.0F) - 10;
+            float pitch = Mth.clamp(aardvark.getXRot(), -20F, 20.0F) - 10;
             this.setRotateAngle(body_main, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 

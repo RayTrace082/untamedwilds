@@ -1,41 +1,50 @@
 package untamedwilds.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.dispenser.IDispenseItemBehavior;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.Direction;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.DirectionalPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.block.blockentity.CageBlockEntity;
@@ -46,143 +55,139 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class CageBlock extends Block implements IWaterLoggable {
+public class CageBlock extends Block implements SimpleWaterloggedBlock, EntityBlock {
+    
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    private static final VoxelShape CAGE_COLLISION_AABB_EMPTY = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 2.0D, 15.0D);
-    private static final VoxelShape CAGE_COLLISION_AABB_FULL = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 15.0D, 15.0D);
+    private static final VoxelShape CAGE_COLLISION_AABB_EMPTY = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 2.0D, 15.0D);
+    private static final VoxelShape CAGE_COLLISION_AABB_FULL = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 15.0D, 15.0D);
 
     public CageBlock(Block.Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(OPEN, Boolean.FALSE).with(WATERLOGGED, Boolean.FALSE));
+        this.registerDefaultState(this.stateDefinition.any().setValue(OPEN, Boolean.FALSE).setValue(WATERLOGGED, Boolean.FALSE));
     }
 
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(OPEN, WATERLOGGED);
     }
 
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
-    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!worldIn.isRemote) {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
-            if (tileentity instanceof CageBlockEntity) {
-
-                CageBlockEntity te = (CageBlockEntity)tileentity;
+    public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
+        this.spawnDestroyParticles(worldIn, player, pos, state);
+        if (!worldIn.isClientSide) {
+            BlockEntity tileentity = worldIn.getBlockEntity(pos);
+            if (tileentity instanceof CageBlockEntity te) {
 
                 ItemStack itemstack = new ItemStack(ModBlock.TRAP_CAGE.get());
-                CompoundNBT compound = new CompoundNBT();
+                CompoundTag compound = new CompoundTag();
                 if (te.hasTagCompound() && te.hasCagedEntity()) {
                     compound.putBoolean("closed", te.hasCagedEntity());
                     compound.put("EntityTag", te.getTagCompound().getCompound("EntityTag"));
                     itemstack.setTag(compound);
                 }
 
-                spawnAsEntity(worldIn, pos, itemstack);
-                worldIn.updateComparatorOutputLevel(pos, state.getBlock());
+                popResource(worldIn, pos, itemstack);
+                worldIn.updateNeighbourForOutputSignal(pos, state.getBlock());
             }
-            else { super.onBlockHarvested(worldIn, pos, state, player); }
+            else { super.playerWillDestroy(worldIn, pos, state, player); }
         }
     }
 
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return state.get(OPEN) ? CAGE_COLLISION_AABB_EMPTY : CAGE_COLLISION_AABB_FULL;
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+        return state.getValue(OPEN) ? CAGE_COLLISION_AABB_EMPTY : CAGE_COLLISION_AABB_FULL;
     }
 
-    public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-        return state.get(OPEN);
+    public boolean isPathfindable(BlockState state, BlockGetter worldIn, BlockPos pos, PathComputationType type) {
+        return state.getValue(OPEN);
     }
 
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        BlockState blockstate = this.getDefaultState();
-        FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
-        return blockstate.with(OPEN, Boolean.TRUE).with(WATERLOGGED, ifluidstate.getFluid() == Fluids.WATER);
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockState blockstate = this.defaultBlockState();
+        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        return blockstate.setValue(OPEN, Boolean.TRUE).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
     }
 
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(worldIn, pos, state, placer, stack);
         if (stack.hasTag()) {
-            TileEntity te = worldIn.getTileEntity(pos);
-            if (stack.getTag() != null && te != null) {
-                te.read(state, stack.getTag());
-                CageBlockEntity tileentity = (CageBlockEntity)worldIn.getTileEntity(pos);
-                if (tileentity.hasCagedEntity() && tileentity.hasTagCompound()) {
-                    worldIn.setBlockState(pos, state.with(OPEN, Boolean.FALSE));
+            BlockEntity te = worldIn.getBlockEntity(pos);
+            if (stack.getTag() != null && te instanceof CageBlockEntity blockEntity) {
+                te.load(stack.getTag());
+                if (blockEntity.hasCagedEntity() && blockEntity.hasTagCompound()) {
+                    worldIn.setBlockAndUpdate(pos, state.setValue(OPEN, Boolean.FALSE));
                 }
             }
         }
     }
 
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if (!worldIn.isRemote) {
-            if (worldIn.isBlockPowered(pos)) {
-                trySpawningEntity(state, (ServerWorld)worldIn, pos);
+    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+        if (!worldIn.isClientSide) {
+            if (worldIn.hasNeighborSignal(pos)) {
+                trySpawningEntity(state, (ServerLevel) worldIn, pos);
             }
         }
     }
 
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (stateIn.get(WATERLOGGED)) {
-            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if (stateIn.getValue(WATERLOGGED)) {
+            worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
 
-        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player playerIn, InteractionHand hand, BlockHitResult hit) {
 
-        if (playerIn.isSneaking() || worldIn.isRemote || state.get(OPEN)) {
-            return ActionResultType.FAIL;
+        if (playerIn.isSteppingCarefully() || worldIn.isClientSide || state.getValue(OPEN)) {
+            return InteractionResult.FAIL;
         }
         else {
-            boolean success = trySpawningEntity(state, (ServerWorld)worldIn, pos);
-            return success ? ActionResultType.SUCCESS : ActionResultType.FAIL;
+            boolean success = trySpawningEntity(state, (ServerLevel) worldIn, pos);
+            return success ? InteractionResult.SUCCESS : InteractionResult.FAIL;
         }
     }
 
-    private boolean trySpawningEntity(BlockState state, ServerWorld worldIn, BlockPos pos) {
-        CageBlockEntity te = (CageBlockEntity)worldIn.getTileEntity(pos);
-        BlockPos check = pos.down();
+    private boolean trySpawningEntity(BlockState state, ServerLevel worldIn, BlockPos pos) {
+        CageBlockEntity te = (CageBlockEntity)worldIn.getBlockEntity(pos);
+        BlockPos check = pos.below();
         if (te != null) {
-            BlockPos spawnpos = !worldIn.getBlockState(check).isSolid() ? pos : new BlockPos(pos.getX(), pos.getY() + 1F, pos.getZ());
-            if (te.spawnCagedCreature(worldIn, spawnpos, worldIn.isAirBlock(check))) {
+            BlockPos spawnpos = /*!worldIn.getBlockState(check).isSolid() ? pos :*/ new BlockPos(pos.getX(), pos.getY() + 1F, pos.getZ());
+            if (te.spawnCagedCreature(worldIn, spawnpos, worldIn.isEmptyBlock(check))) {
                 spawnParticles(worldIn, pos, ParticleTypes.POOF);
-                worldIn.playSound(null, pos, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
-                worldIn.setBlockState(pos, state.with(OPEN, Boolean.TRUE));
+                worldIn.playSound(null, pos, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_ON, SoundSource.BLOCKS, 0.3F, 0.8F);
+                worldIn.setBlockAndUpdate(pos, state.setValue(OPEN, Boolean.TRUE));
                 return true;
             }
             else {
                 spawnParticles(worldIn, pos, ParticleTypes.SMOKE);
-                worldIn.playSound(null, pos, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.6F);
+                worldIn.playSound(null, pos, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_OFF, SoundSource.BLOCKS, 0.3F, 0.6F);
             }
         }
         return false;
     }
 
-    private <T extends IParticleData> void spawnParticles(World worldIn, BlockPos pos, T particle) {
-        Random random = worldIn.rand;
+    private <T extends ParticleOptions> void spawnParticles(Level worldIn, BlockPos pos, T particle) {
+        Random random = worldIn.getRandom();
         float d3 = random.nextFloat() * 0.02F;
         float d1 = random.nextFloat() * 0.02F;
         float d2 = random.nextFloat() * 0.02F;
-        ((ServerWorld)worldIn).spawnParticle(particle, pos.getX() + random.nextFloat(), pos.getY(), pos.getZ() + random.nextFloat(), 15, d3, d1, d2, 0.12F);
+        ((ServerLevel)worldIn).sendParticles(particle, pos.getX() + random.nextFloat(), pos.getY(), pos.getZ() + random.nextFloat(), 15, d3, d1, d2, 0.12F);
     }
 
 
     @Override
-    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        CageBlockEntity te = (CageBlockEntity)world.getTileEntity(pos);
-        if (!world.isRemote && !(entity instanceof PlayerEntity) && entity.isAlive() && entity.isNonBoss() && entity instanceof LivingEntity) {
-            if (te != null && !te.hasCagedEntity() && entity instanceof MobEntity) {
-                if (te.cageEntity((MobEntity) entity)) {
-                    world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
-                    world.setBlockState(pos, state.with(OPEN, Boolean.FALSE));
+    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
+        CageBlockEntity te = (CageBlockEntity)world.getBlockEntity(pos);
+        if (!world.isClientSide && !(entity instanceof Player) && entity.isAlive() && entity instanceof LivingEntity) {
+            if (te != null && !te.hasCagedEntity() && entity instanceof Mob) {
+                if (te.cageEntity((Mob) entity)) {
+                    world.playSound(null, pos, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_ON, SoundSource.BLOCKS, 0.3F, 0.8F);
+                    world.setBlockAndUpdate(pos, state.setValue(OPEN, Boolean.FALSE));
                     spawnParticles(world, pos, ParticleTypes.POOF);
                 }
             }
@@ -191,7 +196,7 @@ public class CageBlock extends Block implements IWaterLoggable {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         if (stack.getTag() != null) {
             EntityType<?> type = EntityUtils.getEntityTypeFromTag(stack.getTag(), null);
             if (type != null) {
@@ -199,31 +204,30 @@ public class CageBlock extends Block implements IWaterLoggable {
             }
         }
         else {
-            tooltip.add(new TranslationTextComponent("block.trap_cage.state_empty").mergeStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslatableComponent("block.trap_cage.state_empty").withStyle(ChatFormatting.GRAY));
         }
     }
 
-    @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader worldIn) {
-        return new CageBlockEntity();
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new CageBlockEntity(pos, state);
     }
 
-    public static class DispenserBehaviorTrapCage extends DefaultDispenseItemBehavior implements IDispenseItemBehavior {
+    public static class DispenserBehaviorTrapCage implements DispenseItemBehavior {
 
-        public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+        public ItemStack dispense(BlockSource source, ItemStack stack) {
             Item item = stack.getItem();
             if (item instanceof BlockItem) {
-                Direction direction = source.getBlockState().get(DispenserBlock.FACING);
-                BlockPos blockpos = source.getBlockPos().offset(direction);
-                Direction direction1 = source.getWorld().isAirBlock(blockpos.down()) ? direction : Direction.UP;
-                boolean successful = ((BlockItem)item).tryPlace(new DirectionalPlaceContext(source.getWorld(), blockpos, direction, stack, direction1)) == ActionResultType.SUCCESS;
+                Direction direction = source.getBlockState().getValue(DispenserBlock.FACING);
+                BlockPos blockpos = source.getPos().relative(direction);
+                Direction direction1 = source.getLevel().isEmptyBlock(blockpos.below()) ? direction : Direction.UP;
+                boolean successful = ((BlockItem)item).place(new DirectionalPlaceContext(source.getLevel(), blockpos, direction, stack, direction1)) == InteractionResult.SUCCESS;
             }
             return stack;
         }
 
-        protected void playDispenseSound(IBlockSource source) {
-            source.getWorld().playEvent(1000, source.getBlockPos(), 0);
+        protected void playDispenseSound(BlockSource source) {
+            source.getLevel().globalLevelEvent(1000, source.getPos(), 0);
         }
     }
 }

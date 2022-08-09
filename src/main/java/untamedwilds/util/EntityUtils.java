@@ -2,42 +2,43 @@ package untamedwilds.util;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.*;
-import net.minecraft.entity.item.BoatEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Food;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameterSet;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.PotionUtils;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
+import untamedwilds.entity.INeedsPostUpdate;
 import untamedwilds.entity.ISpecies;
 
 import javax.annotation.Nullable;
@@ -50,27 +51,32 @@ import java.util.Random;
 public abstract class EntityUtils {
 
     // Destroy the boat of the selected entity (if it exists)
-    public static void destroyBoat(World worldIn, LivingEntity entityIn) {
-        if (entityIn.getRidingEntity() != null && entityIn.getRidingEntity() instanceof BoatEntity) {
-            BoatEntity boat = (BoatEntity) entityIn.getRidingEntity();
-            boat.remove();
-            if (worldIn.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
-                for(int j = 0; j < 3; ++j) {
-                    boat.entityDropItem(boat.getBoatType().asPlank());
-                }
-                for(int k = 0; k < 2; ++k) {
-                    boat.entityDropItem(Items.STICK);
-                }
+    public static void destroyBoat(Level worldIn, LivingEntity entityIn) {
+        if (entityIn.getVehicle() != null && entityIn.getVehicle() instanceof Boat boat) {
+            boat.remove(Entity.RemovalReason.KILLED);
+            if (worldIn.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+                for(int j = 0; j < 3; ++j) 
+                    boat.spawnAtLocation(boat.getBoatType().getPlanks());
+                for(int k = 0; k < 2; ++k) 
+                    boat.spawnAtLocation(Items.STICK);
             }
         }
     }
 
     // Spawn particles throughout the entity
-    // TODO: Account for Multipart entites
-    public static <T extends IParticleData> void spawnParticlesOnEntity(World worldIn, LivingEntity entityIn, T particle, int count, int iter) {
-        if (worldIn.isRemote) return;
-        for (int i = 0; i < iter;  i++) {
-            ((ServerWorld)worldIn).spawnParticle(particle, entityIn.getPosX(), entityIn.getPosY() + (double)entityIn.getHeight() / 1.5D, entityIn.getPosZ(), count, entityIn.getWidth() / 4.0F, entityIn.getHeight() / 4.0F, entityIn.getWidth() / 4.0F, 0.05D);
+    public static <T extends ParticleOptions> void spawnParticlesOnEntity(Level worldIn, LivingEntity entityIn, T particle, int count, int iter) {
+        if (worldIn.isClientSide) return;
+        if (entityIn.isMultipartEntity()) {
+            for (PartEntity<?> part : entityIn.getParts()) {
+                for (int i = 0; i < iter;  i++) {
+                    ((ServerLevel)worldIn).sendParticles(particle, part.getX(), part.getY() + (double)part.getBbHeight() / 1.5D, part.getZ(), count, part.getBbWidth() / 4.0F, part.getBbHeight() / 4.0F, part.getBbWidth() / 4.0F, 0.05D);
+                }
+            }
+        }
+        else {
+            for (int i = 0; i < iter;  i++) {
+                ((ServerLevel)worldIn).sendParticles(particle, entityIn.getX(), entityIn.getY() + (double)entityIn.getBbHeight() / 1.5D, entityIn.getZ(), count, entityIn.getBbWidth() / 4.0F, entityIn.getBbHeight() / 4.0F, entityIn.getBbWidth() / 4.0F, 0.05D);
+            }
         }
     }
 
@@ -78,77 +84,94 @@ public abstract class EntityUtils {
         return ComplexMob.getEntityData(type).getGroupCount(variant);
     }
 
-    // Self explanatory
-    public static EntityType<?> getEntityTypeFromTag(CompoundNBT nbt, @Nullable EntityType<?> alt) {
+    /**
+     * Method to calculate the Blockpos relative to a mob's facing direction, returns a BlockPos
+     * @param entityIn The entity whose facing direction will be used
+     * @param xzOffset Offset in the X and Z axis
+     * @param yOffset Offset in the Y axis
+     */
+    public static BlockPos getRelativeBlockPos(Entity entityIn, float xzOffset, float yOffset) {
+        return entityIn.blockPosition().offset(Math.cos(Math.toRadians(entityIn.getYRot() + 90)) * xzOffset, yOffset, Math.sin(Math.toRadians(entityIn.getYRot() + 90)) * xzOffset);
+    }
+
+    // Self-explanatory
+    public static EntityType<?> getEntityTypeFromTag(CompoundTag nbt, @Nullable EntityType<?> alt) {
         if (nbt != null && nbt.contains("EntityTag", 10)) {
-            CompoundNBT entityNBT = nbt.getCompound("EntityTag");
+            CompoundTag entityNBT = nbt.getCompound("EntityTag");
             if (entityNBT.contains("id", 8)) {
-                return EntityType.byKey(entityNBT.getString("id")).orElse(alt);
+                return EntityType.byString(entityNBT.getString("id")).orElse(alt);
             }
         }
         return alt;
     }
 
     // This function builds a full tooltip containing Custom Name, EntityType, Gender and Scientific name (if available)
-    public static void buildTooltipData(ItemStack stack, List<ITextComponent> tooltip, EntityType<?> entity, String path) {
-        if (stack.getTag() != null) {
-            CompoundNBT compound = stack.getChildTag("EntityTag");
-            if (compound != null) {
-                //String component = "mobspawn.tooltip." + (compound.contains("Gender") ? (compound.getInt("Gender") == 0 ? "male" : "female") : "unknown");
-                //tooltip.add(new TranslationTextComponent(component).mergeStyle(TextFormatting.GRAY));
-                String gender = compound.contains("Gender") ? new TranslationTextComponent("mobspawn.tooltip." + (compound.getInt("Gender") == 0 ? "male" : "female")).getString() + " " : "";
-                String type;
-                if (path.isEmpty())
-                    type = new TranslationTextComponent(entity.getTranslationKey()).getString();
-                else
-                    type = new TranslationTextComponent(entity.getTranslationKey() + "_" + path).getString();
-                if (stack.getTag().getCompound("EntityTag").contains("CustomName")) {
-                    String customName = stack.getTag().getCompound("EntityTag").getString("CustomName");
-                    // Entity uses ITextComponent.Serializer.getComponentFromJson(s) instead of substrings
-                    tooltip.add(new StringTextComponent(customName.substring(9, customName.length() - 2) + " (" + gender + type + ")").mergeStyle(TextFormatting.GRAY));
-                }
-                else {
-                    tooltip.add(new StringTextComponent(gender + type).mergeStyle(TextFormatting.GRAY));
-                }
+    public static void buildTooltipData(ItemStack stack, List<Component> tooltip, EntityType<?> entity, String path) {
+        if (stack.getTag() != null && stack.getTag().contains("EntityTag")) {
+            CompoundTag compound = stack.getTagElement("EntityTag");
+            //String component = "mobspawn.tooltip." + (compound.contains("Gender") ? (compound.getInt("Gender") == 0 ? "male" : "female") : "unknown");
+            //tooltip.add(new TranslatableComponent(component).mergeStyle(TextFormatting.GRAY));
+            String gender = compound.contains("Gender") ? new TranslatableComponent("mobspawn.tooltip." + (compound.getInt("Gender") == 0 ? "male" : "female")).getString() + " " : "";
+            String type;
+            if (path.isEmpty())
+                type = new TranslatableComponent(entity.getDescriptionId()).getString();
+            else
+                type = new TranslatableComponent(entity.getDescriptionId() + "_" + path).getString();
+            if (stack.getTag().getCompound("EntityTag").contains("CustomName")) {
+                String customName = stack.getTag().getCompound("EntityTag").getString("CustomName");
+                // Entity uses ITextComponent.Serializer.getComponentFromJson(s) instead of substrings
+                tooltip.add(new TextComponent(customName.substring(9, customName.length() - 2) + " (" + gender + type + ")").withStyle(ChatFormatting.GRAY));
+            }
+            else {
+                tooltip.add(new TextComponent(gender + type).withStyle(ChatFormatting.GRAY));
             }
         }
         if (ConfigGamerules.scientificNames.get()) {
             String scipath = path.isEmpty() ? "" : "_" + path;
-            TranslationTextComponent tooltipText = new TranslationTextComponent(entity.getTranslationKey() + scipath + ".sciname");
+            TranslatableComponent tooltipText = new TranslatableComponent(entity.getDescriptionId() + scipath + ".sciname");
             if (!tooltipText.getString().contains(".")) {
-                tooltip.add(tooltipText.mergeStyle(TextFormatting.ITALIC, TextFormatting.GRAY));
+                tooltip.add(tooltipText.withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
             }
         }
     }
 
+    public static void createMobFromItem(ServerLevel worldIn, ItemStack itemstack, EntityType<?> entity, @Nullable Integer species, BlockPos spawnPos, @Nullable Player player, boolean offset) {
+        createMobFromItem(worldIn, itemstack, entity, species, spawnPos, player, offset, false);
+    }
+
     // This function creates a new mob from the NBT Tag stored in an ItemStack. Uses default EntityType and Species data to allow creating new entities from zero
-    public static void createMobFromItem(ServerWorld worldIn, ItemStack itemstack, EntityType<?> entity, @Nullable int species, BlockPos spawnPos, @Nullable PlayerEntity player, boolean offset) {
+    public static void createMobFromItem(ServerLevel worldIn, ItemStack itemstack, EntityType<?> entity, @Nullable Integer species, BlockPos spawnPos, @Nullable Player player, boolean offset, boolean skipNBTCheck) {
         Entity spawn;
         if (itemstack.getTag() != null) {
-            if (itemstack.getTag().contains("EntityTag")) {
-                if (itemstack.getChildTag("EntityTag").contains("UUID")) {
-                    if (worldIn.getEntityByUuid(itemstack.getChildTag("EntityTag").getUniqueId("UUID")) != null) {
-                        itemstack.getChildTag("EntityTag").putUniqueId("UUID", MathHelper.getRandomUUID(worldIn.rand));
+            //UntamedWilds.LOGGER.info(itemstack.getTag().toString());
+            if (itemstack.getTag().contains("EntityTag") && !skipNBTCheck) {
+                if (itemstack.getTagElement("EntityTag").contains("UUID")) {
+                    if (worldIn.getEntity(itemstack.getTagElement("EntityTag").getUUID("UUID")) != null) {
+                        itemstack.getTagElement("EntityTag").putUUID("UUID", Mth.createInsecureUUID(worldIn.random));
                     }
                 }
-                spawn = entity.spawn(worldIn, itemstack, player, spawnPos, SpawnReason.BUCKET, true, offset);
+                spawn = entity.spawn(worldIn, itemstack, player, spawnPos, MobSpawnType.BUCKET, true, offset);
+                if (spawn != null && itemstack.hasCustomHoverName()) {
+                    spawn.setCustomName(itemstack.getHoverName());
+                }
+            }
+            else {
+                // If no NBT data is assigned to the entity (eg. Item taken from the Creative menu), create a new, random mob
+                spawn = entity.create(worldIn, null, null, player, spawnPos, MobSpawnType.SPAWN_EGG, true, offset);
+                if (spawn instanceof ComplexMob entitySpawn) {
+                    int true_species = species != null ? species : entitySpawn.getRandom().nextInt(ComplexMob.getEntityData(entitySpawn.getType()).getSpeciesData().size());
+                    entitySpawn.setVariant(true_species);
+                    entitySpawn.chooseSkinForSpecies(entitySpawn, true);
+                    entitySpawn.setRandomMobSize();
+                    entitySpawn.setGender(entitySpawn.getRandom().nextInt(2));
+                    if (spawn instanceof INeedsPostUpdate)
+                        ((INeedsPostUpdate) spawn).updateAttributes();
+                }
                 if (spawn != null) {
-                    if (itemstack.hasDisplayName()) {
-                        spawn.setCustomName(itemstack.getDisplayName());
+                    if (itemstack.hasCustomHoverName()) {
+                        spawn.setCustomName(itemstack.getHoverName());
                     }
-                }
-            }
-        }
-        else {
-            // If no NBT data is assigned to the entity (eg. Item taken from the Creative menu), create a new, random mob
-            spawn = entity.spawn(worldIn, null, null, player, spawnPos, SpawnReason.SPAWN_EGG, true, offset);
-            if (spawn instanceof ComplexMob) {
-                ((ComplexMob)spawn).setVariant(species);
-                ((ComplexMob) spawn).chooseSkinForSpecies((ComplexMob)spawn, true);
-            }
-            if (spawn != null) {
-                if (itemstack.hasDisplayName()) {
-                    spawn.setCustomName(itemstack.getDisplayName());
+                    worldIn.addFreshEntityWithPassengers(spawn);
                 }
             }
         }
@@ -156,81 +179,86 @@ public abstract class EntityUtils {
 
     // This function makes the entity drop some Eggs of the given item_name, and with random stacksize between 1 and number
     public static void dropEggs(ComplexMob entity, String item_name, int number) {
-        CompoundNBT baseTag = new CompoundNBT();
-        ItemStack item = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase())));
-        baseTag.putInt("variant", entity.getVariant());
-        baseTag.putInt("custom_model_data", entity.getVariant());
-        item.setTag(baseTag);
-        ItemEntity entityitem = entity.entityDropItem(item, 0.2F);
-        if (entityitem != null) {
-            entityitem.getItem().setCount(1 + entity.getRNG().nextInt(number - 1));
+        if (ConfigGamerules.mobsLayEggs.get()) {
+            CompoundTag baseTag = new CompoundTag();
+            ItemStack item = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase())));
+            baseTag.putInt("variant", entity.getVariant());
+            baseTag.putInt("custom_model_data", entity.getVariant());
+            item.setTag(baseTag);
+            ItemEntity entityitem = entity.spawnAtLocation(item, 0.2F);
+            if (entityitem != null) {
+                entityitem.getItem().setCount(1 + entity.getRandom().nextInt(number - 1));
+            }
         }
     }
 
     // This function turns the entity into an item with item_name registry name, and removes the entity from the world
     public static void turnEntityIntoItem(LivingEntity entity, String item_name) {
-        if (ConfigGamerules.easyMobCapturing.get() || ((MobEntity)entity).getAttackTarget() == null) {
-            ItemEntity entityitem = entity.entityDropItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase()))), 0.2F);
-            Random rand = entity.getRNG();
+        if (ConfigGamerules.easyMobCapturing.get() || ((Mob)entity).getTarget() == null) {
+            ItemEntity entityitem = entity.spawnAtLocation(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase()))), 0.2F);
+            Random rand = entity.getRandom();
             if (entityitem != null) {
-                entityitem.setMotion((rand.nextFloat() - rand.nextFloat()) * 0.1F, rand.nextFloat() * 0.05F, (rand.nextFloat() - rand.nextFloat()) * 0.1F);
+                entityitem.setDeltaMovement((rand.nextFloat() - rand.nextFloat()) * 0.1F, rand.nextFloat() * 0.05F, (rand.nextFloat() - rand.nextFloat()) * 0.1F);
                 entityitem.getItem().setTag(writeEntityToNBT(entity, false, true));
                 if (entity.hasCustomName()) {
-                    entityitem.getItem().setDisplayName(entity.getCustomName());
+                    entityitem.getItem().setHoverName(entity.getCustomName());
                 }
-                entity.remove();
+                entity.discard();
             }
         }
     }
 
     // This function replaces a given ItemStack with a new item with item_name registry name, and removes the entity from the world
-    public static void mutateEntityIntoItem(LivingEntity entity, PlayerEntity player, Hand hand, String item_name, ItemStack itemstack) {
-        if (ConfigGamerules.easyMobCapturing.get() || ((MobEntity)entity).getAttackTarget() == null) {
-            entity.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
+    public static void mutateEntityIntoItem(LivingEntity entity, Player player, InteractionHand hand, String item_name, ItemStack itemstack) {
+        if (ConfigGamerules.easyMobCapturing.get() || ((Mob)entity).getTarget() == null) {
+            entity.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
             itemstack.shrink(1);
             ItemStack newitem = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase())));
             newitem.setTag(writeEntityToNBT(entity, false, true));
             if (entity.hasCustomName()) {
-                newitem.setDisplayName(entity.getCustomName());
+                newitem.setHoverName(entity.getCustomName());
             }
-            if (!entity.world.isRemote) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity) player, newitem);
+            if (!entity.getLevel().isClientSide) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) player, newitem);
             }
             if (itemstack.isEmpty()) {
-                player.setHeldItem(hand, newitem);
-            } else if (!player.inventory.addItemStackToInventory(newitem)) {
-                player.dropItem(newitem, false);
+                player.setItemInHand(hand, newitem);
+            } else if (!player.getInventory().add(newitem)) {
+                player.drop(newitem, false);
             }
-            entity.remove();
+            entity.discard();
         }
     }
 
     // This function pulls X items from the defined LootTable
-    public static List<ItemStack> getItemFromLootTable(ResourceLocation lootTableIn, World worldIn) {
-        LootContext.Builder lootcontext$builder = new LootContext.Builder((ServerWorld) worldIn);
+    public static List<ItemStack> getItemFromLootTable(ResourceLocation lootTableIn, Level worldIn) {
+        LootContext.Builder lootcontext$builder = new LootContext.Builder((ServerLevel) worldIn);
         if (worldIn.getServer() != null) {
-            return worldIn.getServer().getLootTableManager().getLootTableFromLocation(lootTableIn).generate(lootcontext$builder.build(new LootParameterSet.Builder().build()));
+            return worldIn.getServer().getLootTables().get(lootTableIn).getRandomItems(lootcontext$builder.create(new LootContextParamSet.Builder().build()));
         }
         return Lists.newArrayList();
     }
 
-    public static CompoundNBT writeEntityToNBT(LivingEntity entity) {
+    public static CompoundTag writeEntityToNBT(LivingEntity entity) {
         return writeEntityToNBT(entity, false);
     }
 
-    public static CompoundNBT writeEntityToNBT(LivingEntity entity, boolean keepHomeData) {
+    public static CompoundTag writeEntityToNBT(LivingEntity entity, boolean keepHomeData) {
         return writeEntityToNBT(entity, keepHomeData, false);
     }
 
-    // This method writes this entity into a CompoundNBT Tag
-    public static CompoundNBT writeEntityToNBT(LivingEntity entity, boolean keepHomeData, boolean attachModelData) {
-        CompoundNBT baseTag = new CompoundNBT();
-        CompoundNBT entityTag = new CompoundNBT();
-        entity.writeUnlessRemoved(entityTag);
+    // This method writes this entity into a CompoundTag Tag
+    public static CompoundTag writeEntityToNBT(LivingEntity entity, boolean keepHomeData, boolean attachModelData) {
+        CompoundTag baseTag = new CompoundTag();
+        CompoundTag entityTag = new CompoundTag();
+        entity.saveAsPassenger(entityTag);
         entityTag.remove("Pos"); // Remove the Position from the NBT data, as it would fuck things up later on
         entityTag.remove("Motion");
         if (entityTag.contains("BoundingBox")) {
             entityTag.remove("BoundingBox"); // Stripping this NBT data prevents RandomPatches from moving mobs back to their original position
+        }
+        if (entityTag.contains("Leash")) {
+            entityTag.remove("Leash"); // Stripping this NBT data prevents Leash duplication from caging/catching Leashed mobs
         }
         if (entity instanceof ISpecies && !keepHomeData) {
             entityTag.remove("HomePosX");
@@ -264,8 +292,7 @@ public abstract class EntityUtils {
         if (!rare_list.containsKey(name)) {
             rare_list.put(name, new HashMap<>());
         }
-        int value = skins;
-        Pair<Integer, Integer> values = new Pair<>((value / 10) - 1, (value % 10) - 1);
+        Pair<Integer, Integer> values = new Pair<>((skins / 10) - 1, (skins % 10) - 1);
         common_list.get(name).put(variant, new ArrayList<>());
         if (values.getFirst() >= 1) {
             for (int i = 0; i <= values.getFirst(); i++) {
@@ -353,7 +380,7 @@ public abstract class EntityUtils {
         if (ComplexMob.ENTITY_DATA_HASH.containsKey(typeIn)) {
             SoundEvent location = ComplexMob.ENTITY_DATA_HASH.get(typeIn).getSounds(variantIn, sound_type);
             if (location != null) {
-                return ForgeRegistries.SOUND_EVENTS.getValue(location.name);
+                return ForgeRegistries.SOUND_EVENTS.getValue(location.getLocation());
             }
         }
         /*else if (ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
@@ -371,7 +398,7 @@ public abstract class EntityUtils {
         if (i > size) {
             UntamedWilds.LOGGER.warn("Correcting wrong Variant value of " + i + " to " + size);
         }
-        return MathHelper.clamp(i, 0, size);
+        return Mth.clamp(i, 0, size);
     }
 
     // Takes the skin from the TEXTURES_COMMON or TEXTURES_RARE array
@@ -381,56 +408,57 @@ public abstract class EntityUtils {
             if (entityIn.getSkin() > 99 && ComplexMob.TEXTURES_RARE.get(name).containsKey(entityIn.getVariant())) {
                 return ComplexMob.TEXTURES_RARE.get(name).get(entityIn.getVariant()).get(Math.min(entityIn.getSkin() - 100, ComplexMob.TEXTURES_RARE.get(name).get(entityIn.getVariant()).size() - 1));
             }
-            return ComplexMob.TEXTURES_COMMON.get(name).get(entityIn.getVariant()).get(Math.min(entityIn.getSkin(), ComplexMob.TEXTURES_COMMON.get(name).get(entityIn.getVariant()).size() - 1));
+            if (entityIn.getVariant() >= 0)
+                return ComplexMob.TEXTURES_COMMON.get(name).get(entityIn.getVariant()).get(Math.min(entityIn.getSkin(), ComplexMob.TEXTURES_COMMON.get(name).get(entityIn.getVariant()).size() - 1));
         }
         //UntamedWilds.LOGGER.warn("No Skin found for entity: " + entityIn.getType().getRegistryName());
-        return ResourceLocation.tryCreate("");
+        return null;
     }
 
     // Tests an ItemStack and consumes it if found to be a Food. Also applies it's effects
-    public static void consumeItemStack(TameableEntity entityIn, ItemStack itemstack) {
-        if (itemstack.isFood()) {
-            Food itemFood = itemstack.getItem().getFood();
+    public static void consumeItemStack(TamableAnimal entityIn, ItemStack itemstack) {
+        if (itemstack.isEdible()) {
+            FoodProperties itemFood = itemstack.getItem().getFoodProperties();
             if (itemFood != null) {
-                entityIn.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
+                entityIn.playSound(SoundEvents.GENERIC_EAT, 1, 1);
                 if (entityIn instanceof ComplexMobTerrestrial)
-                    ((ComplexMobTerrestrial)entityIn).addHunger(itemFood.getHealing() * 10);
+                    ((ComplexMobTerrestrial)entityIn).addHunger(itemFood.getNutrition() * 10);
                 else
-                    entityIn.heal(itemFood.getHealing());
+                    entityIn.heal(itemFood.getNutrition());
 
-                for (Pair<EffectInstance, Float> pair : itemFood.getEffects()) {
-                    if (pair.getFirst() != null && entityIn.world.rand.nextFloat() < pair.getSecond()) {
-                        entityIn.addPotionEffect(new EffectInstance(pair.getFirst()));
+                for (Pair<MobEffectInstance, Float> pair : itemFood.getEffects()) {
+                    if (pair.getFirst() != null && entityIn.level.random.nextFloat() < pair.getSecond()) {
+                        entityIn.addEffect(new MobEffectInstance(pair.getFirst()));
                     }
                 }
             }
         }
-        else if (itemstack.hasEffect()) {
-            entityIn.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1, 1);
+        else if (!PotionUtils.getMobEffects(itemstack).isEmpty()) {
+            entityIn.playSound(SoundEvents.GENERIC_DRINK, 1, 1);
             if (entityIn instanceof ComplexMobTerrestrial)
                 ((ComplexMobTerrestrial)entityIn).addHunger(10);
 
-            for(EffectInstance effectinstance : PotionUtils.getEffectsFromStack(itemstack)) {
-                if (effectinstance.getPotion().isInstant())
-                    effectinstance.getPotion().affectEntity(entityIn.getOwner(), entityIn.getOwner(), entityIn, effectinstance.getAmplifier(), 1.0D);
+            for(MobEffectInstance effectinstance : PotionUtils.getMobEffects(itemstack)) {
+                if (effectinstance.getEffect().isInstantenous())
+                    effectinstance.getEffect().applyInstantenousEffect(entityIn.getOwner(), entityIn.getOwner(), entityIn, effectinstance.getAmplifier(), 1.0D);
                 else
-                    entityIn.addPotionEffect(new EffectInstance(effectinstance));
+                    entityIn.addEffect(new MobEffectInstance(effectinstance));
             }
         }
     }
 
-    public static Vector3d getOvershootPath(Entity entityIn, Entity targetIn, double overshoot) {
-        double x = targetIn.getPosX() - entityIn.getPosX();
-        double z = targetIn.getPosZ() - entityIn.getPosZ();
+    public static Vec3 getOvershootPath(Entity entityIn, Entity targetIn, double overshoot) {
+        double x = targetIn.getX() - entityIn.getX();
+        double z = targetIn.getZ() - entityIn.getZ();
         float angle = (float) (Math.atan2(z, x));
-        double dist = MathHelper.sqrt(Math.pow(x, 2) + Math.pow(z, 2));
-        double add_x = MathHelper.cos(angle) * (dist + overshoot);
-        double add_z = MathHelper.sin(angle) * (dist + overshoot);
-        return new Vector3d(entityIn.getPosX() + add_x, targetIn.getPosY(), entityIn.getPosZ() + add_z);
+        double dist = Mth.sqrt((float) (Math.pow(x, 2) + Math.pow(z, 2)));
+        double add_x = Mth.cos(angle) * (dist + overshoot);
+        double add_z = Mth.sin(angle) * (dist + overshoot);
+        return new Vec3(entityIn.getX() + add_x, targetIn.getY(), entityIn.getZ() + add_z);
     }
 
     // Checks if a mob is NOT a valid partner for the input. Both entityIn and partnerIn should be the same class
     public static boolean isInvalidPartner(ComplexMob entityIn, ComplexMob partnerIn, boolean isHermaphrodite) {
-        return (ConfigGamerules.genderedBreeding.get() && (partnerIn.getGender() == entityIn.getGender() || isHermaphrodite)) || (partnerIn.getVariant() != entityIn.getVariant()) || partnerIn.getGrowingAge() != 0;
+        return (ConfigGamerules.genderedBreeding.get() && (partnerIn.getGender() == entityIn.getGender() || isHermaphrodite)) || (partnerIn.getVariant() != entityIn.getVariant()) || partnerIn.getAge() != 0;
     }
 }
