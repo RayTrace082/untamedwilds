@@ -277,7 +277,7 @@ public abstract class ComplexMob extends TamableAnimal {
         return getEntityData(this.getType()).getGrowingTime(this.getVariant()) * ConfigGamerules.cycleLength.get();
     }
 
-    protected int getOffspring() {
+    public int getOffspring() {
         return getEntityData(this.getType()).getOffspring(this.getVariant());
     }
 
@@ -311,7 +311,7 @@ public abstract class ComplexMob extends TamableAnimal {
         int i = this.age;
         super.setAge(age);
         this.age = age;
-        if (!this.isMale() && !ConfigGamerules.easyBreeding.get()) {
+        if (!this.isMale() && !(this instanceof INestingMob) && !ConfigGamerules.easyBreeding.get()) {
             if (i > 0 && age <= 0) {
                 this.breed();
             }
@@ -402,7 +402,7 @@ public abstract class ComplexMob extends TamableAnimal {
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        if (reason != MobSpawnType.DISPENSER && reason != MobSpawnType.BUCKET) {
+        if (reason != MobSpawnType.DISPENSER && reason != MobSpawnType.BUCKET && reason != MobSpawnType.BREEDING) {
             if (this instanceof ISpecies) {
                 Holder<Biome> optional = worldIn.getBiome(new BlockPos(this.position()));
                 int i = ((ISpecies)this).setSpeciesByBiome(optional, reason);

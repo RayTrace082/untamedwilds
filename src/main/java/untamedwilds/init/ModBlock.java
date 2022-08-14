@@ -31,6 +31,8 @@ import untamedwilds.UntamedWilds;
 import untamedwilds.block.*;
 import untamedwilds.block.blockentity.CageBlockEntity;
 import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
+import untamedwilds.block.blockentity.ReptileNestBlockEntity;
+import untamedwilds.util.ModCreativeModeTab;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -94,12 +96,16 @@ public class ModBlock {
     public static RegistryObject<Block> ORCHID_RED = createBlock("flora_orchid_red", () -> new EpyphitePlantBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_RED).destroyTime(0.0F).sound(SoundType.VINE)), "cutout", CreativeModeTab.TAB_DECORATIONS);
     public static RegistryObject<Block> TITAN_ARUM = createItemlessBlock("flora_titan_arum", () -> new TitanArumBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(2.0F).sound(SoundType.WET_GRASS).noCollission().dynamicShape()), "cutout");
 
+    // Nests
+    public static RegistryObject<Block> NEST_REPTILE = createBlock("nest_reptile", () -> new NestReptileBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).destroyTime(1.0F).sound(SoundType.GRAVEL).noCollission()),  "translucent", ModCreativeModeTab.untamedwilds_items);
+
     // Technical Blocks
     public static RegistryObject<Block> BURROW = createBlock("block_burrow", () -> new CritterBurrowBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).destroyTime(1.0F).sound(SoundType.GRAVEL).noCollission()),  "translucent", CreativeModeTab.TAB_DECORATIONS);
 
     // Block Entities
     public static final RegistryObject<BlockEntityType<CageBlockEntity>> TILE_ENTITY_CAGE = TILE_ENTITIES.register("trap_cage", () -> BlockEntityType.Builder.of(CageBlockEntity::new, ModBlock.TRAP_CAGE.get()).build(null));
     public static final RegistryObject<BlockEntityType<CritterBurrowBlockEntity>> TILE_ENTITY_BURROW = TILE_ENTITIES.register("critter_burrow", () -> BlockEntityType.Builder.of(CritterBurrowBlockEntity::new, ModBlock.BURROW.get()).build(null));
+    public static final RegistryObject<BlockEntityType<ReptileNestBlockEntity>> TILE_ENTITY_NEST_REPTILE = TILE_ENTITIES.register("nest_reptile_block_entity", () -> BlockEntityType.Builder.of(ReptileNestBlockEntity::new, ModBlock.NEST_REPTILE.get()).build(null));
 
     public static <B extends Block> RegistryObject<Block> createBlock(String name, Supplier<? extends B> supplier, CreativeModeTab group) {
         return createBlock(name, supplier, null, group, 0);

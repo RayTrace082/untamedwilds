@@ -63,7 +63,7 @@ public class LookThroughSpyglassEvent {
         TextComponent name = new TextComponent("");
         if (target instanceof ComplexMob entity) {
             String entityName = entity instanceof ISpecies ? ((ISpecies) entity).getSpeciesName() : entity.getName().getString();
-            name.append(entity.isBaby() ? "Young " : "" + (ConfigGamerules.genderedBreeding.get() ? entity.getGenderString() + " " : "") + entityName + " ");
+            name.append((entity.isBaby() ? "Young " : "") + (ConfigGamerules.genderedBreeding.get() ? entity.getGenderString() + " " : "") + entityName + " ");
 
             if (ConfigGamerules.scientificNames.get()) {
                 String useVarName = entity instanceof ISpecies ? "_" + ((ISpecies) entity).getRawSpeciesName(entity.getVariant()) : "";

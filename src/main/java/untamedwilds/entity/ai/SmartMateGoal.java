@@ -7,6 +7,7 @@ import net.minecraft.world.level.Level;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
+import untamedwilds.entity.INestingMob;
 import untamedwilds.entity.arthropod.EntityTarantula;
 
 import java.util.EnumSet;
@@ -74,16 +75,26 @@ public class SmartMateGoal extends Goal {
             // Positive Growing Age is used as pregnancy counter (handled in ComplexMob)
             this.taskOwner.setAge(this.taskOwner.getPregnancyTime());
             this.targetMate.setAge(this.taskOwner.getPregnancyTime());
-            if (ConfigGamerules.easyBreeding.get()) {
-                if (ConfigGamerules.genderedBreeding.get()) {
+            if (this.taskOwner instanceof INestingMob) {
+                if (!ConfigGamerules.genderedBreeding.get()) {
+                    ((INestingMob)this.taskOwner).setEggStatus(true);
+                }
+                else {
+                    if (!this.taskOwner.isMale())
+                        ((INestingMob)this.taskOwner).setEggStatus(true);
+                    else
+                        ((INestingMob)this.targetMate).setEggStatus(true);
+                }
+            }
+            else if (ConfigGamerules.easyBreeding.get()) {
+                if (!ConfigGamerules.genderedBreeding.get()) {
                     this.taskOwner.breed();
                 }
                 else {
-                    if (!this.taskOwner.isMale()) {
+                    if (!this.taskOwner.isMale())
                         this.taskOwner.breed();
-                    } else {
+                    else
                         this.targetMate.breed();
-                    }
                 }
             }
         }

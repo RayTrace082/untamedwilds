@@ -1,7 +1,8 @@
 package untamedwilds.entity.reptile;
 
-import net.minecraft.core.BlockPos;
+import  net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -15,37 +16,41 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.animal.Dolphin;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ComplexMobAmphibious;
-import untamedwilds.entity.INewSkins;
-import untamedwilds.entity.ISpecies;
+import oshi.util.tuples.Pair;
+import untamedwilds.entity.*;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.control.look.SmartSwimmerLookControl;
 import untamedwilds.entity.ai.control.movement.SmartSwimmingMoveControl;
 import untamedwilds.entity.ai.target.HuntMobTarget;
+import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModItems;
+import untamedwilds.init.ModTags;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpecies, INewSkins {
+public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpecies, INewSkins, INestingMob {
 
-    public int baskProgress;
+    public boolean hasEggs;
+    public boolean hasExtendedNeck;
+    public int extendNeckProgress;
+    public Pair<Float, Float> head_movement;
+    private float neck_val = 0;
+    private float head_val = 0;
 
     public EntitySoftshellTurtle(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
-        this.moveControl = new SmartSwimmingMoveControl(this, 60, 10, 0.4F, 0.25F, true);
+        this.moveControl = new SmartSwimmingMoveControl(this, 60, 10, 0.6F, 0.25F, true);
         this.lookControl = new SmartSwimmerLookControl(this, 20);
-        this.swimSpeedMult = 3;
-        this.buoyancy = 0.998F;
+        this.head_movement = new Pair<>(0F, 0F);
     }
 
     public static AttributeSupplier.Builder registerAttributes() {
@@ -60,19 +65,19 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
     }
 
     public void registerGoals() {
-        super.registerGoals();
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
         this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1D, 1.1D, input -> getEcoLevel(input) > getEcoLevel(this)));
+        this.goalSelector.addGoal(3, new LayEggsOnNestGoal(this));
         this.goalSelector.addGoal(3, new AmphibiousTransition(this, 1D));
-        this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 80));
+        this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 40));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, input -> getEcoLevel(input) < getEcoLevel(this)));
     }
 
-    public boolean wantsToBeOnLand() { return this.level.getDayTime() > 5000 && this.level.getDayTime() < 7000; }
+    public boolean wantsToBeOnLand() { return this.level.getDayTime() > 4500 && this.level.getDayTime() < 7500; }
 
-    public boolean wantsToBeInWater() { return !(this.level.getDayTime() > 5000 && this.level.getDayTime() < 7000); }
+    public boolean wantsToBeInWater() { return !(this.level.getDayTime() > 4500 && this.level.getDayTime() < 7500); }
 
     public boolean isPushedByFluid() {
         return false;
@@ -102,29 +107,34 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
                 this.level.addParticle(ParticleTypes.DOLPHIN, this.getX() - vec3.x * (double)f2 - (double)f, this.getY() - vec3.y, this.getZ() - vec3.z * (double)f2 - (double)f1, 0.0D, 0.0D, 0.0D);
             }
         }
+        if (this.tickCount % 1000 == 0) {
+            this.hasExtendedNeck = this.random.nextBoolean();
+        }
+        if (this.tickCount % 120 < 11) {
+            if (this.tickCount % 120 == 1) {
+                neck_val = (float) (0.8F - this.random.nextDouble() * 1.6F);
+                head_val = (float) (0.4F - this.random.nextDouble() * 0.8F);
+            }
+            this.head_movement = new Pair<>(Mth.lerp(0.1F, head_movement.getA(), neck_val), Mth.lerp(0.1F, head_movement.getB(), head_val));
+        }
     }
 
     public void aiStep() {
         super.aiStep();
 
         if (!this.level.isClientSide) {
-            if (this.tickCount % 1000 == 0) {
-                if (this.wantsToBreed() && !this.isMale()) {
-                    this.breed();
-                }
-            }
             if (this.level.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
             }
-            if (this.isInWater()) {
+            if (this.isInWater() && this.getNavigation().isDone()) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.003D, 0.0D));
             }
         }
         else {
-            if (!this.isInWater() && this.baskProgress < 100) {
-                this.baskProgress++;
-            } else if (this.isInWater() && this.baskProgress > 0) {
-                this.baskProgress--;
+            if ((!this.isInWater() || this.hasExtendedNeck) && this.extendNeckProgress < 100) {
+                this.extendNeckProgress++;
+            } else if ((this.isInWater() || !this.hasExtendedNeck) && this.extendNeckProgress > 0) {
+                this.extendNeckProgress--;
             }
         }
     }
@@ -167,5 +177,35 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
         SoundEvent soundevent = this.isBaby() ? SoundEvents.TURTLE_SHAMBLE_BABY : SoundEvents.TURTLE_SHAMBLE;
         this.playSound(soundevent, 0.15F, 1.0F);
+    }
+
+    @Override
+    public boolean wantsToLayEggs() {
+        return this.hasEggs;
+    }
+
+    @Override
+    public void setEggStatus(boolean status) {
+        this.hasEggs = status;
+    }
+
+    @Override
+    public Block getNestType() {
+        return ModBlock.NEST_REPTILE.get();
+    }
+
+    @Override
+    public boolean isValidNestBlock(BlockPos pos) {
+        return this.level.isEmptyBlock(pos) && this.level.getBlockState(pos.below()).is(ModTags.ModBlockTags.VALID_REPTILE_NEST) && this.getNestType().defaultBlockState().canSurvive(this.level, pos);
+    }
+
+    public void addAdditionalSaveData(CompoundTag compound){
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("hasEggs", this.hasEggs);
+    }
+
+    public void readAdditionalSaveData(CompoundTag compound){
+        super.readAdditionalSaveData(compound);
+        this.hasEggs = compound.getBoolean("hasEggs");
     }
 }

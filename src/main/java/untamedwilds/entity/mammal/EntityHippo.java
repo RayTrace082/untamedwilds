@@ -41,7 +41,6 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
         ATTACK = Animation.create(24);
         this.maxUpStep = 1F;
         this.isAmphibious = true;
-        this.buoyancy = 0.998F;
         this.turn_speed = 0.3F;
     }
 
