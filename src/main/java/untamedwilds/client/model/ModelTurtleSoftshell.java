@@ -23,7 +23,7 @@ public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTur
     public ModelTurtleSoftshell() {
         this.texWidth = 64;
         this.texHeight = 32;
-        this.neck = new AdvancedModelBox(this, 18, 0);
+        this.neck = new AdvancedModelBox(this, 20, 0);
         this.neck.setRotationPoint(0.0F, 0.0F, -0.01F);
         this.neck.addBox(-1.0F, -1.0F, -4.0F, 2, 2, 4, 0.0F);
         this.setRotateAngle(neck, 0.0F, 0.0F, 0.0F);
@@ -32,14 +32,14 @@ public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTur
         this.leg_left.setRotationPoint(3.0F, 0.51F, 2.0F);
         this.leg_left.addBox(-1.0F, -0.5F, -1.0F, 5, 1, 3, 0.0F);
         this.setRotateAngle(leg_left, 0.0F, -1.0927506446736497F, 0.0F);
-        this.body_tail_short = new AdvancedModelBox(this, 8, 20);
+        this.body_tail_short = new AdvancedModelBox(this, 8, 22);
         this.body_tail_short.setRotationPoint(0.0F, 0.0F, 2.0F);
         this.body_tail_short.addBox(-0.5F, 0.0F, 0.0F, 1, 1, 4, 0.0F);
-        this.main_head = new AdvancedModelBox(this, 30, 0);
+        this.main_head = new AdvancedModelBox(this, 32, 0);
         this.main_head.setRotationPoint(0.0F, -0.2F, -3.41F);
         this.main_head.addBox(-1.5F, -1.0F, -3.0F, 3, 2, 4, 0.0F);
         this.setRotateAngle(main_head, 0.0F, 0.0F, 0.0F);
-        this.body_shell = new AdvancedModelBox(this, 0, 9);
+        this.body_shell = new AdvancedModelBox(this, 0, 11);
         this.body_shell.setRotationPoint(0.0F, -0.4F, 0.0F);
         this.body_shell.addBox(-4.0F, -1.0F, -5.0F, 8, 1, 10, 0.0F);
         this.setRotateAngle(body_shell, -0.045553093477052F, 0.0F, 0.0F);
@@ -51,13 +51,13 @@ public class ModelTurtleSoftshell extends AdvancedEntityModel<EntitySoftshellTur
         this.hand_right.setRotationPoint(-2.0F, 0.7F, -3.0F);
         this.hand_right.addBox(-4.0F, -0.5F, -2.0F, 5, 1, 3, 0.0F);
         this.setRotateAngle(hand_right, 0.0F, -0.3490658503988659F, 0.0F);
-        this.head_nose = new AdvancedModelBox(this, 26, 0);
+        this.head_nose = new AdvancedModelBox(this, 28, 0);
         this.head_nose.setRotationPoint(0.0F, -0.49F, -3.0F);
         this.head_nose.addBox(-1F, -0.5F, -1.0F, 2, 1, 2, 0.0F);
         this.setRotateAngle(head_nose, 0.091106186954104F, 0.0F, 0.0F);
         this.main_body = new AdvancedModelBox(this, 0, 0);
         this.main_body.setRotationPoint(0.0F, 23.0F, 0.0F);
-        this.main_body.addBox(-3.0F, -2.0F, -4.0F, 6, 3, 6, 0.0F);
+        this.main_body.addBox(-3.0F, -2.0F, -4.0F, 6, 3, 7, 0.0F);
         this.hand_left = new AdvancedModelBox(this, 26, 8);
         this.hand_left.mirror = true;
         this.hand_left.setRotationPoint(2.0F, 0.7F, -3.0F);
