@@ -35,6 +35,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.block.blockentity.ReptileNestBlockEntity;
+import untamedwilds.config.ConfigMobControl;
 
 import java.util.Random;
 
@@ -108,7 +109,7 @@ public class NestReptileBlock extends Block implements SimpleWaterloggedBlock, E
     }
 
     public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
-        if (worldIn.getBlockEntity(pos) instanceof ReptileNestBlockEntity burrow) {
+        if (ConfigMobControl.tickingNests.get() && worldIn.getBlockEntity(pos) instanceof ReptileNestBlockEntity burrow) {
             burrow.createMobs(worldIn);
         }
     }
