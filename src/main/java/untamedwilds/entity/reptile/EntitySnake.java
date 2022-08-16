@@ -3,7 +3,6 @@ package untamedwilds.entity.reptile;
 import com.github.alexthe666.citadel.animation.Animation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -20,32 +19,31 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.entity.PartEntity;
-import untamedwilds.entity.ComplexMobTerrestrial;
-import untamedwilds.entity.INeedsPostUpdate;
-import untamedwilds.entity.INewSkins;
-import untamedwilds.entity.ISpecies;
-import untamedwilds.entity.ai.SmartAvoidGoal;
-import untamedwilds.entity.ai.SmartMateGoal;
-import untamedwilds.entity.ai.SmartSwimGoal_Land;
-import untamedwilds.entity.ai.SmartWanderGoal;
+import untamedwilds.entity.*;
+import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.DontThreadOnMeTarget;
 import untamedwilds.entity.ai.target.HuntMobTarget;
+import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModItems;
+import untamedwilds.init.ModTags;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INewSkins, INeedsPostUpdate {
+public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INewSkins, INeedsPostUpdate, INestingMob {
 
     private static final EntityDataAccessor<Boolean> RATTLER = SynchedEntityData.defineId(EntitySnake.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(EntitySnake.class, EntityDataSerializers.BOOLEAN);
 
     public static Animation ANIMATION_TONGUE;
     public float offset;
@@ -53,6 +51,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
     public EntitySnake(EntityType<? extends ComplexMobTerrestrial> type, Level worldIn) {
         super(type, worldIn);
         this.entityData.define(RATTLER, false);
+        this.entityData.define(HAS_EGG, false);
         ANIMATION_TONGUE = Animation.create(10);
         this.ticksToSit = 20;
     }
@@ -74,6 +73,7 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> getEcoLevel(input) > getEcoLevel(this)));
         this.goalSelector.addGoal(3, new SmartWanderGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(3, new LayEggsOnNestGoal(this));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new HuntMobTarget<>(this, LivingEntity.class, true, 30, false, input -> getEcoLevel(input) < getEcoLevel(this)));
         this.targetSelector.addGoal(3, new DontThreadOnMeTarget<>(this, LivingEntity.class, true));
@@ -83,9 +83,6 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
         super.aiStep();
         if (!this.level.isClientSide) {
             if (this.tickCount % 1000 == 0) {
-                if (this.wantsToBreed() && !this.isMale()) {
-                    this.breed();
-                }
                 if (this.random.nextInt(40) == 0) {
                     this.spawnAtLocation(new ItemStack(ModItems.MATERIAL_SNAKE_SKIN.get()), 0.2F);
                 }
@@ -203,14 +200,36 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
     public void addAdditionalSaveData(CompoundTag compound){
         super.addAdditionalSaveData(compound);
         compound.putBoolean("rattler", this.isRattler());
+        compound.putBoolean("has_egg", this.wantsToLayEggs());
     }
 
     public void readAdditionalSaveData(CompoundTag compound){
         super.readAdditionalSaveData(compound);
         this.setRattler(compound.getBoolean("rattler"));
+        this.setEggStatus(compound.getBoolean("has_egg"));
     }
 
     public boolean attackEntityPartFrom(DamageSource source, float amount) {
         return this.hurt(source, amount);
+    }
+
+    @Override
+    public boolean wantsToLayEggs() {
+        return this.entityData.get(HAS_EGG);
+    }
+
+    @Override
+    public void setEggStatus(boolean status) {
+        this.entityData.set(HAS_EGG, status);
+    }
+
+    @Override
+    public Block getNestType() {
+        return ModBlock.NEST_REPTILE.get();
+    }
+
+    @Override
+    public boolean isValidNestBlock(BlockPos pos) {
+        return this.level.isEmptyBlock(pos) && this.level.getBlockState(pos.below()).is(ModTags.ModBlockTags.VALID_REPTILE_NEST) && this.getNestType().defaultBlockState().canSurvive(this.level, pos);
     }
 }

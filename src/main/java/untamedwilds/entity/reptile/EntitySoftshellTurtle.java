@@ -1,7 +1,6 @@
 package untamedwilds.entity.reptile;
 
-import net.minecraft.client.model.TurtleModel;
-import  net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +16,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -67,6 +65,7 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
     }
 
     public void registerGoals() {
+        super.registerGoals();
         this.goalSelector.addGoal(2, new SmartMeleeAttackGoal(this, 1D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
         this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1D, 1.1D, input -> getEcoLevel(input) > getEcoLevel(this)));

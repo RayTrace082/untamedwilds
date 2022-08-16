@@ -1,6 +1,7 @@
 package untamedwilds.entity.reptile;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -12,27 +13,27 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ComplexMobTerrestrial;
-import untamedwilds.entity.INewSkins;
-import untamedwilds.entity.ISpecies;
-import untamedwilds.entity.ai.SmartMateGoal;
-import untamedwilds.entity.ai.SmartMeleeAttackGoal;
-import untamedwilds.entity.ai.SmartSwimGoal_Land;
-import untamedwilds.entity.ai.SmartWanderGoal;
+import untamedwilds.entity.*;
+import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.unique.TortoiseHideInShellGoal;
+import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModItems;
+import untamedwilds.init.ModTags;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, INewSkins {
+public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, INewSkins, INestingMob {
+
+    public boolean hasEggs;
 
     public EntityTortoise(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
@@ -57,6 +58,7 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
         this.goalSelector.addGoal(2, new TortoiseHideInShellGoal<>(this, LivingEntity.class, 7, input -> getEcoLevel(input) > getEcoLevel(this)));
         this.goalSelector.addGoal(3, new SmartWanderGoal(this, 1.0D, 400, 0,true));
+        this.goalSelector.addGoal(3, new LayEggsOnNestGoal(this));
         //this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
@@ -75,11 +77,6 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
         super.aiStep();
 
         if (!this.level.isClientSide) {
-            if (this.tickCount % 1000 == 0) {
-                if (this.wantsToBreed() && !this.isMale()) {
-                    this.breed();
-                }
-            }
             if (this.level.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
             }
@@ -132,5 +129,35 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
         SoundEvent soundevent = this.isBaby() ? SoundEvents.TURTLE_SHAMBLE_BABY : SoundEvents.TURTLE_SHAMBLE;
         this.playSound(soundevent, 0.15F, 1.0F);
+    }
+
+    @Override
+    public boolean wantsToLayEggs() {
+        return this.hasEggs;
+    }
+
+    @Override
+    public void setEggStatus(boolean status) {
+        this.hasEggs = status;
+    }
+
+    @Override
+    public Block getNestType() {
+        return ModBlock.NEST_REPTILE.get();
+    }
+
+    @Override
+    public boolean isValidNestBlock(BlockPos pos) {
+        return this.level.isEmptyBlock(pos) && this.level.getBlockState(pos.below()).is(ModTags.ModBlockTags.VALID_REPTILE_NEST) && this.getNestType().defaultBlockState().canSurvive(this.level, pos);
+    }
+
+    public void addAdditionalSaveData(CompoundTag compound){
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("hasEggs", this.hasEggs);
+    }
+
+    public void readAdditionalSaveData(CompoundTag compound){
+        super.readAdditionalSaveData(compound);
+        this.hasEggs = compound.getBoolean("hasEggs");
     }
 }
