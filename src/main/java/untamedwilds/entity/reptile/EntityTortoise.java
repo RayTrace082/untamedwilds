@@ -2,6 +2,9 @@ package untamedwilds.entity.reptile;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -13,7 +16,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,11 +35,16 @@ import java.util.List;
 
 public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, INewSkins, INestingMob {
 
-    public boolean hasEggs;
+    private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(EntityTortoise.class, EntityDataSerializers.BOOLEAN);
 
     public EntityTortoise(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
         this.ticksToSit = 20;
+    }
+
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(HAS_EGG, false);
     }
 
     public static AttributeSupplier.Builder registerAttributes() {
@@ -133,12 +140,12 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
 
     @Override
     public boolean wantsToLayEggs() {
-        return this.hasEggs;
+        return this.entityData.get(HAS_EGG);
     }
 
     @Override
     public void setEggStatus(boolean status) {
-        this.hasEggs = status;
+        this.entityData.set(HAS_EGG, status);
     }
 
     @Override
@@ -153,11 +160,11 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
 
     public void addAdditionalSaveData(CompoundTag compound){
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("hasEggs", this.hasEggs);
+        compound.putBoolean("has_egg", this.wantsToLayEggs());
     }
 
     public void readAdditionalSaveData(CompoundTag compound){
         super.readAdditionalSaveData(compound);
-        this.hasEggs = compound.getBoolean("hasEggs");
+        this.setEggStatus(compound.getBoolean("has_egg"));
     }
 }

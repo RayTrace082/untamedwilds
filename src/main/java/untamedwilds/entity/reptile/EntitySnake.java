@@ -50,10 +50,14 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
 
     public EntitySnake(EntityType<? extends ComplexMobTerrestrial> type, Level worldIn) {
         super(type, worldIn);
-        this.entityData.define(RATTLER, false);
-        this.entityData.define(HAS_EGG, false);
         ANIMATION_TONGUE = Animation.create(10);
         this.ticksToSit = 20;
+    }
+
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(RATTLER, false);
+        this.entityData.define(HAS_EGG, false);
     }
 
     public static AttributeSupplier.Builder registerAttributes() {
@@ -197,18 +201,6 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
     public boolean isRattler(){ return (this.entityData.get(RATTLER)); }
     private void setRattler(boolean dimorphism){ this.entityData.set(RATTLER, dimorphism); }
 
-    public void addAdditionalSaveData(CompoundTag compound){
-        super.addAdditionalSaveData(compound);
-        compound.putBoolean("rattler", this.isRattler());
-        compound.putBoolean("has_egg", this.wantsToLayEggs());
-    }
-
-    public void readAdditionalSaveData(CompoundTag compound){
-        super.readAdditionalSaveData(compound);
-        this.setRattler(compound.getBoolean("rattler"));
-        this.setEggStatus(compound.getBoolean("has_egg"));
-    }
-
     public boolean attackEntityPartFrom(DamageSource source, float amount) {
         return this.hurt(source, amount);
     }
@@ -231,5 +223,17 @@ public class EntitySnake extends ComplexMobTerrestrial implements ISpecies, INew
     @Override
     public boolean isValidNestBlock(BlockPos pos) {
         return this.level.isEmptyBlock(pos) && this.level.getBlockState(pos.below()).is(ModTags.ModBlockTags.VALID_REPTILE_NEST) && this.getNestType().defaultBlockState().canSurvive(this.level, pos);
+    }
+
+    public void addAdditionalSaveData(CompoundTag compound){
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("rattler", this.isRattler());
+        compound.putBoolean("has_egg", this.wantsToLayEggs());
+    }
+
+    public void readAdditionalSaveData(CompoundTag compound){
+        super.readAdditionalSaveData(compound);
+        this.setRattler(compound.getBoolean("rattler"));
+        this.setEggStatus(compound.getBoolean("has_egg"));
     }
 }

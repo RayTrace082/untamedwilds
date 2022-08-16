@@ -73,7 +73,6 @@ public abstract class ComplexMob extends TamableAnimal {
         this.moveControl = new MoveControl(this);
     }
 
-    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(HOME_POS, BlockPos.ZERO);

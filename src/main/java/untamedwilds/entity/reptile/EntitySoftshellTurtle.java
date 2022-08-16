@@ -3,6 +3,9 @@ package untamedwilds.entity.reptile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -39,7 +42,8 @@ import java.util.List;
 
 public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpecies, INewSkins, INestingMob {
 
-    public boolean hasEggs;
+    private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(EntitySoftshellTurtle.class, EntityDataSerializers.BOOLEAN);
+
     public boolean hasExtendedNeck;
     public int extendNeckProgress;
     public Pair<Float, Float> head_movement;
@@ -51,6 +55,11 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         this.moveControl = new SmartSwimmingMoveControl(this, 60, 10, 0.6F, 0.25F, true);
         this.lookControl = new SmartSwimmerLookControl(this, 20);
         this.head_movement = new Pair<>(0F, 0F);
+    }
+
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(HAS_EGG, false);
     }
 
     public static AttributeSupplier.Builder registerAttributes() {
@@ -182,12 +191,12 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
 
     @Override
     public boolean wantsToLayEggs() {
-        return this.hasEggs;
+        return this.entityData.get(HAS_EGG);
     }
 
     @Override
     public void setEggStatus(boolean status) {
-        this.hasEggs = status;
+        this.entityData.set(HAS_EGG, status);
     }
 
     @Override
@@ -202,11 +211,11 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
 
     public void addAdditionalSaveData(CompoundTag compound){
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("hasEggs", this.hasEggs);
+        compound.putBoolean("has_egg", this.wantsToLayEggs());
     }
 
     public void readAdditionalSaveData(CompoundTag compound){
         super.readAdditionalSaveData(compound);
-        this.hasEggs = compound.getBoolean("hasEggs");
+        this.setEggStatus(compound.getBoolean("has_egg"));
     }
 }
