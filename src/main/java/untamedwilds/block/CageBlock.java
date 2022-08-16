@@ -43,7 +43,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -200,7 +199,7 @@ public class CageBlock extends Block implements SimpleWaterloggedBlock, EntityBl
         if (stack.getTag() != null) {
             EntityType<?> type = EntityUtils.getEntityTypeFromTag(stack.getTag(), null);
             if (type != null) {
-                EntityUtils.buildTooltipData(stack, tooltip, type, EntityUtils.getVariantName(type, stack.getTag().getInt("Variant")));
+                EntityUtils.buildTooltipData(stack, tooltip, type, EntityUtils.getVariantName(type, stack.getTag().getCompound("EntityTag").getInt("Variant")));
             }
         }
         else {
