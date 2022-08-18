@@ -84,6 +84,7 @@ public class ModBlock {
     public static RegistryObject<Block> JUNEGRASS = createBlock("flora_junegrass", () -> new CustomGrassBlock(MobEffects.UNLUCK, 4, Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(0.0F).sound(SoundType.GRASS).noCollission()), "cutout", CreativeModeTab.TAB_DECORATIONS);
     // Flora - Multistage
     public static RegistryObject<Block> ZIMBABWE_ALOE = createItemlessBlock("flora_zimbabwe_aloe", () -> new TallPlantBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(1.0F).sound(SoundType.WOOD).dynamicShape()), "cutout");
+    public static RegistryObject<Block> PAMPAS_GRASS = createBlock("flora_pampas_grass", () -> new TallGrassBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(1.0F).sound(SoundType.GRASS).dynamicShape()), "cutout", CreativeModeTab.TAB_DECORATIONS);
     // Flora - Floating
     public static RegistryObject<Block> WATER_HYACINTH = createItemlessBlock("flora_water_hyacinth", () -> new FloatingPlantBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(0.0F).sound(SoundType.LILY_PAD).noCollission()), "cutout");
     // Flora - Algae

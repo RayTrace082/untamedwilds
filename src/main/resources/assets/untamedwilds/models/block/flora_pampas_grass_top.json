@@ -1,0 +1,79 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"1": "untamedwilds:block/flora/pampas_grass_base",
+		"particle": "untamedwilds:block/flora/pampas_grass_top"
+	},
+	"elements": [
+		{
+			"from": [8, 0, -8],
+			"to": [8, 16, 24],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 8], "texture": "#1"},
+				"west": {"uv": [0, 0, 16, 8], "texture": "#1"}
+			}
+		},
+		{
+			"from": [-8, 0, 8],
+			"to": [24, 16, 8],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 8], "texture": "#1"},
+				"south": {"uv": [0, 0, 16, 8], "texture": "#1"}
+			}
+		},
+		{
+			"from": [2, 0, 2],
+			"to": [14, 16, 14],
+			"faces": {
+				"north": {"uv": [5, 0, 11, 8], "texture": "#1"},
+				"east": {"uv": [5, 0, 11, 8], "texture": "#1"},
+				"south": {"uv": [5, 0, 11, 8], "texture": "#1"},
+				"west": {"uv": [5, 0, 11, 8], "texture": "#1"},
+				"down": {"uv": [5, 8, 11, 14], "texture": "#1"}
+			}
+		},
+		{
+			"from": [2, 6, 2],
+			"to": [14, 6, 14],
+			"faces": {
+				"up": {"uv": [5, 6, 11, 12], "texture": "#1"},
+				"down": {"uv": [5, 6.5, 11, 12.5], "texture": "#1"}
+			}
+		},
+		{
+			"from": [4, 0, -8],
+			"to": [4, 16, 24],
+			"faces": {
+				"east": {"uv": [0, 0, 16, 8], "texture": "#1"},
+				"west": {"uv": [0, 0, 16, 8], "texture": "#1"}
+			}
+		},
+		{
+			"from": [12, 0, -8],
+			"to": [12, 16, 24],
+			"faces": {
+				"east": {"uv": [16, 0, 0, 8], "texture": "#1"},
+				"west": {"uv": [16, 0, 0, 8], "texture": "#1"}
+			}
+		},
+		{
+			"from": [-8, 0, 4],
+			"to": [24, 16, 4],
+			"faces": {
+				"north": {"uv": [16, 0, 0, 8], "texture": "#1"},
+				"south": {"uv": [16, 0, 0, 8], "texture": "#1"}
+			}
+		},
+		{
+			"from": [-8, 0, 12],
+			"to": [24, 16, 12],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 8], "texture": "#1"},
+				"south": {"uv": [0, 0, 16, 8], "texture": "#1"}
+			}
+		}
+	]
+}
