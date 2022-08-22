@@ -20,6 +20,8 @@ public class EntityDataListenerEvent {
 
     public static final JSONLoader<EntityDataHolder> ENTITY_DATA_HOLDERS = new JSONLoader<>("entities", EntityDataHolder.CODEC);
     public static EntityDataHolder TARANTULA;
+    public static EntityDataHolder KING_CRAB;
+
     public static EntityDataHolder GIANT_CLAM;
     public static EntityDataHolder GIANT_SALAMANDER;
     public static EntityDataHolder NEWT;
@@ -56,6 +58,7 @@ public class EntityDataListenerEvent {
 
     private static void registerData() {
         TARANTULA = registerEntityData(ModEntity.TARANTULA.get());
+        KING_CRAB = registerEntityData(ModEntity.KING_CRAB.get());
 
         GIANT_CLAM = registerEntityData(ModEntity.GIANT_CLAM.get());
 

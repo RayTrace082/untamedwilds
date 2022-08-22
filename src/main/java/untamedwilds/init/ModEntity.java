@@ -19,6 +19,7 @@ import untamedwilds.client.render.*;
 import untamedwilds.entity.ProjectileSpit;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
 import untamedwilds.entity.amphibian.EntityNewt;
+import untamedwilds.entity.arthropod.EntityKingCrab;
 import untamedwilds.entity.arthropod.EntityTarantula;
 import untamedwilds.entity.fish.*;
 import untamedwilds.entity.mammal.*;
@@ -39,6 +40,7 @@ public class ModEntity {
     
     // Arthropods
     public static RegistryObject<EntityType<EntityTarantula>> TARANTULA = createEntity(EntityTarantula::new, "tarantula", 0.4f, 0.3f, 0xB5B095, 0x26292B);
+    public static RegistryObject<EntityType<EntityKingCrab>> KING_CRAB = createEntity(EntityKingCrab::new, "king_crab", 0.6f, 0.5f, 0x715236, 0xAD9050);
 
     // Reptiles
     public static RegistryObject<EntityType<EntitySnake>> SNAKE = createEntity(EntitySnake::new, "snake", 0.95f, 0.3f, 0xD8A552, 0x5C3525);
@@ -108,6 +110,7 @@ public class ModEntity {
     @SubscribeEvent
     public static void bakeAttributes(EntityAttributeCreationEvent event) {
         event.put(TARANTULA.get(), EntityTarantula.registerAttributes().build());
+        event.put(KING_CRAB.get(), EntityKingCrab.registerAttributes().build());
 
         event.put(SNAKE.get(), EntitySnake.registerAttributes().build());
         event.put(SOFTSHELL_TURTLE.get(), EntitySoftshellTurtle.registerAttributes().build());
@@ -144,6 +147,7 @@ public class ModEntity {
     @SubscribeEvent
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntity.TARANTULA.get(), RendererTarantula::new);
+        event.registerEntityRenderer(ModEntity.KING_CRAB.get(), RendererKingCrab::new);
 
         event.registerEntityRenderer(ModEntity.SOFTSHELL_TURTLE.get(), RendererSoftshellTurtle::new);
         event.registerEntityRenderer(ModEntity.SNAKE.get(), RendererSnake::new);
