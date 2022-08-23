@@ -207,6 +207,17 @@
   "entity.untamedwilds.tarantula_tiger.sciname": "Davus fasciatus",
   "item.untamedwilds.egg_tarantula": "Tarantula Egg",
   "untamedwilds.subtitles.tarantula.ambient": "Tarantula scuttles",
+  "item.untamedwilds.king_crab_spawn_egg": "King Crab Spawn Egg",
+
+  "entity.untamedwilds.king_crab": "King Crab",
+  "entity.untamedwilds.king_crab_centolla": "Southern King Crab",
+  "entity.untamedwilds.king_crab_centolla.sciname": "Lithodes santolla",
+  "entity.untamedwilds.king_crab_red": "Red King Crab",
+  "entity.untamedwilds.king_crab_red.sciname": "Paralithodes camtschaticus",
+  "entity.untamedwilds.king_crab_spiny": "Spiny King Crab",
+  "entity.untamedwilds.king_crab_spiny.sciname": "Paralithodes rathbuni",
+  "item.untamedwilds.egg_king_crab": "King Crab Egg",
+  "untamedwilds.subtitles.king_crab.ambient": "King Crab scuttles",
 
   "item.untamedwilds.giant_clam_spawn_egg": "Giant Clam Spawn Egg",
   "item.untamedwilds.material_pearl": "Pearl",
