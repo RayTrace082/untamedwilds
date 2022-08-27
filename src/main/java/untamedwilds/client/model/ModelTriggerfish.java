@@ -107,7 +107,8 @@ public class ModelTriggerfish extends AdvancedEntityModel<EntityTriggerfish> {
             this.setRotateAngle(main_body, 0, 0, (float)Math.toRadians(90D));
         }
         else {
-            this.setRotateAngle(main_body, netHeadYaw * 2 * ((float)Math.PI / 180F), headPitch * 2 * ((float)Math.PI / 180F), 0);
+            this.setRotateAngle(main_body, triggerfish.getXRot() * ((float) Math.PI / 180F), 0, 0);
+            //this.setRotateAngle(main_body, netHeadYaw * 2 * ((float)Math.PI / 180F), headPitch * 2 * ((float)Math.PI / 180F), 0);
         }
 
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{main_body, body_tail, fin_caudal};

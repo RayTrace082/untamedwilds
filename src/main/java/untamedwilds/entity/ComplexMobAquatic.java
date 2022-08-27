@@ -2,12 +2,16 @@ package untamedwilds.entity;
 
 import com.mojang.math.Vector3d;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
@@ -21,6 +25,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
+import untamedwilds.UntamedWilds;
 
 import javax.annotation.Nullable;
 
@@ -169,8 +174,7 @@ public abstract class ComplexMobAquatic extends ComplexMob {
         public int heightFromBottom;
 
         public SwimGoal(ComplexMobAquatic entity) {
-            super(entity, 1.0D, 20);
-            this.heightFromBottom = -1;
+            this(entity, -1);
         }
 
         public SwimGoal(ComplexMobAquatic entity, int offset) {
@@ -184,13 +188,13 @@ public abstract class ComplexMobAquatic extends ComplexMob {
 
         @Nullable
         protected Vec3 getPosition() {
-            Vec3 vector3d = DefaultRandomPos.getPos(this.mob, 10, 7);
+            Vec3 vector3d = BehaviorUtils.getRandomSwimmablePos(this.mob, 10, 7);
 
-            for(int i = 0; vector3d != null && !this.mob.level.getBlockState(new BlockPos(vector3d)).isPathfindable(this.mob.level, new BlockPos(vector3d), PathComputationType.WATER) && i++ < 10; vector3d = DefaultRandomPos.getPos(this.mob, 10, 7)) {
-            }
-
-            if (vector3d != null && this.heightFromBottom > 0 && this.mob.level.canSeeSky(this.mob.blockPosition())) {
+            //UntamedWilds.LOGGER.info((vector3d != null) + " " + (this.heightFromBottom > 0) + " " + this.mob.level.canSeeSkyFromBelowWater(this.mob.blockPosition()));
+            if (vector3d != null && this.heightFromBottom > 0 && this.mob.level.canSeeSkyFromBelowWater(this.mob.blockPosition())) {
                 int offset = this.heightFromBottom + this.mob.level.getRandom().nextInt(7) - 4;
+                //UntamedWilds.LOGGER.info(vector3d);
+                //((ServerLevel)this.mob.level).sendParticles(ParticleTypes.GLOW, vector3d.x(), this.mob.level.getHeight(Heightmap.Types.OCEAN_FLOOR, (int)vector3d.x(), (int)vector3d.z()) + offset, vector3d.z() + 0.5, 50, 0.0D, 0.0D, 0.0D, 0.15F);
                 return new Vec3(vector3d.x(), this.mob.level.getHeight(Heightmap.Types.OCEAN_FLOOR, (int)vector3d.x(), (int)vector3d.z()) + offset, vector3d.z());
             }
             return vector3d;

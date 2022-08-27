@@ -7,16 +7,23 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.animal.TropicalFish;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.pathfinder.Path;
+import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
@@ -46,11 +53,11 @@ public class EntityTriggerfish extends ComplexMobAquatic implements ISpecies, IN
     }
 
     protected void registerGoals() {
-        super.registerGoals();
+        //super.registerGoals();
         this.goalSelector.addGoal(0, new SmartMeleeAttackGoal(this, 1.8D, false, 2));
         this.goalSelector.addGoal(2, new PanicGoal(this, 1.25D));
         this.goalSelector.addGoal(3, new TriggerFishBlowGoal(this, 600));
-        this.goalSelector.addGoal(4, new SwimGoal(this, 6));
+        this.goalSelector.addGoal(4, new SwimGoal(this, 5));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
@@ -96,67 +103,82 @@ public class EntityTriggerfish extends ComplexMobAquatic implements ISpecies, IN
         return SoundEvents.GUARDIAN_FLOP;
     }
 
-    public class TriggerFishBlowGoal extends Goal {
+    public class TriggerFishBlowGoal extends MoveToBlockGoal {
 
         private final ComplexMobAquatic taskOwner;
         private final int chance;
-        private BlockPos targetPos;
         private boolean taskComplete;
-        private int counter;
+        private int counter = 0;
 
         public TriggerFishBlowGoal(ComplexMobAquatic entityIn, int chance) {
+            super(entityIn, 1, 3, 4);
             this.taskOwner = entityIn;
             this.chance = chance;
         }
 
         public boolean canUse() {
-            if (this.taskOwner.getRandom().nextInt(this.chance) == 0) {
+            super.canUse();
+            if (this.taskOwner.getRandom().nextInt(this.chance) == 0 || this.blockPos.equals(BlockPos.ZERO)) {
                 this.taskComplete = false;
-                this.targetPos = getNearbySandBlock(this.taskOwner.blockPosition());
-                return this.targetPos != null;
+                return true;
             }
             return false;
         }
 
-        private BlockPos getNearbySandBlock(BlockPos roomCenter) {
-            int X = 4;
-            int Y = 6;
-            //List<BlockPos> inventories = new ArrayList<>();
-            for (BlockPos blockpos : BlockPos.betweenClosed(roomCenter.offset(-X, -Y, -X), roomCenter.offset(X, 0, X))) {
-
-                if (this.taskOwner.level.getBlockState(blockpos).getBlock() == Blocks.SAND && this.taskOwner.level.getBlockState(blockpos.above()).isAir() && random.nextInt(2) == 0) {
-
-                    return blockpos;
-                }
-            }
-            return null;
+        @Override
+        protected void moveMobToBlock() {
+            this.mob.getNavigation().moveTo((double)((float)this.blockPos.getX()) + 0.5D, (this.blockPos.getY() + 2), (double)((float)this.blockPos.getZ()) + 0.5D, this.speedModifier);
         }
 
+        @Override
+        protected BlockPos getMoveToTarget() {
+            return this.blockPos.above(1);
+        }
+
+        @Override
         public boolean canContinueToUse() {
-            return !this.taskComplete && !this.taskOwner.getNavigation().isDone() && this.counter >= 0;
+            //UntamedWilds.LOGGER.info(!this.isReachedTarget() + " " + !this.taskComplete + " " + (this.counter >= 0));
+            return !this.taskComplete;
         }
 
-        public void start() {
-            this.taskOwner.getNavigation().moveTo(this.targetPos.getX() + 0.5, this.targetPos.above(3).getY(), this.targetPos.getZ() + 0.5, 1);
+        @Override
+        public double acceptedDistance() {
+            return 1.8D;
+        }
+
+        public boolean isInterruptable() {
+            return true;
         }
 
         public void tick() {
-            if (this.counter == 0 && this.taskOwner.distanceToSqr(this.targetPos.getX() + 0.5, this.targetPos.above().getY(), this.targetPos.getZ() + 0.5) < 1) {
-                //this.taskOwner.getNavigation().stop();
-                this.counter = this.taskOwner.getRandom().nextInt(20) + 30;
-                //this.taskOwner.addEffect(new EffectInstance(Effects.GLOWING, 80, 0));
+            super.tick();
+            if (this.counter == 0 && this.isReachedTarget()) {
+                this.taskOwner.getLookControl().setLookAt(this.blockPos.getX() + 0.5, this.blockPos.getY() + 1, this.blockPos.getZ() + 0.5);
+                this.taskOwner.getNavigation().stop();
+                this.counter = this.taskOwner.getRandom().nextInt(40) + 40;
             }
             if (this.counter > 0) {
                 this.counter--;
+                this.taskOwner.getLookControl().setLookAt(this.blockPos.getX() + 0.5, this.blockPos.getY() + 1, this.blockPos.getZ() + 0.5);
                 if (this.counter == 0) {
                     Direction direction = this.taskOwner.getMotionDirection();
-                    this.taskOwner.setDeltaMovement(this.taskOwner.getDeltaMovement().add((double)direction.getStepX() * -0.2D, 0.2D, (double)direction.getStepZ() * -0.2D));
+                    this.taskOwner.setDeltaMovement(this.taskOwner.getDeltaMovement().add((double)direction.getStepX() * -0.1D, 0.1D, (double)direction.getStepZ() * -0.1D));
                     this.taskOwner.getNavigation().stop();
                     Level worldIn = this.taskOwner.getLevel();
-                    ((ServerLevel)worldIn).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, worldIn.getBlockState(this.targetPos)), this.targetPos.getX() + 0.5, this.targetPos.above().getY(), this.targetPos.getZ() + 0.5, 50, 0.0D, 0.0D, 0.0D, 0.15F);
+                    ((ServerLevel)worldIn).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, worldIn.getBlockState(this.blockPos)), this.blockPos.getX() + 0.5, this.blockPos.above().getY(), this.blockPos.getZ() + 0.5, 50, 0.0D, 0.0D, 0.0D, 0.15F);
                     this.taskComplete = true;
                 }
             }
+        }
+
+        @Override
+        protected boolean isValidTarget(LevelReader p_25619_, BlockPos blockpos) {
+            // TODO: Option to blow items out of the sand?
+            if (this.taskOwner.level.getBlockState(blockpos).is(BlockTags.SAND) && this.taskOwner.level.getFluidState(blockpos.above()).is(Fluids.WATER) && random.nextInt(2) == 0) {
+                Path path = this.mob.getNavigation().createPath(blockpos, 1);
+                return path != null && path.canReach();
+            }
+            return false;
         }
     }
 }
