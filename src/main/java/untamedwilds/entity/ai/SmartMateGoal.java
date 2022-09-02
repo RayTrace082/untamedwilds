@@ -4,11 +4,9 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.INestingMob;
-import untamedwilds.entity.arthropod.EntityTarantula;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -37,21 +35,16 @@ public class SmartMateGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!this.taskOwner.isInLove() || this.taskOwner.getAge() != 0) {
+        if (!this.taskOwner.isInLove() || this.taskOwner.getAge() != 0 || this.taskOwner.getRandom().nextInt(this.executionChance) != 0) {
             return false;
         }
-        if (this.taskOwner.getRandom().nextInt(this.executionChance) != 0) {
-            return false;
-        }
-        else {
-            this.targetMate = this.getNearbyMate();
-            return this.targetMate != null;
-        }
+        this.targetMate = this.getNearbyMate();
+        return this.targetMate != null;
     }
 
     @Override
     public boolean canContinueToUse() {
-        return this.targetMate.isAlive() && this.targetMate.isInLove() && this.spawnBabyDelay < 200;
+        return this.targetMate.isAlive() && this.taskOwner.getAge() == 0 && this.spawnBabyDelay < 200;
     }
 
     @Override
@@ -76,26 +69,16 @@ public class SmartMateGoal extends Goal {
             this.taskOwner.setAge(this.taskOwner.getPregnancyTime());
             this.targetMate.setAge(this.taskOwner.getPregnancyTime());
             if (this.taskOwner instanceof INestingMob) {
-                if (!ConfigGamerules.genderedBreeding.get()) {
+                if (!this.taskOwner.isMale() || !ConfigGamerules.genderedBreeding.get())
                     ((INestingMob)this.taskOwner).setEggStatus(true);
-                }
-                else {
-                    if (!this.taskOwner.isMale())
-                        ((INestingMob)this.taskOwner).setEggStatus(true);
-                    else
-                        ((INestingMob)this.targetMate).setEggStatus(true);
-                }
+                else
+                    ((INestingMob)this.targetMate).setEggStatus(true);
             }
             else if (ConfigGamerules.easyBreeding.get()) {
-                if (!ConfigGamerules.genderedBreeding.get()) {
+                if (!this.taskOwner.isMale() || !ConfigGamerules.genderedBreeding.get())
                     this.taskOwner.breed();
-                }
-                else {
-                    if (!this.taskOwner.isMale())
-                        this.taskOwner.breed();
-                    else
-                        this.targetMate.breed();
-                }
+                else
+                    this.targetMate.breed();
             }
         }
     }
@@ -115,17 +98,12 @@ public class SmartMateGoal extends Goal {
     }
 
     private boolean canMateWith(ComplexMob father, ComplexMob mother) {
-        if (ConfigGamerules.genderedBreeding.get() && father.getGender() == mother.getGender()) {
+        if ((ConfigGamerules.genderedBreeding.get() && father.getGender() == mother.getGender()) || father.getVariant() != mother.getVariant()) {
             return false;
         }
-        else if (father.getVariant() != mother.getVariant()) {
+        else if (father instanceof INestingMob nesting && (nesting.wantsToLayEggs() || ((INestingMob)mother).wantsToLayEggs())) {
             return false;
         }
-        else {
-            if (ConfigGamerules.playerBreeding.get()) { // Bypass breeding restrictions in the event of a player triggered breeding
-                return true;
-            }
-            return father.wantsToBreed() && mother.wantsToBreed();
-        }
+        return ConfigGamerules.playerBreeding.get() || (father.wantsToBreed() && mother.wantsToBreed());
     }
 }

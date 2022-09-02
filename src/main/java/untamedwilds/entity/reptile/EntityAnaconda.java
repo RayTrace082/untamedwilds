@@ -105,6 +105,9 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
     public void aiStep() {
         super.aiStep();
         if (!this.level.isClientSide) {
+            if (this.level.getGameTime() % 600 == 0 && this.wantsToBreed()) {
+                this.setInLove(null);
+            }
             if (this.tickCount % 1000 == 0) {
                 if (this.random.nextInt(40) == 0) {
                     this.spawnAtLocation(new ItemStack(ModItems.MATERIAL_SNAKE_SKIN.get()), 0.2F);
@@ -217,11 +220,7 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
             if (!this.isSleeping() && this.getAge() == 0 && EntityUtils.hasFullHealth(this)) {
                 List<EntityAnaconda> list = this.level.getEntitiesOfClass(EntityAnaconda.class, this.getBoundingBox().inflate(6.0D, 4.0D, 6.0D));
                 list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
-                if (list.size() >= 1) {
-                    this.setAge(this.getPregnancyTime());
-                    list.get(0).setAge(this.getPregnancyTime());
-                    return true;
-                }
+                return list.size() >= 1;
             }
         }
         return false;

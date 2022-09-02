@@ -84,6 +84,9 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
         super.aiStep();
 
         if (!this.level.isClientSide) {
+            if (this.level.getGameTime() % 600 == 0 && this.wantsToBreed()) {
+                this.setInLove(null);
+            }
             if (this.level.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
             }
@@ -97,11 +100,7 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
             if (!this.isSleeping() && this.getAge() == 0 && EntityUtils.hasFullHealth(this)) {
                 List<EntityTortoise> list = this.level.getEntitiesOfClass(EntityTortoise.class, this.getBoundingBox().inflate(6.0D, 4.0D, 6.0D));
                 list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
-                if (list.size() >= 1) {
-                    this.setAge(this.getPregnancyTime());
-                    list.get(0).setAge(this.getPregnancyTime());
-                    return true;
-                }
+                return list.size() >= 1;
             }
         }
         return false;

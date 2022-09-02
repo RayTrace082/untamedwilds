@@ -133,6 +133,9 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
         super.aiStep();
 
         if (!this.level.isClientSide) {
+            if (this.level.getGameTime() % 600 == 0 && this.wantsToBreed()) {
+                this.setInLove(null);
+            }
             if (this.level.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
             }
@@ -156,11 +159,7 @@ public class EntitySoftshellTurtle extends ComplexMobAmphibious implements ISpec
             if (!this.isSleeping() && this.getAge() == 0 && EntityUtils.hasFullHealth(this)) {
                 List<EntitySoftshellTurtle> list = this.level.getEntitiesOfClass(EntitySoftshellTurtle.class, this.getBoundingBox().inflate(6.0D, 4.0D, 6.0D));
                 list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
-                if (list.size() >= 1) {
-                    this.setAge(this.getPregnancyTime());
-                    list.get(0).setAge(this.getPregnancyTime());
-                    return true;
-                }
+                return list.size() >= 1;
             }
         }
         return false;
