@@ -1,0 +1,12 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "untamedwilds:item/spawn/bucket_king_crab_red"
+    },
+
+    "overrides":[
+        {"predicate": {"custom_model_data":0}, "model":"untamedwilds:item/entity/bucket_king_crab_centolla"},
+        {"predicate": {"custom_model_data":1}, "model":"untamedwilds:item/entity/bucket_king_crab_red"},
+        {"predicate": {"custom_model_data":2}, "model":"untamedwilds:item/entity/bucket_king_crab_spiny"}
+    ]
+}

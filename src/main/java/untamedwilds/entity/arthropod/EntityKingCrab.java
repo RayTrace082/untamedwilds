@@ -134,7 +134,7 @@ public class EntityKingCrab extends ComplexMobAmphibious implements ISpecies, IN
     /* Breeding conditions for the Tarantula are:
      * A nearby Tarantula of the opposite gender and the same species */
     public boolean wantsToBreed() {
-        if (ConfigGamerules.naturalBreeding.get() && !this.isSleeping() && this.getAge() == 0 && EntityUtils.hasFullHealth(this)) {
+        if (ConfigGamerules.naturalBreeding.get() && this.isInWater() && this.getAge() == 0 && EntityUtils.hasFullHealth(this)) {
             List<EntityKingCrab> list = this.level.getEntitiesOfClass(EntityKingCrab.class, this.getBoundingBox().inflate(6.0D, 4.0D, 6.0D));
             list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
             if (list.size() >= 1) {
@@ -156,21 +156,11 @@ public class EntityKingCrab extends ComplexMobAmphibious implements ISpecies, IN
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(InteractionHand.MAIN_HAND);
-        if (itemstack.getItem() == Items.BLAZE_ROD) {
-            if (player.isSteppingCarefully()) {
-                this.setAnimation(EAT_BOTH);
+        if (hand == InteractionHand.MAIN_HAND) {
+            if (itemstack.getItem().equals(Items.WATER_BUCKET) && this.isAlive()) {
+                EntityUtils.mutateEntityIntoItem(this, player, hand, "bucket_king_crab", itemstack);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
-            else {
-                if (this.random.nextBoolean())
-                    this.setAnimation(EAT_LEFT);
-                else
-                    this.setAnimation(EAT_RIGHT);
-            }
-        }
-        if (itemstack.getItem() == Items.GLASS_BOTTLE && this.isAlive()) {
-            EntityUtils.turnEntityIntoItem(this, "bottle_tarantula");
-            itemstack.shrink(1);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
         return super.mobInteract(player, hand);
     }
