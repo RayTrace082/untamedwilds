@@ -15,7 +15,7 @@ public class FishWanderAsSchoolGoal extends RandomSwimmingGoal {
     private final int maxDist;
 
     public FishWanderAsSchoolGoal(ComplexMobAquatic entityIn) {
-        this(entityIn, 1.0D, 20, 3);
+        this(entityIn, 1.0D, 20, 5);
     }
 
     public FishWanderAsSchoolGoal(ComplexMobAquatic entityIn, double speedIn, int chance, int maxDist) {
@@ -44,7 +44,7 @@ public class FishWanderAsSchoolGoal extends RandomSwimmingGoal {
     public void start() {
         this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
         for (ComplexMob herd_member : this.taskOwner.herd.creatureList) {
-            UntamedWilds.LOGGER.info(this.taskOwner.distanceTo(herd_member));
+            //UntamedWilds.LOGGER.info(this.taskOwner.distanceTo(herd_member));
             if (this.taskOwner.distanceTo(herd_member) < this.maxDist) {
                 double posX = this.wantedX + (herd_member.getX() - this.taskOwner.getX());
                 double posY = this.wantedY + (herd_member.getY() - this.taskOwner.getY());

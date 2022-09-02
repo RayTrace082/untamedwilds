@@ -15,7 +15,7 @@ public class FishReturnToSchoolGoal extends RandomSwimmingGoal {
     private boolean hasReachedLeader;
 
     public FishReturnToSchoolGoal(ComplexMobAquatic entityIn) {
-        this(entityIn, 2D, 10, 3);
+        this(entityIn, 2D, 10, 5);
     }
 
     public FishReturnToSchoolGoal(ComplexMobAquatic entityIn, double speedIn, int chance, int maxDist) {
