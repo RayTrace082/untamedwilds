@@ -1,6 +1,5 @@
 package untamedwilds.entity;
 
-import com.mojang.math.Vector3d;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ public class HerdEntity {
     private ComplexMob leader;
     private final Random rand;
     public final List<ComplexMob> creatureList = new ArrayList<>();
+    public double splitOffDistance = 1024D;
 
     public HerdEntity(ComplexMob creature, int maxSize) {
         this.openToCombine = true;
@@ -94,7 +94,7 @@ public class HerdEntity {
                 for (ComplexMob creature : list) {
                     if (!this.containsCreature(creature) && creature.herd != null && canCombineHerds(this, creature.herd)) {
                         int netSize = this.creatureList.size() + creature.herd.creatureList.size();
-                        if (!creature.herd.isOpenToCombine() && creature.getClass().equals(this.getLeader().getClass()) && netSize <= this.getMaxSize() && netSize <= creature.herd.getMaxSize()) {
+                        if (creature.herd.isOpenToCombine() && creature.getClass().equals(this.getLeader().getClass()) && netSize <= this.getMaxSize() && netSize <= creature.herd.getMaxSize()) {
                             combineHerds(this, creature.herd);
                         }
                     }
@@ -111,7 +111,7 @@ public class HerdEntity {
                         continue;
                     }
                 }*/
-                if (creature.isAlive() && creature.distanceToSqr(this.leader) <= 1024.0D) {
+                if (creature.isAlive() && creature.distanceToSqr(this.leader) <= this.splitOffDistance) {
                     if (creature != this.leader) {
                         if (creature.distanceToSqr(this.leader) <= (double) (this.radius * this.radius)) {
                             Vec3 vec = this.leader.getLookAngle();

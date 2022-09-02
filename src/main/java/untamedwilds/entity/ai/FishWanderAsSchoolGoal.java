@@ -1,8 +1,10 @@
 package untamedwilds.entity.ai;
 
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.phys.Vec3;
+import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobAquatic;
 import untamedwilds.entity.IPackEntity;
@@ -13,7 +15,7 @@ public class FishWanderAsSchoolGoal extends RandomSwimmingGoal {
     private final int maxDist;
 
     public FishWanderAsSchoolGoal(ComplexMobAquatic entityIn) {
-        this(entityIn, 1.0D, 20, 5);
+        this(entityIn, 1.0D, 20, 3);
     }
 
     public FishWanderAsSchoolGoal(ComplexMobAquatic entityIn, double speedIn, int chance, int maxDist) {
@@ -35,14 +37,15 @@ public class FishWanderAsSchoolGoal extends RandomSwimmingGoal {
 
     @Override
     protected Vec3 getPosition() {
-        return DefaultRandomPos.getPos(this.mob, 20, 7);
+        return BehaviorUtils.getRandomSwimmablePos(this.mob, 20, 7);
     }
 
     @Override
     public void start() {
         this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
         for (ComplexMob herd_member : this.taskOwner.herd.creatureList) {
-            if (this.taskOwner.distanceTo(this.taskOwner.herd.getLeader()) < this.maxDist) {
+            UntamedWilds.LOGGER.info(this.taskOwner.distanceTo(herd_member));
+            if (this.taskOwner.distanceTo(herd_member) < this.maxDist) {
                 double posX = this.wantedX + (herd_member.getX() - this.taskOwner.getX());
                 double posY = this.wantedY + (herd_member.getY() - this.taskOwner.getY());
                 double posZ = this.wantedZ + (herd_member.getZ() - this.taskOwner.getZ());
