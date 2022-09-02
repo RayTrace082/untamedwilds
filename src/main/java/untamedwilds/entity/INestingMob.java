@@ -28,4 +28,6 @@ public interface INestingMob {
      * @param pos the BlockPos to be checked
      */
     boolean isValidNestBlock(BlockPos pos);
+
+    default boolean isEggLayer() { return true; }
 }

@@ -1,7 +1,7 @@
 {
   "name":"football_fish",
   "breeding":"EARLY_AUTUMN",
-  "growing":12,
+  "growing_time":12,
   "offspring":3,
   "favourite_food":"untamedwilds:chum",
   "sounds":{

@@ -1,7 +1,7 @@
 {
   "name":"snake",
   "breeding":"LATE_SUMMER",
-  "growing":6,
+  "growing_time":6,
   "offspring":4,
   "favourite_food":"minecraft:rabbit",
   "sounds":{

@@ -1,7 +1,7 @@
 {
   "name":"giant_salamander",
   "breeding":"EARLY_SUMMER",
-  "growing":6,
+  "growing_time":6,
   "offspring":5,
   "attack":2,
   "health":10,

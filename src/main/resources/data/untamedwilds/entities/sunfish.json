@@ -1,7 +1,7 @@
 {
   "name":"sunfish",
   "breeding":"EARLY_AUTUMN",
-  "growing":6,
+  "growing_time":6,
   "offspring":5,
   "favourite_food":"untamedwilds:chum",
   "sounds":{

@@ -1,7 +1,7 @@
 {
   "name":"catfish",
   "breeding":"MID_SUMMER",
-  "growing":6,
+  "growing_time":6,
   "offspring":5,
   "favourite_food":"untamedwilds:chum",
   "sounds":{

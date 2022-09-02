@@ -1,7 +1,7 @@
 {
   "name":"softshell_turtle",
   "breeding":"EARLY_SUMMER",
-  "growing":6,
+  "growing_time":6,
   "offspring":5,
   "favourite_food":"minecraft:cod",
   "sounds":{

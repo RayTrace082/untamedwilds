@@ -1,7 +1,7 @@
 {
   "name":"rhino",
   "breeding":"EARLY_SUMMER",
-  "growing":12,
+  "growing_time":12,
   "offspring":1,
   "activityType":"cathemeral",
   "favourite_food":"minecraft:melon_slice",

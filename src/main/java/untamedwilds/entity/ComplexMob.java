@@ -310,7 +310,7 @@ public abstract class ComplexMob extends TamableAnimal {
         int i = this.age;
         super.setAge(age);
         this.age = age;
-        if (!this.isMale() && !(this instanceof INestingMob) && !ConfigGamerules.easyBreeding.get()) {
+        if (!this.isMale() && !(this instanceof INestingMob nestingMob && nestingMob.isEggLayer()) && !ConfigGamerules.easyBreeding.get()) {
             if (i > 0 && age <= 0) {
                 this.breed();
             }

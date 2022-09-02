@@ -1,7 +1,7 @@
 {
   "name":"boar",
   "breeding":"MID_WINTER",
-  "growing":4,
+  "growing_time":4,
   "offspring":4,
   "activityType":"nocturnal",
   "favourite_food":"minecraft:beetroot",
