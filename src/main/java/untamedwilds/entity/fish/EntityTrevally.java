@@ -51,7 +51,7 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
             if (this.herd == null) {
                 IPackEntity.initPack(this);
             }
-            else {
+            else if (this.herd.getLeader().equals(this)) {
                 this.herd.tick();
             }
             if (this.tickCount % 1000 == 0) {
@@ -105,6 +105,6 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
     }
 
     public boolean shouldLeavePack() {
-        return this.random.nextInt(120) == 0;
+        return this.random.nextInt(1000) == 0;
     }
 }
