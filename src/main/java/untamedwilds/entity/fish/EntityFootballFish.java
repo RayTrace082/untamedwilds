@@ -96,7 +96,7 @@ public class EntityFootballFish extends ComplexMobAquatic implements ISpecies, I
                     return false;
                 }
             }
-            this.setAge(this.getAge());
+            this.setAge(this.getPregnancyTime());
             return true;
         }
         return false;
