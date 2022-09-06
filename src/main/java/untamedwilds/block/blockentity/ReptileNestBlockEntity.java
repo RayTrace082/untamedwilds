@@ -9,14 +9,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.TurtleEggBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.config.ConfigMobControl;
@@ -49,13 +49,15 @@ public class ReptileNestBlockEntity extends BlockEntity {
             if (worldIn.hasNearbyAlivePlayer((double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D, ConfigMobControl.critterSpawnRange.get())) {
                 int spawnCount = worldIn.getRandom().nextInt(3) + 1;
                 for(int i = 0; i < spawnCount; ++i) {
-                    if (this.getEggCount() > 0 && this.getEntityType() != null) {
+                    Random rand = worldIn.getRandom();
+                    float offsetX = rand.nextFloat();
+                    float offsetZ = rand.nextFloat();
+                    if (this.getEggCount() > 0 && this.getEntityType() != null && worldIn.noCollision(this.getEntityType().getAABB(blockpos.getX() + offsetX, blockpos.getY(), blockpos.getZ() + offsetZ).deflate(this.getEntityType().getWidth() / 4))) {
                         // Turns out that calling EntityType.create(...) will fucking crash the game if it pulls an invalid variant
                         //Entity spawn = this.getEntityType().create(worldIn, null, null, null, blockpos, MobSpawnType.CHUNK_GENERATION, true, false);
                         Entity spawn = this.getEntityType().create(worldIn);
                         if (spawn != null) {
-                            Random rand = worldIn.getRandom();
-                            spawn.moveTo(blockpos.getX() + rand.nextFloat(), blockpos.getY(), blockpos.getZ() + rand.nextFloat(), Mth.wrapDegrees(rand.nextFloat() * 360.0F), 0.0F);
+                            spawn.moveTo(blockpos.getX() + offsetX, blockpos.getY(), blockpos.getZ() + offsetZ, Mth.wrapDegrees(rand.nextFloat() * 360.0F), 0.0F);
                             if (spawn instanceof Mob mobSpawn) {
                                 mobSpawn.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(blockpos), MobSpawnType.BREEDING, null, null);
                             }
@@ -71,13 +73,13 @@ public class ReptileNestBlockEntity extends BlockEntity {
                                 }
                             }
                             worldIn.addFreshEntityWithPassengers(spawn);
+                            worldIn.playSound(null, this.getBlockPos(), SoundEvents.TURTLE_EGG_BREAK, SoundSource.BLOCKS, 0.7F, 0.9F + worldIn.getRandom().nextFloat() * 0.2F);
                             spawnParticles(worldIn, spawn.getX(), spawn.getY(), spawn.getZ(), new BlockParticleOption(ParticleTypes.BLOCK, Blocks.TURTLE_EGG.defaultBlockState()));
                             removeEggs(worldIn, 1);
                             setChanged();
                         }
                     }
                 }
-                worldIn.playSound(null, this.getBlockPos(), SoundEvents.TURTLE_EGG_BREAK, SoundSource.BLOCKS, 0.7F, 0.9F + worldIn.getRandom().nextFloat() * 0.2F);
             }
         }
     }
