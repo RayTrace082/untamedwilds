@@ -139,5 +139,8 @@ public class ModItems {
         // King Crab Items
         ModItems.ITEMS.register("egg_king_crab", () -> new MobEggItem(ModEntity.KING_CRAB, new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
         ModItems.ITEMS.register("bucket_king_crab", () -> new MobBucketedItem(ModEntity.KING_CRAB, Fluids.WATER, new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
+
+        // Monitor Items
+        ModItems.ITEMS.register("egg_monitor", () -> new MobEggItem(ModEntity.MONITOR, new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
     }
 }

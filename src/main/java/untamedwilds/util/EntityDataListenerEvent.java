@@ -1,8 +1,8 @@
 package untamedwilds.util;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -37,6 +37,7 @@ public class EntityDataListenerEvent {
     public static EntityDataHolder ANACONDA;
     public static EntityDataHolder SOFTSHELL_TURTLE;
     public static EntityDataHolder TORTOISE;
+    public static EntityDataHolder MONITOR;
 
     public static EntityDataHolder AARDVARK;
     public static EntityDataHolder HIPPO;
@@ -78,6 +79,7 @@ public class EntityDataListenerEvent {
         ANACONDA = registerEntityData(ModEntity.ANACONDA.get());
         SOFTSHELL_TURTLE = registerEntityData(ModEntity.SOFTSHELL_TURTLE.get());
         TORTOISE = registerEntityData(ModEntity.TORTOISE.get());
+        MONITOR = registerEntityData(ModEntity.MONITOR.get());
 
         BEAR = registerEntityData(ModEntity.BEAR.get());
         BIG_CAT = registerEntityData(ModEntity.BIG_CAT.get());

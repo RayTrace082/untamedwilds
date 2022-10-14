@@ -1,6 +1,5 @@
 package untamedwilds.init;
 
-import net.minecraft.client.renderer.entity.LlamaSpitRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
@@ -24,10 +23,7 @@ import untamedwilds.entity.arthropod.EntityTarantula;
 import untamedwilds.entity.fish.*;
 import untamedwilds.entity.mammal.*;
 import untamedwilds.entity.mollusk.EntityGiantClam;
-import untamedwilds.entity.reptile.EntityAnaconda;
-import untamedwilds.entity.reptile.EntitySnake;
-import untamedwilds.entity.reptile.EntitySoftshellTurtle;
-import untamedwilds.entity.reptile.EntityTortoise;
+import untamedwilds.entity.reptile.*;
 import untamedwilds.item.UntamedSpawnEggItem;
 import untamedwilds.world.FaunaHandler;
 
@@ -47,6 +43,7 @@ public class ModEntity {
     public static RegistryObject<EntityType<EntitySoftshellTurtle>> SOFTSHELL_TURTLE = createEntity(EntitySoftshellTurtle::new, "softshell_turtle", 0.6f, 0.3f, 0x828444, 0x26292B);
     public static RegistryObject<EntityType<EntityTortoise>> TORTOISE = createEntity(EntityTortoise::new, "tortoise", 0.6f, 0.6f, 0xAF9F74, 0x775232);
     public static RegistryObject<EntityType<EntityAnaconda>> ANACONDA = createEntity(EntityAnaconda::new, "large_snake", 1.5f, 0.6f, 0x65704C, 0x42291A);
+    public static RegistryObject<EntityType<EntityMonitor>> MONITOR = createEntity(EntityMonitor::new, "monitor", 1.3f, 0.6f, 0x423C2C, 0x958C66);
 
     // Mollusks
     public static RegistryObject<EntityType<EntityGiantClam>> GIANT_CLAM = createEntity(EntityGiantClam::new, "giant_clam", 1.0F, 1.0F, 0x346B70, 0xAD713C);
@@ -116,6 +113,7 @@ public class ModEntity {
         event.put(SOFTSHELL_TURTLE.get(), EntitySoftshellTurtle.registerAttributes().build());
         event.put(TORTOISE.get(), EntityTortoise.registerAttributes().build());
         event.put(ANACONDA.get(), EntityAnaconda.registerAttributes().build());
+        event.put(MONITOR.get(), EntityMonitor.registerAttributes().build());
 
         event.put(GIANT_CLAM.get(), EntityGiantClam.registerAttributes().build());
 
@@ -153,6 +151,7 @@ public class ModEntity {
         event.registerEntityRenderer(ModEntity.SNAKE.get(), RendererSnake::new);
         event.registerEntityRenderer(ModEntity.TORTOISE.get(), RendererTortoise::new);
         event.registerEntityRenderer(ModEntity.ANACONDA.get(), RendererAnaconda::new);
+        event.registerEntityRenderer(ModEntity.MONITOR.get(), RendererMonitor::new);
 
         event.registerEntityRenderer(ModEntity.GIANT_CLAM.get(), RendererGiantClam::new);
 
