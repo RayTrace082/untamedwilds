@@ -409,7 +409,7 @@ public abstract class EntityUtils {
                 return ComplexMob.TEXTURES_COMMON.get(name).get(entityIn.getVariant()).get(Math.min(entityIn.getSkin(), ComplexMob.TEXTURES_COMMON.get(name).get(entityIn.getVariant()).size() - 1));
         }
         //UntamedWilds.LOGGER.warn("No Skin found for entity: " + entityIn.getType().getRegistryName());
-        return null;
+        return new ResourceLocation("missing");
     }
 
     // Tests an ItemStack and consumes it if found to be a Food. Also applies it's effects
