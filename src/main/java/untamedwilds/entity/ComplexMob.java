@@ -337,7 +337,7 @@ public abstract class ComplexMob extends TamableAnimal {
     protected void performRetaliation(DamageSource damageSource, float health, float damage, boolean needsActiveTarget) {
         if (needsActiveTarget && this.getTarget() != damageSource.getEntity())
             return;
-        if (!this.level.isClientSide && !this.isNoAi() && this.getTarget() != null && damage < health && (damageSource.getEntity() != null || damageSource.getDirectEntity() != null) && damageSource.getEntity() instanceof LivingEntity && !(damageSource.getEntity() instanceof TamableAnimal tamable && tamable.getOwner() != null)) {
+        if (!this.level.isClientSide && !this.isNoAi() && this.getTarget() != null && damage < health && !damageSource.isProjectile() && (damageSource.getEntity() != null || damageSource.getDirectEntity() != null) && damageSource.getEntity() instanceof LivingEntity && !(damageSource.getEntity() instanceof TamableAnimal tamable && tamable.getOwner() != null)) {
             if (this.hasLineOfSight(damageSource.getEntity()) && !damageSource.getEntity().isInvulnerable()) {
                 this.doHurtTarget(damageSource.getEntity());
             }
