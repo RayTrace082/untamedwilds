@@ -15,6 +15,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -233,6 +234,12 @@ public class EntityMonitor extends ComplexMobAmphibious implements ISpecies, INe
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
         SoundEvent soundevent = this.isBaby() ? SoundEvents.TURTLE_SHAMBLE_BABY : SoundEvents.TURTLE_SHAMBLE;
         this.playSound(soundevent, 0.15F, 1.0F);
+    }
+
+    public boolean hurt(DamageSource damageSource, float amount) {
+        // Retaliate I: Mob will strike back when attacked by its current target
+        performRetaliation(damageSource, this.getHealth(), amount, true);
+        return super.hurt(damageSource, amount);
     }
 
     public Animation[] getAnimations() { return new Animation[]{NO_ANIMATION, IDLE_TONGUE, ATTACK_THRASH}; }

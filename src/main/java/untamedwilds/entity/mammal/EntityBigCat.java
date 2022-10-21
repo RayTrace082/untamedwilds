@@ -252,6 +252,17 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
         return flag;
     }
 
+    public boolean hurt(DamageSource damageSource, float amount) {
+        // Retaliate I: Mob will strike back when attacked by its current target
+        float f = this.getHealth();
+        if (!this.level.isClientSide && !this.isNoAi() && this.getTarget() == damageSource.getEntity() && amount < f && (damageSource.getEntity() != null || damageSource.getDirectEntity() != null) && damageSource.getEntity() instanceof LivingEntity && (damageSource.getEntity() instanceof TamableAnimal tamable && tamable.getOwner() != null)) {
+            if (this.hasLineOfSight(damageSource.getEntity()) && !damageSource.getEntity().isInvulnerable() && this.getAnimation() == NO_ANIMATION) {
+                this.doHurtTarget(damageSource.getEntity());
+            }
+        }
+        return super.hurt(damageSource, amount);
+    }
+
     private Animation chooseAttackAnimation(Entity target) {
         if (target.getBbHeight() < this.getBbHeight()) {
             return ATTACK_MAUL;

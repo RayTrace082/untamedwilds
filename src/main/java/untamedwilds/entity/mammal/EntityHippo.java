@@ -147,6 +147,12 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
         return flag;
     }
 
+    public boolean hurt(DamageSource damageSource, float amount) {
+        // Retaliate I: Mob will strike back when attacked by its current target
+        performRetaliation(damageSource, this.getHealth(), amount, true);
+        return super.hurt(damageSource, amount);
+    }
+
     private Animation chooseAttackAnimation() {
         return ATTACK;
     }

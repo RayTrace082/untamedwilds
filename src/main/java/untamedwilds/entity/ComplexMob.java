@@ -334,6 +334,16 @@ public abstract class ComplexMob extends TamableAnimal {
         return (int) (Math.sqrt(entity.getHealth() * attack) / 2.5F);
     }
 
+    protected void performRetaliation(DamageSource damageSource, float health, float damage, boolean needsActiveTarget) {
+        if (needsActiveTarget && this.getTarget() != damageSource.getEntity())
+            return;
+        if (!this.level.isClientSide && !this.isNoAi() && this.getTarget() != null && damage < health && (damageSource.getEntity() != null || damageSource.getDirectEntity() != null) && damageSource.getEntity() instanceof LivingEntity && !(damageSource.getEntity() instanceof TamableAnimal tamable && tamable.getOwner() != null)) {
+            if (this.hasLineOfSight(damageSource.getEntity()) && !damageSource.getEntity().isInvulnerable()) {
+                this.doHurtTarget(damageSource.getEntity());
+            }
+        }
+    }
+
     protected void setAngry(boolean isAngry) { this.entityData.set(IS_ANGRY, isAngry); }
     public boolean isAngry() { return (this.entityData.get(IS_ANGRY)); }
 
