@@ -33,6 +33,8 @@ public class EntityDataListenerEvent {
     public static EntityDataHolder TREVALLY;
     public static EntityDataHolder TRIGGERFISH;
     public static EntityDataHolder CATFISH;
+    public static EntityDataHolder SPADEFISH;
+
     public static EntityDataHolder SNAKE;
     public static EntityDataHolder ANACONDA;
     public static EntityDataHolder SOFTSHELL_TURTLE;
@@ -74,6 +76,7 @@ public class EntityDataListenerEvent {
         WHALE_SHARK = registerEntityData(ModEntity.WHALE_SHARK.get());
         TRIGGERFISH = registerEntityData(ModEntity.TRIGGERFISH.get());
         CATFISH = registerEntityData(ModEntity.CATFISH.get());
+        SPADEFISH = registerEntityData(ModEntity.SPADEFISH.get());
 
         SNAKE = registerEntityData(ModEntity.SNAKE.get());
         ANACONDA = registerEntityData(ModEntity.ANACONDA.get());

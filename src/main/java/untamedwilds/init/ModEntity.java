@@ -71,6 +71,7 @@ public class ModEntity {
     public static RegistryObject<EntityType<EntityWhaleShark>> WHALE_SHARK = createEntity(EntityWhaleShark::new, "whale_shark", 2.6F, 1.6F, 0x222426, 0x7E7D84);
     public static RegistryObject<EntityType<EntityTriggerfish>> TRIGGERFISH = createEntity(EntityTriggerfish::new, "triggerfish", 0.8F, 0.8F, 0x1F0A19, 0xFCBD00);
     public static RegistryObject<EntityType<EntityCatfish>> CATFISH = createEntity(EntityCatfish::new, "catfish", 0.8F, 0.8F, 0x545963, 0x3A2C23);
+    public static RegistryObject<EntityType<EntitySpadefish>> SPADEFISH = createEntity(EntitySpadefish::new, "spadefish", 0.8F, 0.8F, 0x545963, 0x3A2C23);
 
     // Amphibians
     public static RegistryObject<EntityType<EntityGiantSalamander>> GIANT_SALAMANDER = createEntity(EntityGiantSalamander::new, "giant_salamander", 1F, 0.6f, 0x3A2C23, 0x6B5142);
@@ -137,6 +138,7 @@ public class ModEntity {
         event.put(WHALE_SHARK.get(), EntityWhaleShark.registerAttributes().build());
         event.put(TRIGGERFISH.get(), EntityTriggerfish.registerAttributes().build());
         event.put(CATFISH.get(), EntityCatfish.registerAttributes().build());
+        event.put(SPADEFISH.get(), EntitySpadefish.registerAttributes().build());
 
         event.put(GIANT_SALAMANDER.get(), EntityGiantSalamander.registerAttributes().build());
         event.put(NEWT.get(), EntityNewt.registerAttributes().build());
@@ -175,6 +177,7 @@ public class ModEntity {
         event.registerEntityRenderer(ModEntity.WHALE_SHARK.get(), RendererWhaleShark::new);
         event.registerEntityRenderer(ModEntity.TRIGGERFISH.get(), RendererTriggerfish::new);
         event.registerEntityRenderer(ModEntity.CATFISH.get(), RendererCatfish::new);
+        event.registerEntityRenderer(ModEntity.SPADEFISH.get(), RendererSpadefish::new);
 
         event.registerEntityRenderer(ModEntity.GIANT_SALAMANDER.get(), RendererGiantSalamander::new);
         event.registerEntityRenderer(ModEntity.NEWT.get(), RendererNewt::new);

@@ -24,6 +24,7 @@ public class UntamedWilds {
     // TODO: Abstract Herd logic to be functional with any LivingEntity (instead of being limited to IPackEntity ComplexMob)
     // TODO: Store the children's UUID in their mother's NBT, to allow checking for Children without constant AABB checking
     // TODO: Have carnivorous mobs gain hunger when attacking
+    // TODO: Move Variants from Int to String to prevent shuffling?
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";

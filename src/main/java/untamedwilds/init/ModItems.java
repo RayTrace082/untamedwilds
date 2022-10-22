@@ -142,5 +142,10 @@ public class ModItems {
 
         // Monitor Items
         ModItems.ITEMS.register("egg_monitor", () -> new MobEggItem(ModEntity.MONITOR, new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
+
+        // Spadefish Items
+        ModItems.ITEMS.register("egg_spadefish", () -> new MobEggItem(ModEntity.SPADEFISH, new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
+        ModItems.ITEMS.register("bucket_spadefish", () -> new MobBucketedItem(ModEntity.SPADEFISH, Fluids.WATER, new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
+
     }
 }
