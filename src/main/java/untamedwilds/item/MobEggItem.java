@@ -106,7 +106,7 @@ public class MobEggItem extends Item {
 
     // TODO: Have dropped eggs eventually hatch into baby mobs
     /*@Override
-    public boolean onEntityItemUpdate(EntityItem entityItem) {
+    public void onDestroyed(ItemEntity entityItem) {
 
         ItemStack itemstack = entityItem.getItem();
         Level worldIn = entityItem.world;
