@@ -1,16 +1,25 @@
 package untamedwilds.world.gen.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.core.BlockPos;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.util.random.WeightedRandom;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.placement.*;
 import untamedwilds.config.ConfigMobControl;
-import untamedwilds.init.ModEntity;
+import untamedwilds.world.FaunaHandler;
 import untamedwilds.world.FaunaSpawn;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class FeatureUndergroundFaunaLarge extends Feature<NoneFeatureConfiguration> {
@@ -19,25 +28,46 @@ public class FeatureUndergroundFaunaLarge extends Feature<NoneFeatureConfigurati
         super(codec);
     }
 
-    public boolean place(FeaturePlaceContext context) {
-        Random rand = context.level().getRandom();
-        BlockPos pos = context.origin();
-        WorldGenLevel world = context.level();
+    public static List<PlacementModifier> placed() {
+        return Arrays.asList(CountPlacement.of(1),
+                InSquarePlacement.spread(),
+                PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
+                RandomOffsetPlacement.vertical(ConstantInt.of(1)), BiomeFilter.biome());
+    }
+
+    @Override
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> config) {
+        WorldGenLevel world = config.level();
+        BlockPos blockpos = config.origin();
+        Random rng = config.random();
+
+        BlockPos.MutableBlockPos setPos = new BlockPos.MutableBlockPos(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+        final int horiz = 2;
+        final int vert = 6;
+
         if (ConfigMobControl.dimensionBlacklist.get().contains(world.getLevel().dimension().location().toString()))
             return false;
 
-        if (pos.getY() < 52 && rand.nextInt(9) == 0) {
-            for (int i = 0; i < 5; i++) {
-                /*FaunaHandler.SpawnListEntry entry = WeightedRandom.getRandomItem(rand, FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND));
-                if (FaunaSpawn.performWorldGenSpawning(entry.get().entityType, SpawnPlacements.Type.ON_GROUND, null, world, pos, rand, entry.get().groupCount)) {
-                    return true;
-                }*/
-                //world.setBlock(pos, Blocks.SEA_LANTERN.defaultBlockState(), 2);
-                if (FaunaSpawn.performWorldGenSpawning(ModEntity.BEAR.get(), SpawnPlacements.Type.ON_GROUND, null, world, pos, rand, 1)) {
-                    return true;
+        for(int i = -horiz; i < horiz + 1; i++)
+            for(int j = -horiz; j < horiz + 1; j++)
+                for(int k = -vert; k < vert + 1; k++) {
+                    setPos.set(blockpos.getX() + i, blockpos.getY() + k, blockpos.getZ() + j);
+
+                    if (world.isStateAtPosition(setPos, BlockState::isAir)) {
+                        for (int l = 0; l < 5; l++) {
+                            Optional<FaunaHandler.SpawnListEntry> entry = WeightedRandom.getRandomItem(rng, FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND));
+                            if (entry.isPresent()) {
+                                EntityType<?> type = entry.get().entityType;
+                                if (type != null) {
+                                    if (FaunaSpawn.performWorldGenSpawning(type, SpawnPlacements.Type.NO_RESTRICTIONS, null, world, blockpos, rng, entry.get().getGroupCount())) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        }
-        return false;
+
+        return true;
     }
 }

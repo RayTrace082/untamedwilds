@@ -246,7 +246,38 @@
 			"mob/llama/spit1",
 			"mob/llama/spit2"
 		],
-		"subtitle": "untamedwilds.subtitles.camel.death"
+		"subtitle": "untamedwilds.subtitles.camel.spit"
+	},
+
+
+	"entity.spitter.spit": {
+		"sounds": [
+			"mob/llama/spit1",
+			"mob/llama/spit2"
+		],
+		"subtitle": "untamedwilds.subtitles.spitter.spit"
+	},
+	"entity.spitter.ambient": {
+		"sounds": [
+			"untamedwilds:spitter/idle_1",
+			"untamedwilds:spitter/idle_2",
+			"untamedwilds:spitter/idle_3",
+			"untamedwilds:spitter/idle_4"
+		],
+		"subtitle": "untamedwilds.subtitles.spitter.ambient"
+	},
+	"entity.spitter.hurt": {
+		"sounds": [
+			"untamedwilds:camel/hurt_1",
+			"untamedwilds:camel/hurt_2"
+		],
+		"subtitle": "untamedwilds.subtitles.spitter.hurt"
+	},
+	"entity.spitter.death": {
+		"sounds": [
+			"untamedwilds:camel/death_1"
+		],
+		"subtitle": "untamedwilds.subtitles.spitter.death"
 	},
 
 	"entity.snake.warning": {

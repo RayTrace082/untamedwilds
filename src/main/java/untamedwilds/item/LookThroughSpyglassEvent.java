@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -22,6 +23,8 @@ import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ISpecies;
+import untamedwilds.entity.relict.EntitySpitter;
+import untamedwilds.init.ModAdvancementTriggers;
 
 @Mod.EventBusSubscriber(modid = UntamedWilds.MOD_ID)
 public class LookThroughSpyglassEvent {
@@ -36,6 +39,10 @@ public class LookThroughSpyglassEvent {
                 EntityHitResult entityHitResult = (EntityHitResult)hitresult;
                 if (entityHitResult.getEntity() instanceof LivingEntity livingEntityHitResult) {
                     displayEntityData(livingEntityHitResult, playerIn, playerIn.getLevel());
+
+                    // TODO: Hardcoded list of "observing" advancements
+                    if (entityHitResult.getEntity() instanceof EntitySpitter)
+                        ModAdvancementTriggers.DISCOVERED_SPITTER.trigger((ServerPlayer) playerIn);
                 }
             }
         }

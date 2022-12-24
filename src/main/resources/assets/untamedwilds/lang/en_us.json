@@ -90,6 +90,16 @@
   "untamedwilds.subtitles.camel.hurt": "Camel hurts",
   "untamedwilds.subtitles.camel.death": "Camel dies",
 
+  "item.untamedwilds.spitter_spawn_egg": "Spitter Spawn Egg",
+  "block.untamedwilds.egg_spitter": "Glimmering Egg",
+  "entity.untamedwilds.spitter": "Spitter",
+  "entity.untamedwilds.spitter_purple": "Amaranth Spitter",
+  "entity.untamedwilds.spitter_purple.sciname": "???",
+  "untamedwilds.subtitles.spitter.spit": "Spitter spits",
+  "untamedwilds.subtitles.spitter.ambient": "Spitter croaks",
+  "untamedwilds.subtitles.spitter.hurt": "Spitter hurts",
+  "untamedwilds.subtitles.spitter.death": "Spitter dies",
+
   "item.untamedwilds.manatee_spawn_egg": "Manatee Spawn Egg",
   "entity.untamedwilds.manatee": "Manatee",
   "entity.untamedwilds.manatee_african": "West African Manatee",
@@ -618,6 +628,8 @@
   "advancements.untamedwilds.hog_wild.description": "Try to ride a wild boar (and fail)",
   "advancements.untamedwilds.yee_haw.title": "YEE-HAW",
   "advancements.untamedwilds.yee_haw.description": "Engage in the world's worst rodeo",
+  "advancements.untamedwilds.discover_spitter.title": "Why the long face?",
+  "advancements.untamedwilds.discover_spitter.description": "Discover a Spitter",
 
   "tetra.variant.sword_socket/pearl": "Socket [§3Pearl§r]",
   "tetra.variant.sword_socket/pristine_pearl": "Socket [§3Pearl+§r]",

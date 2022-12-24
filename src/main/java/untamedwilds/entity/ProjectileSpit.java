@@ -5,14 +5,11 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.SplashPotionItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.phys.BlockHitResult;
@@ -68,12 +65,10 @@ public class ProjectileSpit extends Projectile {
 
     protected void onHitEntity(EntityHitResult p_37241_) {
         super.onHitEntity(p_37241_);
-        Entity entity = this.getOwner();
-        if (entity instanceof LivingEntity living) {
-            p_37241_.getEntity().hurt(DamageSource.GENERIC, 0);
-            if (this.mobEffect != null)
-                living.addEffect(this.mobEffect);
-        }
+        if (this.getOwner() == null || !this.getOwner().getClass().equals(p_37241_.getEntity().getClass()))
+            p_37241_.getEntity().hurt(DamageSource.indirectMobAttack(this, (LivingEntity)this.getOwner()).setProjectile(), 1);
+        if (this.mobEffect != null && p_37241_.getEntity() instanceof LivingEntity living)
+            living.addEffect(this.mobEffect);
     }
 
     protected void onHitBlock(BlockHitResult p_37239_) {

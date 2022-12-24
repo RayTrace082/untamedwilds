@@ -50,6 +50,11 @@ public class ModSounds {
     public static final SoundEvent ENTITY_CAMEL_HURT = registerSound("entity.camel.hurt");
     public static final SoundEvent ENTITY_CAMEL_DEATH = registerSound("entity.camel.death");
 
+    public static final SoundEvent ENTITY_SPITTER_SPIT = registerSound("entity.spitter.spit");
+    public static final SoundEvent ENTITY_SPITTER_AMBIENT = registerSound("entity.spitter.ambient");
+    public static final SoundEvent ENTITY_SPITTER_HURT = registerSound("entity.spitter.hurt");
+    public static final SoundEvent ENTITY_SPITTER_DEATH = registerSound("entity.spitter.death");
+
     public static final SoundEvent ENTITY_TARANTULA_AMBIENT = registerSound("entity.tarantula.ambient");
 
     public static final SoundEvent ENTITY_SNAKE_HISS = registerSound("entity.snake.warning");

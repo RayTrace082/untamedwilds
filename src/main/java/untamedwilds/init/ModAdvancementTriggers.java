@@ -13,10 +13,15 @@ public class ModAdvancementTriggers {
     public static UntamedTriggers<?> BAIT_BASIC = new UntamedTriggers<>(new ResourceLocation(UntamedWilds.MOD_ID, "used_bait"));
     public static UntamedTriggers<?> MASTER_BAIT = new UntamedTriggers<>(new ResourceLocation(UntamedWilds.MOD_ID, "master_bait"));
 
+    // TODO: Abstract the "Discovered" Trigger to activate for any mob
+    public static UntamedTriggers<?> DISCOVERED_SPITTER = new UntamedTriggers<>(new ResourceLocation(UntamedWilds.MOD_ID, "discovered_spitter"));
+
     public static void register() {
         CriteriaTriggers.register(NO_PATCHOULI_LOADED);
         CriteriaTriggers.register(BAIT_BASIC);
         CriteriaTriggers.register(MASTER_BAIT);
+
+        CriteriaTriggers.register(DISCOVERED_SPITTER);
     }
 
     public static class UntamedTriggers<T extends CriterionTriggerInstance> extends SimpleCriterionTrigger<UntamedTriggers.Instance> {

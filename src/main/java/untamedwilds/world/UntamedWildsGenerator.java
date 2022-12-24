@@ -1,11 +1,10 @@
 package untamedwilds.world;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.GrassBlock;
-import net.minecraft.world.level.block.TallGrassBlock;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -15,7 +14,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
-import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -23,21 +23,18 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import untamedwilds.UntamedWilds;
-import untamedwilds.compat.CompatBridge;
 import untamedwilds.config.ConfigFeatureControl;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.world.gen.feature.*;
-import untamedwilds.world.gen.feature.FeatureUndergroundFaunaLarge;
-import untamedwilds.world.gen.feature.FeatureUnderwaterAlgae;
-import untamedwilds.world.gen.feature.FeatureVegetation;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = UntamedWilds.MOD_ID)
 public class UntamedWildsGenerator {
 
+    public static final DeferredRegister<ConfiguredFeature<?,?>> CONFIGURED_FEATURES = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, UntamedWilds.MOD_ID);
+    public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, UntamedWilds.MOD_ID);
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, UntamedWilds.MOD_ID);
     public static final DeferredRegister<TreeDecoratorType<?>> TREE_DECORATION = DeferredRegister.create(ForgeRegistries.TREE_DECORATOR_TYPES, UntamedWilds.MOD_ID);
     public static final Map<String, Float> biodiversity_levels = new java.util.HashMap<>();
@@ -51,7 +48,10 @@ public class UntamedWildsGenerator {
     // TODO: Unused because can't attach decorators to vanilla features. If I ever implement trees, this will go there
     public static final RegistryObject<TreeDecoratorType<?>> TREE_ORCHID = TREE_DECORATION.register("orchid", () -> new TreeDecoratorType<>(TreeDecorator.CODEC));
 
-    private static final RegistryObject<Feature<NoneFeatureConfiguration>> UNDERGROUND = regFeature("underground", () -> new FeatureUndergroundFaunaLarge(NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> UNDERGROUND = regFeature("underground", () -> new FeatureUndergroundFaunaLarge(NoneFeatureConfiguration.CODEC));
+    private static final RegistryObject<ConfiguredFeature<?,?>> UNDERGROUND_CONFIGURED = CONFIGURED_FEATURES.register("underground", () -> new ConfiguredFeature<>(UNDERGROUND.get(), FeatureConfiguration.NONE));
+    private static final RegistryObject<PlacedFeature> UNDERGROUND_PLACED = PLACED_FEATURES.register("underground", () -> new PlacedFeature(UNDERGROUND_CONFIGURED.getHolder().get(), FeatureUndergroundFaunaLarge.placed()));
+
     private static final RegistryObject<Feature<NoneFeatureConfiguration>> APEX = regFeature("apex_predator", () -> new FeatureApexPredators(NoneFeatureConfiguration.CODEC));
     private static final RegistryObject<Feature<NoneFeatureConfiguration>> HERBIVORES = regFeature("herbivores", () -> new FeatureHerbivores(NoneFeatureConfiguration.CODEC));
     private static final RegistryObject<Feature<NoneFeatureConfiguration>> CRITTERS = regFeature("critter", () -> new FeatureCritters(NoneFeatureConfiguration.CODEC));
@@ -98,9 +98,9 @@ public class UntamedWildsGenerator {
         registerFeatureWithFreq(event, GenerationStep.Decoration.TOP_LAYER_MODIFICATION, new ConfiguredFeature<>(HERBIVORES.get(), FeatureConfiguration.NONE), ConfigFeatureControl.freqHerbivores.get());
 
         // TODO: Restore intended Underground fauna generation
+        // TODO: Currently only applies to "Underground" biomes, extend to any biome?
         if ((event.getCategory() == Biome.BiomeCategory.UNDERGROUND) && ConfigFeatureControl.probUnderground.get() != 0 && /*!FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND).isEmpty() &&*/ ConfigMobControl.masterSpawner.get()) {
-            float prob = ConfigFeatureControl.probUnderground.get().floatValue() / 3;
-            //event.getGeneration().addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, new ConfiguredFeature<>(UNDERGROUND.get(), FeatureConfiguration.NONE).placed(CountPlacement.of(UniformInt.of(104, 157)), PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT, InSquarePlacement.spread(), SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -13), BiomeFilter.biome()));
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, UNDERGROUND_PLACED.getHolder().get());
         }
     }
 

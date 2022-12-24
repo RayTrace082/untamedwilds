@@ -1,0 +1,28 @@
+{
+  "parent": "untamedwilds:untamedwilds/root",
+  "display": {
+    "icon": {
+      "item": "untamedwilds:egg_spitter"
+    },
+    "title": {
+      "translate": "advancements.untamedwilds.discovered_spitter.title"
+    },
+    "description": {
+      "translate": "advancements.untamedwilds.discovered_spitter.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "discover_spitter": {
+      "trigger": "untamedwilds:discovered_spitter"
+    }
+  },
+  "requirements": [
+    [
+      "discover_spitter"
+    ]
+  ]
+}

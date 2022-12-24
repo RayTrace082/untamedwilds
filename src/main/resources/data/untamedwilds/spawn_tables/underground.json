@@ -6,6 +6,12 @@
       "weight":2,
       "size_min":1,
       "size_max":1
+    },
+    {
+      "type":"untamedwilds:spitter",
+      "weight":2,
+      "size_min":1,
+      "size_max":1
     }
   ]
 }

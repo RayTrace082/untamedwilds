@@ -53,6 +53,8 @@ public class EntityDataListenerEvent {
     public static EntityDataHolder MANATEE;
     public static EntityDataHolder BALEEN_WHALE;
 
+    public static EntityDataHolder SPITTER;
+
     @SubscribeEvent
     public static void onAddReloadListeners(AddReloadListenerEvent event) {
         event.addListener(ENTITY_DATA_HOLDERS);
@@ -95,6 +97,8 @@ public class EntityDataListenerEvent {
         CAMEL = registerEntityData(ModEntity.CAMEL.get());
         MANATEE = registerEntityData(ModEntity.MANATEE.get());
         BALEEN_WHALE = registerEntityData(ModEntity.BALEEN_WHALE.get());
+
+        SPITTER = registerEntityData(ModEntity.SPITTER.get());
     }
 
     @SubscribeEvent
