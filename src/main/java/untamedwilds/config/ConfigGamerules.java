@@ -24,6 +24,7 @@ public class ConfigGamerules {
     public static ForgeConfigSpec.IntValue cycleLength;
     public static ForgeConfigSpec.DoubleValue rareSkinChance;
     public static ForgeConfigSpec.BooleanValue wildRareSkins;
+    public static ForgeConfigSpec.BooleanValue attackUndead;
 
     ConfigGamerules(final ForgeConfigSpec.Builder builder) {
         builder.comment("Options pertaining to global Gamerules");
@@ -49,6 +50,7 @@ public class ConfigGamerules {
 
         angrySleepers = builder.comment("Defines whether certain large predators will be angered if a player approaches them while they are sleeping.").define("gamerules.angry_sleepers", true);
         contactAgression = builder.comment("Defines whether certain critters will become angry if a mob/player 'steps' on them, by coming too close.").define("gamerules.contact_agression", true);
+        attackUndead = builder.comment("Defines whether animals should actively target and hunt Undead mobs. Disabling this option should make mobs less prone to dying due to angering a Zombie horde").define("gamerules.attack_undead", true);
 
         sleepBehaviour = builder.comment("Should the 'Sleeping' behaviour run? Disabling this option also disables the activity").define("gamerules.mob_sleeping", true);
         easyMobCapturing = builder.comment("If set to false, makes mobs a lot harder to catch by preventing the capture of hostile mobs").define("gamerules.easy_mob_capture", true);

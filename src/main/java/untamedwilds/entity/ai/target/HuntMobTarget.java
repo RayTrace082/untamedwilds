@@ -2,10 +2,12 @@ package untamedwilds.entity.ai.target;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.phys.AABB;
+import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
@@ -37,7 +39,7 @@ public class HuntMobTarget<T extends LivingEntity> extends TargetGoal {
     }
 
     protected boolean isValidTarget(LivingEntity entity, @Nullable Predicate<LivingEntity> predicate) {
-        if (entity instanceof Creeper || entity.equals(this.mob) || (predicate != null && !predicate.test(entity))) {
+        if (entity instanceof Creeper || entity.equals(this.mob) || (!ConfigGamerules.attackUndead.get() && entity.getMobType() == MobType.UNDEAD) || (predicate != null && !predicate.test(entity))) {
             return false;
         }
         if (!this.isCannibal && this.mob.getClass() == entity.getClass() && this.mob instanceof ComplexMob attacker && entity instanceof ComplexMob defender) {
