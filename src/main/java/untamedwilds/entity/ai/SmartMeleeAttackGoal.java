@@ -1,5 +1,6 @@
 package untamedwilds.entity.ai;
 
+import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
@@ -198,11 +199,10 @@ public class SmartMeleeAttackGoal extends Goal {
 
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
         double d0 = this.getAttackReachSqr(enemy);
-        if (this.attacker.hasLineOfSight(enemy) && distToEnemySqr <= d0 && this.attackTick <= 0) {
+        if (this.attacker.hasLineOfSight(enemy) && distToEnemySqr <= d0 && (this.attackTick <= 0 || (this.attackTick <= 10 && this.attacker instanceof IAnimatedEntity animated && animated.getAnimation() == IAnimatedEntity.NO_ANIMATION))) {
             this.attackTick = 20;
             this.attacker.doHurtTarget(enemy);
         }
-
     }
 
     protected double getAttackReachSqr(LivingEntity attackTarget) {

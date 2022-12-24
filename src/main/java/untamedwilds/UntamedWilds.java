@@ -25,6 +25,7 @@ public class UntamedWilds {
     // TODO: Store the children's UUID in their mother's NBT, to allow checking for Children without constant AABB checking
     // TODO: Have carnivorous mobs gain hunger when attacking
     // TODO: Move Variants from Int to String to prevent shuffling?
+    // TODO: Gillie suit bauble, to prevent animals from spotting you
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "untamedwilds";
@@ -44,6 +45,8 @@ public class UntamedWilds {
         ModSounds.SOUNDS.register(eventBus);
         ModAdvancementTriggers.register();
         UntamedWildsGenerator.FEATURES.register(eventBus);
+        UntamedWildsGenerator.CONFIGURED_FEATURES.register(eventBus);
+        UntamedWildsGenerator.PLACED_FEATURES.register(eventBus);
         CompatBridge.RegisterCompat();
         UntamedWildsGenerator.readBioDiversityLevels();
     }

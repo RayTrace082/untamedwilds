@@ -118,10 +118,9 @@ public class LayEggsOnNestGoal extends MoveToBlockGoal {
     private void addEggsToNest() {
         BlockState blockstate = taskOwner.level.getBlockState(this.blockPos);
         if (blockstate.is(ModBlock.NEST_REPTILE.get())) {
-            if (taskOwner.level.getBlockEntity(this.blockPos) instanceof ReptileNestBlockEntity) {
+            if (taskOwner.level.getBlockEntity(this.blockPos) instanceof ReptileNestBlockEntity nest) {
                 //UntamedWilds.LOGGER.info("Adding eggs to existing nest");
-                ReptileNestBlockEntity nest = (ReptileNestBlockEntity) taskOwner.level.getBlockEntity(this.blockPos);
-                if (nest != null && ((INestingMob)this.taskOwner).wantsToLayEggs())
+                if (((INestingMob)this.taskOwner).wantsToLayEggs())
                     nest.setEggCount(nest.getEggCount() + this.taskOwner.getOffspring());
                 taskOwner.level.updateNeighbourForOutputSignal(this.blockPos, blockstate.getBlock());
                 ((INestingMob)taskOwner).setEggStatus(false);

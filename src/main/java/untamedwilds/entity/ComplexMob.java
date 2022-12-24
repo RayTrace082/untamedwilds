@@ -335,11 +335,11 @@ public abstract class ComplexMob extends TamableAnimal {
     }
 
     protected void performRetaliation(DamageSource damageSource, float health, float damage, boolean needsActiveTarget) {
-        if (needsActiveTarget && this.getTarget() != damageSource.getEntity())
+        if (needsActiveTarget && this.getTarget() != damageSource.getDirectEntity())
             return;
-        if (!this.level.isClientSide && !this.isNoAi() && this.getTarget() != null && damage < health && !damageSource.isProjectile() && (damageSource.getEntity() != null || damageSource.getDirectEntity() != null) && damageSource.getEntity() instanceof LivingEntity && !(damageSource.getEntity() instanceof TamableAnimal tamable && tamable.getOwner() != null)) {
-            if (this.hasLineOfSight(damageSource.getEntity()) && !damageSource.getEntity().isInvulnerable()) {
-                this.doHurtTarget(damageSource.getEntity());
+        if (!this.level.isClientSide && !this.isNoAi() && this.getTarget() != null && damage < health && !damageSource.isProjectile() && (damageSource.getEntity() != null || damageSource.getDirectEntity() != null) && damageSource.getDirectEntity() instanceof LivingEntity && !(damageSource.getDirectEntity() instanceof TamableAnimal tamable && tamable.getOwner() != null)) {
+            if (damageSource.getEntity() != null && this.hasLineOfSight(damageSource.getDirectEntity()) && !damageSource.getDirectEntity().hurtMarked) {
+                damageSource.getEntity().hurt(DamageSource.indirectMobAttack(this, null), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
             }
         }
     }
