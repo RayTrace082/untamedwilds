@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ConfigFeatureControl {
+
     public static ForgeConfigSpec.BooleanValue addAnemones;
     public static ForgeConfigSpec.BooleanValue addReeds;
     public static ForgeConfigSpec.BooleanValue addFlora;
@@ -28,19 +29,19 @@ public class ConfigFeatureControl {
     public static ForgeConfigSpec.IntValue freqOcean;
     public static ForgeConfigSpec.IntValue freqApex;
     public static ForgeConfigSpec.IntValue freqHerbivores;
-    public static ForgeConfigSpec.DoubleValue probUnderground;
+    public static ForgeConfigSpec.IntValue probUnderground;
 
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> dimensionFeatureBlacklist;
 
     ConfigFeatureControl(final ForgeConfigSpec.Builder builder) {
         //builder.push("feature_control");
-        builder.comment("Options pertaining to blocks and their worldgen");
+        builder.comment("Options pertaining to blocks and their world generation");
         addAnemones = builder.comment("Controls whether to add Anemones and their associated items to oceans.").define("gencontrol.anemone", true);
         addReeds = builder.comment("Controls whether to spawn Reeds in River/Swamp biomes").define("gencontrol.reeds", true);
         addFlora = builder.comment("Controls whether to spawn random Flora in the world").define("gencontrol.bush", true);
         addTreeOrchids = builder.comment("Controls whether to add Tree Orchids (NOT YET IMPLEMENTED)").define("gencontrol.tree_orchid", true);
         addAlgae = builder.comment("Controls whether to spawn Amazon Sword in Swamp/Jungle biomes").define("gencontrol.algae", true);
-        addBurrows = builder.comment("Controls whether to use Burrows to spawn Critters, instead of having them clog up the Spawns").define("gencontrol.burrows", true);
+        addBurrows = builder.comment("Controls whether to use Burrows to spawn Critters, if disabled, Critters will spawn in the world like normal mobs.").define("gencontrol.burrows", true);
 
         reedBlacklist = builder.comment("Prevent spawns of Reeds in these biomes").defineList("gencontrol.reed_blacklist", Lists.newArrayList(), string -> string instanceof String);
         freqReeds = builder.comment("Frequency of Reeds, 1 in N chunks will generate Reeds (0 to disable)").defineInRange("gencontrol.freqreeds", 4, 0, Integer.MAX_VALUE);
@@ -55,9 +56,9 @@ public class ConfigFeatureControl {
         freqApex = builder.comment("Frequency of Apex Predators, 1 in N chunks will generate with an Apex Predator (0 to disable)").defineInRange("gencontrol.freqapex", 64, 0, Integer.MAX_VALUE);
         freqHerbivores = builder.comment("Frequency of Herbivores, 1 in N chunks will generate with an Apex Predator (0 to disable)").defineInRange("gencontrol.freqherbivore", 48, 0, Integer.MAX_VALUE);
         freqWater = builder.comment("Frequency of Freshwater Mobs, 1 in N chunks will generate with Freshwater Mobs (0 to disable)").defineInRange("gencontrol.freqwater", 8, 0, Integer.MAX_VALUE);
-        probUnderground = builder.comment("Probability that an Underground block in a cave will attempt to spawn a mob (0 to disable). If YUNG's Better Caves is installed, this value is further reduced to 0.33x").defineInRange("gencontrol.probunderground", 0.0004, 0, 1);
+        probUnderground = builder.comment("Frequency of Underground mobs, N attempts to spawn a mob will be made on each chunk (0 to disable)").defineInRange("gencontrol.probunderground", 1, 0, Integer.MAX_VALUE);
 
-        dimensionFeatureBlacklist = builder.comment("Prevent flora and other blocks (but not Burrows) from generating in the defined dimensions.").defineList("gencontrol.dimensionFeatureBlacklist", Lists.newArrayList(), string -> string instanceof String);
+        dimensionFeatureBlacklist = builder.comment("Prevent flora and other blocks (besides Burrows) from generating in the defined dimensions.").defineList("gencontrol.dimensionFeatureBlacklist", Lists.newArrayList(), string -> string instanceof String);
         //builder.pop();
     }
 }

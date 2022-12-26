@@ -6,6 +6,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.List;
 
 public class ConfigMobControl {
+
     public static ForgeConfigSpec.IntValue critterSpawnRange;
     public static ForgeConfigSpec.IntValue burrowRepopulationChance;
     public static ForgeConfigSpec.IntValue treeSpawnBias;

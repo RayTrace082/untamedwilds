@@ -3,6 +3,7 @@ package untamedwilds.config;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ConfigGamerules {
+
     public static ForgeConfigSpec.BooleanValue naturalBreeding;
     public static ForgeConfigSpec.BooleanValue hardcoreBreeding;
     public static ForgeConfigSpec.BooleanValue easyBreeding;
@@ -16,7 +17,6 @@ public class ConfigGamerules {
     public static ForgeConfigSpec.BooleanValue angrySleepers;
     public static ForgeConfigSpec.BooleanValue contactAgression;
     public static ForgeConfigSpec.BooleanValue mobsLayEggs;
-    public static ForgeConfigSpec.IntValue spawnHeightBias;
     public static ForgeConfigSpec.BooleanValue spyglassBehaviorChange;
     public static ForgeConfigSpec.IntValue spyglassCheckRange;
     public static ForgeConfigSpec.BooleanValue sleepBehaviour;
@@ -38,7 +38,6 @@ public class ConfigGamerules {
         randomSpecies = builder.comment("Allows mobs to spawn as fully random species, ignoring Biomes and Rarity.").define("gamerules.random_species", false);
         rareSkinChance = builder.comment("Chance for a mob, out of 1, to have it's Skin replaced by a Rare skin (if any are defined through assets)").defineInRange("gamerules.rare_skin_chance", 0.05, 0, 1);
         wildRareSkins = builder.comment("Should mobs with Rare skins generate in the wild (if defined through assets)").define("gamerules.wild_rare_skins", true);
-        spawnHeightBias = builder.comment("If a mob was not able to spawn in a certain position due to existing blocks, try again with this vertical offset. A value of 0 will disable it (you should never see a mob on top of a tree), a value too high will lead to fall damage.").defineInRange("gamerules.spawn_height_bias", 4, 0, 128);
         spyglassBehaviorChange = builder.comment("Should the vanilla Spyglass display information when a player looks at a mob. Set to false to disable.").define("gamerules.spyglass_behavior_change", true);
         spyglassCheckRange = builder.comment("Range up to which the Spyglass will identify mobs and give information, this length is not in blocks, and is roughly equivalent to a Render distance of 12.").defineInRange("gamerules.spyglass_range", 5000, 0, Integer.MAX_VALUE);
 

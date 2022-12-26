@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
+import untamedwilds.config.ConfigFeatureControl;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.world.FaunaHandler;
 import untamedwilds.world.FaunaSpawn;
@@ -32,7 +33,7 @@ public class FeatureUndergroundFaunaLarge extends Feature<NoneFeatureConfigurati
         return Arrays.asList(CountPlacement.of(1),
                 InSquarePlacement.spread(),
                 PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
-                RandomOffsetPlacement.vertical(ConstantInt.of(1)), BiomeFilter.biome());
+                RandomOffsetPlacement.vertical(ConstantInt.of(ConfigFeatureControl.probUnderground.get())), BiomeFilter.biome());
     }
 
     @Override
