@@ -84,14 +84,10 @@ public class ReptileNestBlockEntity extends BlockEntity {
         }
     }
 
-    public void destroyEgg(Level p_57792_, BlockPos p_57793_, BlockState p_57794_) {
-        p_57792_.playSound(null, p_57793_, SoundEvents.TURTLE_EGG_BREAK, SoundSource.BLOCKS, 0.7F, 0.9F + p_57792_.random.nextFloat() * 0.2F);
-        if (this.eggCount <= 1) {
-            p_57792_.destroyBlock(p_57793_, false);
-        } else {
-            removeEggs(p_57792_, 1);
-            p_57792_.levelEvent(2001, p_57793_, Block.getId(p_57794_));
-        }
+    public void destroyEgg(Level worldIn, BlockPos posIn, BlockState stateIn) {
+        worldIn.playSound(null, posIn, SoundEvents.TURTLE_EGG_BREAK, SoundSource.BLOCKS, 0.7F, 0.9F + worldIn.random.nextFloat() * 0.2F);
+        removeEggs(worldIn, 1);
+        worldIn.levelEvent(2001, posIn, Block.getId(stateIn));
     }
 
     public void removeEggs(Level worldIn, int count) {

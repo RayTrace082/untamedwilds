@@ -8,7 +8,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -38,7 +37,7 @@ import java.util.Random;
 
 public class NestReptileBlock extends Block implements SimpleWaterloggedBlock, EntityBlock {
 
-    protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
+    protected static final VoxelShape SHAPE = Block.box(1D, 0.0D, 1D, 15D, 3.5D, 15D);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public NestReptileBlock(Properties properties) {
@@ -89,13 +88,9 @@ public class NestReptileBlock extends Block implements SimpleWaterloggedBlock, E
     }
 
     public void fallOn(Level levelIn, BlockState stateIn, BlockPos posIn, Entity entityIn, float p_154849_) {
-        if (!(entityIn instanceof Zombie)) {
-            UntamedWilds.LOGGER.info("Ayy");
-            ReptileNestBlockEntity te = (ReptileNestBlockEntity) levelIn.getBlockEntity(posIn);
-            if (te != null) {
-                UntamedWilds.LOGGER.info("Lmao");
-                te.destroyEgg(levelIn, posIn, stateIn);
-            }
+        ReptileNestBlockEntity te = (ReptileNestBlockEntity) levelIn.getBlockEntity(posIn);
+        if (te != null && !entityIn.getType().equals(te.getEntityType())) {
+            te.destroyEgg(levelIn, posIn, stateIn);
         }
 
         super.fallOn(levelIn, stateIn, posIn, entityIn, p_154849_);
