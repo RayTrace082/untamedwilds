@@ -84,9 +84,9 @@ public class ReptileNestBlockEntity extends BlockEntity {
         }
     }
 
-    public void destroyEgg(Level worldIn, BlockPos posIn, BlockState stateIn) {
+    public void trampleOnNest(Level worldIn, BlockPos posIn, BlockState stateIn) {
         worldIn.playSound(null, posIn, SoundEvents.TURTLE_EGG_BREAK, SoundSource.BLOCKS, 0.7F, 0.9F + worldIn.random.nextFloat() * 0.2F);
-        removeEggs(worldIn, 1);
+        removeEggs(worldIn, Math.min(worldIn.getRandom().nextInt(2), this.getEggCount() / 2) + 1);
         worldIn.levelEvent(2001, posIn, Block.getId(stateIn));
     }
 

@@ -90,7 +90,7 @@ public class NestReptileBlock extends Block implements SimpleWaterloggedBlock, E
     public void fallOn(Level levelIn, BlockState stateIn, BlockPos posIn, Entity entityIn, float p_154849_) {
         ReptileNestBlockEntity te = (ReptileNestBlockEntity) levelIn.getBlockEntity(posIn);
         if (te != null && !entityIn.getType().equals(te.getEntityType())) {
-            te.destroyEgg(levelIn, posIn, stateIn);
+            te.trampleOnNest(levelIn, posIn, stateIn);
         }
 
         super.fallOn(levelIn, stateIn, posIn, entityIn, p_154849_);
