@@ -123,8 +123,8 @@ public class ReptileNestBlockEntity extends BlockEntity {
         super.load(compound);
         this.setVariant(compound.getInt("Variant"));
         this.setEggCount(compound.getInt("Count"));
-        if (compound.contains("entityType")) {
-            this.setEntityType(EntityType.byString(compound.getString("entityType")).orElse(null));
+        if (compound.contains("EntityType")) {
+            this.setEntityType(EntityType.byString(compound.getString("EntityType")).orElse(null));
         }
     }
 
@@ -132,8 +132,8 @@ public class ReptileNestBlockEntity extends BlockEntity {
         super.saveAdditional(compound);
         compound.putInt("Count", this.getEggCount());
         compound.putInt("Variant", this.getVariant());
-        if (this.getEntityType() != null) {
-            compound.putString("entityType", this.getEntityType().getRegistryName().toString());
+        if (this.getEntityType() != null && this.getEntityType().getRegistryName() != null) {
+            compound.putString("EntityType", this.getEntityType().getRegistryName().toString());
         }
     }
 }

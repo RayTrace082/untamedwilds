@@ -78,8 +78,8 @@ public class CageBlock extends Block implements SimpleWaterloggedBlock, EntityBl
 
                 ItemStack itemstack = new ItemStack(ModBlock.TRAP_CAGE.get());
                 CompoundTag compound = new CompoundTag();
-                if (te.hasTagCompound() && te.hasCagedEntity()) {
-                    compound.putBoolean("closed", te.hasCagedEntity());
+                if (te.hasTagCompound() && te.isLocked()) {
+                    compound.putBoolean("closed", te.isLocked());
                     compound.put("EntityTag", te.getTagCompound().getCompound("EntityTag"));
                     itemstack.setTag(compound);
                 }
@@ -112,7 +112,7 @@ public class CageBlock extends Block implements SimpleWaterloggedBlock, EntityBl
             BlockEntity te = worldIn.getBlockEntity(pos);
             if (stack.getTag() != null && te instanceof CageBlockEntity blockEntity) {
                 te.load(stack.getTag());
-                if (blockEntity.hasCagedEntity() && blockEntity.hasTagCompound()) {
+                if (blockEntity.isLocked() && blockEntity.hasTagCompound()) {
                     worldIn.setBlockAndUpdate(pos, state.setValue(OPEN, Boolean.FALSE));
                 }
             }
@@ -183,7 +183,7 @@ public class CageBlock extends Block implements SimpleWaterloggedBlock, EntityBl
     public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
         CageBlockEntity te = (CageBlockEntity)world.getBlockEntity(pos);
         if (!world.isClientSide && !(entity instanceof Player) && entity.isAlive() && entity instanceof LivingEntity) {
-            if (te != null && !te.hasCagedEntity() && entity instanceof Mob) {
+            if (te != null && !te.isLocked() && entity instanceof Mob) {
                 if (te.cageEntity((Mob) entity)) {
                     world.playSound(null, pos, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_ON, SoundSource.BLOCKS, 0.3F, 0.8F);
                     world.setBlockAndUpdate(pos, state.setValue(OPEN, Boolean.FALSE));
