@@ -76,10 +76,10 @@ public class ModEntity {
 
     // Amphibians
     public static RegistryObject<EntityType<EntityGiantSalamander>> GIANT_SALAMANDER = createEntity(EntityGiantSalamander::new, "giant_salamander", 1F, 0.6f, 0x3A2C23, 0x6B5142);
-    public static RegistryObject<EntityType<EntityNewt>> NEWT = createEntity(EntityNewt::new, "newt", 0.6F, 0.3f, 0x3A345E, 0xB364E0);
+    public static RegistryObject<EntityType<EntityNewt>> NEWT = createEntity(EntityNewt::new, "newt", 0.6F, 0.3f, 0x232323, 0xFF8D00);
 
     // Relicts
-    public static RegistryObject<EntityType<EntitySpitter>> SPITTER = createEntity(EntitySpitter::new, "spitter", 1.3F, 1.3f, 0x232323, 0xFF8D00);
+    public static RegistryObject<EntityType<EntitySpitter>> SPITTER = createEntity(EntitySpitter::new, "spitter", 1.3F, 1.3f, 0x3A345E, 0xB364E0);
 
     // Projectiles
     public static RegistryObject<EntityType<ProjectileSpit>> SPIT = createProjectile(ProjectileSpit::new, "spit", 64, 1, true,0.6F, 0.3f);

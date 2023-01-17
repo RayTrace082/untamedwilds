@@ -41,10 +41,11 @@ public class FeatureUndergroundFaunaLarge extends Feature<NoneFeatureConfigurati
         WorldGenLevel world = config.level();
         BlockPos blockpos = config.origin();
         Random rng = config.random();
+        Optional<FaunaHandler.SpawnListEntry> entry = Optional.empty();
 
         BlockPos.MutableBlockPos setPos = new BlockPos.MutableBlockPos(blockpos.getX(), blockpos.getY(), blockpos.getZ());
         final int horiz = 2;
-        final int vert = 6;
+        final int vert = 2;
 
         if (ConfigMobControl.dimensionBlacklist.get().contains(world.getLevel().dimension().location().toString()))
             return false;
@@ -56,7 +57,8 @@ public class FeatureUndergroundFaunaLarge extends Feature<NoneFeatureConfigurati
 
                     if (world.isStateAtPosition(setPos, BlockState::isAir)) {
                         for (int l = 0; l < 5; l++) {
-                            Optional<FaunaHandler.SpawnListEntry> entry = WeightedRandom.getRandomItem(rng, FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND));
+                            if (entry.isEmpty())
+                                entry = WeightedRandom.getRandomItem(rng, FaunaHandler.getSpawnableList(FaunaHandler.animalType.LARGE_UNDERGROUND));
                             if (entry.isPresent()) {
                                 EntityType<?> type = entry.get().entityType;
                                 if (type != null) {
