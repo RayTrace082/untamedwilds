@@ -13,6 +13,7 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.network.SyncTextureData;
 import untamedwilds.network.UntamedInstance;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = UntamedWilds.MOD_ID)
@@ -120,9 +121,32 @@ public class EntityDataListenerEvent {
         String nameIn = Objects.requireNonNull(typeIn.getRegistryName()).getPath();
         if (ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, nameIn)) != null) {
             EntityDataHolder data = ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, nameIn));
-            ComplexMob.processData(data, typeIn);
+            processData(data, typeIn);
             return data;
         }
         return null;
+    }
+
+    /**
+     * Method that links an EntityType with an EntityDataHolder object, and uses the EntityDataHolder to build a
+     * hash with only Variant data, to be synced and accessed by the client
+     * @param dataIn The EntityDataHolder to introduce in ENTITY_DATA_HASH
+     * @param typeIn The EntityType to be associated with the dataIn object
+     */
+    private static void processData(EntityDataHolder dataIn, EntityType<?> typeIn) {
+        ComplexMob.ENTITY_DATA_HASH.put(typeIn, dataIn);
+        processSkins(dataIn, typeIn.getRegistryName().getPath());
+        for (SpeciesDataHolder speciesData : ComplexMob.ENTITY_DATA_HASH.get(typeIn).getSpeciesData()) {
+            if (!ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
+                ComplexMob.CLIENT_DATA_HASH.put(typeIn, new EntityDataHolderClient(new HashMap<>(), new HashMap<>()));
+            }
+            ComplexMob.CLIENT_DATA_HASH.get(typeIn).species_data.put(speciesData.getVariant(), speciesData.getName());
+        }
+    }
+
+    private static void processSkins(EntityDataHolder dataIn, String nameIn) {
+        for (SpeciesDataHolder speciesDatum : dataIn.getSpeciesData()) {
+            EntityUtils.buildSkinArrays(nameIn, speciesDatum.getName().toLowerCase(), dataIn, speciesDatum.getVariant(), ComplexMob.TEXTURES_COMMON, ComplexMob.TEXTURES_RARE);
+        }
     }
 }

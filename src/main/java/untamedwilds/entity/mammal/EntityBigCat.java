@@ -125,11 +125,6 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
             else if (EntityUtils.getPackSize(this.getType(), this.getVariant()) > 1) {
                 this.herd.tick();
             }
-            if (this.tickCount % 600 == 0) {
-                if (this.wantsToBreed()) {
-                    this.setInLove(null);
-                }
-            }
             if (this.level.getGameTime() % 1000 == 0) {
                 this.addHunger(-3);
                 if (!this.isStarving()) {

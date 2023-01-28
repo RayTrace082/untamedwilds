@@ -40,7 +40,10 @@ import untamedwilds.compat.CompatSereneSeasons;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.init.ModAdvancementTriggers;
-import untamedwilds.util.*;
+import untamedwilds.util.EntityDataHolder;
+import untamedwilds.util.EntityDataHolderClient;
+import untamedwilds.util.EntityDataListenerEvent;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -89,8 +92,13 @@ public abstract class ComplexMob extends TamableAnimal {
 
     public void aiStep() {
         super.aiStep();
-        if (!this.level.isClientSide && this.huntingCooldown > 0) {
-            this.huntingCooldown--;
+        if (!this.level.isClientSide) {
+            if (this.huntingCooldown > 0) {
+                this.huntingCooldown--;
+            }
+            if (this.tickCount % 600 == 0 && this.wantsToBreed()) {
+                this.setInLove(null);
+            }
         }
     }
 
@@ -164,29 +172,6 @@ public abstract class ComplexMob extends TamableAnimal {
     protected int getExperienceReward(Player p_27590_) {
         int xp = Math.max(getEcoLevel(this) / 2, 1);
         return xp + this.level.random.nextInt(xp);
-    }
-
-    /**
-     * Method that links an EntityType with an EntityDataHolder object, and uses the EntityDataHolder to build a
-     * hash with only Variant data, to be synced and accessed by the client
-     * @param dataIn The EntityDataHolder to introduce in ENTITY_DATA_HASH
-     * @param typeIn The EntityType to be associated with the dataIn object
-     */
-    public static void processData(EntityDataHolder dataIn, EntityType<?> typeIn) {
-        ENTITY_DATA_HASH.put(typeIn, dataIn);
-        processSkins(dataIn, typeIn.getRegistryName().getPath());
-        for (SpeciesDataHolder speciesData : ENTITY_DATA_HASH.get(typeIn).getSpeciesData()) {
-            if (!ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
-                ComplexMob.CLIENT_DATA_HASH.put(typeIn, new EntityDataHolderClient(new HashMap<>(), new HashMap<>()));
-            }
-            ComplexMob.CLIENT_DATA_HASH.get(typeIn).species_data.put(speciesData.getVariant(), speciesData.getName());
-        }
-    }
-
-    public static void processSkins(EntityDataHolder dataIn, String nameIn) {
-        for (SpeciesDataHolder speciesDatum : dataIn.getSpeciesData()) {
-            EntityUtils.buildSkinArrays(nameIn, speciesDatum.getName().toLowerCase(), dataIn, speciesDatum.getVariant(), TEXTURES_COMMON, TEXTURES_RARE);
-        }
     }
 
     public int getVariant(){ return (this.entityData.get(VARIANT)); }

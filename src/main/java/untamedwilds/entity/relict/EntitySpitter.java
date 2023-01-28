@@ -158,9 +158,6 @@ public class EntitySpitter extends ComplexMobTerrestrial implements ISpecies, IN
             if (this.tickCount % 600 == 0) {
                 if (!this.getWantsToGrow())
                     this.setWantsToGrow(this.wantsToGrow());
-                if (this.wantsToBreed()) {
-                    this.setInLove(null);
-                }
                 if (this.wantsToLayEggs() && !this.isMale()) {
                     for(int k = 0; k < 3; ++k) {
                         BlockState state = ModBlock.EGG_SPITTER.get().defaultBlockState();

@@ -84,9 +84,6 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
         super.aiStep();
 
         if (!this.level.isClientSide) {
-            if (this.level.getGameTime() % 600 == 0 && this.wantsToBreed()) {
-                this.setInLove(null);
-            }
             if (this.level.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
             }

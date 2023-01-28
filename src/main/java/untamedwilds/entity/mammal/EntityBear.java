@@ -121,11 +121,6 @@ public class EntityBear extends ComplexMobTerrestrial implements ISpecies, INewS
 
     public void aiStep() {
         if (!this.level.isClientSide) {
-            if (this.tickCount % 600 == 0) {
-                if (this.wantsToBreed()) {
-                    this.setInLove(null);
-                }
-            }
             if (this.tickCount % 1000 == 0) {
                 this.addHunger(-2);
                 if (!this.isStarving()) {

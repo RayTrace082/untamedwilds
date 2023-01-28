@@ -76,11 +76,6 @@ public class EntityAardvark extends ComplexMobTerrestrial implements ISpecies, I
     public void aiStep() {
         if (!this.level.isClientSide) {
             this.setAngry(this.getTarget() != null);
-            if (this.tickCount % 600 == 0) {
-                if (this.wantsToBreed()) {
-                    this.setInLove(null);
-                }
-            }
             if (this.level.getGameTime() % 1000 == 0) {
                 this.addHunger(-10);
                 if (!this.isStarving()) {
