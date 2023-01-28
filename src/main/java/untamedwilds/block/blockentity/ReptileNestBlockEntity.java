@@ -52,7 +52,7 @@ public class ReptileNestBlockEntity extends BlockEntity {
                     Random rand = worldIn.getRandom();
                     float offsetX = rand.nextFloat();
                     float offsetZ = rand.nextFloat();
-                    if (this.getEggCount() > 0 && this.getEntityType() != null && worldIn.noCollision(this.getEntityType().getAABB(blockpos.getX() + offsetX, blockpos.getY(), blockpos.getZ() + offsetZ).deflate(this.getEntityType().getWidth() / 4))) {
+                    if (this.getEggCount() > 0 && this.getEntityType() != null && worldIn.noCollision(this.getEntityType().getAABB(blockpos.getX() + offsetX, blockpos.getY(), blockpos.getZ() + offsetZ).deflate(this.getEntityType().getWidth() / 4).move(0, 4, 0))) {
                         // Turns out that calling EntityType.create(...) will fucking crash the game if it pulls an invalid variant
                         //Entity spawn = this.getEntityType().create(worldIn, null, null, null, blockpos, MobSpawnType.CHUNK_GENERATION, true, false);
                         Entity spawn = this.getEntityType().create(worldIn);
