@@ -11,6 +11,9 @@
     "death":"untamedwilds:entity.boar.death",
     "threat":"untamedwilds:entity.boar.squeal"
   },
+  "flags":{
+    "isWarthog":0
+  },
   "species":[
     {
       "name":"eurasian",

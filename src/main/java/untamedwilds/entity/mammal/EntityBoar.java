@@ -5,6 +5,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
@@ -25,10 +28,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ComplexMobTerrestrial;
-import untamedwilds.entity.INewSkins;
-import untamedwilds.entity.ISpecies;
+import untamedwilds.entity.*;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.AngrySleeperTarget;
 import untamedwilds.init.ModEntity;
@@ -40,7 +40,9 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
-public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewSkins {
+public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewSkins, INeedsPostUpdate {
+
+    private static final EntityDataAccessor<Boolean> WARTHOG = SynchedEntityData.defineId(EntityBoar.class, EntityDataSerializers.BOOLEAN);
 
     private BlockPos lastDugPos = null;
 
@@ -50,6 +52,7 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
 
     public EntityBoar(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
+        this.entityData.define(WARTHOG, false);
         this.turn_speed = 0.6F;
         WORK_DIG = Animation.create(48);
         ATTACK = Animation.create(18);
@@ -196,10 +199,17 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
         return create_offspring(new EntityBoar(ModEntity.BOAR.get(), this.level));
     }
 
-    public boolean isWarthogModel(){ return getEntityData(this.getType()).getFlags(this.getVariant(), "isWarthog") == 1; }
+    @Override
+    public void updateAttributes() {
+        this.setWarthog(getEntityData(this.getType()).getFlags(this.getVariant(), "isWarthog") == 1);
+    }
+
+    public boolean isWarthog(){ return (this.entityData.get(WARTHOG)); }
+    private void setWarthog(boolean warthog){ this.entityData.set(WARTHOG, warthog); }
 
     public void addAdditionalSaveData(CompoundTag compound){
         super.addAdditionalSaveData(compound);
+        compound.putBoolean("isWarthog", this.isWarthog());
         if (this.lastDugPos != null) {
             compound.putInt("DugPosX", this.lastDugPos.getX());
             compound.putInt("DugPosZ", this.lastDugPos.getZ());
@@ -208,6 +218,7 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
+        this.setWarthog(compound.getBoolean("isWarthog"));
         if (compound.contains("LastDugPos")) {
             this.lastDugPos = new BlockPos(compound.getInt("DugPosX"), 0, compound.getInt("DugPosZ"));
         }

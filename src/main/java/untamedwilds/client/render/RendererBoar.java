@@ -24,7 +24,7 @@ public class RendererBoar extends MobRenderer<EntityBoar, EntityModel<EntityBoar
 
     @Override
     public void render(EntityBoar entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        model = entityIn.isBaby() ? BOAR_MODEL_PIGLET : entityIn.isWarthogModel() ? WARTHOG_MODEL : BOAR_MODEL ;
+        model = entityIn.isBaby() ? BOAR_MODEL_PIGLET : entityIn.isWarthog() ? WARTHOG_MODEL : BOAR_MODEL ;
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
