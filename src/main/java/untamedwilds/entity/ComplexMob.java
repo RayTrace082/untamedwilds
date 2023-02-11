@@ -18,6 +18,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -69,6 +70,7 @@ public abstract class ComplexMob extends TamableAnimal {
     public HerdEntity herd = null;
     public float turn_speed = 1F;
     public int huntingCooldown;
+    public int retaliationCooldown;
     public static HashMap<EntityType<?>, EntityDataHolder> ENTITY_DATA_HASH = new HashMap<>();
     public static HashMap<EntityType<?>, EntityDataHolderClient> CLIENT_DATA_HASH = new HashMap<>();
 
@@ -93,9 +95,10 @@ public abstract class ComplexMob extends TamableAnimal {
     public void aiStep() {
         super.aiStep();
         if (!this.level.isClientSide) {
-            if (this.huntingCooldown > 0) {
+            if (this.huntingCooldown > 0)
                 this.huntingCooldown--;
-            }
+            if (this.retaliationCooldown > 0)
+                this.retaliationCooldown--;
             if (this.tickCount % 600 == 0 && this.wantsToBreed()) {
                 this.setInLove(null);
             }
@@ -322,9 +325,10 @@ public abstract class ComplexMob extends TamableAnimal {
     protected void performRetaliation(DamageSource damageSource, float health, float damage, boolean needsActiveTarget) {
         if (needsActiveTarget && this.getTarget() != damageSource.getDirectEntity())
             return;
-        if (!this.level.isClientSide && !this.isNoAi() && this.getTarget() != null && damage < health && !damageSource.isProjectile() && (damageSource.getEntity() != null || damageSource.getDirectEntity() != null) && damageSource.getDirectEntity() instanceof LivingEntity && !(damageSource.getDirectEntity() instanceof Player) && !(damageSource.getDirectEntity() instanceof TamableAnimal tamable && tamable.getOwner() != null)) {
-            if (damageSource.getEntity() != null && this.hasLineOfSight(damageSource.getDirectEntity()) && !damageSource.getDirectEntity().hurtMarked) {
-                damageSource.getEntity().hurt(DamageSource.indirectMobAttack(this, null), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        if (this.retaliationCooldown == 0 && !this.isNoAi() && this.getTarget() != null && damage < health && !damageSource.isProjectile() && damageSource.getDirectEntity() instanceof LivingEntity && !(damageSource.getDirectEntity() instanceof Player) && !(damageSource.getDirectEntity() instanceof TamableAnimal tamable && tamable.getOwner() != null)) {
+            if ((damageSource instanceof EntityDamageSource && ((EntityDamageSource)damageSource).isThorns()) && this.hasLineOfSight(damageSource.getDirectEntity())) {
+                damageSource.getDirectEntity().hurt(DamageSource.thorns(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                this.retaliationCooldown = 10;
             }
         }
     }
