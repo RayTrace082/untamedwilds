@@ -60,7 +60,7 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
         this.goalSelector.addGoal(1, new SmartSwimGoal_Land(this));
         this.goalSelector.addGoal(2, new GoHogWildGoal(this, 2D));
         this.goalSelector.addGoal(2, new FindItemsGoal(this, 12, 100, false, true));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.6D, false));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> getEcoLevel(input) > getEcoLevel(this)));
         this.goalSelector.addGoal(3, new GotoSleepGoal(this, 1));
@@ -195,6 +195,8 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
     public EntityBoar getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
         return create_offspring(new EntityBoar(ModEntity.BOAR.get(), this.level));
     }
+
+    public boolean isWarthogModel(){ return getEntityData(this.getType()).getFlags(this.getVariant(), "isWarthog") == 1; }
 
     public void addAdditionalSaveData(CompoundTag compound){
         super.addAdditionalSaveData(compound);

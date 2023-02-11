@@ -15,9 +15,9 @@
     {
       "name":"eurasian",
       "variant":0,
-      "scale":1,
+      "scale":1.2,
       "rarity":1,
-      "skins":30,
+      "skins":40,
       "flags":{
 
       },
@@ -58,6 +58,20 @@
         ],
         [
           "category|swamp"
+        ]
+      ]
+    },
+    {
+      "name":"warthog",
+      "variant":3,
+      "scale":1.2,
+      "rarity":1,
+      "flags":{
+        "isWarthog": 1
+      },
+      "spawnBiomes":[
+        [
+          "category|savanna"
         ]
       ]
     }

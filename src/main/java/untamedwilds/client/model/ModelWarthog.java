@@ -9,8 +9,8 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityBoar;
 
-public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
-
+public class ModelWarthog extends AdvancedEntityModel<EntityBoar> {
+    
     public AdvancedModelBox main_body;
     public AdvancedModelBox head_main;
     public AdvancedModelBox leg_left_1;
@@ -23,123 +23,135 @@ public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
     public AdvancedModelBox ear_left;
     public AdvancedModelBox head_mouth;
     public AdvancedModelBox ear_right;
+    public AdvancedModelBox eye_left;
+    public AdvancedModelBox cheek_right;
+    public AdvancedModelBox cheek_left;
+    public AdvancedModelBox eye_right;
+    public AdvancedModelBox tusk_right;
     public AdvancedModelBox tusk_left;
-    public AdvancedModelBox tusk_left_1;
     public AdvancedModelBox leg_left_2;
     public AdvancedModelBox arm_left_2;
     public AdvancedModelBox arm_right_2;
     public AdvancedModelBox leg_right_2;
-    public AdvancedModelBox eye_left;
-    public AdvancedModelBox eye_right;
 
     private final ModelAnimator animator;
 
-    public ModelBoar() {
+    public ModelWarthog() {
         this.texWidth = 64;
         this.texHeight = 64;
-        this.shape14 = new AdvancedModelBox(this, 6, 0);
-        this.shape14.setRotationPoint(0.0F, -5.0F, 6.0F);
-        this.shape14.addBox(-1.5F, 0.0F, 0.0F, 3, 7, 0, 0.0F);
-        this.setRotateAngle(shape14, 0.18203784098300857F, 0.0F, 0.0F);
-        this.leg_right_1 = new AdvancedModelBox(this, 0, 36);
-        this.leg_right_1.mirror = true;
-        this.leg_right_1.setRotationPoint(-2.5F, -1.7F, 3.6F);
-        this.leg_right_1.addBox(-2.0F, -1.0F, -2.0F, 4, 6, 5, 0.0F);
-        this.setRotateAngle(leg_right_1, -0.136659280431156F, 0.0F, 0.13962634015954636F);
-        this.head_main = new AdvancedModelBox(this, 0, 22);
-        this.head_main.setRotationPoint(0.0F, -0.8F, -8.0F);
-        this.head_main.addBox(-2.5F, -4.5F, -4.0F, 5, 7, 6, 0.0F);
-        this.setRotateAngle(head_main, 0.31869712141416456F, 0.0F, 0.0F);
-        this.tusk_left_1 = new AdvancedModelBox(this, 16, 24);
-        this.tusk_left_1.setRotationPoint(-1.4F, 0.4F, -1.0F);
-        this.tusk_left_1.addBox(0.0F, -2.0F, -1.0F, 0, 2, 1, 0.0F);
-        this.setRotateAngle(tusk_left_1, 0.0F, 0.006773207605036283F, -0.36425021489121656F);
-        this.tusk_left = new AdvancedModelBox(this, 16, 24);
-        this.tusk_left.setRotationPoint(1.4F, 0.4F, -1.0F);
-        this.tusk_left.addBox(0.0F, -2.0F, -1.0F, 0, 2, 1, 0.0F);
-        this.setRotateAngle(tusk_left, 0.0F, 0.0F, 0.36425021489121656F);
-        this.arm_right_2 = new AdvancedModelBox(this, 56, 10);
-        this.arm_right_2.mirror = true;
-        this.arm_right_2.setRotationPoint(0.0F, 4.5F, 0.01F);
-        this.arm_right_2.addBox(-1.0F, 0.0F, -1.0F, 2, 6, 2, 0.0F);
-        this.setRotateAngle(arm_right_2, 0.0F, 0.0F, -0.136659280431156F);
-        this.shape15 = new AdvancedModelBox(this, 34, 13);
-        this.shape15.setRotationPoint(0.0F, -4.5F, -4.0F);
-        this.shape15.addBox(-1.0F, -2.0F, -5.0F, 2, 2, 10, 0.0F);
-        this.setRotateAngle(shape15, -0.045553093477052F, 0.0F, 0.0F);
-        this.leg_right_2 = new AdvancedModelBox(this, 0, 47);
-        this.leg_right_2.mirror = true;
-        this.leg_right_2.setRotationPoint(0.4F, 3.7F, 2.0F);
-        this.leg_right_2.addBox(-1.0F, 0.0F, -1.0F, 2, 6, 2, 0.0F);
-        this.setRotateAngle(leg_right_2, 0.18203784098300857F, 0.0F, -0.13962634015954636F);
-        this.head_snout = new AdvancedModelBox(this, 22, 22);
-        this.head_snout.setRotationPoint(0.0F, -0.8F, -3.0F);
-        this.head_snout.addBox(-1.5F, -1.5F, -4.0F, 3, 3, 5, 0.0F);
-        this.setRotateAngle(head_snout, 0.4553564018453205F, 0.0F, 0.0F);
-        this.arm_right_1 = new AdvancedModelBox(this, 48, 0);
-        this.arm_right_1.mirror = true;
-        this.arm_right_1.setRotationPoint(-2.3F, -1.85F, -4.8F);
-        this.arm_right_1.addBox(-1.5F, 0.0F, -2.0F, 3, 6, 4, 0.0F);
-        this.setRotateAngle(arm_right_1, 0.045553093477052F, 0.0F, 0.136659280431156F);
+        this.tusk_right = new AdvancedModelBox(this, 20, 38);
+        this.tusk_right.setRotationPoint(-2.5F, 0.7F, -2.0F);
+        this.tusk_right.addBox(0.0F, -2.0F, -1.0F, 1, 3, 2, 0.0F);
+        this.setRotateAngle(tusk_right, 0.0F, -0.045553093477052F, -1.1838568316277536F);
         this.ear_right = new AdvancedModelBox(this, 16, 22);
         this.ear_right.mirror = true;
-        this.ear_right.setRotationPoint(-1.1F, -3.4F, -0.3F);
+        this.ear_right.setRotationPoint(-1.1F, -2.4F, 0.5F);
         this.ear_right.addBox(-3.0F, -1.0F, 0.0F, 3, 2, 1, 0.0F);
         this.setRotateAngle(ear_right, -0.22759093446006054F, 0.091106186954104F, 1.0016444577195458F);
+        this.arm_right_2 = new AdvancedModelBox(this, 56, 10);
+        this.arm_right_2.mirror = true;
+        this.arm_right_2.setRotationPoint(0.0F, 4.0F, 0.01F);
+        this.arm_right_2.addBox(-1.0F, 0.0F, -1.0F, 2, 6, 2, 0.0F);
+        this.setRotateAngle(arm_right_2, 0.0F, 0.0F, -0.136659280431156F);
+        this.tusk_left = new AdvancedModelBox(this, 20, 38);
+        this.tusk_left.setRotationPoint(2.5F, 0.7F, -2.0F);
+        this.tusk_left.addBox(-1.0F, -2.0F, -1.0F, 1, 3, 2, 0.0F);
+        this.setRotateAngle(tusk_left, 0.0F, 0.045553093477052F, 1.1838568316277536F);
+        this.arm_left_2 = new AdvancedModelBox(this, 56, 10);
+        this.arm_left_2.setRotationPoint(0.0F, 4.0F, 0.01F);
+        this.arm_left_2.addBox(-1.0F, 0.0F, -1.0F, 2, 6, 2, 0.0F);
+        this.setRotateAngle(arm_left_2, 0.0F, 0.0F, 0.136659280431156F);
+        this.leg_right_2 = new AdvancedModelBox(this, 0, 47);
+        this.leg_right_2.mirror = true;
+        this.leg_right_2.setRotationPoint(0.4F, 2.5F, 1.5F);
+        this.leg_right_2.addBox(-1.0F, 0.0F, -1.0F, 2, 6, 2, 0.0F);
+        this.setRotateAngle(leg_right_2, 0.18203784098300857F, 0.0F, -0.13962634015954636F);
+        this.arm_left_1 = new AdvancedModelBox(this, 48, 0);
+        this.arm_left_1.setRotationPoint(1.9F, -2.45F, -4.8F);
+        this.arm_left_1.addBox(-1.5F, 0.0F, -2.0F, 3, 5, 4, 0.0F);
+        this.setRotateAngle(arm_left_1, 0.045553093477052F, 0.0F, -0.136659280431156F);
+        this.ear_left = new AdvancedModelBox(this, 16, 22);
+        this.ear_left.setRotationPoint(1.1F, -2.4F, 0.5F);
+        this.ear_left.addBox(0.0F, -1.0F, 0.0F, 3, 2, 1, 0.0F);
+        this.setRotateAngle(ear_left, -0.22759093446006054F, -0.091106186954104F, -1.0016444577195458F);
+        this.cheek_right = new AdvancedModelBox(this, 0, 0);
+        this.cheek_right.mirror = true;
+        this.cheek_right.setRotationPoint(-1.0F, 0.3F, -2.0F);
+        this.cheek_right.addBox(-3.0F, -1.0F, -1.5F, 3, 2, 3, 0.0F);
+        this.setRotateAngle(cheek_right, 0.0F, 0.0F, -0.31869712141416456F);
+        this.head_main = new AdvancedModelBox(this, 0, 22);
+        this.head_main.setRotationPoint(0.0F, -1.3F, -8.0F);
+        this.head_main.addBox(-2.5F, -4.0F, -4.0F, 5, 6, 6, 0.0F);
+        this.setRotateAngle(head_main, 0.31869712141416456F, 0.0F, 0.0F);
+        this.eye_left = new AdvancedModelBox(this, 0, 20);
+        this.eye_left.setRotationPoint(2.51F, -2.5F, -1.0F);
+        this.eye_left.addBox(0.0F, -0.5F, -1.0F, 0, 1, 2, 0.0F);
+        this.leg_left_1 = new AdvancedModelBox(this, 0, 36);
+        this.leg_left_1.setRotationPoint(2.3F, -1.7F, 3.6F);
+        this.leg_left_1.addBox(-2.0F, -1.0F, -2.0F, 3, 5, 4, 0.0F);
+        this.setRotateAngle(leg_left_1, -0.136659280431156F, 0.0F, -0.14695672301792254F);
+        this.arm_right_1 = new AdvancedModelBox(this, 48, 0);
+        this.arm_right_1.mirror = true;
+        this.arm_right_1.setRotationPoint(-1.9F, -2.45F, -4.8F);
+        this.arm_right_1.addBox(-1.5F, 0.0F, -2.0F, 3, 5, 4, 0.0F);
+        this.setRotateAngle(arm_right_1, 0.045553093477052F, 0.0F, 0.136659280431156F);
         this.head_mouth = new AdvancedModelBox(this, 18, 30);
         this.head_mouth.setRotationPoint(0.0F, 1.2F, -3.5F);
         this.head_mouth.addBox(-1.5F, 0.0F, -2.5F, 3, 1, 5, 0.0F);
         this.setRotateAngle(head_mouth, 0.091106186954104F, 0.0F, 0.0F);
+        this.eye_right = new AdvancedModelBox(this, 0, 20);
+        this.eye_right.setRotationPoint(-2.51F, -2.5F, -1.0F);
+        this.eye_right.addBox(0.0F, -0.5F, -1.0F, 0, 1, 2, 0.0F);
+        this.head_snout = new AdvancedModelBox(this, 29, 25);
+        this.head_snout.setRotationPoint(0.0F, -0.8F, -3.0F);
+        this.head_snout.addBox(-2.5F, -1.5F, -4.0F, 5, 3, 5, 0.0F);
+        this.setRotateAngle(head_snout, 0.36425021489121656F, 0.0F, 0.0F);
         this.main_body = new AdvancedModelBox(this, 0, 0);
-        this.main_body.setRotationPoint(0.0F, 15.6F, 0.0F);
-        this.main_body.addBox(-3.5F, -5.0F, -8.0F, 7, 8, 14, 0.0F);
+        this.main_body.setRotationPoint(0.0F, 17.0F, 0.0F);
+        this.main_body.addBox(-3.0F, -5.0F, -8.0F, 6, 7, 14, 0.0F);
         this.setRotateAngle(main_body, -0.045553093477052F, 0.0F, 0.0F);
+        this.cheek_left = new AdvancedModelBox(this, 0, 0);
+        this.cheek_left.setRotationPoint(1.0F, 0.3F, -2.0F);
+        this.cheek_left.addBox(0.0F, -1.0F, -1.5F, 3, 2, 3, 0.0F);
+        this.setRotateAngle(cheek_left, 0.0F, 0.0F, 0.31869712141416456F);
         this.leg_left_2 = new AdvancedModelBox(this, 0, 47);
-        this.leg_left_2.setRotationPoint(-0.4F, 3.7F, 2.0F);
+        this.leg_left_2.setRotationPoint(-0.4F, 2.5F, 1.5F);
         this.leg_left_2.addBox(-1.0F, 0.0F, -1.0F, 2, 6, 2, 0.0F);
         this.setRotateAngle(leg_left_2, 0.18203784098300857F, 0.0F, 0.13962634015954636F);
-        this.arm_left_1 = new AdvancedModelBox(this, 48, 0);
-        this.arm_left_1.setRotationPoint(2.3F, -1.85F, -4.8F);
-        this.arm_left_1.addBox(-1.5F, 0.0F, -2.0F, 3, 6, 4, 0.0F);
-        this.setRotateAngle(arm_left_1, 0.045553093477052F, 0.0F, -0.136659280431156F);
-        this.leg_left_1 = new AdvancedModelBox(this, 0, 36);
-        this.leg_left_1.setRotationPoint(2.5F, -1.7F, 3.6F);
-        this.leg_left_1.addBox(-2.0F, -1.0F, -2.0F, 4, 6, 5, 0.0F);
-        this.setRotateAngle(leg_left_1, -0.136659280431156F, 0.0F, -0.13962634015954636F);
-        this.ear_left = new AdvancedModelBox(this, 16, 22);
-        this.ear_left.setRotationPoint(1.1F, -3.4F, -0.3F);
-        this.ear_left.addBox(0.0F, -1.0F, 0.0F, 3, 2, 1, 0.0F);
-        this.setRotateAngle(ear_left, -0.22759093446006054F, -0.091106186954104F, -1.0016444577195458F);
-        this.arm_left_2 = new AdvancedModelBox(this, 56, 10);
-        this.arm_left_2.setRotationPoint(0.0F, 4.5F, 0.01F);
-        this.arm_left_2.addBox(-1.0F, 0.0F, -1.0F, 2, 6, 2, 0.0F);
-        this.setRotateAngle(arm_left_2, 0.0F, 0.0F, 0.136659280431156F);
-        this.eye_right = new AdvancedModelBox(this, 0, 20);
-        this.eye_right.mirror = true;
-        this.eye_right.setRotationPoint(-2.51F, -2.0F, -2.0F);
-        this.eye_right.addBox(0.0F, -0.5F, -1.0F, 0, 1, 2, 0.0F);
-        this.eye_left = new AdvancedModelBox(this, 0, 20);
-        this.eye_left.setRotationPoint(2.51F, -2.0F, -2.0F);
-        this.eye_left.addBox(0.0F, -0.5F, -1.0F, 0, 1, 2, 0.0F);
-        this.head_main.addChild(this.eye_left);
-        this.head_main.addChild(this.eye_right);
-        this.main_body.addChild(this.shape14);
-        this.main_body.addChild(this.leg_right_1);
-        this.main_body.addChild(this.head_main);
-        this.head_mouth.addChild(this.tusk_left_1);
-        this.head_mouth.addChild(this.tusk_left);
-        this.arm_right_1.addChild(this.arm_right_2);
-        this.main_body.addChild(this.shape15);
-        this.leg_right_1.addChild(this.leg_right_2);
-        this.head_main.addChild(this.head_snout);
-        this.main_body.addChild(this.arm_right_1);
+        this.leg_right_1 = new AdvancedModelBox(this, 0, 36);
+        this.leg_right_1.mirror = true;
+        this.leg_right_1.setRotationPoint(-2.3F, -1.7F, 3.6F);
+        this.leg_right_1.addBox(-1.0F, -1.0F, -2.0F, 3, 5, 4, 0.0F);
+        this.setRotateAngle(leg_right_1, -0.136659280431156F, 0.0F, 0.13962634015954636F);
+        this.shape14 = new AdvancedModelBox(this, 6, 6);
+        this.shape14.setRotationPoint(0.0F, -5.0F, 6.0F);
+        this.shape14.addBox(-1.5F, 0.0F, 0.0F, 3, 7, 0, 0.0F);
+        this.setRotateAngle(shape14, 0.18203784098300857F, 0.0F, 0.0F);
+        this.shape15 = new AdvancedModelBox(this, 34, 13);
+        this.shape15.setRotationPoint(0.0F, -4.5F, -4.0F);
+        this.shape15.addBox(-1.0F, -2.0F, -5.0F, 2, 2, 10, 0.0F);
+        this.setRotateAngle(shape15, -0.045553093477052F, 0.0F, 0.0F);
+        this.head_snout.addChild(this.tusk_right);
         this.head_main.addChild(this.ear_right);
-        this.head_main.addChild(this.head_mouth);
-        this.leg_left_1.addChild(this.leg_left_2);
-        this.main_body.addChild(this.arm_left_1);
-        this.main_body.addChild(this.leg_left_1);
-        this.head_main.addChild(this.ear_left);
+        this.arm_right_1.addChild(this.arm_right_2);
+        this.head_snout.addChild(this.tusk_left);
         this.arm_left_1.addChild(this.arm_left_2);
+        this.leg_right_1.addChild(this.leg_right_2);
+        this.main_body.addChild(this.arm_left_1);
+        this.head_main.addChild(this.ear_left);
+        this.head_main.addChild(this.cheek_right);
+        this.main_body.addChild(this.head_main);
+        this.head_main.addChild(this.eye_left);
+        this.main_body.addChild(this.leg_left_1);
+        this.main_body.addChild(this.arm_right_1);
+        this.head_main.addChild(this.head_mouth);
+        this.head_main.addChild(this.eye_right);
+        this.head_main.addChild(this.head_snout);
+        this.head_main.addChild(this.cheek_left);
+        this.leg_left_1.addChild(this.leg_left_2);
+        this.main_body.addChild(this.leg_right_1);
+        this.main_body.addChild(this.shape14);
+        this.main_body.addChild(this.shape15);
         animator = ModelAnimator.create();
         updateDefaultPose();
     }
@@ -164,17 +176,19 @@ public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
             ear_left,
             head_mouth,
             ear_right,
+            eye_left,
+            cheek_right,
+            cheek_left,
+            eye_right,
+            tusk_right,
             tusk_left,
-            tusk_left_1,
             leg_left_2,
             arm_left_2,
             arm_right_2,
-            leg_right_2,
-                eye_left,
-                eye_right
+            leg_right_2
         );
     }
-    
+
     void animate(IAnimatedEntity entityIn) {
         animator.update(entityIn);
 
@@ -234,7 +248,7 @@ public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
         float globalDegree = 1f;
         limbSwingAmount = Math.min(limbSwingAmount, 0.4F);
 
-        if (boar.isNoAi()) {
+        if (boar.isNoAi()) { // TODO: Debug
             limbSwing = ageInTicks;
             limbSwingAmount = 0.4F;
         }
