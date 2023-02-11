@@ -248,11 +248,6 @@ public class ModelWarthog extends AdvancedEntityModel<EntityBoar> {
         float globalDegree = 1f;
         limbSwingAmount = Math.min(limbSwingAmount, 0.4F);
 
-        if (boar.isNoAi()) { // TODO: Debug
-            limbSwing = ageInTicks;
-            limbSwingAmount = 0.4F;
-        }
-
         // Breathing Animation
         this.main_body.setScale((float) (1.0F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1.0F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
         bob(main_body, 0.4F * globalSpeed, 0.1F, false, ageInTicks / 20, 2);

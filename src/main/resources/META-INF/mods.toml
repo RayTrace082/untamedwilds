@@ -4,7 +4,7 @@ license="GNU General Public License"
 issueTrackerURL="https://github.com/RayTrace082/untamedwilds/issues"
 [[mods]]
 modId="untamedwilds"
-version="2.3.0"
+version="2.3.1"
 displayName="Untamed Wilds"
 # updateJSONURL="http://myurl.me/" #optional
 displayURL="https://github.com/RayTrace082/untamedwilds/"
