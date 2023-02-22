@@ -138,15 +138,18 @@ public class ModelBoarPiglet extends AdvancedEntityModel<EntityBoar> {
             this.leg_left.rotateAngleX = Mth.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
         }
 
-        // Sitting Animation
-        if (bear.sitProgress > 0) {
-            this.progressRotation(main_body, bear.sitProgress, -0.5462880558742251F, 0.0F, 0.0F, 40);
-            this.progressRotation(arm_left, bear.sitProgress, 0.18203784098300857F, 0.0F, 0.0F, 40);
-            this.progressRotation(arm_right, bear.sitProgress, 0.18203784098300857F, 0.0F, 0.0F, 40);
-            this.progressRotation(head_main, bear.sitProgress, 0.36425021489121656F, 0.0F, 0.0F, 40);
-            this.progressRotation(leg_right, bear.sitProgress, -0.045553093477052F, 0.0F, 0.22759093446006054F, 40);
-            this.progressRotation(leg_left, bear.sitProgress, -0.045553093477052F, 0.0F, -0.22759093446006054F, 40);
-            this.progressPosition(main_body, bear.sitProgress, 0.0F, 17.5F, -1.0F, 40);
+        // Sleeping Animation
+        else if (bear.sitProgress > 0) {
+            this.progressRotation(leg_right, bear.sitProgress, 1.5025539530419183F, -0.40980330836826856F, 0.0F, 40);
+            this.progressRotation(leg_left, bear.sitProgress, 1.5025539530419183F, 0.40980330836826856F, 0.0F, 40);
+            this.progressRotation(arm_left, bear.sitProgress, -1.3658946726107624F, -0.36425021489121656F, 0.0F, 40);
+            this.progressRotation(arm_right, bear.sitProgress, -1.3658946726107624F, 0.36425021489121656F, 0.0F, 40);
+            this.progressPosition(main_body, bear.sitProgress, 0.0F, 22.0F, -2.0F, 40);
+            this.progressPosition(head_main, bear.sitProgress, 0.0F, -0.5F, -2.5F, 40);
+            this.progressPosition(arm_right, bear.sitProgress, -1F, 1.0F, -1.0F, 40);
+            this.progressPosition(arm_left, bear.sitProgress, 1F, 1.0F, -1.0F, 40);
+            this.progressPosition(leg_right, bear.sitProgress, -1.3F, 1.0F, 1.0F, 40);
+            this.progressPosition(leg_left, bear.sitProgress, 1.3F, 1.0F, 1.0F, 40);
         }
 
         // Sleeping Animation
@@ -157,10 +160,10 @@ public class ModelBoarPiglet extends AdvancedEntityModel<EntityBoar> {
             this.progressRotation(arm_right, bear.sleepProgress, -1.3658946726107624F, 0.36425021489121656F, 0.0F, 40);
             this.progressPosition(main_body, bear.sleepProgress, 0.0F, 22.0F, -2.0F, 40);
             this.progressPosition(head_main, bear.sleepProgress, 0.0F, -0.5F, -2.5F, 40);
-            this.progressPosition(arm_right, bear.sleepProgress, -2.5F, 0.0F, -1.0F, 40);
-            this.progressPosition(arm_left, bear.sleepProgress, 2.5F, 0.0F, -1.0F, 40);
-            this.progressPosition(leg_right, bear.sleepProgress, -2.8F, 0.0F, 1.0F, 40);
-            this.progressPosition(leg_left, bear.sleepProgress, 2.8F, 0.0F, 1.0F, 40);
+            this.progressPosition(arm_right, bear.sleepProgress, -1F, 1.0F, -1.0F, 40);
+            this.progressPosition(arm_left, bear.sleepProgress, 1F, 1.0F, -1.0F, 40);
+            this.progressPosition(leg_right, bear.sleepProgress, -1.3F, 1.0F, 1.0F, 40);
+            this.progressPosition(leg_left, bear.sleepProgress, 1.3F, 1.0F, 1.0F, 40);
         }
     }
 

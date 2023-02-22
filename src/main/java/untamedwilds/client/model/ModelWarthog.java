@@ -323,6 +323,18 @@ public class ModelWarthog extends AdvancedEntityModel<EntityBoar> {
             }
         }
 
+        // Sitting Animation
+        if (boar.sitProgress > 0) {
+            this.progressPosition(main_body, boar.sitProgress, 0.0F, 21.60F, 0.0F, 40);
+            this.progressRotation(main_body, boar.sitProgress, (float) Math.toRadians(-2.61F), (float) Math.toRadians(5.22F), 0, 40);
+            this.progressRotation(head_main, boar.sitProgress, 0, (float) Math.toRadians(-23.48F), 0, 40);
+            this.progressRotation(arm_right_1, boar.sitProgress, (float) Math.toRadians(-20.87F), 0, (float) Math.toRadians(7.83F), 40);
+            this.progressRotation(arm_right_2, boar.sitProgress, (float) Math.toRadians(-65.22F), 0, (float) Math.toRadians(-7.83F), 40);
+            this.progressRotation(arm_left_1, boar.sitProgress, (float) Math.toRadians(-26.09F), (float) Math.toRadians(20.87F), (float) Math.toRadians(-7.83F), 40);
+            this.progressRotation(arm_left_2, boar.sitProgress, (float) Math.toRadians(-57.39F), 0, (float) Math.toRadians(7.83F), 40);
+            this.progressRotation(leg_left_2, boar.sitProgress, (float) Math.toRadians(-83.48F), (float) Math.toRadians(-20.87F), (float) Math.toRadians(8.00F), 40);
+            this.progressRotation(leg_right_2, boar.sitProgress, (float) Math.toRadians(-83.48F), (float) Math.toRadians(20.87F), (float) Math.toRadians(-8.00F), 40);
+        }
         // Sleeping Animation
         if (boar.sleepProgress > 0) {
             this.progressPosition(main_body, boar.sleepProgress, 0.0F, 21F, 0.0F, 40);

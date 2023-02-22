@@ -23,14 +23,17 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import untamedwilds.UntamedWilds;
 import untamedwilds.entity.*;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.AngrySleeperTarget;
+import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.init.ModSounds;
@@ -89,6 +92,18 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
             return !this.isSleeping() && this.getAge() == 0 && EntityUtils.hasFullHealth(this) && this.getHunger() >= 80;
         }
         return false;
+    }
+
+    @Override
+    protected void reassessTameGoals() {
+        if (this.isTame()) {
+            if (UntamedWilds.DEBUG) {
+                UntamedWilds.LOGGER.info("Updating AI tasks for tamed mob");
+            }
+            this.goalSelector.addGoal(3, new SmartFollowOwnerGoal(this, 2.3D, 12.0F, 3.0F));
+            this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+            this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
+        }
     }
 
     @Override
