@@ -132,19 +132,6 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
                 }
             }
 
-            if (this.tickCount % 200 == 0) {
-                if (!this.isActive() && this.getNavigation().isDone()) {
-                    this.tiredCounter++;
-                    if (this.distanceToSqr(this.getHomeAsVec()) <= 6) {
-                        this.setSleeping(true);
-                        this.tiredCounter = 0;
-                    }
-                    else if (tiredCounter >= 3) {
-                        this.setHome(BlockPos.ZERO);
-                        this.tiredCounter = 0;
-                    }
-                }
-            }
             // Random idle animations
             if (this.getAnimation() == NO_ANIMATION && this.getTarget() == null && !this.isSleeping()) {
                 if (this.getCommandInt() == 0) {

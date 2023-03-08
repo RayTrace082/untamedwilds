@@ -19,10 +19,12 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ai.control.look.SmartLandLookControl;
 import untamedwilds.util.EntityUtils;
@@ -223,107 +225,18 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
         }
     }
 
-    /*@Override
-    public void travel(Vector3d destination) {
-        if (this.isServerWorld() || this.canPassengerSteer()) {
-            ModifiableAttributeInstance gravity = this.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
-            boolean flag = this.getDeltaMovement().y <= 0.0D;
-
-            double d0 = gravity.getValue();
-
-            FluidState fluidstate = this.level.getFluidState(this.getPosition());
-            if (this.isInWater() && this.func_241208_cS_() && !this.func_230285_a_(fluidstate.getFluid())) {
-                double d8 = this.getY();
-                float f5 = this.isSprinting() ? 0.9F : this.getWaterSlowDown();
-                float f6 = 0.045F; // EDITED: Was 0.02
-                float f7 = (float)EnchantmentHelper.getDepthStriderModifier(this);
-
-                if (!this.onGround) {
-                    f7 *= 0.7F;
-                }
-
-                if (f7 > 0.0F) {
-                    if (f7 > 3.0F) {
-                        f7 = 3.0F;
-                    }
-                    f5 += (0.54600006F - f5) * f7 / 3.0F;
-                    f6 += (this.getAIMoveSpeed() - f6) * f7 / 3.0F;
-                }
-
-                if (this.isPotionActive(Effects.DOLPHINS_GRACE)) {
-                    f5 = 0.96F;
-                }
-
-                f6 *= (float)this.getAttribute(net.minecraftforge.common.ForgeMod.SWIM_SPEED.get()).getValue();
-                this.moveRelative(f6, destination);
-                this.move(MoverType.SELF, this.getDeltaMovement());
-                Vector3d vector3d6 = this.getDeltaMovement();
-                if (this.collidedHorizontally && this.isOnLadder()) {
-                    vector3d6 = new Vector3d(vector3d6.x, 0.2D, vector3d6.z);
-                }
-
-                this.setDeltaMovement(vector3d6.mul(f5, 0.8F, f5));
-                Vector3d vector3d2 = this.func_233626_a_(d0, flag, this.getDeltaMovement());
-                this.setDeltaMovement(vector3d2);
-                if (this.collidedHorizontally && this.isOffsetPositionInLiquid(vector3d2.x, vector3d2.y + (double)0.6F - this.getY() + d8, vector3d2.z)) {
-                    this.setDeltaMovement(vector3d2.x, 0.3F, vector3d2.z);
-                }
-            } else if (this.isInLava() && this.func_241208_cS_() && !this.func_230285_a_(fluidstate.getFluid())) {
-                double d7 = this.getY();
-                this.moveRelative(0.02F, destination);
-                this.move(MoverType.SELF, this.getDeltaMovement());
-                if (this.func_233571_b_(FluidTags.LAVA) <= this.func_233579_cu_()) {
-                    this.setDeltaMovement(this.getDeltaMovement().mul(0.5D, 0.8F, 0.5D));
-                    this.setDeltaMovement(this.func_233626_a_(d0, flag, this.getDeltaMovement()));
-                } else {
-                    this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
-                }
-
-                if (!this.hasNoGravity()) {
-                    this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -d0 / 4.0D, 0.0D));
-                }
-
-                Vector3d vector3d4 = this.getDeltaMovement();
-                if (this.collidedHorizontally && this.isOffsetPositionInLiquid(vector3d4.x, vector3d4.y + (double)0.6F - this.getY() + d7, vector3d4.z)) {
-                    this.setDeltaMovement(vector3d4.x, 0.3F, vector3d4.z);
-                }
-            } else {
-                BlockPos blockpos = this.getPositionUnderneath();
-                float f3 = this.level.getBlockState(this.getPositionUnderneath()).getSlipperiness(world, this.getPositionUnderneath(), this);
-                float f4 = this.onGround ? f3 * 0.91F : 0.91F;
-                Vector3d vector3d5 = this.func_233633_a_(destination, f3);
-                double d2 = vector3d5.y;
-                if (this.isPotionActive(Effects.LEVITATION)) {
-                    d2 += (0.05D * (double)(this.getActivePotionEffect(Effects.LEVITATION).getAmplifier() + 1) - vector3d5.y) * 0.2D;
-                    this.fallDistance = 0.0F;
-                } else if (this.level.isClientSide && !this.level.isBlockLoaded(blockpos)) {
-                    if (this.getY() > 0.0D) {
-                        d2 = -0.1D;
-                    } else {
-                        d2 = 0.0D;
-                    }
-                } else if (!this.hasNoGravity()) {
-                    d2 -= d0;
-                }
-
-                this.setDeltaMovement(vector3d5.x * (double)f4, d2 * (double)0.98F, vector3d5.z * (double)f4);
+    public void travel(Vec3 p_30218_) {
+        if (this.isEffectiveAi() && this.isInWater()) {
+            this.moveRelative(0.025F, p_30218_);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
+            if (this.getTarget() == null) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
             }
+        } else {
+            super.travel(p_30218_);
         }
-
-        this.prevLimbSwingAmount = this.limbSwingAmount;
-        double d5 = this.getX() - this.prevPosX;
-        double d6 = this.getZ() - this.prevPosZ;
-        double d8 = this instanceof IFlyingAnimal ? this.getY() - this.prevPosY : 0.0D;
-        float f8 = Mth.sqrt((float) (d5 * d5 + d8 * d8 + d6 * d6)) * 4.0F;
-        if (f8 > 1.0F) {
-            f8 = 1.0F;
-        }
-
-        this.limbSwingAmount += (f8 - this.limbSwingAmount) * 0.4F;
-        this.limbSwing += this.limbSwingAmount;
     }
-
-     */
 
     @Override
     public int getAnimationTick() {
