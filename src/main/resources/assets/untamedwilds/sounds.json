@@ -249,6 +249,36 @@
 		"subtitle": "untamedwilds.subtitles.camel.spit"
 	},
 
+	"entity.opossum.hiss": {
+		"sounds": [
+			"untamedwilds:opossum/hiss"
+		],
+		"subtitle": "untamedwilds.subtitles.opossum.hiss"
+	},
+	"entity.opossum.ambient": {
+		"sounds": [
+			"mob/rabbit/idle1",
+			"mob/rabbit/idle2",
+			"mob/rabbit/idle3",
+			"mob/rabbit/idle4"
+		],
+		"subtitle": "untamedwilds.subtitles.opossum.ambient"
+	},
+	"entity.opossum.hurt": {
+		"sounds": [
+			"mob/rabbit/hurt1",
+			"mob/rabbit/hurt2",
+			"mob/rabbit/hurt3",
+			"mob/rabbit/hurt4"
+		],
+		"subtitle": "untamedwilds.subtitles.opossum.hurt"
+	},
+	"entity.opossum.death": {
+		"sounds": [
+			"mob/rabbit/death"
+		],
+		"subtitle": "untamedwilds.subtitles.opossum.death"
+	},
 
 	"entity.spitter.spit": {
 		"sounds": [

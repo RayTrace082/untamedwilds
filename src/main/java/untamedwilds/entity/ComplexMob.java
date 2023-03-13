@@ -246,6 +246,7 @@ public abstract class ComplexMob extends TamableAnimal {
         entity.setGender(this.random.nextInt(2));
         entity.setRandomMobSize();
         entity.setVariant(this.getVariant());
+        entity.chooseSkinForSpecies(this, true);
         if (entity instanceof INeedsPostUpdate) {
             ((INeedsPostUpdate) entity).updateAttributes();
         }

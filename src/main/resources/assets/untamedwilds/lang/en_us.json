@@ -92,6 +92,15 @@
   "untamedwilds.subtitles.camel.hurt": "Camel hurts",
   "untamedwilds.subtitles.camel.death": "Camel dies",
 
+  "item.untamedwilds.opossum_spawn_egg": "Opossum Spawn Egg",
+  "entity.untamedwilds.opossum": "Opossum",
+  "entity.untamedwilds.opossum_virginia": "Virginia Opossum",
+  "entity.untamedwilds.opossum_virginia.sciname": "Didelphis virginiana",
+  "untamedwilds.subtitles.opossum.hiss": "Opossum hisses",
+  "untamedwilds.subtitles.opossum.ambient": "Opossum chirps",
+  "untamedwilds.subtitles.opossum.hurt": "Opossum hurts",
+  "untamedwilds.subtitles.opossum.death": "Opossum dies",
+
   "item.untamedwilds.spitter_spawn_egg": "Spitter Spawn Egg",
   "block.untamedwilds.egg_spitter": "Glimmering Egg",
   "entity.untamedwilds.spitter": "Spitter",

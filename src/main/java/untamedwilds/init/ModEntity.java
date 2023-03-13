@@ -62,6 +62,7 @@ public class ModEntity {
     public static RegistryObject<EntityType<EntityCamel>> CAMEL = createEntity(EntityCamel::new, "camel", 1.8F, 2F, 0xE0B989, 0x976B3D);
     public static RegistryObject<EntityType<EntityManatee>> MANATEE = createEntity(EntityManatee::new, "manatee", 1.8F, 2F, 0x4A4040, 0x787676);
     public static RegistryObject<EntityType<EntityBaleenWhale>> BALEEN_WHALE = createEntity(EntityBaleenWhale::new, "baleen_whale", 2.6F, 1.6F, 0x12141E, 0x5B6168);
+    public static RegistryObject<EntityType<EntityOpossum>> OPOSSUM = createEntity(EntityOpossum::new, "opossum", 0.9F, 0.9F, 0xABA29B, 0x383735);
 
     // Fish
     public static RegistryObject<EntityType<EntitySunfish>> SUNFISH = createEntity(EntitySunfish::new, "sunfish", 1.6F, 1.6F, 0x2C545B, 0xB6D0D3);
@@ -133,6 +134,7 @@ public class ModEntity {
         event.put(CAMEL.get(), EntityCamel.registerAttributes().build());
         event.put(MANATEE.get(), EntityManatee.registerAttributes().build());
         event.put(BALEEN_WHALE.get(), EntityBaleenWhale.registerAttributes().build());
+        event.put(OPOSSUM.get(), EntityOpossum.registerAttributes().build());
 
         event.put(SUNFISH.get(), EntitySunfish.registerAttributes().build());
         event.put(TREVALLY.get(), EntityTrevally.registerAttributes().build());
@@ -174,6 +176,7 @@ public class ModEntity {
         event.registerEntityRenderer(ModEntity.CAMEL.get(), RendererCamel::new);
         event.registerEntityRenderer(ModEntity.MANATEE.get(), RendererManatee::new);
         event.registerEntityRenderer(ModEntity.BALEEN_WHALE.get(), RendererBaleenWhale::new);
+        event.registerEntityRenderer(ModEntity.OPOSSUM.get(), RendererOpossum::new);
 
         event.registerEntityRenderer(ModEntity.SUNFISH.get(), RendererSunfish::new);
         event.registerEntityRenderer(ModEntity.TREVALLY.get(), RendererTrevally::new);

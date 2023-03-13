@@ -12,6 +12,7 @@ import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.util.EntityUtils;
 
 import java.util.EnumSet;
@@ -56,7 +57,7 @@ public class SmartMeleeAttackGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (this.attacker.isBaby() || (this.doSkirmish && !EntityUtils.hasFullHealth(this.attacker))) {
+        if (this.attacker.isBaby() || (this.doSkirmish && !EntityUtils.hasFullHealth(this.attacker)) || (this.attacker instanceof ComplexMobTerrestrial complex && complex.forceSleep > 0)) {
             return false;
         }
         long i = this.attacker.level.getGameTime();

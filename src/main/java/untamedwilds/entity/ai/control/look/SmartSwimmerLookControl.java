@@ -12,7 +12,7 @@ public class SmartSwimmerLookControl extends SmoothSwimmingLookControl {
     }
 
     public void tick() {
-        if (!this.mob.isNotMoving() && this.mob.canMove()) {
+        if (/*!this.mob.isNotMoving() && */this.mob.canMove()) {
             super.tick();
         }
     }

@@ -132,3 +132,4 @@ Phweeeee - Code Contributor
 Unkownn66 - Tetra support Contributor
 
 Daniel Simion - Hyena Laughing sound asset (CC BY 3.0)
+LaurenPonder - Monster Hissing sound asset (CC BY 4.0)

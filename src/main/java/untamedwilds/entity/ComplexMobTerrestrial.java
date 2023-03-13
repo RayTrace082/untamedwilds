@@ -204,7 +204,7 @@ public abstract class ComplexMobTerrestrial extends ComplexMob implements IAnima
         if (this.isSitting()) {
             this.setSitting(false);
         }
-        if (this.isSleeping()) {
+        if (this.isSleeping() && this.forceSleep <= 0) {
             this.setSleeping(false);
             this.forceSleep = -4000;
         }

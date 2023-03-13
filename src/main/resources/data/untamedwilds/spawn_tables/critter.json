@@ -36,6 +36,12 @@
       "weight":2,
       "size_min":1,
       "size_max":1
+    },
+    {
+      "type":"untamedwilds:opossum",
+      "weight":1,
+      "size_min":1,
+      "size_max":2
     }
   ]
 }
