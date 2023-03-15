@@ -74,7 +74,8 @@ public class FeatureVegetation extends Feature<ProbabilityFeatureConfiguration> 
         TITAN_ARUM     	(ModBlock.TITAN_ARUM.get(), 6, ConfigFeatureControl.addFlora.get(), false, 1, Biome.BiomeCategory.JUNGLE),
         ZIMBABWE_ALOE   (ModBlock.ZIMBABWE_ALOE.get(), 4, ConfigFeatureControl.addFlora.get(), false, 1, Biome.BiomeCategory.MESA),
         FLOWER_YARROW   (ModBlock.YARROW.get(), 6, ConfigFeatureControl.addFlora.get(), false, 18, Biome.BiomeCategory.FOREST, Biome.BiomeCategory.PLAINS, Biome.BiomeCategory.MOUNTAIN),
-        GRASS_JUNEGRASS (ModBlock.JUNEGRASS.get(), 8, ConfigFeatureControl.addFlora.get(), false, 18, Biome.BiomeCategory.PLAINS);
+        GRASS_JUNEGRASS (ModBlock.JUNEGRASS.get(), 8, ConfigFeatureControl.addFlora.get(), false, 18, Biome.BiomeCategory.PLAINS),
+        CANOLA          (ModBlock.CANOLA.get(), 6, ConfigFeatureControl.addFlora.get(), false, 12, Biome.BiomeCategory.PLAINS);
 
         public Block type;
         public int rarity;
