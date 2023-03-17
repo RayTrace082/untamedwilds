@@ -69,6 +69,7 @@ public class FeatureVegetation extends Feature<ProbabilityFeatureConfiguration> 
     public enum FloraTypes {
 
         TEMPERATE_BUSH	(ModBlock.BUSH_TEMPERATE.get(), 6, ConfigFeatureControl.addFlora.get(), false, 24, Biome.BiomeCategory.FOREST, Biome.BiomeCategory.SWAMP, Biome.BiomeCategory.EXTREME_HILLS, Biome.BiomeCategory.TAIGA, Biome.BiomeCategory.PLAINS),
+        CREOSOTE_BUSH	(ModBlock.BUSH_CREOSOTE.get(), 2, ConfigFeatureControl.addFlora.get(), false, 4, Biome.BiomeCategory.MESA, Biome.BiomeCategory.DESERT),
         ELEPHANT_EAR	(ModBlock.ELEPHANT_EAR.get(), 6, ConfigFeatureControl.addFlora.get(), false, 24, Biome.BiomeCategory.JUNGLE),
         HEMLOCK     	(ModBlock.HEMLOCK.get(), 1, ConfigFeatureControl.addFlora.get(), false, 12, Biome.BiomeCategory.FOREST),
         TITAN_ARUM     	(ModBlock.TITAN_ARUM.get(), 6, ConfigFeatureControl.addFlora.get(), false, 1, Biome.BiomeCategory.JUNGLE),
