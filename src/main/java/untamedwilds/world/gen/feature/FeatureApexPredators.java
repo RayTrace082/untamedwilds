@@ -2,6 +2,7 @@ package untamedwilds.world.gen.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -30,7 +31,7 @@ public class FeatureApexPredators extends Feature<NoneFeatureConfiguration> {
     }
 
     public boolean place(FeaturePlaceContext context) {
-        Random rand = context.level().getRandom();
+        RandomSource rand = context.level().getRandom();
         BlockPos pos = context.origin();
         WorldGenLevel world = context.level();
         if (ConfigMobControl.dimensionBlacklist.get().contains(world.getLevel().dimension().location().toString()))

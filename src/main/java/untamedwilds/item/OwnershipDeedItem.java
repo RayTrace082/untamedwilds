@@ -3,7 +3,8 @@ package untamedwilds.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -34,12 +35,12 @@ public class OwnershipDeedItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         if (stack.hasTag()) {
             CompoundTag nbt = stack.getTag();
-            tooltip.add(new TranslatableComponent("item.untamedwilds.ownership_deed_desc_4", nbt.getString("entityname")).withStyle(ChatFormatting.GRAY));
-            tooltip.add(new TranslatableComponent("item.untamedwilds.ownership_deed_desc_5").withStyle(ChatFormatting.GRAY));
-            tooltip.add(new TranslatableComponent("item.untamedwilds.ownership_deed_desc_6",  nbt.getString("ownername")).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+            tooltip.add(MutableComponent.create(new TranslatableContents("item.untamedwilds.ownership_deed_desc_4", nbt.getString("entityname"))).withStyle(ChatFormatting.GRAY));
+            tooltip.add(MutableComponent.create(new TranslatableContents("item.untamedwilds.ownership_deed_desc_5")).withStyle(ChatFormatting.GRAY));
+            tooltip.add(MutableComponent.create(new TranslatableContents("item.untamedwilds.ownership_deed_desc_6",  nbt.getString("ownername"))).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
         }
         else {
-            tooltip.add(new TranslatableComponent("item.untamedwilds.ownership_deed_desc_1").withStyle(ChatFormatting.GRAY));
+            tooltip.add(MutableComponent.create(new TranslatableContents("item.untamedwilds.ownership_deed_desc_1")).withStyle(ChatFormatting.GRAY));
         }
     }
 

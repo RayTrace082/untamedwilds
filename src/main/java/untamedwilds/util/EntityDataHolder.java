@@ -122,7 +122,7 @@ public class EntityDataHolder {
     }
 
     public ItemStack getFavouriteFood(int i) {
-        if (this.speciesData.get(i).getFavouriteFood().getItem().getRegistryName().toString().equals("minecraft:air")) {
+        if (this.speciesData.get(i).getFavouriteFood().getItem().builtInRegistryHolder().key().location().toString().equals("minecraft:air")) {
             return this.favouriteFood;
         }
         return this.speciesData.get(i).getFavouriteFood();

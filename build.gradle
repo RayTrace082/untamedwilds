@@ -91,10 +91,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'untamedwilds', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                examplemod {
+                untamedwilds {
                     source sourceSets.main
                 }
             }
@@ -130,16 +130,16 @@ repositories{
 
 dependencies {
     //minecraft "net.minecraftforge:forge:${mc_version}-39.1.2"
-    minecraft 'net.minecraftforge:forge:1.18.2-40.0.13'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-67")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-67")
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:9.4.1.114:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:9.4.1.114")
-    compileOnly fg.deobf("curse.maven:crash-utilities-371813:3808085")
-    runtimeOnly fg.deobf("curse.maven:crash-utilities-371813:3808085")
-    compileOnly "curse.maven:citadel4-331936:3681528"
-    runtimeOnly "curse.maven:citadel4-331936:3681528"
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.19.2-77")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.19.2-77")
+    //compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:11.6.0.1013:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:11.6.0.1013")
+    compileOnly fg.deobf("curse.maven:crash-utilities-371813:4406293")
+    runtimeOnly fg.deobf("curse.maven:crash-utilities-371813:4406293")
+    compileOnly fg.deobf("curse.maven:citadel4-331936:4473243")
+    runtimeOnly fg.deobf("curse.maven:citadel4-331936:4473243")
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

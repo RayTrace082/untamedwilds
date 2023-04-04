@@ -4,6 +4,9 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,7 +31,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.*;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
@@ -174,7 +176,7 @@ public abstract class ComplexMob extends TamableAnimal {
      */
     public static void processData(EntityDataHolder dataIn, EntityType<?> typeIn) {
         ENTITY_DATA_HASH.put(typeIn, dataIn);
-        processSkins(dataIn, typeIn.getRegistryName().getPath());
+        processSkins(dataIn, typeIn.builtInRegistryHolder().key().location().getPath());
         for (SpeciesDataHolder speciesData : ENTITY_DATA_HASH.get(typeIn).getSpeciesData()) {
             if (!ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
                 ComplexMob.CLIENT_DATA_HASH.put(typeIn, new EntityDataHolderClient(new HashMap<>(), new HashMap<>()));
@@ -194,8 +196,8 @@ public abstract class ComplexMob extends TamableAnimal {
     public int getSkin(){ return (this.entityData.get(SKIN)); }
     public void setSkin(int skin){ this.entityData.set(SKIN, skin); }
     public <T extends ComplexMob> void chooseSkinForSpecies(T entityIn, boolean allowRares) {
-        if (entityIn.getType().getRegistryName() != null && this instanceof INewSkins && !this.level.isClientSide) {
-            String name = entityIn.getType().getRegistryName().getPath();
+        if (entityIn.getType().builtInRegistryHolder().key().location() != null && this instanceof INewSkins && !this.level.isClientSide) {
+            String name = entityIn.getType().builtInRegistryHolder().key().location().getPath();
             if (!TEXTURES_COMMON.get(name).isEmpty()) {
                 boolean isRare = allowRares && TEXTURES_RARE.get(name).containsKey(this.getVariant()) && this.random.nextFloat() < ConfigGamerules.rareSkinChance.get();
                 int skin = this.random.nextInt(isRare ? TEXTURES_RARE.get(name).get(this.getVariant()).size() : TEXTURES_COMMON.get(name).get(this.getVariant()).size()) + (isRare ? 100 : 0);
@@ -244,7 +246,7 @@ public abstract class ComplexMob extends TamableAnimal {
                 if (this instanceof INeedsPostUpdate) {
                     ((INeedsPostUpdate) child).updateAttributes();
                 }
-                if (TEXTURES_COMMON.containsKey(child.getType().getRegistryName().getPath())) {
+                if (TEXTURES_COMMON.containsKey(child.getType().builtInRegistryHolder().key().location().getPath())) {
                     chooseSkinForSpecies(child, true);
                 }
                 //((ServerLevel)this.level).addFreshEntityWithPassengers(child);
@@ -414,7 +416,7 @@ public abstract class ComplexMob extends TamableAnimal {
             }
             this.setGender(this.random.nextInt(2));
             this.setRandomMobSize();
-            if (TEXTURES_COMMON.containsKey(this.getType().getRegistryName().getPath())) {
+            if (TEXTURES_COMMON.containsKey(this.getType().builtInRegistryHolder().key().location().getPath())) {
                 chooseSkinForSpecies(this, ConfigGamerules.wildRareSkins.get());
             }
             if (this instanceof INeedsPostUpdate) {
@@ -448,7 +450,7 @@ public abstract class ComplexMob extends TamableAnimal {
             if (this.isTame() && this.getOwner() == player) {
                 if (itemstack.isEmpty()) {
                     this.setCommandInt(this.getCommandInt() + 1);
-                    player.sendMessage(new TranslatableComponent("entity.untamedwilds.command." + this.getCommandInt()), Util.NIL_UUID);
+                    player.sendSystemMessage(MutableComponent.create(new TranslatableContents("entity.untamedwilds.command." + this.getCommandInt())));
                     if (this.getCommandInt() > 1) {
                         this.getNavigation().stop();
                         this.setSitting(true);

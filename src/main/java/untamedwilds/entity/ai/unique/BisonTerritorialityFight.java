@@ -4,6 +4,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -14,7 +15,6 @@ import untamedwilds.util.EntityUtils;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Random;
 
 public class BisonTerritorialityFight extends Goal {
     private final EntityBison taskOwner;
@@ -56,7 +56,7 @@ public class BisonTerritorialityFight extends Goal {
         } else {
             this.targetAnimal = target_animal;
             this.isDone = false;
-            this.slaveGoal = new TerritorialFightingGoal_slave(this.targetAnimal, 1.4F,  this.taskOwner);
+            this.slaveGoal = new TerritorialFightingGoal_slave(this.targetAnimal, 1.4F, this.taskOwner);
             return true;
         }
     }
@@ -92,9 +92,12 @@ public class BisonTerritorialityFight extends Goal {
             for (LivingEntity entityHit : entitiesHit) {
                 if (!entityHit.equals(this.taskOwner) && this.taskOwner.hasLineOfSight(entityHit)) {
                     if (entityHit.equals(this.targetAnimal)) {
-                        Random rand = this.taskOwner.getRandom();
+                        RandomSource rand = this.taskOwner.getRandom();
                         ServerLevel world = (ServerLevel) this.taskOwner.getLevel();
-                        world.sendParticles(ParticleTypes.SMOKE, rand.nextFloat((float)offset_box.minX, (float)offset_box.maxX), rand.nextFloat((float)offset_box.minY, (float)offset_box.maxY), rand.nextFloat((float)offset_box.minZ, (float)offset_box.maxZ), 10, 0, 0, 0, 0.05);
+                        world.sendParticles(ParticleTypes.SMOKE,
+                            rand.nextDouble() * (offset_box.maxX - offset_box.minX) + offset_box.minX,
+                            rand.nextDouble() * (offset_box.maxY - offset_box.minY) + offset_box.minX,
+                            rand.nextDouble() * (offset_box.maxZ - offset_box.minZ) + offset_box.minZ, 10, 0, 0, 0, 0.05);
                         this.targetAnimal.hurt(DamageSource.GENERIC, 2);
                         this.isDone = true;
                     }
@@ -110,7 +113,6 @@ public class BisonTerritorialityFight extends Goal {
         this.taskOwner.level.playSound(null, this.taskOwner.getX(), this.taskOwner.getY(), this.taskOwner.getZ(), SoundEvents.GOAT_RAM_IMPACT, SoundSource.NEUTRAL, 1.0F, 1.0F);
         this.taskOwner.setDeltaMovement(this.taskOwner.getDeltaMovement().scale(-0.15F));
     }
-
 
     public static class TerritorialFightingGoal_slave extends Goal {
         private final EntityBison taskOwner;
@@ -160,9 +162,13 @@ public class BisonTerritorialityFight extends Goal {
                 for (LivingEntity entityHit : entitiesHit) {
                     if (!entityHit.equals(this.taskOwner) && this.taskOwner.hasLineOfSight(entityHit)) {
                         if (entityHit.equals(this.targetAnimal)) {
-                            Random rand = this.taskOwner.getRandom();
+                            RandomSource rand = this.taskOwner.getRandom();
                             ServerLevel world = (ServerLevel) this.taskOwner.getLevel();
-                            world.sendParticles(ParticleTypes.SMOKE, rand.nextFloat((float)offset_box.minX, (float)offset_box.maxX), rand.nextFloat((float)offset_box.minY, (float)offset_box.maxY), rand.nextFloat((float)offset_box.minZ, (float)offset_box.maxZ), 10, 0, 0, 0, 0.05);
+                            world.sendParticles(ParticleTypes.SMOKE,
+                                rand.nextDouble() * (offset_box.maxX - offset_box.minX) + offset_box.minX,
+                                rand.nextDouble() * (offset_box.maxY - offset_box.minY) + offset_box.minX,
+                                rand.nextDouble() * (offset_box.maxZ - offset_box.minZ) + offset_box.minZ,
+                                10, 0, 0, 0, 0.05);
                             this.targetAnimal.hurt(DamageSource.mobAttack(null), 2);
                             this.isDone = true;
                         }

@@ -9,14 +9,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -45,7 +47,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 // A series of functions that are not meant to be limited to ComplexMobs
 public abstract class EntityUtils {
@@ -55,9 +56,9 @@ public abstract class EntityUtils {
         if (entityIn.getVehicle() != null && entityIn.getVehicle() instanceof Boat boat) {
             boat.remove(Entity.RemovalReason.KILLED);
             if (worldIn.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-                for(int j = 0; j < 3; ++j) 
+                for (int j = 0; j < 3; ++j)
                     boat.spawnAtLocation(boat.getBoatType().getPlanks());
-                for(int k = 0; k < 2; ++k) 
+                for (int k = 0; k < 2; ++k)
                     boat.spawnAtLocation(Items.STICK);
             }
         }
@@ -68,14 +69,13 @@ public abstract class EntityUtils {
         if (worldIn.isClientSide) return;
         if (entityIn.isMultipartEntity()) {
             for (PartEntity<?> part : entityIn.getParts()) {
-                for (int i = 0; i < iter;  i++) {
-                    ((ServerLevel)worldIn).sendParticles(particle, part.getX(), part.getY() + (double)part.getBbHeight() / 1.5D, part.getZ(), count, part.getBbWidth() / 4.0F, part.getBbHeight() / 4.0F, part.getBbWidth() / 4.0F, 0.05D);
+                for (int i = 0; i < iter; i++) {
+                    ((ServerLevel) worldIn).sendParticles(particle, part.getX(), part.getY() + (double) part.getBbHeight() / 1.5D, part.getZ(), count, part.getBbWidth() / 4.0F, part.getBbHeight() / 4.0F, part.getBbWidth() / 4.0F, 0.05D);
                 }
             }
-        }
-        else {
-            for (int i = 0; i < iter;  i++) {
-                ((ServerLevel)worldIn).sendParticles(particle, entityIn.getX(), entityIn.getY() + (double)entityIn.getBbHeight() / 1.5D, entityIn.getZ(), count, entityIn.getBbWidth() / 4.0F, entityIn.getBbHeight() / 4.0F, entityIn.getBbWidth() / 4.0F, 0.05D);
+        } else {
+            for (int i = 0; i < iter; i++) {
+                ((ServerLevel) worldIn).sendParticles(particle, entityIn.getX(), entityIn.getY() + (double) entityIn.getBbHeight() / 1.5D, entityIn.getZ(), count, entityIn.getBbWidth() / 4.0F, entityIn.getBbHeight() / 4.0F, entityIn.getBbWidth() / 4.0F, 0.05D);
             }
         }
     }
@@ -86,9 +86,10 @@ public abstract class EntityUtils {
 
     /**
      * Method to calculate the Blockpos relative to a mob's facing direction, returns a BlockPos
+     *
      * @param entityIn The entity whose facing direction will be used
      * @param xzOffset Offset in the X and Z axis
-     * @param yOffset Offset in the Y axis
+     * @param yOffset  Offset in the Y axis
      */
     public static BlockPos getRelativeBlockPos(Entity entityIn, float xzOffset, float yOffset) {
         return entityIn.blockPosition().offset(Math.cos(Math.toRadians(entityIn.getYRot() + 90)) * xzOffset, yOffset, Math.sin(Math.toRadians(entityIn.getYRot() + 90)) * xzOffset);
@@ -111,24 +112,23 @@ public abstract class EntityUtils {
             CompoundTag compound = stack.getTagElement("EntityTag");
             //String component = "mobspawn.tooltip." + (compound.contains("Gender") ? (compound.getInt("Gender") == 0 ? "male" : "female") : "unknown");
             //tooltip.add(new TranslatableComponent(component).mergeStyle(TextFormatting.GRAY));
-            String gender = compound.contains("Gender") ? new TranslatableComponent("mobspawn.tooltip." + (compound.getInt("Gender") == 0 ? "male" : "female")).getString() + " " : "";
+            String gender = compound.contains("Gender") ? MutableComponent.create(new TranslatableContents("mobspawn.tooltip." + (compound.getInt("Gender") == 0 ? "male" : "female"))).getString() + " " : "";
             String type;
             if (path.isEmpty())
-                type = new TranslatableComponent(entity.getDescriptionId()).getString();
+                type = MutableComponent.create(new TranslatableContents(entity.getDescriptionId())).getString();
             else
-                type = new TranslatableComponent(entity.getDescriptionId() + "_" + path).getString();
+                type = MutableComponent.create(new TranslatableContents(entity.getDescriptionId() + "_" + path)).getString();
             if (stack.getTag().getCompound("EntityTag").contains("CustomName")) {
                 String customName = stack.getTag().getCompound("EntityTag").getString("CustomName");
                 // Entity uses ITextComponent.Serializer.getComponentFromJson(s) instead of substrings
-                tooltip.add(new TextComponent(customName.substring(9, customName.length() - 2) + " (" + gender + type + ")").withStyle(ChatFormatting.GRAY));
-            }
-            else {
-                tooltip.add(new TextComponent(gender + type).withStyle(ChatFormatting.GRAY));
+                tooltip.add(MutableComponent.create(new LiteralContents(customName.substring(9, customName.length() - 2) + " (" + gender + type + ")")).withStyle(ChatFormatting.GRAY));
+            } else {
+                tooltip.add(MutableComponent.create(new LiteralContents(gender + type)).withStyle(ChatFormatting.GRAY));
             }
         }
         if (ConfigGamerules.scientificNames.get()) {
             String scipath = path.isEmpty() ? "" : "_" + path;
-            TranslatableComponent tooltipText = new TranslatableComponent(entity.getDescriptionId() + scipath + ".sciname");
+            MutableComponent tooltipText = MutableComponent.create(new TranslatableContents(entity.getDescriptionId() + scipath + ".sciname"));
             if (!tooltipText.getString().contains(".")) {
                 tooltip.add(tooltipText.withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
             }
@@ -154,8 +154,7 @@ public abstract class EntityUtils {
                 if (spawn != null && itemstack.hasCustomHoverName()) {
                     spawn.setCustomName(itemstack.getHoverName());
                 }
-            }
-            else {
+            } else {
                 // If no NBT data is assigned to the entity (eg. Item taken from the Creative menu), create a new, random mob
                 spawn = entity.create(worldIn, null, null, player, spawnPos, MobSpawnType.SPAWN_EGG, true, offset);
                 if (spawn instanceof ComplexMob entitySpawn) {
@@ -194,9 +193,9 @@ public abstract class EntityUtils {
 
     // This function turns the entity into an item with item_name registry name, and removes the entity from the world
     public static void turnEntityIntoItem(LivingEntity entity, String item_name) {
-        if (ConfigGamerules.easyMobCapturing.get() || ((Mob)entity).getTarget() == null) {
+        if (ConfigGamerules.easyMobCapturing.get() || ((Mob) entity).getTarget() == null) {
             ItemEntity entityitem = entity.spawnAtLocation(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase()))), 0.2F);
-            Random rand = entity.getRandom();
+            RandomSource rand = entity.getRandom();
             if (entityitem != null) {
                 entityitem.setDeltaMovement((rand.nextFloat() - rand.nextFloat()) * 0.1F, rand.nextFloat() * 0.05F, (rand.nextFloat() - rand.nextFloat()) * 0.1F);
                 entityitem.getItem().setTag(writeEntityToNBT(entity, false, true));
@@ -210,7 +209,7 @@ public abstract class EntityUtils {
 
     // This function replaces a given ItemStack with a new item with item_name registry name, and removes the entity from the world
     public static void mutateEntityIntoItem(LivingEntity entity, Player player, InteractionHand hand, String item_name, ItemStack itemstack) {
-        if (ConfigGamerules.easyMobCapturing.get() || ((Mob)entity).getTarget() == null) {
+        if (ConfigGamerules.easyMobCapturing.get() || ((Mob) entity).getTarget() == null) {
             entity.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
             itemstack.shrink(1);
             ItemStack newitem = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":" + item_name.toLowerCase())));
@@ -299,8 +298,7 @@ public abstract class EntityUtils {
                 final String full_path = String.format(path + "_%d.png", i + 1);
                 common_list.get(name).get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
             }
-        }
-        else {
+        } else {
             common_list.get(name).get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, path + ".png"));
         }
 
@@ -329,8 +327,7 @@ public abstract class EntityUtils {
                     final String full_path = String.format(path + suffix, i + 1);
                     Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
                     list.get(variant).add(new ResourceLocation(UntamedWilds.MOD_ID, full_path));
-                }
-                else {
+                } else {
                     UntamedWilds.LOGGER.error("Invalid character in " + suffix + ", terminating Skin registry");
                     break;
                 }
@@ -353,8 +350,7 @@ public abstract class EntityUtils {
     public static String getVariantName(EntityType<?> typeIn, int variantIn) {
         if (ComplexMob.ENTITY_DATA_HASH.containsKey(typeIn)) {
             return ComplexMob.ENTITY_DATA_HASH.get(typeIn).getName(variantIn);
-        }
-        else if (ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
+        } else if (ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
             return ComplexMob.CLIENT_DATA_HASH.get(typeIn).getSpeciesName(variantIn);
         }
         //UntamedWilds.LOGGER.warn("There's no name provided for the species");
@@ -364,8 +360,7 @@ public abstract class EntityUtils {
     public static int getNumberOfSpecies(EntityType<?> typeIn) {
         if (ComplexMob.ENTITY_DATA_HASH.containsKey(typeIn)) {
             return ComplexMob.ENTITY_DATA_HASH.get(typeIn).getSpeciesData().size();
-        }
-        else if (ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
+        } else if (ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
             return ComplexMob.CLIENT_DATA_HASH.get(typeIn).getNumberOfSpecies();
         }
         UntamedWilds.LOGGER.warn("There's no species provided for the EntityType");
@@ -403,8 +398,8 @@ public abstract class EntityUtils {
 
     // Takes the skin from the TEXTURES_COMMON or TEXTURES_RARE array
     public static ResourceLocation getSkinFromEntity(ComplexMob entityIn) {
-        if (entityIn.getType().getRegistryName() != null) {
-            String name = entityIn.getType().getRegistryName().getPath();
+        if (entityIn.getType().builtInRegistryHolder().key().location() != null) {
+            String name = entityIn.getType().builtInRegistryHolder().key().location().getPath();
             if (entityIn.getSkin() > 99 && ComplexMob.TEXTURES_RARE.get(name).containsKey(entityIn.getVariant())) {
                 return ComplexMob.TEXTURES_RARE.get(name).get(entityIn.getVariant()).get(Math.min(entityIn.getSkin() - 100, ComplexMob.TEXTURES_RARE.get(name).get(entityIn.getVariant()).size() - 1));
             }
@@ -422,7 +417,7 @@ public abstract class EntityUtils {
             if (itemFood != null) {
                 entityIn.playSound(SoundEvents.GENERIC_EAT, 1, 1);
                 if (entityIn instanceof ComplexMobTerrestrial)
-                    ((ComplexMobTerrestrial)entityIn).addHunger(itemFood.getNutrition() * 10);
+                    ((ComplexMobTerrestrial) entityIn).addHunger(itemFood.getNutrition() * 10);
                 else
                     entityIn.heal(itemFood.getNutrition());
 
@@ -432,13 +427,12 @@ public abstract class EntityUtils {
                     }
                 }
             }
-        }
-        else if (!PotionUtils.getMobEffects(itemstack).isEmpty()) {
+        } else if (!PotionUtils.getMobEffects(itemstack).isEmpty()) {
             entityIn.playSound(SoundEvents.GENERIC_DRINK, 1, 1);
             if (entityIn instanceof ComplexMobTerrestrial)
-                ((ComplexMobTerrestrial)entityIn).addHunger(10);
+                ((ComplexMobTerrestrial) entityIn).addHunger(10);
 
-            for(MobEffectInstance effectinstance : PotionUtils.getMobEffects(itemstack)) {
+            for (MobEffectInstance effectinstance : PotionUtils.getMobEffects(itemstack)) {
                 if (effectinstance.getEffect().isInstantenous())
                     effectinstance.getEffect().applyInstantenousEffect(entityIn.getOwner(), entityIn.getOwner(), entityIn, effectinstance.getAmplifier(), 1.0D);
                 else

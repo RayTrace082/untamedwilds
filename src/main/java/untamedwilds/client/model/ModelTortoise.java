@@ -6,6 +6,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import untamedwilds.entity.reptile.EntityTortoise;
 
 public class ModelTortoise extends AdvancedEntityModel<EntityTortoise> {
@@ -160,4 +162,6 @@ public class ModelTortoise extends AdvancedEntityModel<EntityTortoise> {
             this.progressRotation(leg_left, tortoise.sitProgress, (float) Math.toRadians(10.43F), (float) Math.toRadians(5.22F), (float) Math.toRadians(80.87F), 20);
         }
     }
+
+
 }

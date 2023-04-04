@@ -3,6 +3,7 @@ package untamedwilds.entity.ai;
 import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
@@ -99,7 +100,7 @@ public class GotoSleepGoal extends Goal {
 
     @Nullable
     public BlockPos checkForNewHome() {
-        Random random = this.creature.getRandom();
+        RandomSource random = this.creature.getRandom();
         BlockPos blockpos = this.creature.blockPosition();
 
         for(int i = 0; i < 10; ++i) {

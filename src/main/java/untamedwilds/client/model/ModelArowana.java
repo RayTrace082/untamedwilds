@@ -4,6 +4,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import untamedwilds.entity.fish.EntityArowana;
 
 public class ModelArowana extends AdvancedEntityModel<EntityArowana> {
@@ -117,4 +119,6 @@ public class ModelArowana extends AdvancedEntityModel<EntityArowana> {
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{body_head, body_main, body_tail_1, body_tail_3, body_tail_fin};
         chainSwing(bodyParts, globalSpeed, globalDegree * 1.1F, -5, limbSwing, limbSwingAmount);
     }
+
+
 }

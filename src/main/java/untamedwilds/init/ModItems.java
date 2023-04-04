@@ -74,7 +74,7 @@ public class ModItems {
     // Item Blocks
     public static RegistryObject<Item> SEED_TITAN_ARUM = createItem("flora_titan_arum_corm", () -> new ItemNameBlockItem(ModBlock.TITAN_ARUM.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
     public static RegistryObject<Item> SEED_ZIMBABWE_ALOE = createItem("flora_zimbabwe_aloe_sapling", () -> new ItemNameBlockItem(ModBlock.ZIMBABWE_ALOE.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
-    public static RegistryObject<Item> WATER_HYACINTH_BLOCK = createItem("flora_water_hyacinth_item", () -> new WaterLilyBlockItem(ModBlock.WATER_HYACINTH.get(), new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
+    public static RegistryObject<Item> WATER_HYACINTH_BLOCK = createItem("flora_water_hyacinth_item", () -> new PlaceOnWaterBlockItem(ModBlock.WATER_HYACINTH.get(), new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
 
     public static <I extends Item> RegistryObject<I> createItem(String name, Supplier<? extends I> supplier) {
         return ModItems.ITEMS.register(name, supplier);

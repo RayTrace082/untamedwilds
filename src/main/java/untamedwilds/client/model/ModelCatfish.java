@@ -4,6 +4,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.fish.EntityCatfish;
 
@@ -138,4 +140,6 @@ public class ModelCatfish extends AdvancedEntityModel<EntityCatfish> {
         this.setRotateAngle(whisker_right, 0.0F, -0.27314402793711257F + catfish.whisker_offset.getA(), -0.4553564018453205F + catfish.whisker_offset.getB());
         this.setRotateAngle(whisker_left, 0.0F, 0.27314402793711257F - catfish.whisker_offset.getA(), 0.4553564018453205F - catfish.whisker_offset.getB());
     }
+
+
 }

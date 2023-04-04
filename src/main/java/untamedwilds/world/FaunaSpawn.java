@@ -1,5 +1,6 @@
 package untamedwilds.world;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -73,7 +74,7 @@ public class FaunaSpawn {
     //    return performWorldGenSpawning(entityType, spawnType, Heightmap.Type.WORLD_SURFACE, worldIn, pos, rand, groupSize);
     //}
 
-    public static boolean performWorldGenSpawning(EntityType<?> entityType, SpawnPlacements.Type spawnType, @Nullable Heightmap.Types heightMap, ServerLevelAccessor worldIn, BlockPos pos, Random random, int groupSize) {
+    public static boolean performWorldGenSpawning(EntityType<?> entityType, SpawnPlacements.Type spawnType, @Nullable Heightmap.Types heightMap, ServerLevelAccessor worldIn, BlockPos pos, RandomSource random, int groupSize) {
         //UntamedWilds.LOGGER.info(entityType);
         if (ConfigMobControl.dimensionBlacklist.get().contains(worldIn.getLevel().dimension().location().toString()))
             return false;
@@ -88,7 +89,7 @@ public class FaunaSpawn {
                 //worldIn.setBlockState(pos, Blocks.TORCH.defaultBlockState(), 2);
             }
 
-            if (random.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(Objects.requireNonNull(worldIn.getBiome(pos).value().getRegistryName()))) {
+            if (random.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(Objects.requireNonNull(worldIn.getBiome(pos).unwrapKey().get().location()))) {
                 int k = 1;
                 int species = -1;
 

@@ -1,8 +1,8 @@
 package untamedwilds.entity;
 
 import net.minecraft.core.Holder;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.biome.Biome;
@@ -56,7 +56,7 @@ public interface ISpecies {
     }
 
     default String getSpeciesName(int i) {
-        return new TranslatableComponent("entity.untamedwilds." + ((ComplexMob)this).getType().getRegistryName().getPath() + "_" + getRawSpeciesName(i)).getString();
+        return MutableComponent.create(new TranslatableContents("entity.untamedwilds." + ((ComplexMob)this).getType().builtInRegistryHolder().key().location().getPath() + "_" + getRawSpeciesName(i))).getString();
     }
 
     default String getSpeciesName() {

@@ -125,7 +125,7 @@ public class CritterBurrowBlockEntity extends BlockEntity {
         compound.putInt("Count", this.getCount());
         compound.putInt("Variant", this.getVariant());
         if (this.getEntityType() != null) {
-            compound.putString("entityType", this.getEntityType().getRegistryName().toString());
+            compound.putString("entityType", this.getEntityType().builtInRegistryHolder().key().location().toString());
         }
     }
 

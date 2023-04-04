@@ -4,6 +4,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import untamedwilds.entity.fish.EntitySunfish;
 
 public class ModelSunfish extends AdvancedEntityModel<EntitySunfish> {
@@ -101,4 +103,6 @@ public class ModelSunfish extends AdvancedEntityModel<EntitySunfish> {
         flap(body_fin_right, globalSpeed, globalDegree * 0.8f, false, 0, 0.2f, f / 6, 1F);
         swing(body_fin_right, globalSpeed, globalDegree * 0.8f, true, 0, 0.2f, f / 6, 0.6F);
     }
+
+
 }

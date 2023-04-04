@@ -6,6 +6,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import untamedwilds.entity.mammal.EntityRhino;
 
 public class ModelRhino extends AdvancedEntityModel<EntityRhino> {
@@ -142,6 +144,7 @@ public class ModelRhino extends AdvancedEntityModel<EntityRhino> {
         return ImmutableList.of(body_belly);
     }
 
+
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
         return ImmutableList.of(body_belly, body_front, leg_right, leg_left, head_neck, arm_right_1, arm_left_1, head_face,
@@ -264,4 +267,6 @@ public class ModelRhino extends AdvancedEntityModel<EntityRhino> {
             this.progressRotation(leg_left, rhino.sleepProgress, (float)Math.toRadians(-13.04F), (float)Math.toRadians(5.22F), (float)Math.toRadians(88.70F), 40);
         }
     }
+
+
 }

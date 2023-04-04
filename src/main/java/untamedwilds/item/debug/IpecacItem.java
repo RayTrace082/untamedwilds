@@ -1,6 +1,7 @@
 package untamedwilds.item.debug;
 
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.LiteralContents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,6 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import untamedwilds.entity.ComplexMobTerrestrial;
 
+import java.awt.*;
+
 public class IpecacItem extends Item {
 
     public IpecacItem(Properties properties) {
@@ -18,7 +21,7 @@ public class IpecacItem extends Item {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        context.getPlayer().sendMessage(new TextComponent("Pos: " + context.getClickedPos()), context.getPlayer().getUUID());
+        context.getPlayer().sendSystemMessage(MutableComponent.create(new LiteralContents("Pos: " + context.getClickedPos())) );
         return InteractionResult.PASS;
     }
 

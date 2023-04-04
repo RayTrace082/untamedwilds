@@ -46,7 +46,7 @@ public class SyncTextureData {
             if (UntamedWilds.DEBUG) {
                 UntamedWilds.LOGGER.info("Handling texture data for entity: " + entityName + " with species: " + speciesName);
             }
-            EntityType<?> type = ForgeRegistries.ENTITIES.getValue(entityName);
+            EntityType<?> type = ForgeRegistries.ENTITY_TYPES.getValue(entityName);
             if (!ComplexMob.CLIENT_DATA_HASH.containsKey(type)) {
                 ComplexMob.CLIENT_DATA_HASH.put(type, new EntityDataHolderClient(new HashMap<>(), new HashMap<>()));
             }

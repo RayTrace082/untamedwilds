@@ -1,0 +1,24 @@
+{
+  "type": "untamedwilds:biome_modifier_serializer",
+  "biomes": [],
+  "blacklist": [
+    []
+  ],
+  "configOption": "gencontrol.anemone",
+  "decoration": "vegetal_decoration",
+  "dimension": "minecraft:is_overworld",
+  "feature": {
+    "feature": {
+      "type": "untamedwilds:sea_anemone",
+      "config": {
+        "count": 4
+      }
+    },
+    "placement": [
+      {
+        "type": "minecraft:rarity_filter",
+        "chance": 6
+      }
+    ]
+  }
+}

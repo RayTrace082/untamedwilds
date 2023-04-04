@@ -6,6 +6,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityBigCat;
 
@@ -247,7 +249,7 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
 
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
-        return ImmutableList.of( body_main, body_abdomen, head_neck, arm_right_upper, arm_left_upper, leg_right_upper,
+        return ImmutableList.of(body_main, body_abdomen, head_neck, arm_right_upper, arm_left_upper, leg_right_upper,
             tail_1, leg_left_upper, leg_right_lower, leg_right_paw, tail_2, tail_3, tail_4, leg_left_lower, leg_left_paw, head_main,
             eye_right, eye_right_1, head_snout, head_jaw, ear_right, ear_left, head_cheek_right, head_cheek_left, head_snout_teeth,
             arm_right_lower, arm_right_paw, arm_left_lower, arm_left_paw, tail_5);
@@ -459,7 +461,7 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
             this.eye_right.setRotationPoint(-2.5F, -2.0F, -4.5F);
             this.eye_right_1.setRotationPoint(2.5F, -2.0F, -4.5F);
         }
-        
+
         // Head Tracking Animation
         if (!big_cat.isSleeping()) {
             this.faceTarget(netHeadYaw, headPitch, 3, head_neck);
@@ -477,7 +479,7 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
         }
 
         // Movement Animation
-        float newZ = Mth.lerp(0.4F, this.tailX, this.tail_1.defaultRotationX + (float)big_cat.getCurrentSpeed() * 2);
+        float newZ = Mth.lerp(0.4F, this.tailX, this.tail_1.defaultRotationX + (float) big_cat.getCurrentSpeed() * 2);
         this.tail_1.rotateAngleX = newZ;
         this.tailX = newZ;
         if (big_cat.canMove()) {
@@ -533,11 +535,10 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
             this.progressRotation(ear_right, big_cat.aggroProgress, -0.22759093446006054F, 0.045553093477052F, -0.22759093446006054F, 40);
             this.progressRotation(ear_left, big_cat.aggroProgress, -0.22759093446006054F, -0.045553093477052F, 0.22759093446006054F, 40);
             this.progressRotation(tail_1, big_cat.aggroProgress, (float) Math.toRadians(-44.35), 0, 0, 40);
-        }
-        else {
+        } else {
             this.head_snout_teeth.scaleX = 0.9F;
         }
-        
+
         // Sitting Animation
         if (big_cat.sitProgress > 0) {
             this.progressPosition(body_main, big_cat.sitProgress, 0.0F, 18.5F, 1.0F, 40);
@@ -569,7 +570,7 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
             this.progressPosition(body_main, big_cat.sleepProgress, -4.0F, 19F, -4.0F, 40);
             this.progressRotation(body_main, big_cat.sleepProgress, 0, 0.0F, -1.50255395F, 40);
             this.progressRotation(body_abdomen, big_cat.sleepProgress, -0.455356402F, -0.0F, -0, 40);
-            this.progressRotation(leg_right_upper, big_cat.sleepProgress, -0.500909495F , -0.0F, 0.045553093477052F, 40);
+            this.progressRotation(leg_right_upper, big_cat.sleepProgress, -0.500909495F, -0.0F, 0.045553093477052F, 40);
             this.progressRotation(leg_left_lower, big_cat.sleepProgress, -0.13665928F, 0, 0.77405352F, 40);
             this.progressRotation(head_neck, big_cat.sleepProgress, 0.27314402793711207F, 0.22759093446006054F, 0.0F, 40);
             this.progressRotation(head_main, big_cat.sleepProgress, 0.4553564F, 0, 0.0F, 40);
@@ -577,4 +578,6 @@ public class ModelBigCat extends AdvancedEntityModel<EntityBigCat> {
             this.progressRotation(arm_left_lower, big_cat.sleepProgress, -0.5009095F, -0.09110619F, 1.0472F, 40);
         }
     }
+
+
 }

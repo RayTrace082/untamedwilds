@@ -3,12 +3,13 @@ package untamedwilds.block;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -28,7 +29,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
-import untamedwilds.init.ModItems;
 
 import java.util.Random;
 
@@ -85,9 +85,10 @@ public class CritterBurrowBlock extends Block implements SimpleWaterloggedBlock,
     }
 
     @Override
-    public int getExpDrop(BlockState state, net.minecraft.world.level.LevelReader world, BlockPos pos, int fortune, int silktouch) {
-        return 10 + RANDOM.nextInt(10);
+    public int getExpDrop(BlockState state, LevelReader level, RandomSource randomSource, BlockPos pos, int fortuneLevel, int silkTouchLevel) {
+        return 10 + randomSource.nextInt(10);
     }
+
 
     public boolean isRandomlyTicking(BlockState state) {
         return true;
@@ -111,13 +112,13 @@ public class CritterBurrowBlock extends Block implements SimpleWaterloggedBlock,
                 if (playerIn.isSteppingCarefully())
                     te.releaseOrCreateMob((ServerLevel) worldIn);
                 else {
-                    playerIn.sendMessage(new TranslatableComponent("This burrow contains " + te.getEntityType().getDescriptionId()).withStyle(ChatFormatting.ITALIC), playerIn.getUUID());
-                    playerIn.sendMessage(new TranslatableComponent("The variant is " + te.getVariant()).withStyle(ChatFormatting.ITALIC), playerIn.getUUID());
-                    playerIn.sendMessage(new TranslatableComponent("There are " + (te.getInhabitants().size() + te.getCount()) + " mobs inside the burrow (" + te.getInhabitants().size() + " stored, and " + te.getCount() + " to be spawned)").withStyle(ChatFormatting.ITALIC), playerIn.getUUID());
+                    playerIn.sendSystemMessage(MutableComponent.create(new TranslatableContents("This burrow contains " + te.getEntityType().getDescriptionId())).withStyle(ChatFormatting.ITALIC));
+                    playerIn.sendSystemMessage(MutableComponent.create(new TranslatableContents("The variant is " + te.getVariant())).withStyle(ChatFormatting.ITALIC));
+                    playerIn.sendSystemMessage(MutableComponent.create(new TranslatableContents("There are " + (te.getInhabitants().size() + te.getCount()) + " mobs inside the burrow (" + te.getInhabitants().size() + " stored, and " + te.getCount() + " to be spawned)")).withStyle(ChatFormatting.ITALIC));
                 }
             }
             else {
-                playerIn.sendMessage(new TranslatableComponent("block.burrow.state", te.getEntityType().getDescription().getString()), playerIn.getUUID());
+                playerIn.sendSystemMessage(MutableComponent.create(new TranslatableContents("block.burrow.state", te.getEntityType().getDescription().getString())));
             }
             return InteractionResult.SUCCESS;
         }

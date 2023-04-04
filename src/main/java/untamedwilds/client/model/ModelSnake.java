@@ -6,6 +6,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import untamedwilds.entity.reptile.EntitySnake;
@@ -206,4 +208,6 @@ public class ModelSnake extends AdvancedEntityModel<EntitySnake> {
             this.progressRotation(body_10, snake.sitProgress,0F, (float) Math.toRadians(62.61F), 0F, 20);
         }
     }
+
+
 }

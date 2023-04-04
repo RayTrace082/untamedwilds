@@ -6,6 +6,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityHippo;
 
@@ -326,4 +328,6 @@ public class ModelHippo extends AdvancedEntityModel<EntityHippo> {
             walk(leg_left_2, 0.6f * globalSpeed, 1.4f * globalDegree, true, -0.2F, 0, f, limbSwingAmount);
         }
     }
+
+
 }

@@ -1,0 +1,22 @@
+{
+  "type": "untamedwilds:biome_modifier_serializer",
+  "biomes": [],
+  "blacklist": [
+    []
+  ],
+  "configOption": "",
+  "decoration": "top_layer_modification",
+  "dimension": "minecraft:is_overworld",
+  "feature": {
+    "feature": {
+      "type": "untamedwilds:herbivores",
+      "config": {}
+    },
+    "placement": [
+      {
+        "type": "minecraft:rarity_filter",
+        "chance": 48
+      }
+    ]
+  }
+}

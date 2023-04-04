@@ -6,6 +6,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityAardvark;
 
@@ -308,4 +310,6 @@ public class ModelAardvark extends AdvancedEntityModel<EntityAardvark> {
             flap(body_tail_3, 0.4f * globalSpeed, 0.2f * globalDegree, true, 1.0F, 0f, ageInTicks / 6, 2);
         }
     }
+
+
 }

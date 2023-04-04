@@ -21,7 +21,7 @@ public class ModEntityRightClickEvent {
 
     @SubscribeEvent
     public static void modEntityRightClickEvent(PlayerInteractEvent.EntityInteract event) {
-        Player playerIn = event.getPlayer();
+        Player playerIn = event.getEntity();
         Entity target = event.getTarget();
         InteractionHand hand = event.getHand();
         if (/*!event.getWorld().isClientSide && hand == InteractionHand.MAIN_HAND &&*/ playerIn.getItemInHand(InteractionHand.MAIN_HAND).getItem() == ModItems.OWNERSHIP_DEED.get()) {

@@ -7,11 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.registries.ForgeRegistries;
-import untamedwilds.UntamedWilds;
-import untamedwilds.entity.ComplexMobTerrestrial;
-import untamedwilds.util.SpawnDataHolder;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -46,22 +42,22 @@ public abstract class FaunaHandler {
             case "critter" -> {
                 return spawnCritter;
             }
-            case "benthos" ->  {
+            case "benthos" -> {
                 return spawnSessile;
             }
-            case "water_river" ->  {
+            case "water_river" -> {
                 return spawnDenseWater;
             }
-            case "water_ocean" ->  {
+            case "water_ocean" -> {
                 return spawnOcean;
             }
-            case "herbivores" ->  {
+            case "herbivores" -> {
                 return spawnLargePrey;
             }
-            case "predators" ->  {
+            case "predators" -> {
                 return spawnApexPred;
             }
-            case "underground" ->  {
+            case "underground" -> {
                 return spawnUndergroundLarge;
             }
         }
@@ -70,11 +66,11 @@ public abstract class FaunaHandler {
 
     public static class SpawnListEntry extends WeightedEntry.IntrusiveBase {
         public static final Codec<FaunaHandler.SpawnListEntry> CODEC = RecordCodecBuilder.create((p_237051_0_) -> p_237051_0_.group(
-                        Codec.STRING.fieldOf("type").orElse("").forGetter((p_237056_0_) -> p_237056_0_.entityName),
-                        Codec.INT.fieldOf("weight").orElse(0).forGetter((p_237054_0_) -> p_237054_0_.itemWeight),
-                        Codec.INT.fieldOf("size_min").orElse(0).forGetter((p_237055_0_) -> p_237055_0_.minGroupCount),
-                        Codec.INT.fieldOf("size_max").orElse(0).forGetter((p_237054_0_) -> p_237054_0_.maxGroupCount))
-                .apply(p_237051_0_, FaunaHandler.SpawnListEntry::new));
+                Codec.STRING.fieldOf("type").orElse("").forGetter((p_237056_0_) -> p_237056_0_.entityName),
+                Codec.INT.fieldOf("weight").orElse(0).forGetter((p_237054_0_) -> p_237054_0_.itemWeight),
+                Codec.INT.fieldOf("size_min").orElse(0).forGetter((p_237055_0_) -> p_237055_0_.minGroupCount),
+                Codec.INT.fieldOf("size_max").orElse(0).forGetter((p_237054_0_) -> p_237054_0_.maxGroupCount))
+            .apply(p_237051_0_, FaunaHandler.SpawnListEntry::new));
 
         public String entityName;
         public EntityType<?> entityType;
@@ -84,7 +80,7 @@ public abstract class FaunaHandler {
 
         public SpawnListEntry(String entityName, Integer weight, Integer minGroupCount, Integer maxGroupCount) {
             super(weight);
-            this.entityType = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(entityName));
+            this.entityType = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(entityName));
             this.itemWeight = weight;
             this.minGroupCount = minGroupCount;
             this.maxGroupCount = maxGroupCount;
@@ -105,18 +101,18 @@ public abstract class FaunaHandler {
         public Integer getGroupCount() {
             if (this.minGroupCount >= this.maxGroupCount)
                 return this.minGroupCount;
-            return new Random().nextInt(this.minGroupCount, this.maxGroupCount);
+            return this.minGroupCount + new Random().nextInt(this.maxGroupCount);
         }
     }
 
     public enum animalType {
-        CRITTER ("critter"),
+        CRITTER("critter"),
         BENTHOS("benthos"),
-        DENSE_WATER ("water_river"),
-        LARGE_OCEAN ("water_ocean"),
-        LARGE_HERB ("herbivores"),
-        LARGE_UNDERGROUND ("underground"),
-        APEX_PRED ("predators");
+        DENSE_WATER("water_river"),
+        LARGE_OCEAN("water_ocean"),
+        LARGE_HERB("herbivores"),
+        LARGE_UNDERGROUND("underground"),
+        APEX_PRED("predators");
 
         public String name;
 

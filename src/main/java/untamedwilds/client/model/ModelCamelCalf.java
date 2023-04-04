@@ -4,6 +4,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityCamel;
 
@@ -224,4 +226,6 @@ public class ModelCamelCalf extends AdvancedEntityModel<EntityCamel> {
             this.progressRotation(leg_left_calf_1, camel.sleepProgress, (float) Math.toRadians(-112.17), 0.0F, 0.0F, 40);
         }
     }
+
+
 }

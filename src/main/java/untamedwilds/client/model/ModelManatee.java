@@ -6,6 +6,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.Mth;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.fish.EntitySunfish;
@@ -113,7 +115,6 @@ public class ModelManatee extends AdvancedEntityModel<EntityManatee> {
     public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(body_main);
     }
-
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
         return ImmutableList.of(
@@ -170,4 +171,6 @@ public class ModelManatee extends AdvancedEntityModel<EntityManatee> {
         }
         return Mth.clamp(angle, min, max);
     }
+
+
 }

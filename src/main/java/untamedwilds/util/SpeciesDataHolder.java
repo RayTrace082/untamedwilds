@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMobTerrestrial;
@@ -174,22 +173,16 @@ public class SpeciesDataHolder {
         if (clean.contains("|")) {
             String str = clean.split("\\|")[0];
             switch (str) {
-                case "category":
-                    return ConditionTypes.BIOME_CATEGORY;
-                case "dictionary":
-                    return ConditionTypes.FORGE_DICTIONARY;
                 case "tag":
                     return ConditionTypes.BIOME_TAG;
                 case "resource":
                     return ConditionTypes.REGISTRY_NAME;
             }
         }
-        return ConditionTypes.BIOME_CATEGORY;
+        return ConditionTypes.BIOME_TAG;
     }
 
     public enum ConditionTypes {
-        BIOME_CATEGORY ("Category"),
-        FORGE_DICTIONARY ("Dictionary"),
         BIOME_TAG ("Tag"),
         REGISTRY_NAME ("Resource Location");
 
@@ -234,10 +227,8 @@ public class SpeciesDataHolder {
 
         public boolean isValidBiome(Holder<Biome> biomekey, Biome biome) {
             boolean result = switch (this.type) {
-                case BIOME_CATEGORY -> biome.biomeCategory == Biome.BiomeCategory.byName(this.key);
-                case FORGE_DICTIONARY -> BiomeDictionary.hasType(biomekey.unwrapKey().get(), BiomeDictionary.Type.getType(this.key));
                 case BIOME_TAG -> biomekey.is(new ResourceLocation(this.key));
-                case REGISTRY_NAME -> biome.getRegistryName().equals(new ResourceLocation(this.key));
+                case REGISTRY_NAME -> biomekey.unwrapKey().get().location().equals(new ResourceLocation(this.key));
             };
             if (this.modifier == ConditionModifiers.INVERTED) {
                 return !result;

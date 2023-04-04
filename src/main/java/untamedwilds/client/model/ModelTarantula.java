@@ -4,6 +4,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import untamedwilds.entity.arthropod.EntityTarantula;
 
 public class ModelTarantula extends AdvancedEntityModel<EntityTarantula> {
@@ -187,4 +189,6 @@ public class ModelTarantula extends AdvancedEntityModel<EntityTarantula> {
         flap(limb_1, speed, degree * 0.8f, true, offset + 1.5F, 0.2f, limbSwing, limbSwingAmount);
         flap(limb_2, speed, degree * 0.8f, true, offset + 1.5F, 0f, limbSwing, limbSwingAmount);
     }
+
+
 }
