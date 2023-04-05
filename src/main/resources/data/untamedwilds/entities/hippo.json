@@ -22,10 +22,10 @@
       },
       "spawnBiomes":[
         [
-          "category|savanna"
+          "tag|is_savanna"
         ],
         [
-          "category|swamp"
+          "tag|is_swamp"
         ]
       ]
     }

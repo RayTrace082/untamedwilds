@@ -15,7 +15,7 @@
       "rarity":2,
       "spawnBiomes":[
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     },
@@ -27,10 +27,10 @@
       "skins":12,
       "spawnBiomes":[
         [
-          "category|swamp"
+          "tag|is_swamp"
         ],
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     },
@@ -41,7 +41,7 @@
       "rarity":1,
       "spawnBiomes":[
         [
-          "category|swamp"
+          "tag|is_swamp"
         ]
       ]
     },
@@ -52,7 +52,7 @@
       "rarity":2,
       "spawnBiomes":[
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     }

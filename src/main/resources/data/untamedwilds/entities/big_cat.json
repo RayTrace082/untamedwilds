@@ -32,10 +32,10 @@
       },
       "spawnBiomes":[
         [
-          "category|taiga"
+          "tag|is_taiga"
         ],
         [
-          "category|icy"
+          "tag|is_icy"
         ]
       ]
     },
@@ -57,7 +57,7 @@
       },
       "spawnBiomes":[
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     },
@@ -79,10 +79,10 @@
       },
       "spawnBiomes":[
         [
-          "category|taiga"
+          "tag|is_taiga"
         ],
         [
-          "category|savanna"
+          "tag|is_savanna"
         ]
       ]
     },
@@ -105,7 +105,7 @@
       },
       "spawnBiomes":[
         [
-          "category|savanna"
+          "tag|is_savanna"
         ]
       ]
     },
@@ -129,7 +129,7 @@
       },
       "spawnBiomes":[
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     },
@@ -153,13 +153,13 @@
       },
       "spawnBiomes":[
         [
-          "category|mesa"
+          "tag|is_badlands"
         ],
         [
-          "category|forest"
+          "tag|is_forest"
         ],
         [
-          "category|taiga"
+          "tag|is_taiga"
         ]
       ]
     },
@@ -180,7 +180,7 @@
       },
       "spawnBiomes":[
         [
-          "category|taiga"
+          "tag|is_taiga"
         ]
       ]
     },
@@ -204,13 +204,13 @@
       },
       "spawnBiomes":[
         [
-          "category|icy"
+          "tag|is_icy"
         ],
         [
-          "category|taiga"
+          "tag|is_taiga"
         ],
         [
-          "category|extreme_hills"
+          "tag|is_mountain"
         ]
       ]
     },
@@ -231,10 +231,10 @@
       },
       "spawnBiomes":[
         [
-          "category|jungle"
+          "tag|is_jungle"
         ],
         [
-          "category|taiga"
+          "tag|is_taiga"
         ]
       ]
     }

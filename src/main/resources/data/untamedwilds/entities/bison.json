@@ -24,7 +24,7 @@
       },
       "spawnBiomes":[
         [
-          "category|plains"
+          "tag|is_plains"
         ]
       ]
     },
@@ -40,7 +40,7 @@
       },
       "spawnBiomes":[
         [
-          "category|forest"
+          "tag|is_forest"
         ]
       ]
     }

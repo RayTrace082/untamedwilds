@@ -20,7 +20,7 @@
       "health":50,
       "spawnBiomes":[
         [
-          "category|savanna"
+          "tag|is_savanna"
         ]
       ]
     },
@@ -33,10 +33,10 @@
       "health":60,
       "spawnBiomes":[
         [
-          "category|jungle"
+          "tag|is_jungle"
         ],
         [
-          "category|extreme_hills"
+          "tag|is_mountain"
         ]
       ]
     },
@@ -49,7 +49,7 @@
       "health":45,
       "spawnBiomes":[
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     },
@@ -62,7 +62,7 @@
       "health":40,
       "spawnBiomes":[
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     },
@@ -75,7 +75,7 @@
       "health":60,
       "spawnBiomes":[
         [
-          "category|savanna"
+          "tag|is_savanna"
         ]
       ]
     },
@@ -88,10 +88,10 @@
       "health":60,
       "spawnBiomes":[
         [
-          "category|icy"
+          "tag|is_icy"
         ],
         [
-          "category|taiga"
+          "tag|is_taiga"
         ]
       ]
     }

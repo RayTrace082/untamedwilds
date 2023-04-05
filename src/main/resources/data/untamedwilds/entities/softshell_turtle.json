@@ -17,10 +17,10 @@
       "rarity":2,
       "spawnBiomes":[
         [
-          "category|swamp"
+          "tag|is_swamp"
         ],
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     },
@@ -32,13 +32,13 @@
       "skins":20,
       "spawnBiomes":[
         [
-          "category|swamp"
+          "tag|is_swamp"
         ],
         [
-          "category|jungle"
+          "tag|is_jungle"
         ],
         [
-          "category|river"
+          "tag|is_river"
         ]
       ]
     },
@@ -49,10 +49,10 @@
       "rarity":2,
       "spawnBiomes":[
         [
-          "category|swamp"
+          "tag|is_swamp"
         ],
         [
-          "category|river"
+          "tag|is_river"
         ]
       ]
     },
@@ -63,7 +63,7 @@
       "rarity":2,
       "spawnBiomes":[
         [
-          "category|river"
+          "tag|is_river"
         ]
       ]
     },
@@ -74,7 +74,7 @@
       "rarity":1,
       "spawnBiomes":[
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     },
@@ -85,10 +85,10 @@
       "rarity":2,
       "spawnBiomes":[
         [
-          "category|jungle"
+          "tag|is_jungle"
         ],
         [
-          "category|swamp"
+          "tag|is_swamp"
         ]
       ]
     },
@@ -99,10 +99,10 @@
       "rarity":3,
       "spawnBiomes":[
         [
-          "category|swamp"
+          "tag|is_swamp"
         ],
         [
-          "category|river"
+          "tag|is_river"
         ]
       ]
     }

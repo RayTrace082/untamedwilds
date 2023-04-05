@@ -25,7 +25,7 @@
       },
       "spawnBiomes":[
         [
-          "category|savanna"
+          "tag|is_savanna"
         ]
       ]
     }

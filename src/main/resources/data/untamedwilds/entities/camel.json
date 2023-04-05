@@ -24,7 +24,7 @@
       },
       "spawnBiomes":[
         [
-          "dictionary|wasteland"
+          "tag|is_wasteland"
         ]
       ]
     },
@@ -41,7 +41,7 @@
       },
       "spawnBiomes":[
         [
-          "category|desert"
+          "tag|is_desert"
         ]
       ]
     },
@@ -57,7 +57,7 @@
       },
       "spawnBiomes":[
         [
-          "category|desert"
+          "tag|is_desert"
         ]
       ]
     }

@@ -37,7 +37,7 @@
       "activityType":"diurnal",
       "favourite_food":"minecraft:sea_grass",
       "spawnBiomes":[
-        [ "category|jungle" ]
+        [ "tag|is_jungle" ]
       ]
     },
     {

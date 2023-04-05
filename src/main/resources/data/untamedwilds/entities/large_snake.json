@@ -28,10 +28,10 @@
       },
       "spawnBiomes":[
         [
-          "category|jungle"
+          "tag|is_jungle"
         ],
         [
-          "category|swamp"
+          "tag|is_swamp"
         ]
       ]
     },
@@ -51,10 +51,10 @@
       },
       "spawnBiomes":[
         [
-          "category|swamp"
+          "tag|is_swamp"
         ],
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     }

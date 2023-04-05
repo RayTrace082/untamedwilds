@@ -3,6 +3,7 @@ package untamedwilds.item.debug;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
@@ -34,7 +35,7 @@ public class AnalyzerItem extends Item {
 
             if (ConfigGamerules.scientificNames.get()) {
                 String useVarName = entity instanceof ISpecies ? "_" + ((ISpecies) entity).getRawSpeciesName(entity.getVariant()) : "";
-                playerIn.sendSystemMessage(MutableComponent.create(new LiteralContents(entity.getType().getDescriptionId() + useVarName + ".sciname")).withStyle(ChatFormatting.ITALIC));
+                playerIn.sendSystemMessage(MutableComponent.create(new TranslatableContents(entity.getType().getDescriptionId() + useVarName + ".sciname")).withStyle(ChatFormatting.ITALIC));
             }
             if (target instanceof ComplexMobTerrestrial) {
                 playerIn.sendSystemMessage(MutableComponent.create(new LiteralContents("Hunger: " + ((ComplexMobTerrestrial)entity).getHunger() + "/100 Hunger")));
