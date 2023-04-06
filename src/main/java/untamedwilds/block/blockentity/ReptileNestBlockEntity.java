@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -49,7 +50,7 @@ public class ReptileNestBlockEntity extends BlockEntity {
             if (worldIn.hasNearbyAlivePlayer((double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D, ConfigMobControl.critterSpawnRange.get())) {
                 int spawnCount = worldIn.getRandom().nextInt(3) + 1;
                 for(int i = 0; i < spawnCount; ++i) {
-                    Random rand = worldIn.getRandom();
+                    RandomSource rand = worldIn.getRandom();
                     float offsetX = rand.nextFloat();
                     float offsetZ = rand.nextFloat();
                     if (this.getEggCount() > 0 && this.getEntityType() != null && worldIn.noCollision(this.getEntityType().getAABB(blockpos.getX() + offsetX, blockpos.getY(), blockpos.getZ() + offsetZ).deflate(this.getEntityType().getWidth() / 4).move(0, 4, 0))) {
@@ -112,7 +113,7 @@ public class ReptileNestBlockEntity extends BlockEntity {
     public EntityType<?> getEntityType() { return this.entityType; }
 
     private <T extends ParticleOptions> void spawnParticles(Level worldIn, double x, double y, double z, T particle) {
-        Random random = worldIn.getRandom();
+        RandomSource random = worldIn.getRandom();
         float d3 = random.nextFloat() * 0.02F;
         float d1 = random.nextFloat() * 0.02F;
         float d2 = random.nextFloat() * 0.02F;
@@ -132,8 +133,8 @@ public class ReptileNestBlockEntity extends BlockEntity {
         super.saveAdditional(compound);
         compound.putInt("Count", this.getEggCount());
         compound.putInt("Variant", this.getVariant());
-        if (this.getEntityType() != null && this.getEntityType().getRegistryName() != null) {
-            compound.putString("EntityType", this.getEntityType().getRegistryName().toString());
+        if (this.getEntityType() != null && this.getEntityType().builtInRegistryHolder().key().location() != null) {
+            compound.putString("EntityType", this.getEntityType().builtInRegistryHolder().key().location().toString());
         }
     }
 }

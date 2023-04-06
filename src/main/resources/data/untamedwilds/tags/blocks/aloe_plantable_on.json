@@ -5,6 +5,8 @@
     "minecraft:grass_block",
     "minecraft:podzol",
     "minecraft:coarse_dirt",
-    "minecraft:mycelium"
+    "minecraft:mycelium",
+    "minecraft:sand",
+    "minecraft:red_sand"
   ]
 }

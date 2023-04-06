@@ -10,6 +10,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import net.minecraftforge.registries.DeferredRegister;
@@ -17,6 +18,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigFeatureControl;
+import untamedwilds.config.ConfigMobControl;
 
 import java.util.List;
 
@@ -38,7 +40,10 @@ public record UntamedWildsBiomeModifier(TagKey<Biome> dimension, List<HolderSet<
 
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
-        if (configOption.isEmpty() || ConfigFeatureControl.options.get(configOption).get()) {
+        ForgeConfigSpec.BooleanValue option = ConfigFeatureControl.options.get(configOption);
+        if (configOption.isEmpty() || (option != null && option.get() || option == null &&
+            // TODO just a quick and dirty check for underground features
+            ConfigFeatureControl.probUnderground.get() != 0 && ConfigMobControl.masterSpawner.get())) {
             if (phase != Phase.ADD)
                 return;
             if (!biome.is(dimension))

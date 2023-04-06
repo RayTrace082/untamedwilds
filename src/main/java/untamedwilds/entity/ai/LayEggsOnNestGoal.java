@@ -5,6 +5,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -101,7 +102,7 @@ public class LayEggsOnNestGoal extends MoveToBlockGoal {
 
     @Nullable
     public boolean checkForNewNest() {
-        Random random = this.taskOwner.getRandom();
+        RandomSource random = this.taskOwner.getRandom();
         BlockPos blockpos = this.taskOwner.blockPosition();
         for(int i = 0; i < 10; ++i) {
             BlockPos blockpos1 = blockpos.offset(random.nextInt(8) - 4, random.nextInt(4) - 2, random.nextInt(8) - 4);

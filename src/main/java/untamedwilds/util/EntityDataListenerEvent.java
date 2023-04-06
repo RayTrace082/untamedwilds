@@ -137,7 +137,7 @@ public class EntityDataListenerEvent {
      */
     private static void processData(EntityDataHolder dataIn, EntityType<?> typeIn) {
         ComplexMob.ENTITY_DATA_HASH.put(typeIn, dataIn);
-        processSkins(dataIn, typeIn.getRegistryName().getPath());
+        processSkins(dataIn, typeIn.builtInRegistryHolder().key().location().getPath());
         for (SpeciesDataHolder speciesData : ComplexMob.ENTITY_DATA_HASH.get(typeIn).getSpeciesData()) {
             if (!ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
                 ComplexMob.CLIENT_DATA_HASH.put(typeIn, new EntityDataHolderClient(new HashMap<>(), new HashMap<>()));

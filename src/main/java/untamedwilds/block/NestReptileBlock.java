@@ -120,7 +120,7 @@ public class NestReptileBlock extends Block implements SimpleWaterloggedBlock, E
                 else {
                     te.removeEggs(worldIn, 1);
                     CompoundTag baseTag = new CompoundTag();
-                    ItemStack item = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":egg_" + te.getEntityType().getRegistryName().getPath())));
+                    ItemStack item = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(UntamedWilds.MOD_ID + ":egg_" + te.getEntityType().builtInRegistryHolder().key().location().getPath())));
                     baseTag.putInt("variant", te.getVariant());
                     baseTag.putInt("custom_model_data", te.getVariant());
                     item.setTag(baseTag);
