@@ -78,6 +78,6 @@ public class SmartWanderGoal extends Goal {
 
     @Override
     public void start() {
-        this.creature.getNavigation().moveTo(this.x, this.y, this.z, this.speed * (this.creature.getRandom().nextInt(100) < this.runChance ? 1.8f : 1f));
+        this.creature.getNavigation().moveTo(this.x, this.y, this.z, this.speed * (this.creature.getRandom().nextInt(100) < this.runChance ? 2f : 1f));
     }
 }

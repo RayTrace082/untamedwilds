@@ -118,8 +118,8 @@ public class EntityNewt extends ComplexMobAmphibious implements ISpecies, INewSk
                 List<EntityNewt> list = this.level.getEntitiesOfClass(EntityNewt.class, this.getBoundingBox().inflate(6.0D, 4.0D, 6.0D));
                 list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
                 if (list.size() >= 1) {
-                    this.setAge(this.getAge());
-                    list.get(0).setAge(this.getAge());
+                    this.setAge(this.getPregnancyTime());
+                    list.get(0).setAge(this.getPregnancyTime());
                     return true;
                 }
             }

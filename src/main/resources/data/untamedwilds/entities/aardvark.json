@@ -1,7 +1,7 @@
 {
   "name":"aardvark",
   "breeding":"EARLY_SUMMER",
-  "growing":6,
+  "growing_time":6,
   "offspring":1,
   "activityType":"nocturnal",
   "favourite_food":"untamedwilds:aardvark_cucumber",
@@ -17,7 +17,7 @@
       "scale":1,
       "rarity":1,
       "breeding":"LATE_SPRING",
-      "growing":6,
+      "growing_time":6,
       "offspring":1,
       "skins":30,
       "flags":{

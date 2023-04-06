@@ -7,32 +7,34 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.LiteralContents;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.item.SpyglassItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.*;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
@@ -41,7 +43,10 @@ import untamedwilds.compat.CompatSereneSeasons;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.init.ModAdvancementTriggers;
-import untamedwilds.util.*;
+import untamedwilds.util.EntityDataHolder;
+import untamedwilds.util.EntityDataHolderClient;
+import untamedwilds.util.EntityDataListenerEvent;
+import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -67,6 +72,7 @@ public abstract class ComplexMob extends TamableAnimal {
     public HerdEntity herd = null;
     public float turn_speed = 1F;
     public int huntingCooldown;
+    public int retaliationCooldown;
     public static HashMap<EntityType<?>, EntityDataHolder> ENTITY_DATA_HASH = new HashMap<>();
     public static HashMap<EntityType<?>, EntityDataHolderClient> CLIENT_DATA_HASH = new HashMap<>();
 
@@ -75,7 +81,6 @@ public abstract class ComplexMob extends TamableAnimal {
         this.moveControl = new MoveControl(this);
     }
 
-    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(HOME_POS, BlockPos.ZERO);
@@ -91,8 +96,14 @@ public abstract class ComplexMob extends TamableAnimal {
 
     public void aiStep() {
         super.aiStep();
-        if (!this.level.isClientSide && this.huntingCooldown > 0) {
-            this.huntingCooldown--;
+        if (!this.level.isClientSide) {
+            if (this.huntingCooldown > 0)
+                this.huntingCooldown--;
+            if (this.retaliationCooldown > 0)
+                this.retaliationCooldown--;
+            if (this.tickCount % 600 == 0 && this.wantsToBreed()) {
+                this.setInLove(null);
+            }
         }
     }
 
@@ -260,6 +271,7 @@ public abstract class ComplexMob extends TamableAnimal {
         entity.setGender(this.random.nextInt(2));
         entity.setRandomMobSize();
         entity.setVariant(this.getVariant());
+        entity.chooseSkinForSpecies(this, true);
         if (entity instanceof INeedsPostUpdate) {
             ((INeedsPostUpdate) entity).updateAttributes();
         }
@@ -279,7 +291,7 @@ public abstract class ComplexMob extends TamableAnimal {
         return getEntityData(this.getType()).getGrowingTime(this.getVariant()) * ConfigGamerules.cycleLength.get();
     }
 
-    protected int getOffspring() {
+    public int getOffspring() {
         return getEntityData(this.getType()).getOffspring(this.getVariant());
     }
 
@@ -313,7 +325,7 @@ public abstract class ComplexMob extends TamableAnimal {
         int i = this.age;
         super.setAge(age);
         this.age = age;
-        if (!this.isMale() && !ConfigGamerules.easyBreeding.get()) {
+        if (!this.isMale() && !(this instanceof INestingMob nestingMob && nestingMob.isEggLayer()) && !ConfigGamerules.easyBreeding.get()) {
             if (i > 0 && age <= 0) {
                 this.breed();
             }
@@ -334,6 +346,17 @@ public abstract class ComplexMob extends TamableAnimal {
             return (int) (Math.sqrt(entity.getHealth() * attack) / 2.5F) + ((ComplexMob) entity).herd.creatureList.size();
         }
         return (int) (Math.sqrt(entity.getHealth() * attack) / 2.5F);
+    }
+
+    protected void performRetaliation(DamageSource damageSource, float health, float damage, boolean needsActiveTarget) {
+        if (needsActiveTarget && this.getTarget() != damageSource.getDirectEntity())
+            return;
+        if (this.retaliationCooldown == 0 && !this.isNoAi() && this.getTarget() != null && damage < health && !damageSource.isProjectile() && damageSource.getDirectEntity() instanceof LivingEntity && !(damageSource.getDirectEntity() instanceof Player) && !(damageSource.getDirectEntity() instanceof TamableAnimal tamable && tamable.getOwner() != null)) {
+            if ((damageSource instanceof EntityDamageSource && ((EntityDamageSource)damageSource).isThorns()) && this.hasLineOfSight(damageSource.getDirectEntity())) {
+                damageSource.getDirectEntity().hurt(DamageSource.thorns(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                this.retaliationCooldown = 10;
+            }
+        }
     }
 
     protected void setAngry(boolean isAngry) { this.entityData.set(IS_ANGRY, isAngry); }
@@ -393,8 +416,8 @@ public abstract class ComplexMob extends TamableAnimal {
         if (compound.contains("OwnerUUID")) {
             this.setCommandInt(compound.getInt("Command"));
         }
-        //this.setVariant(EntityUtils.getClampedNumberOfSpecies(compound.getInt("Variant"), this.getType()));
-        this.setVariant(compound.getInt("Variant"));
+        this.setVariant(EntityUtils.getClampedNumberOfSpecies(compound.getInt("Variant"), this.getType()));
+        //this.setVariant(compound.getInt("Variant"));
         this.setSkin(compound.getInt("Skin"));
         this.setMobSize(compound.getFloat("Size"));
         this.setGender(compound.getInt("Gender"));
@@ -404,7 +427,7 @@ public abstract class ComplexMob extends TamableAnimal {
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        if (reason != MobSpawnType.DISPENSER && reason != MobSpawnType.BUCKET) {
+        if (reason != MobSpawnType.DISPENSER && reason != MobSpawnType.BUCKET && reason != MobSpawnType.BREEDING) {
             if (this instanceof ISpecies) {
                 Holder<Biome> optional = worldIn.getBiome(new BlockPos(this.position()));
                 int i = ((ISpecies)this).setSpeciesByBiome(optional, reason);

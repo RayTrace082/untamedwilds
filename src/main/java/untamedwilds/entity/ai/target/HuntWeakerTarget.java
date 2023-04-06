@@ -1,8 +1,10 @@
 package untamedwilds.entity.ai.target;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Creeper;
+import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 
 import javax.annotation.Nullable;
@@ -23,7 +25,7 @@ public class HuntWeakerTarget<T extends LivingEntity> extends HuntMobTarget<T> {
     }
 
     protected boolean isValidTarget(LivingEntity entity, @Nullable Predicate<LivingEntity> predicate) {
-        if (entity instanceof Creeper || entity.equals(this.mob) || entity.isVehicle() || (predicate != null && !predicate.test(entity)) || entity.getHealth() / entity.getMaxHealth() > 0.8) {
+        if (entity instanceof Creeper || entity.equals(this.mob) || (!ConfigGamerules.attackUndead.get() && entity.getMobType() == MobType.UNDEAD) || entity.isVehicle() || (predicate != null && !predicate.test(entity)) || entity.getHealth() / entity.getMaxHealth() > 0.8) {
             return false;
         }
         if (ComplexMob.getEcoLevel(entity) < ComplexMob.getEcoLevel(this.mob) && this.mob.getClass() == entity.getClass() && this.mob instanceof ComplexMob attacker && entity instanceof ComplexMob defender) {

@@ -14,11 +14,12 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Random;
 
+// TODO: Fix this shit so mobs actually walk to a grazeable pos
 public class GrazeGoal extends Goal {
 
     private final ComplexMobTerrestrial taskOwner;
-    private final Level entityWorld;
-    private BlockPos testpos;
+    public final Level entityWorld;
+    public BlockPos testpos;
     private int eatingGrassTimer;
     private final int executionChance;
 
@@ -36,7 +37,7 @@ public class GrazeGoal extends Goal {
         }
         this.testpos = this.taskOwner.blockPosition().offset(Math.cos(Math.toRadians(this.taskOwner.getYRot()+ 90)) * 1.2, 0, Math.sin(Math.toRadians(this.taskOwner.getYRot() + 90)) * 1.2);
         //this.testpos = new BlockPos(this.taskOwner.getPosition());
-        if (this.entityWorld.getBlockState(this.testpos).is(ModTags.ModBlockTags.GRAZEABLE_BLOCKS) || this.entityWorld.getBlockState(this.testpos.below()).getBlock() == Blocks.GRASS_BLOCK) {
+        if (this.isGrazeable()) {
             return true;
         }
         if (this.taskOwner.getHunger() < 40) {
@@ -101,11 +102,15 @@ public class GrazeGoal extends Goal {
 
         for(int i = 0; i < 10; ++i) {
             BlockPos blockpos1 = blockpos.offset(random.nextInt(12) - 6, random.nextInt(4) - 2, random.nextInt(12) - 6);
-            if ((this.entityWorld.getBlockState(this.testpos).is(ModTags.ModBlockTags.GRAZEABLE_BLOCKS) || this.entityWorld.getBlockState(this.testpos.below()).getBlock() == Blocks.GRASS_BLOCK) && this.taskOwner.getWalkTargetValue(blockpos1) < 0.0F) {
+            if (isGrazeable() && this.taskOwner.getWalkTargetValue(blockpos1) < 0.0F) {
                 return blockpos1;
             }
         }
 
         return null;
+    }
+
+    public boolean isGrazeable() {
+        return (this.entityWorld.getBlockState(this.testpos).is(ModTags.ModBlockTags.GRAZEABLE_BLOCKS) || this.entityWorld.getBlockState(this.testpos.below()).getBlock() == Blocks.GRASS_BLOCK);
     }
 }

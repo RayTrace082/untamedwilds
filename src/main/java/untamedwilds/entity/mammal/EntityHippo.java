@@ -41,7 +41,6 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
         ATTACK = Animation.create(24);
         this.maxUpStep = 1F;
         this.isAmphibious = true;
-        this.buoyancy = 0.998F;
         this.turn_speed = 0.3F;
     }
 
@@ -146,6 +145,12 @@ public class EntityHippo extends ComplexMobAmphibious implements INewSkins, ISpe
             this.setAnimation(anim);
         }
         return flag;
+    }
+
+    public boolean hurt(DamageSource damageSource, float amount) {
+        // Retaliate I: Mob will strike back when attacked by its current target
+        performRetaliation(damageSource, this.getHealth(), amount, true);
+        return super.hurt(damageSource, amount);
     }
 
     private Animation chooseAttackAnimation() {

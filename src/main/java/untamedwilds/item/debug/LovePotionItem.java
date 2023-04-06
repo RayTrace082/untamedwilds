@@ -20,11 +20,16 @@ public class LovePotionItem extends Item {
         if (target.getLevel().isClientSide) return InteractionResult.PASS;
         if (target instanceof Player/* || !target.isNonBoss()*/) return InteractionResult.FAIL;
         if (target instanceof ComplexMob) {
-            ComplexMob entity = (ComplexMob)target;
-            entity.setInLove(playerIn);
-            //entity.breed();
-            //entity.setAge(60);
-            return InteractionResult.SUCCESS;
+            if (((ComplexMob) target).getAge() > 0) {
+                ((ComplexMob) target).setAge(1);
+            }
+            else {
+                ComplexMob entity = (ComplexMob)target;
+                entity.setInLove(playerIn);
+                //entity.breed();
+                //entity.setAge(60);
+                return InteractionResult.SUCCESS;
+            }
         }
         if (target instanceof Animal) {
             ((Animal) target).setInLove(playerIn);

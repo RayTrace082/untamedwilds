@@ -24,6 +24,12 @@
       "weight":1,
       "size_min":1,
       "size_max":3
+    },
+    {
+      "type":"untamedwilds:spadefish",
+      "weight":4,
+      "size_min":2,
+      "size_max":4
     }
   ]
 }

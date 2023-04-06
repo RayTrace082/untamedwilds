@@ -1,6 +1,10 @@
 package untamedwilds.entity.reptile;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -16,27 +20,31 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ComplexMobTerrestrial;
-import untamedwilds.entity.INewSkins;
-import untamedwilds.entity.ISpecies;
-import untamedwilds.entity.ai.SmartMateGoal;
-import untamedwilds.entity.ai.SmartMeleeAttackGoal;
-import untamedwilds.entity.ai.SmartSwimGoal_Land;
-import untamedwilds.entity.ai.SmartWanderGoal;
+import untamedwilds.entity.*;
+import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.unique.TortoiseHideInShellGoal;
+import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModItems;
+import untamedwilds.init.ModTags;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, INewSkins {
+public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, INewSkins, INestingMob {
+
+    private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(EntityTortoise.class, EntityDataSerializers.BOOLEAN);
 
     public EntityTortoise(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
         this.ticksToSit = 20;
+    }
+
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(HAS_EGG, false);
     }
 
     public static AttributeSupplier.Builder registerAttributes() {
@@ -57,6 +65,7 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 0.7D));
         this.goalSelector.addGoal(2, new TortoiseHideInShellGoal<>(this, LivingEntity.class, 7, input -> getEcoLevel(input) > getEcoLevel(this)));
         this.goalSelector.addGoal(3, new SmartWanderGoal(this, 1.0D, 400, 0,true));
+        this.goalSelector.addGoal(3, new LayEggsOnNestGoal(this));
         //this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
@@ -75,11 +84,6 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
         super.aiStep();
 
         if (!this.level.isClientSide) {
-            if (this.tickCount % 1000 == 0) {
-                if (this.wantsToBreed() && !this.isMale()) {
-                    this.breed();
-                }
-            }
             if (this.level.getGameTime() % 4000 == 0) {
                 this.heal(1.0F);
             }
@@ -93,11 +97,7 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
             if (!this.isSleeping() && this.getAge() == 0 && EntityUtils.hasFullHealth(this)) {
                 List<EntityTortoise> list = this.level.getEntitiesOfClass(EntityTortoise.class, this.getBoundingBox().inflate(6.0D, 4.0D, 6.0D));
                 list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
-                if (list.size() >= 1) {
-                    this.setAge(this.getPregnancyTime());
-                    list.get(0).setAge(this.getPregnancyTime());
-                    return true;
-                }
+                return list.size() >= 1;
             }
         }
         return false;
@@ -132,5 +132,35 @@ public class EntityTortoise extends ComplexMobTerrestrial implements ISpecies, I
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
         SoundEvent soundevent = this.isBaby() ? SoundEvents.TURTLE_SHAMBLE_BABY : SoundEvents.TURTLE_SHAMBLE;
         this.playSound(soundevent, 0.15F, 1.0F);
+    }
+
+    @Override
+    public boolean wantsToLayEggs() {
+        return this.entityData.get(HAS_EGG);
+    }
+
+    @Override
+    public void setEggStatus(boolean status) {
+        this.entityData.set(HAS_EGG, status);
+    }
+
+    @Override
+    public Block getNestType() {
+        return ModBlock.NEST_REPTILE.get();
+    }
+
+    @Override
+    public boolean isValidNestBlock(BlockPos pos) {
+        return this.level.isEmptyBlock(pos) && this.level.getBlockState(pos.below()).is(ModTags.ModBlockTags.VALID_REPTILE_NEST) && this.getNestType().defaultBlockState().canSurvive(this.level, pos);
+    }
+
+    public void addAdditionalSaveData(CompoundTag compound){
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("has_egg", this.wantsToLayEggs());
+    }
+
+    public void readAdditionalSaveData(CompoundTag compound){
+        super.readAdditionalSaveData(compound);
+        this.setEggStatus(compound.getBoolean("has_egg"));
     }
 }

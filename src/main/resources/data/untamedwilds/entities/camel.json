@@ -1,7 +1,7 @@
 {
   "name":"camel",
   "breeding":"MID_SUMMER",
-  "growing":13,
+  "growing_time":13,
   "offspring":1,
   "sounds":{
     "ambient":"untamedwilds:entity.camel.ambient",

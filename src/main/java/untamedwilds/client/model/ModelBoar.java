@@ -177,7 +177,7 @@ public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
         );
     }
     
-    private void animate(IAnimatedEntity entityIn) {
+    void animate(IAnimatedEntity entityIn) {
         animator.update(entityIn);
 
         animator.setAnimation(EntityBoar.TALK);
@@ -229,12 +229,17 @@ public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
         animator.resetKeyframe(10);
     }
 
-    public void setupAnim(EntityBoar aardvark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityBoar boar, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
-        animate(aardvark);
+        animate(boar);
         float globalSpeed = 1f;
         float globalDegree = 1f;
         limbSwingAmount = Math.min(limbSwingAmount, 0.4F);
+
+        if (boar.isNoAi()) {
+            limbSwing = ageInTicks;
+            limbSwingAmount = 0.4F;
+        }
 
         // Breathing Animation
         this.main_body.setScale((float) (1.0F + Math.sin(ageInTicks / 20) * 0.06F), (float) (1.0F + Math.sin(ageInTicks / 16) * 0.06F), 1.0F);
@@ -244,45 +249,55 @@ public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
         bob(leg_right_1, 0.4F * globalSpeed, 0.1F, false, -ageInTicks / 20, 2);
         bob(leg_left_1, 0.4F * globalSpeed, 0.1F, false, -ageInTicks / 20, 2);
         walk(head_main, 0.4f * globalSpeed, 0.03f, false, 2.4F, 0.08F, ageInTicks / 20, 2);
-        this.head_snout.setScale((float) (1.0F + Math.sin(ageInTicks / 6) * 0.08F + Math.sin(ageInTicks / 2) * 0.1F), (float) (1.0F + Math.sin(ageInTicks / 8) * 0.04F), 1.0F);
+        if (boar.tickCount % 30 > 22)
+            this.head_snout.setScale((float) (1.0F + Math.sin(ageInTicks / 6) * 0.1F + Math.sin(ageInTicks / 2) * 0.1F), (float) (1.0F + Math.sin(ageInTicks / 8) * 0.06F), 1.0F);
+        if (boar.tickCount % 100 > 88) {
+            swing(ear_left, 1.5f * globalSpeed, 0.6f * globalDegree, true, 0F, 0f, ageInTicks / 2.2F, limbSwingAmount);
+            swing(ear_right, 1.5f * globalSpeed, 0.6f * globalDegree, true, 0.2F, 0f, ageInTicks / 2.2F, limbSwingAmount);
+        }
 
         // Blinking Animation
-        if (!aardvark.shouldRenderEyes()) {
+        if (!boar.shouldRenderEyes()) {
             this.eye_right.setRotationPoint(-0.51F, -1.0F, -2.0F);
             this.eye_left.setRotationPoint(0.51F, -1.0F, -2.0F);
         }
 
         // Head Tracking Animation
-        if (!aardvark.isSleeping()) {
+        if (!boar.isSleeping()) {
             this.faceTarget(netHeadYaw, headPitch, 2, head_main);
         }
 
         // Pitch/Yaw handler
-        if (aardvark.isInWater() && !aardvark.isOnGround()) {
-            float pitch = Mth.clamp(aardvark.getXRot(), -20F, 20.0F) - 10;
+        if (boar.isInWater() && !boar.isOnGround()) {
+            float pitch = Mth.clamp(boar.getXRot(), -20F, 20.0F) - 10;
             this.setRotateAngle(main_body, (float) (pitch * Math.PI / 180F), 0, 0);
         }
 
         // Movement Animation
-        if (aardvark.canMove()) {
-            if (aardvark.getCurrentSpeed() > 0.1f || aardvark.isAngry()) { // Running animation
-                bob(main_body, 0.5F * globalSpeed, 0.5F, false, limbSwing, limbSwingAmount);
+        if (boar.canMove()) {
+            if (boar.getCurrentSpeed() > 0.1f || boar.isAngry()) { // Running animation
+                bob(main_body, 0.5F * globalSpeed, 0.8F, true, limbSwing, limbSwingAmount);
                 walk(main_body, 0.5f * globalSpeed, 0.5f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
                 walk(head_main, 0.5f * globalSpeed, -0.5f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
+                flap(head_main, 0.25f * globalSpeed, -0.3f * globalDegree, true, 0.5F, 0f, limbSwing, limbSwingAmount);
+                bob(head_main, 0.5F * globalSpeed, 0.8F, true, limbSwing, limbSwingAmount);
 
                 bob(arm_right_1, 0.5F * globalSpeed, 0.8F, false, limbSwing, limbSwingAmount);
-                walk(arm_right_1, 0.5f * globalSpeed, 1f * globalDegree, true, 0F, 0f, limbSwing, limbSwingAmount);
-                walk(arm_right_2, 0.5f * globalSpeed, 0.6f * globalDegree, true, 0.2F, 0.2f, limbSwing, limbSwingAmount);
+                walk(arm_right_1, 0.5f * globalSpeed, 1.4f * globalDegree, true, 0F, 0.4f, limbSwing, limbSwingAmount);
+                walk(arm_right_2, 0.5f * globalSpeed, 0.8f * globalDegree, true, 0.2F, 0.6f, limbSwing, limbSwingAmount);
                 bob(arm_left_1, 0.5F * globalSpeed, 0.8F, false, limbSwing, limbSwingAmount);
-                walk(arm_left_1, 0.5f * globalSpeed, 1f * globalDegree, true, 0.6F, 0f, limbSwing, limbSwingAmount);
-                walk(arm_left_2, 0.5f * globalSpeed, 0.6f * globalDegree, true, 0.8F, 0.2f, limbSwing, limbSwingAmount);
+                walk(arm_left_1, 0.5f * globalSpeed, 1.4f * globalDegree, true, 0.6F, 0.4f, limbSwing, limbSwingAmount);
+                walk(arm_left_2, 0.5f * globalSpeed, 0.8f * globalDegree, true, 0.8F, 0.6f, limbSwing, limbSwingAmount);
                 bob(leg_right_1, 0.5F * globalSpeed, 0.8F, false, limbSwing, limbSwingAmount);
-                walk(leg_right_1, 0.5f * globalSpeed, 1f * globalDegree, true, 1.4F, 0f, limbSwing, limbSwingAmount);
-                walk(leg_right_2, 0.5f * globalSpeed, 0.6f * globalDegree, true, 1.6F, 0.2f, limbSwing, limbSwingAmount);
+                walk(leg_right_1, 0.5f * globalSpeed, 1f * globalDegree, true, 1.4F, -0.4f, limbSwing, limbSwingAmount);
+                walk(leg_right_2, 0.5f * globalSpeed, 0.6f * globalDegree, true, 1.6F, -0.6f, limbSwing, limbSwingAmount);
                 bob(leg_left_1, 0.5F * globalSpeed, 0.8F, false, limbSwing, limbSwingAmount);
-                walk(leg_left_1, 0.5f * globalSpeed, 1f * globalDegree, true, 2F, 0f, limbSwing, limbSwingAmount);
-                walk(leg_left_2, 0.5f * globalSpeed, 0.6f * globalDegree, true, 2.2F, 0.2f, limbSwing, limbSwingAmount);
+                walk(leg_left_1, 0.5f * globalSpeed, 1f * globalDegree, true, 2F, -0.4F, limbSwing, limbSwingAmount);
+                walk(leg_left_2, 0.5f * globalSpeed, 0.6f * globalDegree, true, 2.2F, -0.6f, limbSwing, limbSwingAmount);
+                flap(shape14, 0.5F * globalSpeed, 1.4F * globalDegree, false, 0, 0.2F, limbSwing, limbSwingAmount);
+                walk(shape14, 0.5F * globalSpeed, 1.8F * globalDegree, false, 1.0F, 1.8F, limbSwing, limbSwingAmount);
             } else { // Walking Animation
+                bob(main_body, 0.5F * globalSpeed, 0.8F, true, limbSwing, limbSwingAmount);
                 bob(arm_right_1, 0.5F * globalSpeed, 0.8F, false, limbSwing, limbSwingAmount);
                 walk(arm_right_1, 0.5f * globalSpeed, globalDegree, true, 0F, 0f, limbSwing, limbSwingAmount);
                 walk(arm_right_2, 0.5f * globalSpeed, 0.6f * globalDegree, true, 0.2F, 0.2f, limbSwing, limbSwingAmount);
@@ -295,16 +310,31 @@ public class ModelBoar extends AdvancedEntityModel<EntityBoar> {
                 bob(leg_left_1, 0.5F * globalSpeed, 0.8F, false, limbSwing, limbSwingAmount);
                 walk(leg_left_1, 0.5f * globalSpeed, globalDegree, true, 3.4F, 0f, limbSwing, limbSwingAmount);
                 walk(leg_left_2, 0.5f * globalSpeed, 0.6f * globalDegree, true, 3.6F, 0.2f, limbSwing, limbSwingAmount);
+                flap(shape14, 0.5F * globalSpeed, 1.4F * globalDegree, false, 0, 0.2F, limbSwing, limbSwingAmount);
+                swing(shape14, 0.5F * globalSpeed, 0.8F * globalDegree, false, 1.0F, 0.2F, limbSwing, limbSwingAmount);
+
             }
         }
 
+        // Sitting Animation
+        if (boar.sitProgress > 0) {
+            this.progressPosition(main_body, boar.sitProgress, 0.0F, 21.60F, 0.0F, 40);
+            this.progressRotation(main_body, boar.sitProgress, (float) Math.toRadians(-2.61F), (float) Math.toRadians(5.22F), 0, 40);
+            this.progressRotation(head_main, boar.sitProgress, 0, (float) Math.toRadians(-23.48F), 0, 40);
+            this.progressRotation(arm_right_1, boar.sitProgress, (float) Math.toRadians(-20.87F), 0, (float) Math.toRadians(7.83F), 40);
+            this.progressRotation(arm_right_2, boar.sitProgress, (float) Math.toRadians(-65.22F), 0, (float) Math.toRadians(-7.83F), 40);
+            this.progressRotation(arm_left_1, boar.sitProgress, (float) Math.toRadians(-26.09F), (float) Math.toRadians(20.87F), (float) Math.toRadians(-7.83F), 40);
+            this.progressRotation(arm_left_2, boar.sitProgress, (float) Math.toRadians(-57.39F), 0, (float) Math.toRadians(7.83F), 40);
+            this.progressRotation(leg_left_2, boar.sitProgress, (float) Math.toRadians(-83.48F), (float) Math.toRadians(-20.87F), (float) Math.toRadians(8.00F), 40);
+            this.progressRotation(leg_right_2, boar.sitProgress, (float) Math.toRadians(-83.48F), (float) Math.toRadians(20.87F), (float) Math.toRadians(-8.00F), 40);
+        }
         // Sleeping Animation
-        if (aardvark.sleepProgress > 0) {
-            this.progressPosition(main_body, aardvark.sleepProgress, -3.0F, 21F, -5.0F, 40);
-            this.progressRotation(main_body, aardvark.sleepProgress, (float) Math.toRadians(20.87F), 0.0F, (float) Math.toRadians(-91.30), 40);
-            this.progressRotation(head_main, aardvark.sleepProgress, (float) Math.toRadians(26.09), (float) Math.toRadians(15.65), 0, 40);
-            this.progressRotation(arm_left_1, aardvark.sleepProgress, (float) Math.toRadians(5.22), 0, (float) Math.toRadians(23.48), 40);
-            this.progressRotation(leg_left_1, aardvark.sleepProgress, (float) Math.toRadians(10.43), 0, (float) Math.toRadians(36.52), 40);
+        if (boar.sleepProgress > 0) {
+            this.progressPosition(main_body, boar.sleepProgress, 0.0F, 21F, 0.0F, 40);
+            this.progressRotation(main_body, boar.sleepProgress, (float) Math.toRadians(20.87F), 0.0F, (float) Math.toRadians(-91.30), 40);
+            this.progressRotation(head_main, boar.sleepProgress, (float) Math.toRadians(26.09), (float) Math.toRadians(15.65), 0, 40);
+            this.progressRotation(arm_left_1, boar.sleepProgress, (float) Math.toRadians(5.22), 0, (float) Math.toRadians(23.48), 40);
+            this.progressRotation(leg_left_1, boar.sleepProgress, (float) Math.toRadians(10.43), 0, (float) Math.toRadians(36.52), 40);
         }
     }
 

@@ -7,6 +7,7 @@ import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -15,14 +16,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -31,6 +29,9 @@ import untamedwilds.UntamedWilds;
 import untamedwilds.block.*;
 import untamedwilds.block.blockentity.CageBlockEntity;
 import untamedwilds.block.blockentity.CritterBurrowBlockEntity;
+import untamedwilds.block.blockentity.EggBlockEntity;
+import untamedwilds.block.blockentity.ReptileNestBlockEntity;
+import untamedwilds.util.ModCreativeModeTab;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -76,12 +77,15 @@ public class ModBlock {
     public static RegistryObject<Block> COMMON_REED = createBlock("flora_common_reed", () -> new ReedBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(0.1F).sound(SoundType.VINE).noCollission()), "cutout", CreativeModeTab.TAB_DECORATIONS, 100);
     // Flora - Bushes
     public static RegistryObject<Block> BUSH_TEMPERATE = createBlock("flora_bush_temperate", () -> new UndergrowthBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(1.0F).sound(SoundType.AZALEA_LEAVES).noCollission()), "cutout", CreativeModeTab.TAB_DECORATIONS);
+    public static RegistryObject<Block> BUSH_CREOSOTE = createBlock("flora_bush_creosote", () -> new UndergrowthBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(1.0F).sound(SoundType.AZALEA_LEAVES).noCollission()), "cutout", CreativeModeTab.TAB_DECORATIONS);
     public static RegistryObject<Block> ELEPHANT_EAR = createBlock("flora_elephant_ear", () -> new UndergrowthBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(1.0F).sound(SoundType.WET_GRASS).noCollission(), BlockBehaviour.OffsetType.XYZ), "cutout", CreativeModeTab.TAB_DECORATIONS);
     public static RegistryObject<Block> HEMLOCK = createBlock("flora_hemlock", () -> new UndergrowthPoisonousBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(0.1F).sound(SoundType.GRASS).noCollission(), BlockBehaviour.OffsetType.XYZ), "cutout", CreativeModeTab.TAB_DECORATIONS);
     public static RegistryObject<Block> YARROW = createBlock("flora_yarrow", () -> new CustomGrassBlock(MobEffects.REGENERATION, 4, Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(0.0F).sound(SoundType.GRASS).noCollission()), "cutout", CreativeModeTab.TAB_DECORATIONS);
     public static RegistryObject<Block> JUNEGRASS = createBlock("flora_junegrass", () -> new CustomGrassBlock(MobEffects.UNLUCK, 4, Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(0.0F).sound(SoundType.GRASS).noCollission()), "cutout", CreativeModeTab.TAB_DECORATIONS);
+    public static RegistryObject<Block> CANOLA = createBlock("flora_canola", () -> new CustomGrassBlock(MobEffects.DAMAGE_BOOST, 4, Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(0.0F).sound(SoundType.GRASS).noCollission()), "cutout", CreativeModeTab.TAB_DECORATIONS);
     // Flora - Multistage
     public static RegistryObject<Block> ZIMBABWE_ALOE = createItemlessBlock("flora_zimbabwe_aloe", () -> new TallPlantBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(1.0F).sound(SoundType.WOOD).dynamicShape()), "cutout");
+    public static RegistryObject<Block> PAMPAS_GRASS = createBlock("flora_pampas_grass", () -> new TallGrassBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(1.0F).sound(SoundType.GRASS).dynamicShape()), "cutout", CreativeModeTab.TAB_DECORATIONS);
     // Flora - Floating
     public static RegistryObject<Block> WATER_HYACINTH = createItemlessBlock("flora_water_hyacinth", () -> new FloatingPlantBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(0.0F).sound(SoundType.LILY_PAD).noCollission()), "cutout");
     // Flora - Algae
@@ -94,12 +98,20 @@ public class ModBlock {
     public static RegistryObject<Block> ORCHID_RED = createBlock("flora_orchid_red", () -> new EpyphitePlantBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_RED).destroyTime(0.0F).sound(SoundType.VINE)), "cutout", CreativeModeTab.TAB_DECORATIONS);
     public static RegistryObject<Block> TITAN_ARUM = createItemlessBlock("flora_titan_arum", () -> new TitanArumBlock(Block.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).destroyTime(2.0F).sound(SoundType.WET_GRASS).noCollission().dynamicShape()), "cutout");
 
+    // Nests
+    public static RegistryObject<Block> NEST_REPTILE = createBlock("nest_reptile", () -> new NestReptileBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).destroyTime(1.0F).sound(SoundType.GRAVEL)),  "translucent", ModCreativeModeTab.untamedwilds_items);
+
+    // Eggs
+    public static RegistryObject<Block> EGG_SPITTER = createBlock("egg_spitter", () -> new StrangeEggBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).destroyTime(1.0F).sound(SoundType.SLIME_BLOCK)), "cutout", ModCreativeModeTab.untamedwilds_items);
+
     // Technical Blocks
     public static RegistryObject<Block> BURROW = createBlock("block_burrow", () -> new CritterBurrowBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).destroyTime(1.0F).sound(SoundType.GRAVEL).noCollission()),  "translucent", CreativeModeTab.TAB_DECORATIONS);
 
     // Block Entities
     public static final RegistryObject<BlockEntityType<CageBlockEntity>> TILE_ENTITY_CAGE = TILE_ENTITIES.register("trap_cage", () -> BlockEntityType.Builder.of(CageBlockEntity::new, ModBlock.TRAP_CAGE.get()).build(null));
     public static final RegistryObject<BlockEntityType<CritterBurrowBlockEntity>> TILE_ENTITY_BURROW = TILE_ENTITIES.register("critter_burrow", () -> BlockEntityType.Builder.of(CritterBurrowBlockEntity::new, ModBlock.BURROW.get()).build(null));
+    public static final RegistryObject<BlockEntityType<ReptileNestBlockEntity>> TILE_ENTITY_NEST_REPTILE = TILE_ENTITIES.register("nest_reptile_block_entity", () -> BlockEntityType.Builder.of(ReptileNestBlockEntity::new, ModBlock.NEST_REPTILE.get()).build(null));
+    public static final RegistryObject<BlockEntityType<EggBlockEntity>> TILE_ENTITY_EGG = TILE_ENTITIES.register("strange_egg", () -> BlockEntityType.Builder.of(EggBlockEntity::new, ModBlock.EGG_SPITTER.get()).build(null));
 
     public static <B extends Block> RegistryObject<Block> createBlock(String name, Supplier<? extends B> supplier, CreativeModeTab group) {
         return createBlock(name, supplier, null, group, 0);
@@ -151,5 +163,6 @@ public class ModBlock {
 
         colors.register(grassColor, ModBlock.YARROW.get());
         colors.register(grassColor, ModBlock.JUNEGRASS.get());
+        colors.register(grassColor, ModBlock.CANOLA.get());
     }
 }

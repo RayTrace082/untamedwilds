@@ -51,7 +51,7 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
             if (this.herd == null) {
                 IPackEntity.initPack(this);
             }
-            else {
+            else if (this.herd.getLeader().equals(this)) {
                 this.herd.tick();
             }
             if (this.tickCount % 1000 == 0) {
@@ -84,8 +84,8 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
             List<EntityTrevally> list = this.level.getEntitiesOfClass(EntityTrevally.class, this.getBoundingBox().inflate(12.0D, 8.0D, 12.0D));
             list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
             if (list.size() >= 1) {
-                this.setAge(this.getAge());
-                list.get(0).setAge(this.getAge());
+                this.setAge(this.getPregnancyTime());
+                list.get(0).setAge(this.getPregnancyTime());
                 return true;
             }
         }
@@ -105,6 +105,6 @@ public class EntityTrevally extends ComplexMobAquatic implements ISpecies, IPack
     }
 
     public boolean shouldLeavePack() {
-        return this.random.nextInt(120) == 0;
+        return this.random.nextInt(1000) == 0;
     }
 }

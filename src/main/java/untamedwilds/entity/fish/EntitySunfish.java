@@ -73,8 +73,8 @@ public class EntitySunfish extends ComplexMobAquatic implements ISpecies, INewSk
             List<EntitySunfish> list = this.level.getEntitiesOfClass(EntitySunfish.class, this.getBoundingBox().inflate(12.0D, 8.0D, 12.0D));
             list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
             if (list.size() >= 1) {
-                this.setAge(this.getAge());
-                list.get(0).setAge(this.getAge());
+                this.setAge(this.getPregnancyTime());
+                list.get(0).setAge(this.getPregnancyTime());
                 return true;
             }
         }

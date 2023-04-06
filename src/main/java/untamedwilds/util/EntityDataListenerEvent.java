@@ -1,8 +1,8 @@
 package untamedwilds.util;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -13,6 +13,7 @@ import untamedwilds.init.ModEntity;
 import untamedwilds.network.SyncTextureData;
 import untamedwilds.network.UntamedInstance;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = UntamedWilds.MOD_ID)
@@ -20,6 +21,8 @@ public class EntityDataListenerEvent {
 
     public static final JSONLoader<EntityDataHolder> ENTITY_DATA_HOLDERS = new JSONLoader<>("entities", EntityDataHolder.CODEC);
     public static EntityDataHolder TARANTULA;
+    public static EntityDataHolder KING_CRAB;
+
     public static EntityDataHolder GIANT_CLAM;
     public static EntityDataHolder GIANT_SALAMANDER;
     public static EntityDataHolder NEWT;
@@ -31,10 +34,13 @@ public class EntityDataListenerEvent {
     public static EntityDataHolder TREVALLY;
     public static EntityDataHolder TRIGGERFISH;
     public static EntityDataHolder CATFISH;
+    public static EntityDataHolder SPADEFISH;
+
     public static EntityDataHolder SNAKE;
     public static EntityDataHolder ANACONDA;
     public static EntityDataHolder SOFTSHELL_TURTLE;
     public static EntityDataHolder TORTOISE;
+    public static EntityDataHolder MONITOR;
 
     public static EntityDataHolder AARDVARK;
     public static EntityDataHolder HIPPO;
@@ -47,6 +53,9 @@ public class EntityDataListenerEvent {
     public static EntityDataHolder CAMEL;
     public static EntityDataHolder MANATEE;
     public static EntityDataHolder BALEEN_WHALE;
+    public static EntityDataHolder OPOSSUM;
+
+    public static EntityDataHolder SPITTER;
 
     @SubscribeEvent
     public static void onAddReloadListeners(AddReloadListenerEvent event) {
@@ -56,6 +65,7 @@ public class EntityDataListenerEvent {
 
     private static void registerData() {
         TARANTULA = registerEntityData(ModEntity.TARANTULA.get());
+        KING_CRAB = registerEntityData(ModEntity.KING_CRAB.get());
 
         GIANT_CLAM = registerEntityData(ModEntity.GIANT_CLAM.get());
 
@@ -70,11 +80,13 @@ public class EntityDataListenerEvent {
         WHALE_SHARK = registerEntityData(ModEntity.WHALE_SHARK.get());
         TRIGGERFISH = registerEntityData(ModEntity.TRIGGERFISH.get());
         CATFISH = registerEntityData(ModEntity.CATFISH.get());
+        SPADEFISH = registerEntityData(ModEntity.SPADEFISH.get());
 
         SNAKE = registerEntityData(ModEntity.SNAKE.get());
         ANACONDA = registerEntityData(ModEntity.ANACONDA.get());
         SOFTSHELL_TURTLE = registerEntityData(ModEntity.SOFTSHELL_TURTLE.get());
         TORTOISE = registerEntityData(ModEntity.TORTOISE.get());
+        MONITOR = registerEntityData(ModEntity.MONITOR.get());
 
         BEAR = registerEntityData(ModEntity.BEAR.get());
         BIG_CAT = registerEntityData(ModEntity.BIG_CAT.get());
@@ -87,6 +99,9 @@ public class EntityDataListenerEvent {
         CAMEL = registerEntityData(ModEntity.CAMEL.get());
         MANATEE = registerEntityData(ModEntity.MANATEE.get());
         BALEEN_WHALE = registerEntityData(ModEntity.BALEEN_WHALE.get());
+        OPOSSUM = registerEntityData(ModEntity.OPOSSUM.get());
+
+        SPITTER = registerEntityData(ModEntity.SPITTER.get());
     }
 
     @SubscribeEvent
@@ -108,9 +123,32 @@ public class EntityDataListenerEvent {
         String nameIn = Objects.requireNonNull(typeIn.builtInRegistryHolder().key().location()).getPath();
         if (ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, nameIn)) != null) {
             EntityDataHolder data = ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, nameIn));
-            ComplexMob.processData(data, typeIn);
+            processData(data, typeIn);
             return data;
         }
         return null;
+    }
+
+    /**
+     * Method that links an EntityType with an EntityDataHolder object, and uses the EntityDataHolder to build a
+     * hash with only Variant data, to be synced and accessed by the client
+     * @param dataIn The EntityDataHolder to introduce in ENTITY_DATA_HASH
+     * @param typeIn The EntityType to be associated with the dataIn object
+     */
+    private static void processData(EntityDataHolder dataIn, EntityType<?> typeIn) {
+        ComplexMob.ENTITY_DATA_HASH.put(typeIn, dataIn);
+        processSkins(dataIn, typeIn.getRegistryName().getPath());
+        for (SpeciesDataHolder speciesData : ComplexMob.ENTITY_DATA_HASH.get(typeIn).getSpeciesData()) {
+            if (!ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
+                ComplexMob.CLIENT_DATA_HASH.put(typeIn, new EntityDataHolderClient(new HashMap<>(), new HashMap<>()));
+            }
+            ComplexMob.CLIENT_DATA_HASH.get(typeIn).species_data.put(speciesData.getVariant(), speciesData.getName());
+        }
+    }
+
+    private static void processSkins(EntityDataHolder dataIn, String nameIn) {
+        for (SpeciesDataHolder speciesDatum : dataIn.getSpeciesData()) {
+            EntityUtils.buildSkinArrays(nameIn, speciesDatum.getName().toLowerCase(), dataIn, speciesDatum.getVariant(), ComplexMob.TEXTURES_COMMON, ComplexMob.TEXTURES_RARE);
+        }
     }
 }

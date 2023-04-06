@@ -1,7 +1,7 @@
 {
   "name":"hippo",
   "breeding":"EARLY_SUMMER",
-  "growing":8,
+  "growing_time":8,
   "offspring":1,
   "activityType":"cathemeral",
   "favourite_food":"untamedwilds:flora_water_hyacinth_item",

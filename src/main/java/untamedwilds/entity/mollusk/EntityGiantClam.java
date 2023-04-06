@@ -107,8 +107,8 @@ public class EntityGiantClam extends ComplexMob implements ISpecies, INewSkins {
             List<EntityGiantClam> list = this.level.getEntitiesOfClass(EntityGiantClam.class, this.getBoundingBox().inflate(12.0D, 6.0D, 12.0D));
             list.removeIf(input -> input == this || input.getAge() != 0 || input.getVariant() != this.getVariant());
             if (list.size() >= 1) {
-                this.setAge(this.getAge());
-                list.get(0).setAge(this.getAge());
+                this.setAge(this.getPregnancyTime());
+                list.get(0).setAge(this.getPregnancyTime());
                 return true;
             }
         }

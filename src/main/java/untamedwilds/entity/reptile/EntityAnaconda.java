@@ -5,6 +5,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -22,25 +25,27 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 import untamedwilds.entity.*;
-import untamedwilds.entity.ai.AmphibiousRandomSwimGoal;
-import untamedwilds.entity.ai.AmphibiousTransition;
-import untamedwilds.entity.ai.SmartMateGoal;
-import untamedwilds.entity.ai.SmartWanderGoal;
+import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.control.movement.SmartSwimmingMoveControl;
 import untamedwilds.entity.ai.target.HuntMobTarget;
+import untamedwilds.init.ModBlock;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModItems;
+import untamedwilds.init.ModTags;
 import untamedwilds.util.EntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, INeedsPostUpdate, INewSkins {
+public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, INeedsPostUpdate, INewSkins, INestingMob {
+
+    private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(EntityAnaconda.class, EntityDataSerializers.BOOLEAN);
 
     public final int length;
     public final EntityAnacondaPart[] anacondaParts;
@@ -59,6 +64,11 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
         for (int i = 0; i < this.length; i++) {
             this.anacondaParts[i] = new EntityAnacondaPart(this, this.getBbWidth(), this.getBbHeight());
         }
+    }
+
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(HAS_EGG, false);
     }
 
     private void setPartPosition(EntityAnacondaPart part, double offsetX, double offsetY, double offsetZ) {
@@ -90,6 +100,7 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.3D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(3, new AmphibiousTransition(this, 1D));
+        this.goalSelector.addGoal(3, new LayEggsOnNestGoal(this));
         this.goalSelector.addGoal(4, new AmphibiousRandomSwimGoal(this, 0.7, 400));
         this.goalSelector.addGoal(4, new SmartWanderGoal(this, 0.7, false) {
             public boolean canUse() {
@@ -217,11 +228,7 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
             if (!this.isSleeping() && this.getAge() == 0 && EntityUtils.hasFullHealth(this)) {
                 List<EntityAnaconda> list = this.level.getEntitiesOfClass(EntityAnaconda.class, this.getBoundingBox().inflate(6.0D, 4.0D, 6.0D));
                 list.removeIf(input -> EntityUtils.isInvalidPartner(this, input, false));
-                if (list.size() >= 1) {
-                    this.setAge(this.getPregnancyTime());
-                    list.get(0).setAge(this.getPregnancyTime());
-                    return true;
-                }
+                return list.size() >= 1;
             }
         }
         return false;
@@ -240,11 +247,11 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
     @Nullable
     @Override
     public EntityAnaconda getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
-        if (this.isEggLayer()) {
-            EntityUtils.dropEggs(this, "egg_large_snake_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 4);
-            return null;
+        if (!this.isEggLayer()) {
+            return create_offspring(new EntityAnaconda(ModEntity.ANACONDA.get(), this.level));
+            //EntityUtils.dropEggs(this, "egg_large_snake_" + getRawSpeciesName(this.getVariant()).toLowerCase(), 4);
         }
-        return create_offspring(new EntityAnaconda(ModEntity.ANACONDA.get(), this.level));
+        return null;
     }
 
     public boolean doHurtTarget(Entity entityIn) {
@@ -260,7 +267,7 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
             }
             return true;
         }
-        return flag;
+        return false;
     }
 
     public boolean attackEntityPartFrom(EntityAnacondaPart anaconda_part, DamageSource source, float amount) {
@@ -274,6 +281,36 @@ public class EntityAnaconda extends ComplexMobAmphibious implements ISpecies, IN
     public int getMultiparts() {
         return 3; // TODO: Unused parameter, as all Large Snakes have the same length. Need to consider how to handle multiparts
         //return getEntityData(this.getType()).getFlags(this.getVariant(), "parts");
+    }
+
+    @Override
+    public boolean wantsToLayEggs() {
+        return this.isEggLayer() && this.entityData.get(HAS_EGG);
+    }
+
+    @Override
+    public void setEggStatus(boolean status) {
+        this.entityData.set(HAS_EGG, status);
+    }
+
+    @Override
+    public Block getNestType() {
+        return ModBlock.NEST_REPTILE.get();
+    }
+
+    @Override
+    public boolean isValidNestBlock(BlockPos pos) {
+        return this.level.isEmptyBlock(pos) && this.level.getBlockState(pos.below()).is(ModTags.ModBlockTags.VALID_REPTILE_NEST) && this.getNestType().defaultBlockState().canSurvive(this.level, pos);
+    }
+
+    public void addAdditionalSaveData(CompoundTag compound){
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("has_egg", this.wantsToLayEggs());
+    }
+
+    public void readAdditionalSaveData(CompoundTag compound){
+        super.readAdditionalSaveData(compound);
+        this.setEggStatus(compound.getBoolean("has_egg"));
     }
 
     @Override

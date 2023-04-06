@@ -5,11 +5,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -19,19 +23,17 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ComplexMobTerrestrial;
-import untamedwilds.entity.INewSkins;
-import untamedwilds.entity.ISpecies;
+import untamedwilds.UntamedWilds;
+import untamedwilds.entity.*;
 import untamedwilds.entity.ai.*;
 import untamedwilds.entity.ai.target.AngrySleeperTarget;
+import untamedwilds.entity.ai.target.SmartOwnerHurtTargetGoal;
 import untamedwilds.init.ModEntity;
 import untamedwilds.init.ModLootTables;
 import untamedwilds.init.ModSounds;
@@ -41,7 +43,9 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
-public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewSkins {
+public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewSkins, INeedsPostUpdate {
+
+    private static final EntityDataAccessor<Boolean> WARTHOG = SynchedEntityData.defineId(EntityBoar.class, EntityDataSerializers.BOOLEAN);
 
     private BlockPos lastDugPos = null;
 
@@ -51,6 +55,7 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
 
     public EntityBoar(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
+        this.entityData.define(WARTHOG, false);
         this.turn_speed = 0.6F;
         WORK_DIG = Animation.create(48);
         ATTACK = Animation.create(18);
@@ -61,7 +66,7 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
         this.goalSelector.addGoal(1, new SmartSwimGoal_Land(this));
         this.goalSelector.addGoal(2, new GoHogWildGoal(this, 2D));
         this.goalSelector.addGoal(2, new FindItemsGoal(this, 12, 100, false, true));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.6D, false));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2D, false));
         this.goalSelector.addGoal(2, new SmartMateGoal(this, 1D));
         this.goalSelector.addGoal(2, new SmartAvoidGoal<>(this, LivingEntity.class, 16, 1.2D, 1.6D, input -> getEcoLevel(input) > getEcoLevel(this)));
         this.goalSelector.addGoal(3, new GotoSleepGoal(this, 1));
@@ -90,14 +95,21 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
     }
 
     @Override
+    protected void reassessTameGoals() {
+        if (this.isTame()) {
+            if (UntamedWilds.DEBUG) {
+                UntamedWilds.LOGGER.info("Updating AI tasks for tamed mob");
+            }
+            this.goalSelector.addGoal(3, new SmartFollowOwnerGoal(this, 2.3D, 12.0F, 3.0F));
+            this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+            this.targetSelector.addGoal(2, new SmartOwnerHurtTargetGoal(this));
+        }
+    }
+
+    @Override
     public void aiStep() {
         if (!this.level.isClientSide) {
             this.setAngry(this.getTarget() != null);
-            if (this.tickCount % 600 == 0) {
-                if (this.wantsToBreed()) {
-                    this.setInLove(null);
-                }
-            }
             if (this.level.getGameTime() % 1000 == 0) {
                 this.addHunger(-10);
                 if (!this.isStarving()) {
@@ -184,6 +196,12 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
         return flag;
     }
 
+    public boolean hurt(DamageSource damageSource, float amount) {
+        // Retaliate I: Mob will strike back when attacked by its current target
+        performRetaliation(damageSource, this.getHealth(), amount, true);
+        return super.hurt(damageSource, amount);
+    }
+
     @Override
     public Animation[] getAnimations() {
         return new Animation[]{NO_ANIMATION, WORK_DIG, ATTACK, TALK};
@@ -196,8 +214,17 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
         return create_offspring(new EntityBoar(ModEntity.BOAR.get(), this.level));
     }
 
+    @Override
+    public void updateAttributes() {
+        this.setWarthog(getEntityData(this.getType()).getFlags(this.getVariant(), "isWarthog") == 1);
+    }
+
+    public boolean isWarthog(){ return (this.entityData.get(WARTHOG)); }
+    private void setWarthog(boolean warthog){ this.entityData.set(WARTHOG, warthog); }
+
     public void addAdditionalSaveData(CompoundTag compound){
         super.addAdditionalSaveData(compound);
+        compound.putBoolean("isWarthog", this.isWarthog());
         if (this.lastDugPos != null) {
             compound.putInt("DugPosX", this.lastDugPos.getX());
             compound.putInt("DugPosZ", this.lastDugPos.getZ());
@@ -206,6 +233,7 @@ public class EntityBoar extends ComplexMobTerrestrial implements ISpecies, INewS
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
+        this.setWarthog(compound.getBoolean("isWarthog"));
         if (compound.contains("LastDugPos")) {
             this.lastDugPos = new BlockPos(compound.getInt("DugPosX"), 0, compound.getInt("DugPosZ"));
         }

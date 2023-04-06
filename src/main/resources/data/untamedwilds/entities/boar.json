@@ -1,7 +1,7 @@
 {
   "name":"boar",
   "breeding":"MID_WINTER",
-  "growing":4,
+  "growing_time":4,
   "offspring":4,
   "activityType":"nocturnal",
   "favourite_food":"minecraft:beetroot",
@@ -11,13 +11,16 @@
     "death":"untamedwilds:entity.boar.death",
     "threat":"untamedwilds:entity.boar.squeal"
   },
+  "flags":{
+    "isWarthog":0
+  },
   "species":[
     {
       "name":"eurasian",
       "variant":0,
-      "scale":1,
+      "scale":1.2,
       "rarity":1,
-      "skins":30,
+      "skins":40,
       "flags":{
 
       },
@@ -58,6 +61,20 @@
         ],
         [
           "tag|is_swamp"
+        ]
+      ]
+    },
+    {
+      "name":"warthog",
+      "variant":3,
+      "scale":1.2,
+      "rarity":1,
+      "flags":{
+        "isWarthog": 1
+      },
+      "spawnBiomes":[
+        [
+          "category|savanna"
         ]
       ]
     }

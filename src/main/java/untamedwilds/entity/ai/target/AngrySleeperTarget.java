@@ -1,17 +1,14 @@
 package untamedwilds.entity.ai.target;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
-import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
 import untamedwilds.entity.ComplexMob;
 import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.entity.ISpecies;
-import untamedwilds.util.EntityUtils;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -62,7 +59,7 @@ public class AngrySleeperTarget<T extends LivingEntity> extends TargetGoal {
     }
 
     public boolean canUse() {
-        if (!ConfigGamerules.angrySleepers.get() || !this.taskOwner.isSleeping() || this.taskOwner.isTame() || this.taskOwner.forceSleep != 0) {
+        if (!ConfigGamerules.angrySleepers.get() || this.taskOwner.isBaby() || !this.taskOwner.isSleeping() || this.taskOwner.isTame() || this.taskOwner.forceSleep != 0) {
             return false;
         }
         List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(6.0D, 4.0D, 6.0D), (input) -> this.targetEntitySelector.test((T) input));

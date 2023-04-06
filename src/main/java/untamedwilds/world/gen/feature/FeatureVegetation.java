@@ -74,12 +74,14 @@ public class FeatureVegetation extends Feature<ProbabilityFeatureConfiguration> 
     public enum FloraTypes {
 
         TEMPERATE_BUSH(ModBlock.BUSH_TEMPERATE.get(), 6, ConfigFeatureControl.addFlora.get(), false, 24,BiomeTags.IS_FOREST, Tags.Biomes.IS_SWAMP, BiomeTags.IS_MOUNTAIN,BiomeTags.IS_TAIGA, Tags.Biomes.IS_PLAINS),
+        CREOSOTE_BUSH(ModBlock.BUSH_CREOSOTE.get(), 2, ConfigFeatureControl.addFlora.get(), false, 4, BiomeTags.IS_BADLANDS, Tags.Biomes.IS_DESERT),
         ELEPHANT_EAR(ModBlock.ELEPHANT_EAR.get(), 6, ConfigFeatureControl.addFlora.get(), false, 24, BiomeTags.IS_JUNGLE),
         HEMLOCK(ModBlock.HEMLOCK.get(), 1, ConfigFeatureControl.addFlora.get(), false, 12, BiomeTags.IS_FOREST),
         TITAN_ARUM(ModBlock.TITAN_ARUM.get(), 6, ConfigFeatureControl.addFlora.get(), false, 1, BiomeTags.IS_JUNGLE),
         ZIMBABWE_ALOE(ModBlock.ZIMBABWE_ALOE.get(), 4, ConfigFeatureControl.addFlora.get(), false, 1, BiomeTags.IS_BADLANDS),
         FLOWER_YARROW(ModBlock.YARROW.get(), 6, ConfigFeatureControl.addFlora.get(), false, 18, BiomeTags.IS_FOREST, Tags.Biomes.IS_PLAINS,BiomeTags.IS_MOUNTAIN),
-        GRASS_JUNEGRASS(ModBlock.JUNEGRASS.get(), 8, ConfigFeatureControl.addFlora.get(), false, 18,Tags.Biomes.IS_PLAINS);
+        GRASS_JUNEGRASS(ModBlock.JUNEGRASS.get(), 8, ConfigFeatureControl.addFlora.get(), false, 18,Tags.Biomes.IS_PLAINS),
+        CANOLA(ModBlock.CANOLA.get(), 6, ConfigFeatureControl.addFlora.get(), false, 12, Tags.Biomes.IS_PLAINS);
 
         public Block type;
         public int rarity;

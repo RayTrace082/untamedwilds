@@ -1,7 +1,7 @@
 {
   "name":"bison",
   "breeding":"MID_SUMMER",
-  "growing":10,
+  "growing_time":10,
   "offspring":1,
   "sounds":{
     "ambient":"untamedwilds:entity.bison.ambient",

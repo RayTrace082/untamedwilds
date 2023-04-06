@@ -20,7 +20,7 @@ public class FollowParentGoal extends Goal {
 
     @Override
     public boolean canUse() {
-       if (!this.taskOwner.isBaby() || !this.taskOwner.canMove()) {
+       if (!this.taskOwner.isBaby() || this.taskOwner.getTarget() != null || !this.taskOwner.canMove()) {
             return false;
         }
         List<? extends ComplexMob> list = this.taskOwner.level.getEntitiesOfClass(this.taskOwner.getClass(), this.taskOwner.getBoundingBox().inflate(8.0D, 4.0D, 8.0D));

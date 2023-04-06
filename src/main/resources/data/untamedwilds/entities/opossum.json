@@ -1,0 +1,32 @@
+{
+  "name":"opossum",
+  "breeding":"AUTUMN",
+  "growing_time":3,
+  "offspring":6,
+  "activityType":"nocturnal",
+  "favourite_food":"minecraft:chicken",
+  "sounds":{
+    "ambient":"untamedwilds:entity.opossum.ambient",
+    "hurt":"untamedwilds:entity.opossum.hurt",
+    "death":"untamedwilds:entity.opossum.death"
+  },
+  "species":[
+    {
+      "name":"virginia",
+      "variant":0,
+      "scale":0.8,
+      "rarity":1,
+      "growing_time":3,
+      "offspring":6,
+      "skins":10,
+      "flags":{
+
+      },
+      "spawnBiomes":[
+        [
+          "category|forest"
+        ]
+      ]
+    }
+  ]
+}

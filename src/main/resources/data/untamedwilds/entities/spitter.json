@@ -1,0 +1,30 @@
+{
+  "name":"spitter",
+  "breeding":"EARLY_SUMMER",
+  "growing_time":8,
+  "offspring":1,
+  "activityType":"insomniac",
+  "favourite_food":"minecraft:glow_lichen",
+  "sounds":{
+    "ambient":"untamedwilds:entity.spitter.ambient",
+    "hurt":"untamedwilds:entity.spitter.hurt",
+    "death":"untamedwilds:entity.spitter.death"
+  },
+  "species":[
+    {
+      "name":"purple",
+      "variant":0,
+      "scale":1.3,
+      "rarity":1,
+      "skins":10,
+      "flags":{
+
+      },
+      "spawnBiomes":[
+        [
+          "resource|minecraft:lush_caves"
+        ]
+      ]
+    }
+  ]
+}

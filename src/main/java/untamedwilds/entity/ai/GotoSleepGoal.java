@@ -41,7 +41,7 @@ public class GotoSleepGoal extends Goal {
     @Override
     public boolean canUse() {
         // Common checks
-        if (this.creature.getRandom().nextInt(this.executionChance) != 0 || this.creature.forceSleep < 0 || this.creature.getTarget() != null) {
+        if (this.creature.getRandom().nextInt(this.executionChance) != 0 || this.creature.forceSleep < 0 || this.creature.getTarget() != null || (this.creature.isTame() && this.creature.getCommandInt() != 0)) {
             return false;
         }
         // Wake up checks

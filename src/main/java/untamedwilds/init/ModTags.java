@@ -19,5 +19,6 @@ public class ModTags {
         public static final TagKey<Block> ALOE_PLANTABLE_ON = BlockTags.create(new ResourceLocation(UntamedWilds.MOD_ID, "aloe_plantable_on"));
         public static final TagKey<Block> GRAZEABLE_BLOCKS = BlockTags.create(new ResourceLocation(UntamedWilds.MOD_ID, "grazeable_blocks"));
         public static final TagKey<Block> GRAZEABLE_ALGAE = BlockTags.create(new ResourceLocation(UntamedWilds.MOD_ID, "grazeable_algae"));
+        public static final TagKey<Block> VALID_REPTILE_NEST = BlockTags.create(new ResourceLocation(UntamedWilds.MOD_ID, "valid_reptile_nest"));
     }
 }

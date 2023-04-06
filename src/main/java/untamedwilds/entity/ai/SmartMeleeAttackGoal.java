@@ -1,5 +1,6 @@
 package untamedwilds.entity.ai;
 
+import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import untamedwilds.entity.ComplexMobTerrestrial;
 import untamedwilds.util.EntityUtils;
 
 import java.util.EnumSet;
@@ -56,7 +58,7 @@ public class SmartMeleeAttackGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (this.attacker.isBaby() || (this.doSkirmish && !EntityUtils.hasFullHealth(this.attacker))) {
+        if (this.attacker.isBaby() || (this.doSkirmish && !EntityUtils.hasFullHealth(this.attacker)) || (this.attacker instanceof ComplexMobTerrestrial complex && complex.forceSleep > 0)) {
             return false;
         }
         long i = this.attacker.level.getGameTime();
@@ -199,11 +201,10 @@ public class SmartMeleeAttackGoal extends Goal {
 
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
         double d0 = this.getAttackReachSqr(enemy);
-        if (this.attacker.hasLineOfSight(enemy) && distToEnemySqr <= d0 && this.attackTick <= 0) {
+        if (this.attacker.hasLineOfSight(enemy) && distToEnemySqr <= d0 && (this.attackTick <= 0 || (this.attackTick <= 10 && this.attacker instanceof IAnimatedEntity animated && animated.getAnimation() == IAnimatedEntity.NO_ANIMATION))) {
             this.attackTick = 20;
             this.attacker.doHurtTarget(enemy);
         }
-
     }
 
     protected double getAttackReachSqr(LivingEntity attackTarget) {

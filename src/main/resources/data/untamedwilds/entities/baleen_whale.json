@@ -1,7 +1,7 @@
 {
   "name":"baleen_whale",
   "breeding":"MID_WINTER",
-  "growing":12,
+  "growing_time":12,
   "offspring":1,
   "favourite_food":"untamedwilds:chum",
   "sounds":{

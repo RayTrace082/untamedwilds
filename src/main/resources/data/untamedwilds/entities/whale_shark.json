@@ -1,7 +1,7 @@
 {
   "name":"whale_shark",
   "breeding":"MID_SUMMER",
-  "growing":14,
+  "growing_time":14,
   "offspring":8,
   "favourite_food":"untamedwilds:chum",
   "sounds":{

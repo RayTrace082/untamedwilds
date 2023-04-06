@@ -6,7 +6,7 @@
 			"entries":[
 				{
 					"type":"minecraft:item",
-					"name":"untamedwilds:food_bear_raw",
+					"name":"untamedwilds:food_pachyderm_raw",
 					"functions":[
 						{
 							"function":"minecraft:set_count",

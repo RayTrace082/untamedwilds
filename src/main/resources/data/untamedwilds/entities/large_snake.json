@@ -1,7 +1,7 @@
 {
   "name":"large_snake",
   "breeding":"LATE_SUMMER",
-  "growing":7,
+  "growing_time":7,
   "offspring":2,
   "sounds":{
     "ambient":"untamedwilds:entity.snake.warning",

@@ -1,7 +1,7 @@
 {
   "name":"newt",
   "breeding":"EARLY_SUMMER",
-  "growing":3,
+  "growing_time":3,
   "offspring":5,
   "favourite_food":"untamedwilds:food_turtle_raw",
   "sounds":{

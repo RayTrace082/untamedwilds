@@ -1,7 +1,7 @@
 {
   "name":"hyena",
   "breeding":"MID_WINTER",
-  "growing":4,
+  "growing_time":4,
   "offspring":2,
   "activityType":"nocturnal",
   "favourite_food":"minecraft:rotten_flesh",

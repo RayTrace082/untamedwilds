@@ -125,11 +125,6 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
             else if (EntityUtils.getPackSize(this.getType(), this.getVariant()) > 1) {
                 this.herd.tick();
             }
-            if (this.tickCount % 600 == 0) {
-                if (this.wantsToBreed()) {
-                    this.setInLove(null);
-                }
-            }
             if (this.level.getGameTime() % 1000 == 0) {
                 this.addHunger(-3);
                 if (!this.isStarving()) {
@@ -137,19 +132,6 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
                 }
             }
 
-            if (this.tickCount % 200 == 0) {
-                if (!this.isActive() && this.getNavigation().isDone()) {
-                    this.tiredCounter++;
-                    if (this.distanceToSqr(this.getHomeAsVec()) <= 6) {
-                        this.setSleeping(true);
-                        this.tiredCounter = 0;
-                    }
-                    else if (tiredCounter >= 3) {
-                        this.setHome(BlockPos.ZERO);
-                        this.tiredCounter = 0;
-                    }
-                }
-            }
             // Random idle animations
             if (this.getAnimation() == NO_ANIMATION && this.getTarget() == null && !this.isSleeping()) {
                 if (this.getCommandInt() == 0) {
@@ -250,6 +232,17 @@ public class EntityBigCat extends ComplexMobTerrestrial implements ISpecies, INe
             this.setAnimationTick(0);
         }
         return flag;
+    }
+
+    public boolean hurt(DamageSource damageSource, float amount) {
+        // Retaliate I: Mob will strike back when attacked by its current target
+        float f = this.getHealth();
+        if (!this.level.isClientSide && !this.isNoAi() && this.getTarget() == damageSource.getEntity() && amount < f && (damageSource.getEntity() != null || damageSource.getDirectEntity() != null) && damageSource.getEntity() instanceof LivingEntity && (damageSource.getEntity() instanceof TamableAnimal tamable && tamable.getOwner() != null)) {
+            if (this.hasLineOfSight(damageSource.getEntity()) && !damageSource.getEntity().isInvulnerable() && this.getAnimation() == NO_ANIMATION) {
+                this.doHurtTarget(damageSource.getEntity());
+            }
+        }
+        return super.hurt(damageSource, amount);
     }
 
     private Animation chooseAttackAnimation(Entity target) {

@@ -1,18 +1,17 @@
 package untamedwilds.world;
 
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.material.FluidState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.material.FluidState;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigMobControl;
 import untamedwilds.entity.ComplexMob;
@@ -90,7 +89,7 @@ public class FaunaSpawn {
             }
 
             if (random.nextFloat() < UntamedWildsGenerator.getBioDiversityLevel(Objects.requireNonNull(worldIn.getBiome(pos).unwrapKey().get().location()))) {
-                int k = 1;
+                int k = 1; // This variable will be changed after the mob spawns
                 int species = -1;
 
                 for(int packSize = 0; packSize < k; ++packSize) {

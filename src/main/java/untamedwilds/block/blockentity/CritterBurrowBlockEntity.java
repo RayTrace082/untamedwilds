@@ -50,7 +50,7 @@ public class CritterBurrowBlockEntity extends BlockEntity {
     }
 
     public void releaseOrCreateMob(ServerLevel worldIn) {
-        if (!this.hasNoMobs() && this.getEntityType() != null && worldIn.getRandom().nextFloat() < 0.1D * (this.getSumMobs() * this.getSumMobs())) {
+        if (!this.hasNoMobs() && this.getEntityType() != null && this.getVariant() >= 0 && worldIn.getRandom().nextFloat() < 0.1D * (this.getSumMobs() * this.getSumMobs())) {
             BlockPos blockpos = this.getBlockPos();
             if (worldIn.hasNearbyAlivePlayer((double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D, ConfigMobControl.critterSpawnRange.get())) {
                 if (!this.getInhabitants().isEmpty()) {

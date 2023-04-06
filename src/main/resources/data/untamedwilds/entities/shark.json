@@ -1,7 +1,7 @@
 {
   "name":"shark",
   "breeding":"MID_SUMMER",
-  "growing":7,
+  "growing_time":7,
   "offspring":3,
   "favourite_food":"untamedwilds:chum",
   "sounds":{

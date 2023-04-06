@@ -135,5 +135,17 @@ public class ModItems {
         // Catfish Items
         ModItems.ITEMS.register("egg_catfish", () -> new MobEggItem(ModEntity.CATFISH, new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
         ModItems.ITEMS.register("bucket_catfish", () -> new MobBucketedItem(ModEntity.CATFISH, Fluids.WATER, new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
+
+        // King Crab Items
+        ModItems.ITEMS.register("egg_king_crab", () -> new MobEggItem(ModEntity.KING_CRAB, new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
+        ModItems.ITEMS.register("bucket_king_crab", () -> new MobBucketedItem(ModEntity.KING_CRAB, Fluids.WATER, new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
+
+        // Monitor Items
+        ModItems.ITEMS.register("egg_monitor", () -> new MobEggItem(ModEntity.MONITOR, new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
+
+        // Spadefish Items
+        ModItems.ITEMS.register("egg_spadefish", () -> new MobEggItem(ModEntity.SPADEFISH, new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
+        ModItems.ITEMS.register("bucket_spadefish", () -> new MobBucketedItem(ModEntity.SPADEFISH, Fluids.WATER, new Item.Properties().tab(ModCreativeModeTab.untamedwilds_items)));
+
     }
 }

@@ -38,10 +38,7 @@ import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import untamedwilds.UntamedWilds;
 import untamedwilds.config.ConfigGamerules;
-import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.ComplexMobTerrestrial;
-import untamedwilds.entity.INeedsPostUpdate;
-import untamedwilds.entity.ISpecies;
+import untamedwilds.entity.*;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -407,7 +404,7 @@ public abstract class EntityUtils {
                 return ComplexMob.TEXTURES_COMMON.get(name).get(entityIn.getVariant()).get(Math.min(entityIn.getSkin(), ComplexMob.TEXTURES_COMMON.get(name).get(entityIn.getVariant()).size() - 1));
         }
         //UntamedWilds.LOGGER.warn("No Skin found for entity: " + entityIn.getType().getRegistryName());
-        return null;
+        return new ResourceLocation("missing");
     }
 
     // Tests an ItemStack and consumes it if found to be a Food. Also applies it's effects
@@ -453,6 +450,9 @@ public abstract class EntityUtils {
 
     // Checks if a mob is NOT a valid partner for the input. Both entityIn and partnerIn should be the same class
     public static boolean isInvalidPartner(ComplexMob entityIn, ComplexMob partnerIn, boolean isHermaphrodite) {
+        if (entityIn instanceof INestingMob nesting && (nesting.wantsToLayEggs() || ((INestingMob)partnerIn).wantsToLayEggs())) {
+            return true;
+        }
         return (ConfigGamerules.genderedBreeding.get() && (partnerIn.getGender() == entityIn.getGender() || isHermaphrodite)) || (partnerIn.getVariant() != entityIn.getVariant()) || partnerIn.getAge() != 0;
     }
 }

@@ -16,7 +16,6 @@ import untamedwilds.entity.ai.control.movement.SmartSwimmingMoveControl;
 public abstract class ComplexMobAmphibious extends ComplexMobTerrestrial {
 
     protected boolean isAmphibious;
-    public float buoyancy = 1;
 
     public ComplexMobAmphibious(EntityType<? extends ComplexMob> type, Level worldIn) {
         super(type, worldIn);
