@@ -26,10 +26,10 @@
       },
       "spawnBiomes":[
         [
-          "category|forest"
+          "tag|is_forest"
         ],
         [
-          "category|taiga"
+          "tag|is_taiga"
         ]
       ]
     },
@@ -43,7 +43,7 @@
       },
       "spawnBiomes":[
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     },
@@ -57,10 +57,10 @@
       },
       "spawnBiomes":[
         [
-          "category|savanna"
+          "tag|is_savanna"
         ],
         [
-          "category|swamp"
+          "tag|is_swamp"
         ]
       ]
     },

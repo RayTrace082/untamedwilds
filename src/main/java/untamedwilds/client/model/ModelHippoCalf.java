@@ -4,6 +4,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityHippo;
 
@@ -137,5 +139,6 @@ public class ModelHippoCalf extends AdvancedEntityModel<EntityHippo> {
             this.leg_right.rotateAngleX = Mth.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
         }
     }
-}
 
+
+}

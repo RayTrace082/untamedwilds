@@ -17,10 +17,10 @@
       "rarity":2,
       "spawnBiomes":[
         [
-          "category|forest"
+          "tag|is_forest"
         ],
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     },
@@ -31,7 +31,7 @@
       "rarity":3,
       "spawnBiomes":[
         [
-          "category|forest"
+          "tag|is_forest"
         ]
       ]
     },
@@ -42,13 +42,13 @@
       "rarity":2,
       "spawnBiomes":[
         [
-          "category|savanna"
+          "tag|is_savanna"
         ],
         [
-          "category|mesa"
+          "tag|is_badlands"
         ],
         [
-          "category|plains"
+          "tag|is_plains"
         ]
       ]
     },
@@ -59,10 +59,10 @@
       "rarity":2,
       "spawnBiomes":[
         [
-          "category|forest"
+          "tag|is_forest"
         ],
         [
-          "category|plains"
+          "tag|is_plains"
         ]
       ]
     },
@@ -73,10 +73,10 @@
       "rarity":1,
       "spawnBiomes":[
         [
-          "category|plains"
+          "tag|is_plains"
         ],
         [
-          "category|mesa"
+          "tag|is_badlands"
         ]
       ]
     },
@@ -87,7 +87,7 @@
       "rarity":2,
       "spawnBiomes":[
         [
-          "category|savanna"
+          "tag|is_savanna"
         ]
       ]
     }

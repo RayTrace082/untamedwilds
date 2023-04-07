@@ -123,7 +123,7 @@ public class EntityOpossum extends ComplexMobTerrestrial implements ISpecies, IN
                         if (this instanceof INeedsPostUpdate) {
                             ((INeedsPostUpdate) child).updateAttributes();
                         }
-                        if (TEXTURES_COMMON.containsKey(child.getType().getRegistryName().getPath())) {
+                        if (TEXTURES_COMMON.containsKey(child.getType().builtInRegistryHolder().key().location().getPath())) {
                             chooseSkinForSpecies(child, true);
                         }
                         //((ServerLevel)this.level).addFreshEntityWithPassengers(child);

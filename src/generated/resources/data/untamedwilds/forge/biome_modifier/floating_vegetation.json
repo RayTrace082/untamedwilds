@@ -1,0 +1,24 @@
+{
+  "type": "untamedwilds:biome_modifier_serializer",
+  "biomes": [
+    "#minecraft:is_jungle"
+  ],
+  "blacklist": [
+    []
+  ],
+  "configOption": "gencontrol.algae",
+  "decoration": "vegetal_decoration",
+  "dimension": "minecraft:is_overworld",
+  "feature": {
+    "feature": {
+      "type": "untamedwilds:floating_vegetation",
+      "config": {}
+    },
+    "placement": [
+      {
+        "type": "minecraft:rarity_filter",
+        "chance": 1
+      }
+    ]
+  }
+}

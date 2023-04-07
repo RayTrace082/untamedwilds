@@ -2,8 +2,8 @@ package untamedwilds.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,7 +36,7 @@ public class LookThroughSpyglassEvent {
         if (ConfigGamerules.spyglassBehaviorChange.get() && !entity.getLevel().isClientSide && entity instanceof Player playerIn && playerIn.tickCount % 20 == 0 && usedItem.getItem().equals(Items.SPYGLASS)) {
             HitResult hitresult = raycast(playerIn, ConfigGamerules.spyglassCheckRange.get(), true);
             if (hitresult.getType() == HitResult.Type.ENTITY) {
-                EntityHitResult entityHitResult = (EntityHitResult)hitresult;
+                EntityHitResult entityHitResult = (EntityHitResult) hitresult;
                 if (entityHitResult.getEntity() instanceof LivingEntity livingEntityHitResult) {
                     displayEntityData(livingEntityHitResult, playerIn, playerIn.getLevel());
 
@@ -54,20 +54,20 @@ public class LookThroughSpyglassEvent {
         Vec3 endPos = startPos.add(rotation.x * maxDistance, rotation.y * maxDistance, rotation.z * maxDistance);
         HitResult hitResult = origin.level.clip(new ClipContext(startPos, endPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, origin));
 
-        if(hitResult.getType() != HitResult.Type.MISS)
+        if (hitResult.getType() != HitResult.Type.MISS)
             endPos = hitResult.getLocation();
 
         maxDistance *= 5;
         HitResult entityHitResult = ProjectileUtil.getEntityHitResult(origin, startPos, endPos, origin.getBoundingBox().expandTowards(rotation.scale(maxDistance)).inflate(1.0D, 1.0D, 1.0D), entity -> !entity.isSpectator(), maxDistance);
 
-        if(hitsEntities && entityHitResult != null)
+        if (hitsEntities && entityHitResult != null)
             hitResult = entityHitResult;
 
         return hitResult;
     }
 
     private static void displayEntityData(LivingEntity target, Player playerIn, Level world) {
-        TextComponent name = new TextComponent("");
+        MutableComponent name = MutableComponent.create(new LiteralContents(""));
         if (target instanceof ComplexMob entity) {
             String entityName = entity instanceof ISpecies ? ((ISpecies) entity).getSpeciesName() : entity.getName().getString();
             name.append((entity.isBaby() ? "Young " : "") + (ConfigGamerules.genderedBreeding.get() ? entity.getGenderString() + " " : "") + entityName + " ");
@@ -75,14 +75,13 @@ public class LookThroughSpyglassEvent {
             if (ConfigGamerules.scientificNames.get()) {
                 String useVarName = entity instanceof ISpecies ? "_" + ((ISpecies) entity).getRawSpeciesName(entity.getVariant()) : "";
                 name.append("(");
-                name.append(new TranslatableComponent(entity.getType().getDescriptionId() + useVarName + ".sciname").withStyle(ChatFormatting.ITALIC));
+                name.append(MutableComponent.create(new TranslatableContents(entity.getType().getDescriptionId() + useVarName + ".sciname")).withStyle(ChatFormatting.ITALIC));
                 name.append(") ");
             }
             if (!entity.isMale() && entity.getAge() > 0 && !ConfigGamerules.easyBreeding.get()) {
                 name.append("This female is pregnant ");
             }
-        }
-        else {
+        } else {
             name.append(target.isBaby() ? "Young " : "" + target.getName().getString() + " ");
         }
         if (true) {
@@ -103,32 +102,32 @@ public class LookThroughSpyglassEvent {
     private static MutableComponent getHealthState(int health) {
         switch (health) {
             case 10, 9, 8 -> {
-                return new TextComponent("Healthy").withStyle(ChatFormatting.GREEN);
+                return MutableComponent.create( new LiteralContents("Healthy")).withStyle(ChatFormatting.GREEN);
             }
             case 7, 6, 5 -> {
-                return new TextComponent("Injured").withStyle(ChatFormatting.YELLOW);
+                return MutableComponent.create( new LiteralContents("Injured")).withStyle(ChatFormatting.YELLOW);
             }
             case 4, 3, 2 -> {
-                return new TextComponent("Wounded").withStyle(ChatFormatting.RED);
+                return MutableComponent.create( new LiteralContents("Wounded")).withStyle(ChatFormatting.RED);
             }
             case 1, 0 -> {
-                return new TextComponent("Almost Dead").withStyle(ChatFormatting.DARK_RED);
+                return MutableComponent.create( new LiteralContents("Almost Dead")).withStyle(ChatFormatting.DARK_RED);
             }
         }
-        return new TextComponent("");
+        return MutableComponent.create(LiteralContents.EMPTY);
     }
 
     private static MutableComponent getThreatLevel(LivingEntity target, Player player) {
         int val = ComplexMob.getEcoLevel(player) - ComplexMob.getEcoLevel(target);
         if (val > 4)
-            return new TextComponent("Harmless").withStyle(ChatFormatting.GREEN);
+            return MutableComponent.create( new LiteralContents("Harmless")).withStyle(ChatFormatting.GREEN);
         else if (val > 2)
-            return new TextComponent("Mild threat").withStyle(ChatFormatting.YELLOW);
+            return MutableComponent.create( new LiteralContents("Mild threat")).withStyle(ChatFormatting.YELLOW);
         else if (val > 0)
-            return new TextComponent("Caution").withStyle(ChatFormatting.YELLOW);
+            return MutableComponent.create( new LiteralContents("Caution")).withStyle(ChatFormatting.YELLOW);
         else if (val > -4)
-            return new TextComponent("Dangerous").withStyle(ChatFormatting.RED);
+            return MutableComponent.create( new LiteralContents("Dangerous")).withStyle(ChatFormatting.RED);
         else
-            return new TextComponent("Deadly").withStyle(ChatFormatting.DARK_RED);
+            return MutableComponent.create( new LiteralContents("Deadly")).withStyle(ChatFormatting.DARK_RED);
     }
 }

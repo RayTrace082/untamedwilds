@@ -1,0 +1,25 @@
+{
+  "type": "untamedwilds:biome_modifier_serializer",
+  "biomes": [],
+  "blacklist": [
+    [
+      "minecraft:frozen_ocean",
+      "minecraft:deep_frozen_ocean"
+    ]
+  ],
+  "configOption": "gencontrol.algae",
+  "decoration": "vegetal_decoration",
+  "dimension": "minecraft:is_overworld",
+  "feature": {
+    "feature": {
+      "type": "untamedwilds:algae",
+      "config": {}
+    },
+    "placement": [
+      {
+        "type": "minecraft:rarity_filter",
+        "chance": 1
+      }
+    ]
+  }
+}

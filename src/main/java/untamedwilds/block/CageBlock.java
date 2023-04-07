@@ -9,10 +9,12 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -171,7 +173,7 @@ public class CageBlock extends Block implements SimpleWaterloggedBlock, EntityBl
     }
 
     private <T extends ParticleOptions> void spawnParticles(Level worldIn, BlockPos pos, T particle) {
-        Random random = worldIn.getRandom();
+        RandomSource random = worldIn.getRandom();
         float d3 = random.nextFloat() * 0.02F;
         float d1 = random.nextFloat() * 0.02F;
         float d2 = random.nextFloat() * 0.02F;
@@ -203,7 +205,7 @@ public class CageBlock extends Block implements SimpleWaterloggedBlock, EntityBl
             }
         }
         else {
-            tooltip.add(new TranslatableComponent("block.trap_cage.state_empty").withStyle(ChatFormatting.GRAY));
+            tooltip.add( MutableComponent.create(new TranslatableContents("block.trap_cage.state_empty")).withStyle(ChatFormatting.GRAY));
         }
     }
 

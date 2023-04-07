@@ -4,6 +4,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.Mth;
 import untamedwilds.entity.amphibian.EntityNewt;
 
@@ -173,4 +175,6 @@ public class ModelNewt extends AdvancedEntityModel<EntityNewt> {
             this.progressRotation(leg_left, newt.swimProgress, (float) Math.toRadians(49.57F), (float) Math.toRadians(-73.04F), (float) Math.toRadians(33.91F), 20);
         }
     }
+
+
 }

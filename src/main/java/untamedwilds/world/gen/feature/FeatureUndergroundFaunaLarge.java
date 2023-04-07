@@ -1,6 +1,8 @@
 package untamedwilds.world.gen.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.util.random.WeightedRandom;
@@ -40,7 +42,7 @@ public class FeatureUndergroundFaunaLarge extends Feature<NoneFeatureConfigurati
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> config) {
         WorldGenLevel world = config.level();
         BlockPos blockpos = config.origin();
-        Random rng = config.random();
+        RandomSource rng = config.random();
         Optional<FaunaHandler.SpawnListEntry> entry = Optional.empty();
 
         BlockPos.MutableBlockPos setPos = new BlockPos.MutableBlockPos(blockpos.getX(), blockpos.getY(), blockpos.getZ());

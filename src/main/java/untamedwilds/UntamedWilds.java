@@ -16,6 +16,7 @@ import untamedwilds.compat.CompatBridge;
 import untamedwilds.config.ConfigBase;
 import untamedwilds.init.*;
 import untamedwilds.network.UntamedInstance;
+import untamedwilds.world.UntamedWildsBiomeModifier;
 import untamedwilds.world.UntamedWildsGenerator;
 
 @Mod(value = UntamedWilds.MOD_ID)
@@ -42,13 +43,13 @@ public class UntamedWilds {
         ModItems.ITEMS.register(eventBus);
         ModEntity.ENTITIES.register(eventBus);
         ModItems.registerSpawnItems();
+        UntamedWildsBiomeModifier.BIOME_MODIFIER_SERIALIZERS.register(eventBus);
         ModSounds.SOUNDS.register(eventBus);
         ModAdvancementTriggers.register();
         UntamedWildsGenerator.FEATURES.register(eventBus);
         UntamedWildsGenerator.CONFIGURED_FEATURES.register(eventBus);
         UntamedWildsGenerator.PLACED_FEATURES.register(eventBus);
         CompatBridge.RegisterCompat();
-        UntamedWildsGenerator.readBioDiversityLevels();
     }
 
     private void setupCommon(final FMLCommonSetupEvent event) {

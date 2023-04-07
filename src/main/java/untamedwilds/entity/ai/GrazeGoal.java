@@ -1,6 +1,7 @@
 package untamedwilds.entity.ai;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -96,7 +97,7 @@ public class GrazeGoal extends Goal {
 
     @Nullable
     private BlockPos locateGrazeables() {
-        Random random = this.taskOwner.getRandom();
+        RandomSource random = this.taskOwner.getRandom();
         BlockPos blockpos = this.taskOwner.blockPosition();
 
         for(int i = 0; i < 10; ++i) {

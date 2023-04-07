@@ -20,10 +20,10 @@
       "skins":30,
       "spawnBiomes":[
         [
-          "category|forest"
+          "tag|is_forest"
         ],
         [
-          "category|taiga"
+          "tag|is_taiga"
         ]
       ]
     },
@@ -38,10 +38,10 @@
       },
       "spawnBiomes":[
         [
-          "category|river"
+          "tag|is_river"
         ],
         [
-          "category|extreme_hills"
+          "tag|is_mountain"
         ]
       ]
     },
@@ -56,13 +56,13 @@
       },
       "spawnBiomes":[
         [
-          "category|swamp"
+          "tag|is_swamp"
         ],
         [
-          "category|river"
+          "tag|is_river"
         ],
         [
-          "category|extreme_hills"
+          "tag|is_mountain"
         ]
       ]
     },
@@ -74,13 +74,13 @@
       "skins":30,
       "spawnBiomes":[
         [
-          "category|forest"
+          "tag|is_forest"
         ],
         [
-          "category|taiga"
+          "tag|is_taiga"
         ],
         [
-          "category|river"
+          "tag|is_river"
         ]
       ]
     },
@@ -94,13 +94,13 @@
       },
       "spawnBiomes":[
         [
-          "category|swamp"
+          "tag|is_swamp"
         ],
         [
-          "category|river"
+          "tag|is_river"
         ],
         [
-          "category|extreme_hills"
+          "tag|is_mountain"
         ]
       ]
     },
@@ -112,10 +112,10 @@
       "skins":21,
       "spawnBiomes":[
         [
-          "category|forest"
+          "tag|is_forest"
         ],
         [
-          "category|river"
+          "tag|is_river"
         ]
       ]
     }

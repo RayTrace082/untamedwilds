@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.WaterAnimal;
@@ -121,7 +122,7 @@ public class ReedBlock extends Block implements BonemealableBlock, SimpleWaterlo
       return state.getValue(PROPERTY_STAGE) == 0;
    }
 
-   public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+   public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
       if (state.getValue(PROPERTY_STAGE) == 0 && random.nextInt(8) == 0) {
          if (worldIn.isEmptyBlock(pos.above()) && worldIn.getLightEmission(pos.above()) >= 9) {
             int i = this.getNumReedBlocksBelow(worldIn, pos) + 1;
@@ -155,11 +156,11 @@ public class ReedBlock extends Block implements BonemealableBlock, SimpleWaterlo
       return i + j + 1 < 4 && worldIn.getBlockState(pos.above(i)).getValue(PROPERTY_STAGE) != 1;
    }
 
-   public boolean isBonemealSuccess(Level worldIn, Random rand, BlockPos pos, BlockState state) {
+   public boolean isBonemealSuccess(Level worldIn, RandomSource rand, BlockPos pos, BlockState state) {
       return true;
    }
 
-   public void performBonemeal(ServerLevel worldIn, Random rand, BlockPos pos, BlockState state) {
+   public void performBonemeal(ServerLevel worldIn, RandomSource rand, BlockPos pos, BlockState state) {
       int i = this.getNumReedBlocksAbove(worldIn, pos);
       int j = this.getNumReedBlocksBelow(worldIn, pos);
       int k = i + j + 1;
@@ -177,7 +178,7 @@ public class ReedBlock extends Block implements BonemealableBlock, SimpleWaterlo
       }
    }
 
-   protected void grow(BlockState blockStateIn, Level worldIn, BlockPos posIn, Random rand, int p_220258_5_) {
+   protected void grow(BlockState blockStateIn, Level worldIn, BlockPos posIn, RandomSource rand, int p_220258_5_) {
       BlockState blockstate = worldIn.getBlockState(posIn.below());
       int i = blockStateIn.getValue(PROPERTY_AGE) != 1 && blockstate.getBlock() != ModBlock.COMMON_REED.get() ? 0 : 1;
       int j = (p_220258_5_ < 1 || !(rand.nextFloat() < 0.4F)) && p_220258_5_ != 4 ? 0 : 1;

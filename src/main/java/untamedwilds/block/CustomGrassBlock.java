@@ -2,6 +2,7 @@ package untamedwilds.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -36,11 +37,11 @@ public class CustomGrassBlock extends FlowerBlock implements BonemealableBlock {
         return p_153797_.getBlockState(p_153798_.above()).isAir();
     }
 
-    public boolean isBonemealSuccess(Level p_153802_, Random p_153803_, BlockPos p_153804_, BlockState p_153805_) {
+    public boolean isBonemealSuccess(Level p_153802_, RandomSource p_153803_, BlockPos p_153804_, BlockState p_153805_) {
         return true;
     }
 
-    public void performBonemeal(ServerLevel p_57298_, Random p_57299_, BlockPos p_57300_, BlockState p_57301_) {
+    public void performBonemeal(ServerLevel p_57298_, RandomSource p_57299_, BlockPos p_57300_, BlockState p_57301_) {
         popResource(p_57298_, p_57300_, new ItemStack(this));
     }
 }

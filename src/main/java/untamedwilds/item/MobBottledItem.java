@@ -5,12 +5,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -18,8 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.UntamedWilds;
-import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.INeedsPostUpdate;
 import untamedwilds.util.EntityUtils;
 import untamedwilds.util.ModCreativeModeTab;
 
@@ -43,7 +40,7 @@ public class MobBottledItem extends Item {
     }
 
     public Component getName(ItemStack stack) {
-        return new TranslatableComponent("item.untamedwilds.bottle_" + this.entity.get().getRegistryName().getPath() + "_" + EntityUtils.getVariantName(this.entity.get(), this.getSpecies(stack)));
+        return MutableComponent.create(new TranslatableContents("item.untamedwilds.bottle_" + this.entity.get().builtInRegistryHolder().key().location().getPath() + "_" + EntityUtils.getVariantName(this.entity.get(), this.getSpecies(stack))));
     }
 
     @Override

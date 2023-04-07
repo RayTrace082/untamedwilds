@@ -5,7 +5,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -46,7 +47,7 @@ public class MobSpawnItem extends Item {
     }
 
     public Component getName(ItemStack stack) {
-        return new TranslatableComponent("entity.untamedwilds." + this.entity.get().getRegistryName().getPath() + "_" + EntityUtils.getVariantName(this.entity.get(), this.getSpecies(stack)));
+        return MutableComponent.create(new TranslatableContents("entity.untamedwilds." + this.entity.get().builtInRegistryHolder().key().location().getPath() + "_" + EntityUtils.getVariantName(this.entity.get(), this.getSpecies(stack))));
         //return new TranslatableComponent("entity.untamedwilds." + this.entity.getRegistryName().getPath() + "_" + ComplexMob.getEntityData(this.entity).getSpeciesData().get(this.getSpecies(stack)).getName()).getString();
     }
 

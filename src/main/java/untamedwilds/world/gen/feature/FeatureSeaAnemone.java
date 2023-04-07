@@ -2,6 +2,7 @@ package untamedwilds.world.gen.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -26,7 +27,7 @@ public class FeatureSeaAnemone extends Feature<CountConfiguration> {
     }
 
     public boolean place(FeaturePlaceContext<CountConfiguration> context) {
-        Random rand = context.level().getRandom();
+        RandomSource rand = context.level().getRandom();
         WorldGenLevel world = context.level();
         BlockPos pos = world.getHeightmapPos(Heightmap.Types.OCEAN_FLOOR, context.origin());
         if (ConfigFeatureControl.dimensionFeatureBlacklist.get().contains(world.getLevel().dimension().location().toString()))

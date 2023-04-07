@@ -6,6 +6,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityBear;
 
@@ -537,4 +539,6 @@ public class ModelBear extends AdvancedEntityModel<EntityBear> {
             this.progressRotation(leg_left_2, bear.sleepProgress, 2.276432943376204F, -0.36425021489121656F, -0.4553564018453205F, 40);
         }
     }
+
+
 }

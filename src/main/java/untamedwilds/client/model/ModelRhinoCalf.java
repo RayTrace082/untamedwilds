@@ -90,6 +90,7 @@ public class ModelRhinoCalf extends AdvancedEntityModel<EntityRhino> {
         return ImmutableList.of(this.body_main);
     }
 
+
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
         return ImmutableList.of(body_main, leg_right, leg_left, body_torso, body_head, arm_right, arm_left, horn_back,
@@ -127,4 +128,6 @@ public class ModelRhinoCalf extends AdvancedEntityModel<EntityRhino> {
             this.leg_right.rotateAngleX = Mth.cos(limbSwing * 0.5F) * 1.4F * limbSwingAmount;
         }
     }
+
+
 }

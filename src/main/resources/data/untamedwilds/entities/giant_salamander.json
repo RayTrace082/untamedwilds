@@ -21,10 +21,10 @@
       "health":14,
       "spawnBiomes":[
         [
-          "category|river"
+          "tag|is_river"
         ],
         [
-          "category|extreme_hills"
+          "tag|is_mountain"
         ]
       ]
     },
@@ -37,10 +37,10 @@
       "health":6,
       "spawnBiomes":[
         [
-          "category|river"
+          "tag|is_river"
         ],
         [
-          "category|extreme_hills"
+          "tag|is_mountain"
         ]
       ]
     },
@@ -54,10 +54,10 @@
       "skins":30,
       "spawnBiomes":[
         [
-          "category|river"
+          "tag|is_river"
         ],
         [
-          "category|extreme_hills"
+          "tag|is_mountain"
         ]
       ]
     }

@@ -4,13 +4,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
@@ -21,7 +20,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import untamedwilds.UntamedWilds;
 import untamedwilds.entity.ComplexMob;
-import untamedwilds.entity.INeedsPostUpdate;
 import untamedwilds.util.EntityUtils;
 import untamedwilds.util.ModCreativeModeTab;
 
@@ -47,7 +45,7 @@ public class MobBucketedItem extends BucketItem {
 
     public Component getName(ItemStack stack) {
         if (ComplexMob.ENTITY_DATA_HASH.containsKey(this.entity.get())) {
-            return new TranslatableComponent("item.untamedwilds.bucket_" + this.entity.get().getRegistryName().getPath() + "_" + EntityUtils.getVariantName(this.entity.get(), this.getSpecies(stack)));
+            return MutableComponent.create(new TranslatableContents("item.untamedwilds.bucket_" + this.entity.get().builtInRegistryHolder().key().location().getPath() + "_" + EntityUtils.getVariantName(this.entity.get(), this.getSpecies(stack))));
         }
         return super.getName(stack);
     }

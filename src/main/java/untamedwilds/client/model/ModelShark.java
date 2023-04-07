@@ -6,6 +6,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.Mth;
 import untamedwilds.entity.fish.EntityShark;
 
@@ -216,4 +218,6 @@ public class ModelShark extends AdvancedEntityModel<EntityShark> {
         }
         return Mth.clamp(angle, min, max);
     }
+
+
 }

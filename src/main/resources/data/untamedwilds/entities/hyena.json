@@ -24,7 +24,7 @@
       },
       "spawnBiomes":[
         [
-          "category|savanna"
+          "tag|is_savanna"
         ]
       ]
     },
@@ -40,7 +40,7 @@
       },
       "spawnBiomes":[
         [
-          "category|savanna"
+          "tag|is_savanna"
         ]
       ]
     },
@@ -61,10 +61,10 @@
       },
       "spawnBiomes":[
         [
-          "category|savanna"
+          "tag|is_savanna"
         ],
         [
-          "category|mesa"
+          "tag|is_badlands"
         ]
       ]
     },
@@ -80,10 +80,10 @@
       },
       "spawnBiomes":[
         [
-          "category|savanna"
+          "tag|is_savanna"
         ],
         [
-          "category|mesa"
+          "tag|is_badlands"
         ]
       ]
     },
@@ -99,7 +99,7 @@
       },
       "spawnBiomes":[
         [
-          "category|savanna"
+          "tag|is_savanna"
         ]
       ]
     }

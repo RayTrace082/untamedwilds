@@ -18,7 +18,7 @@
       },
       "spawnBiomes":[
         [
-          "category|ocean",
+          "tag|is_ocean",
           "!resource|minecraft:cold_ocean",
           "!resource|minecraft:frozen_ocean",
           "!resource|minecraft:deep_cold_ocean",
@@ -36,7 +36,7 @@
       },
       "spawnBiomes":[
         [
-          "category|ocean",
+          "tag|is_ocean",
           "!resource|minecraft:cold_ocean",
           "!resource|minecraft:frozen_ocean",
           "!resource|minecraft:deep_cold_ocean",
@@ -54,7 +54,7 @@
       },
       "spawnBiomes":[
         [
-          "category|ocean",
+          "tag|is_ocean",
           "!resource|minecraft:cold_ocean",
           "!resource|minecraft:frozen_ocean",
           "!resource|minecraft:deep_cold_ocean",
@@ -72,7 +72,7 @@
       },
       "spawnBiomes":[
         [
-          "category|ocean",
+          "tag|is_ocean",
           "!resource|minecraft:cold_ocean",
           "!resource|minecraft:frozen_ocean",
           "!resource|minecraft:deep_cold_ocean",
@@ -90,7 +90,7 @@
       },
       "spawnBiomes":[
         [
-          "category|ocean",
+          "tag|is_ocean",
           "!resource|minecraft:cold_ocean",
           "!resource|minecraft:frozen_ocean",
           "!resource|minecraft:deep_cold_ocean",

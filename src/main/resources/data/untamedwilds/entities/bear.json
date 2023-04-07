@@ -33,10 +33,10 @@
       },
       "spawnBiomes":[
         [
-          "category|forest"
+          "tag|is_forest"
         ],
         [
-          "category|taiga"
+          "tag|is_taiga"
         ]
       ]
     },
@@ -57,7 +57,7 @@
       },
       "spawnBiomes":[
         [
-          "category|underground"
+          "tag|is_underground"
         ]
       ]
     },
@@ -79,10 +79,10 @@
       },
       "spawnBiomes":[
         [
-          "category|taiga"
+          "tag|is_taiga"
         ],
         [
-          "category|extreme_hills"
+          "tag|is_mountain"
         ]
       ]
     },
@@ -103,10 +103,10 @@
       },
       "spawnBiomes":[
         [
-          "category|taiga"
+          "tag|is_taiga"
         ],
         [
-          "category|extreme_hills"
+          "tag|is_mountain"
         ]
       ]
     },
@@ -152,7 +152,7 @@
       },
       "spawnBiomes":[
         [
-          "category|icy"
+          "tag|is_icy"
         ],
         [
           "resource|minecraft:frozen_ocean"
@@ -179,7 +179,7 @@
       },
       "spawnBiomes":[
         [
-          "category|extreme_hills"
+          "tag|is_mountain"
         ]
       ]
     },
@@ -200,7 +200,7 @@
       },
       "spawnBiomes":[
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     }

@@ -1,0 +1,47 @@
+{
+  "type": "untamedwilds:biome_modifier_serializer",
+  "biomes": [
+    "#forge:is_underground"
+  ],
+  "blacklist": [
+    []
+  ],
+  "configOption": "mobcontrol.masterspawner",
+  "decoration": "underground_decoration",
+  "dimension": "minecraft:is_overworld",
+  "feature": {
+    "feature": {
+      "type": "untamedwilds:underground",
+      "config": {}
+    },
+    "placement": [
+      {
+        "type": "minecraft:count",
+        "count": 1
+      },
+      {
+        "type": "minecraft:in_square"
+      },
+      {
+        "type": "minecraft:height_range",
+        "height": {
+          "type": "minecraft:uniform",
+          "max_inclusive": {
+            "absolute": 256
+          },
+          "min_inclusive": {
+            "above_bottom": 0
+          }
+        }
+      },
+      {
+        "type": "minecraft:random_offset",
+        "xz_spread": 0,
+        "y_spread": 0
+      },
+      {
+        "type": "minecraft:biome"
+      }
+    ]
+  }
+}

@@ -43,7 +43,7 @@ import java.util.function.Supplier;
 public class ModBlock {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, UntamedWilds.MOD_ID);
-    public static final DeferredRegister<BlockEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, UntamedWilds.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, UntamedWilds.MOD_ID);
 
     private final static List<Pair<RegistryObject<Block>, String>> RENDER_TYPE_DATA = Lists.newArrayList();
 

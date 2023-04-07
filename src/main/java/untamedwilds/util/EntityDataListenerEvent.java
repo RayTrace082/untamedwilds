@@ -110,17 +110,17 @@ public class EntityDataListenerEvent {
         registerData();
 
         for (EntityType<?> types : ComplexMob.ENTITY_DATA_HASH.keySet()) {
-            ResourceLocation entityName = types.getRegistryName();
+            ResourceLocation entityName = types.builtInRegistryHolder().key().location();
             int size = 0;
 
             for (SpeciesDataHolder speciesData : ComplexMob.ENTITY_DATA_HASH.get(types).getSpeciesData()) {
-                UntamedInstance.sendToClient(new SyncTextureData(entityName, speciesData.getName(), speciesData.getSkins(), size++), (ServerPlayer) event.getPlayer());
+                UntamedInstance.sendToClient(new SyncTextureData(entityName, speciesData.getName(), speciesData.getSkins(), size++), (ServerPlayer) event.getEntity());
             }
         }
     }
 
     public static EntityDataHolder registerEntityData(EntityType<?> typeIn) {
-        String nameIn = Objects.requireNonNull(typeIn.getRegistryName()).getPath();
+        String nameIn = Objects.requireNonNull(typeIn.builtInRegistryHolder().key().location()).getPath();
         if (ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, nameIn)) != null) {
             EntityDataHolder data = ENTITY_DATA_HOLDERS.getData(new ResourceLocation(UntamedWilds.MOD_ID, nameIn));
             processData(data, typeIn);
@@ -137,7 +137,7 @@ public class EntityDataListenerEvent {
      */
     private static void processData(EntityDataHolder dataIn, EntityType<?> typeIn) {
         ComplexMob.ENTITY_DATA_HASH.put(typeIn, dataIn);
-        processSkins(dataIn, typeIn.getRegistryName().getPath());
+        processSkins(dataIn, typeIn.builtInRegistryHolder().key().location().getPath());
         for (SpeciesDataHolder speciesData : ComplexMob.ENTITY_DATA_HASH.get(typeIn).getSpeciesData()) {
             if (!ComplexMob.CLIENT_DATA_HASH.containsKey(typeIn)) {
                 ComplexMob.CLIENT_DATA_HASH.put(typeIn, new EntityDataHolderClient(new HashMap<>(), new HashMap<>()));

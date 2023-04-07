@@ -3,6 +3,7 @@ package untamedwilds.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
@@ -108,11 +109,11 @@ public class TallGrassBlock extends Block implements BonemealableBlock, IPostGen
       return worldIn.getBlockState(pos.above(i)).getValue(PROPERTY_STAGE) != 1;
    }
 
-   public boolean isBonemealSuccess(Level worldIn, Random rand, BlockPos pos, BlockState state) {
+   public boolean isBonemealSuccess(Level worldIn, RandomSource rand, BlockPos pos, BlockState state) {
       return true;
    }
 
-   public void performBonemeal(ServerLevel worldIn, Random rand, BlockPos pos, BlockState state) {
+   public void performBonemeal(ServerLevel worldIn, RandomSource rand, BlockPos pos, BlockState state) {
       int i = this.getNumReedBlocksAbove(worldIn, pos);
       int j = this.getNumReedBlocksBelow(worldIn, pos);
       int k = i + j + 1;

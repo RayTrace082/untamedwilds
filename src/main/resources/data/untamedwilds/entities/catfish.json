@@ -18,10 +18,10 @@
       },
       "spawnBiomes":[
         [
-          "category|river"
+          "tag|is_river"
         ],
         [
-          "category|swamp"
+          "tag|is_swamp"
         ]
       ]
     },
@@ -35,10 +35,10 @@
       },
       "spawnBiomes":[
         [
-          "category|river"
+          "tag|is_river"
         ],
         [
-          "category|swamp"
+          "tag|is_swamp"
         ]
       ]
     },
@@ -53,10 +53,10 @@
       },
       "spawnBiomes":[
         [
-          "category|swamp"
+          "tag|is_swamp"
         ],
         [
-          "category|jungle"
+          "tag|is_jungle"
         ]
       ]
     }

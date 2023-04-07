@@ -7,6 +7,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -86,7 +87,7 @@ public class EggBlockEntity extends BlockEntity {
     public EntityType<?> getEntityType() { return this.entityType; }
 
     private <T extends ParticleOptions> void spawnParticles(Level worldIn, double x, double y, double z, T particle) {
-        Random random = worldIn.getRandom();
+        RandomSource random = worldIn.getRandom();
         float d3 = random.nextFloat() * 0.02F;
         float d1 = random.nextFloat() * 0.02F;
         float d2 = random.nextFloat() * 0.02F;
@@ -107,7 +108,7 @@ public class EggBlockEntity extends BlockEntity {
         compound.putBoolean("CanSpawn", this.getCanSpawn());
         compound.putInt("Variant", this.getVariant());
         if (this.getEntityType() != null) {
-            compound.putString("entityType", this.getEntityType().getRegistryName().toString());
+            compound.putString("entityType", this.getEntityType().builtInRegistryHolder().key().location().toString());
         }
     }
 }

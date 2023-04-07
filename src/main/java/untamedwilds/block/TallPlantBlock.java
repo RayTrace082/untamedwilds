@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -89,7 +90,7 @@ public class TallPlantBlock extends Block implements BonemealableBlock, IPostGen
       return state.getValue(PROPERTY_STAGE) == 0;
    }
 
-   public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+   public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
       if (state.getValue(PROPERTY_STAGE) == 0 && random.nextInt(8) == 0) {
          if (worldIn.isEmptyBlock(pos.above()) && worldIn.getLightEmission(pos.above()) >= 9) {
             int i = this.getNumReedBlocksBelow(worldIn, pos) + 1;
@@ -118,11 +119,11 @@ public class TallPlantBlock extends Block implements BonemealableBlock, IPostGen
       return worldIn.getBlockState(pos.above(i)).getValue(PROPERTY_STAGE) != 1;
    }
 
-   public boolean isBonemealSuccess(Level worldIn, Random rand, BlockPos pos, BlockState state) {
+   public boolean isBonemealSuccess(Level worldIn, RandomSource rand, BlockPos pos, BlockState state) {
       return true;
    }
 
-   public void performBonemeal(ServerLevel worldIn, Random rand, BlockPos pos, BlockState state) {
+   public void performBonemeal(ServerLevel worldIn, RandomSource rand, BlockPos pos, BlockState state) {
       int i = this.getNumReedBlocksAbove(worldIn, pos);
       int j = this.getNumReedBlocksBelow(worldIn, pos);
       int k = i + j + 1;
@@ -140,7 +141,7 @@ public class TallPlantBlock extends Block implements BonemealableBlock, IPostGen
       }
    }
 
-   protected void grow(Level worldIn, BlockPos posIn, Random rand, int p_220258_5_) {
+   protected void grow(Level worldIn, BlockPos posIn, RandomSource rand, int p_220258_5_) {
       if ((p_220258_5_ > 2 && rand.nextInt(3) == 0) || p_220258_5_ > 4) {
          worldIn.setBlockAndUpdate(posIn.above(), this.defaultBlockState().setValue(PROPERTY_AGE, 5).setValue(PROPERTY_STAGE, 1));
       }

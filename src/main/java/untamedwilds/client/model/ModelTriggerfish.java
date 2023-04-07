@@ -4,6 +4,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import untamedwilds.entity.fish.EntityTriggerfish;
 import untamedwilds.util.EntityUtils;
 
@@ -95,6 +97,7 @@ public class ModelTriggerfish extends AdvancedEntityModel<EntityTriggerfish> {
         );
     }
 
+    @Override
     public void setupAnim(EntityTriggerfish triggerfish, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         float f = ageInTicks - (float)triggerfish.tickCount / 10;
         resetToDefaultPose();
@@ -126,4 +129,6 @@ public class ModelTriggerfish extends AdvancedEntityModel<EntityTriggerfish> {
         flap(fin_dorsal_2, globalSpeed * 0.8f, globalDegree * 0.6f, true, 0, 0, Math.max(f / 6, limbSwing), 1F);
         flap(fin_anal, globalSpeed * 0.8f, globalDegree * 0.6f, false, 0, 0, Math.max(f / 6, limbSwing), 1F);
     }
+
+
 }

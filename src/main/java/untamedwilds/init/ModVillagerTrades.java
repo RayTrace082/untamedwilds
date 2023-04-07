@@ -1,5 +1,6 @@
 package untamedwilds.init;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -49,7 +50,7 @@ public class ModVillagerTrades {
             this.priceMultiplier = priceMultiplier;
         }
 
-        public MerchantOffer getOffer(Entity entityIn, Random rand) {
+        public MerchantOffer getOffer(Entity entityIn, RandomSource rand) {
             return new MerchantOffer(new ItemStack(this.itemstackOut, this.stackSizeOut), new ItemStack(this.itemstackIn, this.stackSizeIn), this.maxUses, this.givenExp, this.priceMultiplier);
         }
     }

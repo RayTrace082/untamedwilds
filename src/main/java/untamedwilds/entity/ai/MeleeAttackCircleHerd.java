@@ -2,6 +2,7 @@ package untamedwilds.entity.ai;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -166,7 +167,7 @@ public class MeleeAttackCircleHerd extends Goal {
             BlockPos forwardFarPos = EntityUtils.getRelativeBlockPos(this.attacker, 5F, 0);
             if (new Vec3(forwardFarPos.getX(), forwardFarPos.getY(), forwardFarPos.getZ()).distanceTo(livingentity.getPosition(0)) < this.attacker.getPosition(0).distanceTo(livingentity.getPosition(0))) {
                 //this.attacker.getEntityWorld().setBlockState(targetpos, Blocks.TORCH.defaultBlockState());
-                Random rand = this.attacker.getRandom();
+                RandomSource rand = this.attacker.getRandom();
                 for (int i = 0; i < 4; i++) {
                     forwardFarPos.offset(rand.nextInt(2) - 1, rand.nextInt(2) - 1, rand.nextInt(2) - 1);
                     if (this.attacker.getNavigation().isStableDestination(forwardFarPos)) {
@@ -209,7 +210,7 @@ public class MeleeAttackCircleHerd extends Goal {
 
         for(int i = minAngleIn; i < maxAngleIn; i += 5) {
             Optional<Vec3> optional1 = this.calculateJumpVectorForAngle(entityIn, targetIn, i);
-            if (optional.isEmpty() || optional1.isPresent() && optional1.get().lengthSqr() < optional.get().lengthSqr())
+            if (!optional.isPresent() || optional1.isPresent() && optional1.get().lengthSqr() < optional.get().lengthSqr())
                 optional = optional1;
         }
 

@@ -6,6 +6,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.Mth;
 import untamedwilds.entity.mammal.EntityHyena;
 
@@ -347,4 +349,5 @@ public class ModelHyena extends AdvancedEntityModel<EntityHyena> {
             this.progressRotation(arm_left_lower, hyena.sleepProgress, -0.5009095F, -0.09110619F, 1.0472F, 40);
         }
     }
+
 }

@@ -6,6 +6,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.Mth;
 import untamedwilds.entity.amphibian.EntityGiantSalamander;
 
@@ -168,4 +170,6 @@ public class ModelGiantSalamander extends AdvancedEntityModel<EntityGiantSalaman
             this.progressRotation(leg_left_1, salamander.swimProgress, (float) Math.toRadians(-15.65), (float) Math.toRadians(-174.7), (float) Math.toRadians(88.7), 20);
         }
     }
+
+
 }

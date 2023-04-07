@@ -1,0 +1,22 @@
+{
+  "type": "untamedwilds:biome_modifier_serializer",
+  "biomes": [],
+  "blacklist": [
+    []
+  ],
+  "configOption": "gencontrol.reeds",
+  "decoration": "vegetal_decoration",
+  "dimension": "minecraft:is_overworld",
+  "feature": {
+    "feature": {
+      "type": "untamedwilds:reeds",
+      "config": {}
+    },
+    "placement": [
+      {
+        "type": "minecraft:rarity_filter",
+        "chance": 4
+      }
+    ]
+  }
+}
