@@ -38,16 +38,12 @@ minecraft {
             // "REGISTRIES": For firing of registry events.
             // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
-                examplemod {
+                untamedwilds {
                     source sourceSets.main
                 }
             }
@@ -62,14 +58,10 @@ minecraft {
             // "REGISTRIES": For firing of registry events.
             // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                untamedwilds {
                     source sourceSets.main
                 }
             }
@@ -84,13 +76,7 @@ minecraft {
             // "REGISTRIES": For firing of registry events.
             // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
-
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', 'untamedwilds', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
@@ -126,15 +112,14 @@ repositories{
         name = "CurseMaven"
         url = "https://www.cursemaven.com"
     }
+    mavenCentral()
 }
 
 dependencies {
-    //minecraft "net.minecraftforge:forge:${mc_version}-39.1.2"
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.19.2-77")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.19.2-77")
-    //compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:11.6.0.1013:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:11.6.0.1013")
     compileOnly fg.deobf("curse.maven:crash-utilities-371813:4406293")
     runtimeOnly fg.deobf("curse.maven:crash-utilities-371813:4406293")
@@ -158,16 +143,3 @@ jar {
     }
     finalizedBy('reobfJar')
 }
-
-/*publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file://${project.projectDir}/mcmodsrepo"
-        }
-    }
-}*/

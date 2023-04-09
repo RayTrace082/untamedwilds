@@ -4,7 +4,7 @@ license="GNU General Public License"
 issueTrackerURL="https://github.com/RayTrace082/untamedwilds/issues"
 [[mods]]
 modId="untamedwilds"
-version="2.3.1"
+version="3.0.1"
 displayName="Untamed Wilds"
 # updateJSONURL="http://myurl.me/" #optional
 displayURL="https://github.com/RayTrace082/untamedwilds/"
@@ -17,13 +17,13 @@ description='''Expanding on the natural world of Minecraft.'''
 [[dependencies.untamedwilds]]
     modId="forge"
     mandatory=true
-    versionRange="[38,)"
+    versionRange="[43,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.untamedwilds]]
     modId="citadel"
     mandatory=true
-    versionRange="[1.10,)"
+    versionRange="[2,)"
     ordering="AFTER"
     side="BOTH"

@@ -8,10 +8,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -24,12 +21,11 @@ import java.util.Map;
 public class EpyphitePlantBlock extends HorizontalDirectionalBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH, Block.box(1D, 1D, 15D, 15D, 15D, 16D),
-            Direction.SOUTH, Block.box(1D, 1D, 0.0D, 15D, 15D, 1D),
-            Direction.WEST, Block.box(15D, 1D, 1D, 16D, 15D, 15D),
-            Direction.EAST, Block.box(0.0D, 1D, 1D, 1D, 15D, 15D)));
-
+    private static final VoxelShape WEST_AABB = Block.box(1D, 1D, 15D, 15D, 15D, 16D);
+    private static final VoxelShape EAST_AABB = Block.box(1D, 1D, 0.0D, 15D, 15D, 1D);
+    private static final VoxelShape NORTH_AABB = Block.box(15D, 1D, 1D, 16D, 15D, 15D);
+    private static final VoxelShape SOUTH_AABB = Block.box(0.0D, 1D, 1D, 1D, 15D, 15D);
+    
     public EpyphitePlantBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
@@ -48,7 +44,13 @@ public class EpyphitePlantBlock extends HorizontalDirectionalBlock {
     }
 
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        return SHAPES.get(state.getValue(FACING));
+        return switch (state.getValue(FACING)) {
+            case NORTH -> NORTH_AABB;
+            case SOUTH -> SOUTH_AABB;
+            case WEST -> WEST_AABB;
+            case EAST -> EAST_AABB;
+            default -> NORTH_AABB;
+        };
     }
 
     public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {

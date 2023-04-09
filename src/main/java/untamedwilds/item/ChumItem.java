@@ -55,7 +55,7 @@ public class ChumItem extends Item {
                     double d2 = worldIn.random.nextGaussian() * 0.03D;
                     double d3 = worldIn.random.nextGaussian() * 0.03D;
                     double d4 = worldIn.random.nextGaussian() * 0.03D;
-                    ((ServerLevel)worldIn).sendParticles(ModParticles.CHUM_DISPERSE, pos.x, pos.y - 0.1F, pos.z, 1, d2, d3, d4, 0.02D);
+                    ((ServerLevel)worldIn).sendParticles(ModParticles.CHUM_DISPERSE.get(), pos.x, pos.y - 0.1F, pos.z, 1, d2, d3, d4, 0.02D);
                 }
                 ModAdvancementTriggers.BAIT_BASIC.trigger((ServerPlayer) playerIn);
                 playerIn.awardStat(Stats.ITEM_USED.get(this));

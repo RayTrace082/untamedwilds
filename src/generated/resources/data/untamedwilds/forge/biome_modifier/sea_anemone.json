@@ -1,6 +1,8 @@
 {
   "type": "untamedwilds:biome_modifier_serializer",
-  "biomes": [],
+  "biomes": [
+    "#minecraft:is_ocean"
+  ],
   "blacklist": [
     []
   ],

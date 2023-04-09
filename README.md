@@ -128,6 +128,7 @@ It should! Mobs are dynamically assigned to each Biome based on the Biome ~~Temp
 
 ## Credits
 
+[CCr4ft3r](https://www.curseforge.com/members/ccr4ft3r/projects) - Code Contributor
 Phweeeee - Code Contributor 
 Unkownn66 - Tetra support Contributor
 
