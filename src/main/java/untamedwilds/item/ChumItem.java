@@ -49,8 +49,7 @@ public class ChumItem extends Item {
             ItemStack itemstack = playerIn.getItemInHand(handIn);
             playerIn.getCooldowns().addCooldown(this, 30);
             worldIn.playSound(playerIn, playerIn.blockPosition(), SoundEvents.FISHING_BOBBER_SPLASH, SoundSource.NEUTRAL, 1F, 1F);
-            if (!worldIn.isClientSide) {
-                Vec3 pos = blockraytraceresult.getLocation();
+            if (!worldIn.isClientSide) {Vec3 pos = blockraytraceresult.getLocation();
                 for (int i = 0; i < 6;  i++) {
                     double d2 = worldIn.random.nextGaussian() * 0.03D;
                     double d3 = worldIn.random.nextGaussian() * 0.03D;
@@ -80,6 +79,7 @@ public class ChumItem extends Item {
                     waterMob.getNavigation().stop();
                     waterMob.getNavigation().moveTo(pos.x, pos.y, pos.z, 1);
                 }
+
             }
             return InteractionResultHolder.consume(itemstack);
         }

@@ -45,6 +45,7 @@ public class UntamedWilds {
         ModItems.registerSpawnItems();
         UntamedWildsBiomeModifier.BIOME_MODIFIER_SERIALIZERS.register(eventBus);
         ModSounds.SOUNDS.register(eventBus);
+        ModParticles.PARTICLES.register(eventBus);
         ModAdvancementTriggers.register();
         UntamedWildsGenerator.FEATURES.register(eventBus);
         UntamedWildsGenerator.CONFIGURED_FEATURES.register(eventBus);
@@ -60,6 +61,7 @@ public class UntamedWilds {
     private void setupClient(final FMLClientSetupEvent event) {
         ModBlock.registerRendering();
         ModBlock.registerBlockColors();
+        //ModParticles.setupParticles();
 
         //ModBlock.registerBlockColors();
         //ModParticles.registerParticles(); Handled through events
