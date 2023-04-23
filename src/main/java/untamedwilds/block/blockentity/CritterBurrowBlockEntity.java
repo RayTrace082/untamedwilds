@@ -81,7 +81,8 @@ public class CritterBurrowBlockEntity extends BlockEntity {
                     }
                 }
                 if (worldIn.getRandom().nextInt(ConfigMobControl.burrowRepopulationChance.get()) == 0 && this.getCount() < 20) {
-                    this.setCount(this.getCount() + 1);
+                int newCount = this.getCount() + 1;
+                this.setCount(newCount);
                 }
             }
         }
